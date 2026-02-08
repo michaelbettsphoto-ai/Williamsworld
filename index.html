@@ -358,7 +358,7 @@
       <!-- Weekly Tracker -->
       <div class="dashPanel" id="map">
         <h3>Weekly Tracker Reward ⭐</h3>
-        <div class="treasureNote">5 Organized Nights = PRIZE!</div>
+        <div class="treasureNote">5 Organized Days = PRIZE!</div>
         <div class="weekGrid" id="weekGrid">
           <div class="dayBox" data-day="mon"><div>Mon</div></div>
           <div class="dayBox" data-day="tue"><div>Tue</div></div>
@@ -481,9 +481,12 @@
 
   function isPassDay(){
     const day = state.days[TODAY];
-    // PASS = all night tasks complete + all morning tasks complete + all backpack tasks complete
+    // PASS criteria: all three quest categories must be complete
+    // Night quest task IDs
     const nightIds = ["n_trapper","n_clothes","n_lunch","n_shoes"];
+    // Morning quest task IDs
     const morningIds = ["m_prayer","m_dressed","m_teeth","m_trappercheck"];
+    // Backpack/Trapper quest task IDs
     const backpackIds = ["t_work","t_notebooks","t_supplies","t_check"];
     
     const nightOk = nightIds.every(id=>day.tasks[id]===true);
@@ -627,11 +630,15 @@
     const day = state.days[TODAY];
     const questTasks = TASKS.filter(t=>t.quest === questType);
     
+    // Quest display names for better UX
+    const questNames = { night: "Night Quest", morning: "Morning Quest", backpack: "Backpack Quest" };
+    const questName = questNames[questType] || questType;
+    
     // Toggle all tasks in this quest
     const allComplete = questTasks.every(t=>day.tasks[t.id]===true);
     
     if(allComplete){
-      toast(`${questType} quest already complete!`);
+      toast(`${questName} Already Complete!`);
     } else {
       // Complete all tasks in this quest
       let totalXP = 0;
@@ -645,7 +652,7 @@
       if(totalXP > 0){
         state.xp += totalXP;
         recalcLevel();
-        toast(`Quest complete! +${totalXP} XP`);
+        toast(`Quest Complete! +${totalXP} XP`);
       }
       
       day.result="Not graded";
@@ -679,11 +686,13 @@
   if(topbar){
     const gradeBtn = document.createElement("button");
     gradeBtn.textContent = "🏆 Grade";
+    gradeBtn.setAttribute("aria-label", "Grade today's progress and update streak");
     gradeBtn.addEventListener("click", gradeDay);
     topbar.appendChild(gradeBtn);
     
     const resetBtn = document.createElement("button");
     resetBtn.textContent = "🧽 Reset";
+    resetBtn.setAttribute("aria-label", "Reset today's task completion");
     resetBtn.addEventListener("click", ()=>{
       state.days[TODAY]={ tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), result:"Not graded" };
       save(); renderTasks(); updateHeader(); toast("Today reset");
