@@ -141,6 +141,102 @@
     80% { transform: translateY(-5px) scale(1.05) rotate(3deg); }
   }
   
+  /* Fun Animations for Kids! */
+  @keyframes william-fire {
+    0% { transform: scale(1); filter: brightness(1) drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+    20% { transform: scale(1.1) rotate(-10deg); filter: brightness(1.3) drop-shadow(0 0 20px rgba(255,100,0,0.8)); }
+    40% { transform: scale(1.15) rotate(5deg); filter: brightness(1.5) drop-shadow(0 0 30px rgba(255,50,0,0.9)); }
+    60% { transform: scale(1.1) rotate(-5deg); filter: brightness(1.4) drop-shadow(0 0 25px rgba(255,80,0,0.8)); }
+    80% { transform: scale(1.05); filter: brightness(1.2) drop-shadow(0 0 15px rgba(255,120,0,0.6)); }
+    100% { transform: scale(1); filter: brightness(1) drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+  }
+  @keyframes william-fart {
+    0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
+    10% { transform: translateX(-5px) translateY(3px) rotate(-2deg); }
+    20% { transform: translateX(8px) translateY(-2px) rotate(3deg); }
+    30% { transform: translateX(-6px) translateY(2px) rotate(-3deg); }
+    40% { transform: translateX(7px) translateY(-3px) rotate(2deg); }
+    50% { transform: translateX(-8px) translateY(4px) rotate(-2deg); }
+    60% { transform: translateX(6px) translateY(-2px) rotate(3deg); }
+    70% { transform: translateX(-4px) translateY(2px) rotate(-1deg); }
+    80% { transform: translateX(3px) translateY(-1px) rotate(1deg); }
+  }
+  @keyframes william-throw {
+    0% { transform: rotate(0deg) translateX(0); }
+    30% { transform: rotate(-30deg) translateX(-15px); }
+    50% { transform: rotate(20deg) translateX(10px) scale(1.1); }
+    70% { transform: rotate(5deg) translateX(5px); }
+    100% { transform: rotate(0deg) translateX(0); }
+  }
+  @keyframes william-burp {
+    0%, 100% { transform: scale(1); }
+    20% { transform: scale(1.15, 0.9); }
+    40% { transform: scale(0.95, 1.1); }
+    60% { transform: scale(1.1, 0.95); }
+    80% { transform: scale(0.98, 1.05); }
+  }
+  @keyframes william-sneeze {
+    0%, 100% { transform: translateY(0) scale(1); }
+    10% { transform: translateY(-5px) scale(1.05, 0.95); }
+    30% { transform: translateY(-10px) scale(1.1, 0.9); }
+    50% { transform: translateY(8px) scale(0.9, 1.15); }
+    70% { transform: translateY(-3px) scale(1.05, 0.98); }
+  }
+  @keyframes william-dizzy {
+    0% { transform: rotate(0deg); filter: blur(0px); }
+    25% { transform: rotate(90deg); filter: blur(2px); }
+    50% { transform: rotate(180deg); filter: blur(3px); }
+    75% { transform: rotate(270deg); filter: blur(2px); }
+    100% { transform: rotate(360deg); filter: blur(0px); }
+  }
+  @keyframes william-dance {
+    0%, 100% { transform: rotate(0deg) translateX(0) scale(1); }
+    15% { transform: rotate(-15deg) translateX(-10px) scale(1.05); }
+    30% { transform: rotate(15deg) translateX(10px) scale(1.1); }
+    45% { transform: rotate(-10deg) translateX(-8px) scale(1.05); }
+    60% { transform: rotate(10deg) translateX(8px) scale(1.08); }
+    75% { transform: rotate(-5deg) translateX(-5px) scale(1.03); }
+  }
+  @keyframes william-explode {
+    0% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+    30% { transform: scale(0.8) rotate(-20deg); filter: brightness(1.2); }
+    50% { transform: scale(1.5) rotate(180deg); filter: brightness(2); }
+    70% { transform: scale(1.3) rotate(270deg); filter: brightness(1.5); }
+    100% { transform: scale(1) rotate(360deg); filter: brightness(1); }
+  }
+  
+  /* Particle effect animations */
+  @keyframes fireParticle {
+    0% { transform: translateX(0) translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateX(100px) translateY(-50px) scale(0.5); opacity: 0; }
+  }
+  @keyframes fartParticle {
+    0% { transform: translateX(0) translateY(0) scale(0.5); opacity: 1; }
+    100% { transform: translateX(-80px) translateY(-60px) scale(2); opacity: 0; }
+  }
+  @keyframes throwParticle {
+    0% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); opacity: 1; }
+    100% { transform: translateX(200px) translateY(-80px) rotate(720deg) scale(0.8); opacity: 0; }
+  }
+  @keyframes burpParticle {
+    0% { transform: translateY(0) scale(0.8); opacity: 1; }
+    100% { transform: translateY(-60px) scale(1.5); opacity: 0; }
+  }
+  @keyframes sneezeParticle {
+    0% { transform: translateX(0) translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateX(${50 + Math.random() * 50}px) translateY(-${30 + Math.random() * 30}px) scale(0.3); opacity: 0; }
+  }
+  @keyframes explodeParticle {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; }
+    100% { 
+      transform: translate(
+        calc(cos(var(--angle)) * 150px), 
+        calc(sin(var(--angle)) * 150px)
+      ) scale(0.5); 
+      opacity: 0; 
+    }
+  }
+  
   body {
     margin: 0;
     padding: 0;
@@ -2536,7 +2632,16 @@
     'william-float-spin',
     'william-bounce-scale',
     'william-rainbow',
-    'william-victory'
+    'william-victory',
+    // Fun animations for kids!
+    'william-fire',
+    'william-fart',
+    'william-throw',
+    'william-burp',
+    'william-sneeze',
+    'william-dizzy',
+    'william-dance',
+    'william-explode'
   ];
 
   function applyRandomWilliamAnimation() {
@@ -2556,10 +2661,201 @@
     // Apply the animation (2 seconds duration)
     williamAvatar.style.animation = `${randomAnimation} 2s ease-in-out`;
     
+    // Add particle effects for fun animations
+    if (randomAnimation === 'william-fire') {
+      createFireEffect(williamAvatar);
+    } else if (randomAnimation === 'william-fart') {
+      createFartEffect(williamAvatar);
+    } else if (randomAnimation === 'william-throw') {
+      createThrowEffect(williamAvatar);
+    } else if (randomAnimation === 'william-burp') {
+      createBurpEffect(williamAvatar);
+    } else if (randomAnimation === 'william-sneeze') {
+      createSneezeEffect(williamAvatar);
+    } else if (randomAnimation === 'william-explode') {
+      createExplodeEffect(williamAvatar);
+    }
+    
     // Remove animation after it completes
     setTimeout(() => {
       if (williamAvatar) williamAvatar.style.animation = 'none';
     }, 2000);
+  }
+  
+  // Particle effect functions
+  function createFireEffect(element) {
+    const rect = element.getBoundingClientRect();
+    for (let i = 0; i < 15; i++) {
+      setTimeout(() => {
+        const flame = document.createElement('div');
+        flame.textContent = ['🔥', '💥', '✨'][Math.floor(Math.random() * 3)];
+        flame.style.cssText = `
+          position: fixed;
+          left: ${rect.right}px;
+          top: ${rect.top + rect.height / 2}px;
+          font-size: ${20 + Math.random() * 20}px;
+          pointer-events: none;
+          z-index: 10000;
+          animation: fireParticle 1s ease-out forwards;
+        `;
+        document.body.appendChild(flame);
+        setTimeout(() => flame.remove(), 1000);
+      }, i * 80);
+    }
+  }
+  
+  function createFartEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const fartCloud = document.createElement('div');
+    fartCloud.textContent = '💨';
+    fartCloud.style.cssText = `
+      position: fixed;
+      left: ${rect.left - 30}px;
+      top: ${rect.bottom - 40}px;
+      font-size: 40px;
+      pointer-events: none;
+      z-index: 10000;
+      animation: fartParticle 1.5s ease-out forwards;
+    `;
+    document.body.appendChild(fartCloud);
+    
+    // Add extra stink clouds
+    ['💩', '💨', '😷'].forEach((emoji, i) => {
+      setTimeout(() => {
+        const cloud = document.createElement('div');
+        cloud.textContent = emoji;
+        cloud.style.cssText = `
+          position: fixed;
+          left: ${rect.left - 20 + Math.random() * -30}px;
+          top: ${rect.bottom - 30 + Math.random() * -20}px;
+          font-size: ${25 + Math.random() * 15}px;
+          pointer-events: none;
+          z-index: 10000;
+          animation: fartParticle ${1 + Math.random()}s ease-out forwards;
+        `;
+        document.body.appendChild(cloud);
+        setTimeout(() => cloud.remove(), 1500);
+      }, i * 200);
+    });
+    
+    setTimeout(() => fartCloud.remove(), 1500);
+  }
+  
+  function createThrowEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const projectiles = ['🏀', '⚾', '🎾', '🏈', '⚽', '🍕', '🍎', '🍌'];
+    const projectile = document.createElement('div');
+    projectile.textContent = projectiles[Math.floor(Math.random() * projectiles.length)];
+    projectile.style.cssText = `
+      position: fixed;
+      left: ${rect.right}px;
+      top: ${rect.top + rect.height / 2}px;
+      font-size: 30px;
+      pointer-events: none;
+      z-index: 10000;
+      animation: throwParticle 1.2s ease-out forwards;
+    `;
+    document.body.appendChild(projectile);
+    setTimeout(() => projectile.remove(), 1200);
+  }
+  
+  function createBurpEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const burp = document.createElement('div');
+    burp.textContent = '🗣️💨';
+    burp.style.cssText = `
+      position: fixed;
+      left: ${rect.right - 10}px;
+      top: ${rect.top + 20}px;
+      font-size: 35px;
+      pointer-events: none;
+      z-index: 10000;
+      animation: burpParticle 1s ease-out forwards;
+    `;
+    document.body.appendChild(burp);
+    
+    // Add burp text
+    setTimeout(() => {
+      const text = document.createElement('div');
+      text.textContent = 'BURRRP!';
+      text.style.cssText = `
+        position: fixed;
+        left: ${rect.right + 10}px;
+        top: ${rect.top}px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #4ade80;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        pointer-events: none;
+        z-index: 10000;
+        animation: burpParticle 1s ease-out forwards;
+      `;
+      document.body.appendChild(text);
+      setTimeout(() => text.remove(), 1000);
+    }, 100);
+    
+    setTimeout(() => burp.remove(), 1000);
+  }
+  
+  function createSneezeEffect(element) {
+    const rect = element.getBoundingClientRect();
+    for (let i = 0; i < 10; i++) {
+      const sneeze = document.createElement('div');
+      sneeze.textContent = ['💦', '💧', '🤧'][Math.floor(Math.random() * 3)];
+      sneeze.style.cssText = `
+        position: fixed;
+        left: ${rect.right - 10}px;
+        top: ${rect.top + 30}px;
+        font-size: ${15 + Math.random() * 15}px;
+        pointer-events: none;
+        z-index: 10000;
+        animation: sneezeParticle ${0.8 + Math.random() * 0.4}s ease-out forwards;
+      `;
+      document.body.appendChild(sneeze);
+      setTimeout(() => sneeze.remove(), 1200);
+    }
+    
+    // Add "ACHOO!" text
+    const text = document.createElement('div');
+    text.textContent = 'ACHOO!';
+    text.style.cssText = `
+      position: fixed;
+      left: ${rect.right + 10}px;
+      top: ${rect.top + 20}px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #60a5fa;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+      pointer-events: none;
+      z-index: 10000;
+      animation: sneezeParticle 1s ease-out forwards;
+    `;
+    document.body.appendChild(text);
+    setTimeout(() => text.remove(), 1000);
+  }
+  
+  function createExplodeEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const emojis = ['💥', '⭐', '✨', '💫', '🌟', '🎆', '🎇'];
+    for (let i = 0; i < 20; i++) {
+      setTimeout(() => {
+        const particle = document.createElement('div');
+        particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        const angle = (Math.PI * 2 * i) / 20;
+        particle.style.cssText = `
+          position: fixed;
+          left: ${rect.left + rect.width / 2}px;
+          top: ${rect.top + rect.height / 2}px;
+          font-size: ${15 + Math.random() * 15}px;
+          pointer-events: none;
+          z-index: 10000;
+          --angle: ${angle}rad;
+          animation: explodeParticle 1s ease-out forwards;
+        `;
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 1000);
+      }, i * 20);
+    }
   }
 
   // Start the animation timer (every 10 seconds) - only if element exists
