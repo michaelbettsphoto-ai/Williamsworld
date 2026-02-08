@@ -740,6 +740,182 @@
     border:2px solid var(--gold); border-radius:12px; padding:12px; margin-top:12px;
     font-weight:900; text-align:center; color:var(--gold);
   }
+
+  /* Companion Title Display */
+  #ww .companion .companionTitle {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--gold);
+    font-style: italic;
+    margin-top: 2px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,.6);
+  }
+
+  /* War Chest Panel */
+  #ww .warChestPanel {
+    background: linear-gradient(135deg, rgba(255,211,110,.12), rgba(255,170,50,.08));
+    border: 3px solid var(--gold);
+    border-radius: 18px;
+    padding: 16px;
+    margin-top: 16px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(255,211,110,.2), 0 4px 12px rgba(0,0,0,.3);
+  }
+  #ww .warChestPanel h4 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    font-family: var(--fantasy-font);
+    color: var(--gold);
+    text-shadow: 2px 2px 0 rgba(0,0,0,.8), 0 0 15px rgba(255,211,110,.5);
+  }
+  #ww .warChestAmount {
+    font-size: 36px;
+    font-weight: 1000;
+    color: var(--gold);
+    text-shadow: 2px 2px 0 rgba(0,0,0,.7), 0 0 20px rgba(255,211,110,.4);
+    margin: 8px 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  #ww .awardBtnRow {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  #ww .awardBtn {
+    border: 2px solid var(--gold);
+    background: linear-gradient(135deg, rgba(255,211,110,.20), rgba(255,170,50,.12));
+    color: var(--gold);
+    padding: 10px 16px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: 900;
+    font-size: 13px;
+    transition: all .3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.1);
+  }
+  #ww .awardBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,.4), 0 0 20px rgba(255,211,110,.5);
+    background: linear-gradient(135deg, rgba(255,211,110,.35), rgba(255,170,50,.25));
+  }
+  #ww .awardBtn:active {
+    transform: translateY(0);
+  }
+  #ww .awardBtn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Companion Reward Card Overlay */
+  #companionRewardOverlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn .3s ease-out;
+  }
+  #companionRewardOverlay.show {
+    display: flex;
+  }
+  #companionRewardOverlay .content {
+    text-align: center;
+    animation: celebrate .6s ease-out;
+    padding: 40px;
+  }
+  #companionRewardOverlay .rewardEmoji {
+    font-size: 100px;
+    display: block;
+    margin-bottom: 16px;
+    animation: bounce 1s ease-in-out infinite;
+  }
+  #companionRewardOverlay .rewardHeading {
+    font-size: 48px;
+    font-family: var(--fantasy-font);
+    color: var(--green);
+    text-shadow:
+      4px 4px 0 rgba(0,0,0,.9),
+      0 0 30px rgba(125,255,180,.8),
+      0 0 60px rgba(125,255,180,.5);
+    margin: 0 0 12px;
+    animation: pulse 1s ease-in-out infinite;
+  }
+  #companionRewardOverlay .rewardName {
+    font-size: 32px;
+    font-family: var(--fantasy-font);
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  #companionRewardOverlay .rewardLevel {
+    font-size: 24px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  #companionRewardOverlay .rewardTitle {
+    font-size: 28px;
+    color: var(--gold);
+    font-family: var(--fantasy-font);
+    text-shadow: 2px 2px 4px rgba(0,0,0,.8);
+  }
+  #companionRewardOverlay .rewardPower {
+    margin-top: 16px;
+    font-size: 20px;
+    color: var(--green);
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(125,255,180,.6);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  /* Level-Down Overlay */
+  #levelDownOverlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(80,0,0,.90);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn .3s ease-out;
+  }
+  #levelDownOverlay.show {
+    display: flex;
+  }
+  @keyframes shakeDown {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+    20%, 40%, 60%, 80% { transform: translateX(10px); }
+  }
+  #levelDownOverlay .content {
+    text-align: center;
+    animation: shakeDown .6s ease-out;
+    padding: 40px;
+  }
+  #levelDownOverlay .content h2 {
+    font-size: 72px;
+    font-family: var(--fantasy-font);
+    color: var(--red);
+    text-shadow:
+      4px 4px 0 rgba(0,0,0,.9),
+      0 0 30px rgba(220,38,38,.8),
+      0 0 60px rgba(220,38,38,.5);
+    margin: 0 0 20px;
+    animation: pulse 1s ease-in-out infinite;
+  }
+  #levelDownOverlay .levelInfo {
+    font-size: 28px;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  #levelDownOverlay .levelTitle {
+    font-size: 24px;
+    color: var(--gold);
+    font-family: var(--fantasy-font);
+  }
 </style>
 
 <div id="ww">
@@ -999,6 +1175,7 @@
                 <div class="name">Ember</div>
                 <div class="type">🔥 Fire Tiger</div>
                 <div class="level">Lvl <span class="companionLevel">1</span></div>
+                <div class="companionTitle" id="emberTitle"></div>
               </div>
             </div>
             <div class="statBar">
@@ -1016,6 +1193,7 @@
                 <div class="name">Sprite</div>
                 <div class="type">✨ Light Fairy</div>
                 <div class="level">Lvl <span class="companionLevel">1</span></div>
+                <div class="companionTitle" id="spriteTitle"></div>
               </div>
             </div>
             <div class="statBar">
@@ -1033,12 +1211,23 @@
                 <div class="name">Golem</div>
                 <div class="type">🗿 Stone Guardian</div>
                 <div class="level">Lvl <span class="companionLevel">1</span></div>
+                <div class="companionTitle" id="golemTitle"></div>
               </div>
             </div>
             <div class="statBar">
               <div class="statLabel">XP Progress</div>
               <div class="bar"><div class="companionXPBar"></div></div>
             </div>
+          </div>
+        </div>
+        <div class="warChestPanel" id="warChestPanel">
+          <h4>⚔️ War Chest ⚔️</h4>
+          <div class="warChestAmount"><span id="warChestGold">0</span> 🪙</div>
+          <div class="small" style="color:var(--muted);">Award 50 gold to a companion!</div>
+          <div class="awardBtnRow">
+            <button class="awardBtn" data-award="ember">🔥 Award Ember</button>
+            <button class="awardBtn" data-award="sprite">✨ Award Sprite</button>
+            <button class="awardBtn" data-award="golem">🗿 Award Golem</button>
           </div>
         </div>
       </div>
@@ -1130,6 +1319,27 @@
       <div class="levelTitle" id="levelUpTitle"></div>
     </div>
   </div>
+  
+  <!-- Companion Reward Card Overlay -->
+  <div id="companionRewardOverlay">
+    <div class="content">
+      <span class="rewardEmoji" id="rewardEmoji"></span>
+      <div class="rewardHeading">COMPANION LEVEL UP!</div>
+      <div class="rewardName" id="rewardCompName"></div>
+      <div class="rewardLevel">Level <span id="rewardCompLevel"></span></div>
+      <div class="rewardTitle" id="rewardCompTitle"></div>
+      <div class="rewardPower">⚡ New Power Unlocked! ⚡</div>
+    </div>
+  </div>
+
+  <!-- Level Down Overlay -->
+  <div id="levelDownOverlay">
+    <div class="content">
+      <h2>💀 LEVEL DOWN! 💀</h2>
+      <div class="levelInfo">Dropped to Level <span id="levelDownNumber"></span></div>
+      <div class="levelTitle" id="levelDownTitle"></div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -1179,7 +1389,39 @@
     return "Dragon Master";
   };
 
+  // Companion Level Titles
+  const COMPANION_TITLES = {
+    ember: {
+      1: "Tiny Spark", 2: "Flickering Flame", 3: "Blaze Cub", 4: "Fire Prowler",
+      5: "Inferno Striker", 6: "Magma Fang", 7: "Volcanic Hunter", 8: "Phoenix Fury",
+      9: "Solar Beast", 10: "Eternal Inferno"
+    },
+    sprite: {
+      1: "Dim Glimmer", 2: "Sparkle Wisp", 3: "Glow Dancer", 4: "Shimmer Wing",
+      5: "Radiant Pixie", 6: "Starlight Weaver", 7: "Aurora Enchanter", 8: "Prismatic Sage",
+      9: "Celestial Beacon", 10: "Eternal Luminary"
+    },
+    golem: {
+      1: "Pebble Scout", 2: "Rock Tumbler", 3: "Boulder Buddy", 4: "Granite Guard",
+      5: "Iron Fortress", 6: "Steel Sentinel", 7: "Diamond Wall", 8: "Obsidian Titan",
+      9: "Mountain King", 10: "Eternal Colossus"
+    }
+  };
+  const COMPANION_MAX_TITLES = { ember: "Supernova Tiger", sprite: "Supernova Fairy", golem: "World Shaker" };
+  const COMPANION_EMOJIS = { ember: "🔥", sprite: "✨", golem: "🗿" };
+  const COMPANION_NAMES = { ember: "Ember", sprite: "Sprite", golem: "Golem" };
+
+  function getCompanionTitle(companion, level) {
+    if (level >= 11) return COMPANION_MAX_TITLES[companion];
+    return COMPANION_TITLES[companion][level] || COMPANION_MAX_TITLES[companion];
+  }
+
   const KEY = "williams_world_embed_state_v1";
+  const WAR_CHEST_XP_RATE = 0.25;       // 25% of task XP goes to war chest
+  const WAR_CHEST_AWARD_COST = 50;      // Gold cost per companion award
+  const COMPANION_XP_PER_LEVEL = 100;   // XP needed for companion level-up
+  const LEVEL_DOWN_HP_RESET = 50;       // HP after level-down
+  const HP_PER_STREAK = 100;            // Extra max HP per streak day
   const TASKS = [
     // Night-Before Quest
     { id:"n_trapper",  label:"Night-Before: Trapper ready", xp:15, quest:"night" },
@@ -1223,13 +1465,15 @@
       // Ensure companions exist
       if (!data.companions) {
         data.companions = {
-          ember: { level: 1, xp: 0 },
-          sprite: { level: 1, xp: 0 },
-          golem: { level: 1, xp: 0 }
+          ember: { level: 3, xp: 0 },
+          sprite: { level: 3, xp: 0 },
+          golem: { level: 3, xp: 0 }
         };
       }
       // Ensure hp exists
       if (data.hp === undefined) data.hp = 100;
+      // Ensure warChest exists
+      if (data.warChest === undefined) data.warChest = 0;
       return data;
     }catch{
       return { 
@@ -1237,11 +1481,12 @@
         level:1, 
         streak:0, 
         hp:100,
+        warChest: 0,
         days:{},
         companions: {
-          ember: { level: 1, xp: 0 },
-          sprite: { level: 1, xp: 0 },
-          golem: { level: 1, xp: 0 }
+          ember: { level: 3, xp: 0 },
+          sprite: { level: 3, xp: 0 },
+          golem: { level: 3, xp: 0 }
         }
       };
     }
@@ -1264,7 +1509,52 @@
     setTimeout(() => el.remove(), 1500);
   }
   
-  // Show level-up celebration
+  // Show companion reward card
+  function showCompanionRewardCard(companion, newLevel) {
+    const overlay = $('companionRewardOverlay');
+    $('rewardEmoji').textContent = COMPANION_EMOJIS[companion];
+    $('rewardCompName').textContent = COMPANION_NAMES[companion];
+    $('rewardCompLevel').textContent = newLevel;
+    $('rewardCompTitle').textContent = getCompanionTitle(companion, newLevel);
+    overlay.classList.add('show');
+    
+    // Particle effects
+    for (let i = 0; i < 25; i++) {
+      setTimeout(() => {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * window.innerWidth + 'px';
+        particle.style.top = Math.random() * window.innerHeight + 'px';
+        const colors = ['var(--gold)', 'var(--green)', 'var(--blue)', '#ff6b8a', '#c084fc'];
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        overlay.querySelector('.content').appendChild(particle);
+        setTimeout(() => particle.remove(), 2000);
+      }, i * 40);
+    }
+    
+    setTimeout(() => overlay.classList.remove('show'), 3000);
+  }
+
+  // Show level-down overlay
+  function showLevelDown(newLevel) {
+    const overlay = $('levelDownOverlay');
+    $('levelDownNumber').textContent = newLevel;
+    $('levelDownTitle').textContent = getLevelTitle(newLevel);
+    overlay.classList.add('show');
+    setTimeout(() => overlay.classList.remove('show'), 3000);
+  }
+
+  // Check for level down when HP reaches 0
+  function checkLevelDown() {
+    if (state.hp <= 0 && state.level > 1) {
+      state.level = Math.max(1, state.level - 1);
+      state.xp = 0;
+      state.hp = LEVEL_DOWN_HP_RESET;
+      save();
+      showLevelDown(state.level);
+      toast(`💀 LEVEL DOWN! Dropped to Level ${state.level}: ${getLevelTitle(state.level)}`);
+    }
+  }
   function showLevelUpCelebration(level) {
     const overlay = $('levelUpOverlay');
     const levelNum = $('levelUpNumber');
@@ -1320,7 +1610,7 @@
 
   let state = load();
   const TODAY = todayKey();
-  const MAX_HP = 100;
+  function getMaxHP() { return 100 + (state.streak * HP_PER_STREAK); }
   if(!state.days[TODAY]){
     state.days[TODAY]={ tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), result:"Not graded" };
     save();
@@ -1352,10 +1642,14 @@
     });
     if (totalDamage > 0) {
       state.hp = Math.max(0, state.hp - totalDamage);
+      // Cap HP to max based on current streak
+      const maxHP = getMaxHP();
+      if (state.hp > maxHP) state.hp = maxHP;
       save();
-      // Defer toast until after UI is ready
-      // Defer toast so it appears after the UI has initialized
-      setTimeout(() => toast(`💀 Midnight damage! -${totalDamage} HP for missed tasks`), 500);
+      setTimeout(() => {
+        toast(`💀 Midnight damage! -${totalDamage} HP for missed tasks`);
+        checkLevelDown();
+      }, 500);
     }
   }
   midnightCheck();
@@ -1393,13 +1687,18 @@
   }
   
   // Add XP to companions
-  function addCompanionXP(amount) {
-    COMPANIONS.forEach(comp => {
+  function addCompanionXP(amount, specificComp) {
+    const comps = specificComp ? [specificComp] : COMPANIONS;
+    comps.forEach(comp => {
+      const prevLevel = state.companions[comp].level;
       state.companions[comp].xp += Math.floor(amount);
       // Companions level up every 100 XP
-      while (state.companions[comp].xp >= 100) {
-        state.companions[comp].xp -= 100;
+      while (state.companions[comp].xp >= COMPANION_XP_PER_LEVEL) {
+        state.companions[comp].xp -= COMPANION_XP_PER_LEVEL;
         state.companions[comp].level += 1;
+      }
+      if (state.companions[comp].level > prevLevel) {
+        showCompanionRewardCard(comp, state.companions[comp].level);
       }
     });
   }
@@ -1418,14 +1717,15 @@
     $("dayResult").textContent = state.days[TODAY].result;
     
     // Update HP display
-    const hpPct = Math.max(0, Math.min(100, Math.round((state.hp / MAX_HP) * 100)));
+    const maxHP = getMaxHP();
+    const hpPct = Math.max(0, Math.min(100, Math.round((state.hp / maxHP) * 100)));
     $("hpNum").textContent = state.hp;
-    $("hpMaxPill").textContent = MAX_HP;
+    $("hpMaxPill").textContent = maxHP;
     $("hpNow").textContent = state.hp;
-    $("hpMax").textContent = MAX_HP;
+    $("hpMax").textContent = maxHP;
     $("hpBar").style.width = hpPct + "%";
     $("dashHP").textContent = state.hp;
-    $("dashHPMax").textContent = MAX_HP;
+    $("dashHPMax").textContent = maxHP;
     $("dashHPBar").style.width = hpPct + "%";
     
     // Low HP warning
@@ -1459,6 +1759,13 @@
     updateWeeklyTracker();
     updateCompanions();
     updateZones();
+    
+    // Update War Chest display
+    const warChestGold = $("warChestGold");
+    if (warChestGold) warChestGold.textContent = state.warChest;
+    document.querySelectorAll('.awardBtn').forEach(btn => {
+      btn.disabled = state.warChest < WAR_CHEST_AWARD_COST;
+    });
   }
   
   // Update companion display
@@ -1470,6 +1777,10 @@
       const compData = state.companions[comp];
       el.querySelector('.companionLevel').textContent = compData.level;
       el.querySelector('.companionXPBar').style.width = (compData.xp % 100) + '%';
+      
+      // Update companion title
+      const titleEl = $(`${comp}Title`);
+      if (titleEl) titleEl.textContent = getCompanionTitle(comp, compData.level);
       
       // Add evolved class for higher level companions
       if (compData.level >= 5) {
@@ -1628,6 +1939,7 @@
         if(!was && cb.checked){ 
           state.xp += t.xp; 
           addCompanionXP(t.xp / 3); // Companions get 1/3 of player XP
+          state.warChest += Math.floor(t.xp * WAR_CHEST_XP_RATE);
           recalcLevel(); 
           toast(`+${t.xp} XP`); 
         }
@@ -1668,6 +1980,7 @@
           // Task just completed
           state.xp += task.xp;
           addCompanionXP(task.xp / 3); // Companions get 1/3 of player XP
+          state.warChest += Math.floor(task.xp * WAR_CHEST_XP_RATE);
           recalcLevel();
           
           // Show floating XP animation
@@ -1763,9 +2076,13 @@
       const dmg = calcDamage(state.days[TODAY]);
       state.hp = Math.max(0, state.hp - dmg);
     }
+    // Cap HP to new max (streak may have changed)
+    const maxHP = getMaxHP();
+    if (state.hp > maxHP) state.hp = maxHP;
     save();
     updateHeader();
     toast(pass ? "🎉 PASS! Streak +1" : `⚠️ FAIL. Streak reset. -${calcDamage(state.days[TODAY])} HP!`);
+    if (!pass) checkLevelDown();
   }
 
   document.querySelectorAll("#ww .nav button").forEach(btn=>{
@@ -1800,6 +2117,22 @@
     });
     topbar.appendChild(resetBtn);
   }
+
+  // War Chest Award button handlers
+  document.querySelectorAll('.awardBtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const comp = btn.dataset.award;
+      if (state.warChest < WAR_CHEST_AWARD_COST) {
+        toast('Not enough gold in the War Chest!');
+        return;
+      }
+      state.warChest -= WAR_CHEST_AWARD_COST;
+      addCompanionXP(WAR_CHEST_AWARD_COST, comp);
+      save();
+      updateHeader();
+      toast(`🪙 Awarded ${WAR_CHEST_AWARD_COST} gold to ${COMPANION_NAMES[comp]}!`);
+    });
+  });
 
   // INIT
   applyAssets();
