@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chess - William's World Games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared.css">
+  <style>
+    .chess-info {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--muted);
+    }
+    
+    .captured-pieces {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    
+    .captured-pieces > div {
+      flex: 1;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">♟️ Chess Game</div>
+        <a href="../index.html" class="btn">← Back to Games</a>
+      </div>
+    </div>
+
+    <!-- Game Panel -->
+    <div class="panel">
+      <!-- Score Display -->
+      <div class="score-display">
+        <span id="turnDisplay">White's Turn</span> | Wins: <span id="wins">0</span>
+      </div>
+
+      <!-- Game Controls -->
+      <div class="game-controls">
+        <button id="newGameBtn" class="btn btn-primary">New Game</button>
+        <button id="undoBtn" class="btn">Undo Move</button>
+        <button id="resetStatsBtn" class="btn">Reset Stats</button>
+      </div>
+
+      <!-- Captured Pieces -->
+      <div class="captured-pieces">
+        <div>
+          <div style="color: var(--gold); font-size: 14px; margin-bottom: 5px;">White Captured:</div>
+          <div id="whiteCaptured"></div>
+        </div>
+        <div>
+          <div style="color: var(--gold); font-size: 14px; margin-bottom: 5px;">Black Captured:</div>
+          <div id="blackCaptured"></div>
+        </div>
+      </div>
+
+      <!-- Canvas -->
+      <div class="game-canvas-container">
+        <canvas id="gameCanvas" width="560" height="560"></canvas>
+      </div>
+
+      <!-- Chess Info -->
+      <div class="chess-info" id="gameStatus"></div>
+
+      <!-- Instructions -->
+      <div class="instructions">
+        <h3>📖 How to Play</h3>
+        <ul>
+          <li>Click a piece to select it, then click a valid square to move</li>
+          <li>White moves first</li>
+          <li>Each piece has unique movement rules</li>
+          <li>Capture the opponent's king to win (checkmate)</li>
+          <li>Simplified rules: No castling, en passant, or pawn promotion options</li>
+          <li>Pawns automatically promote to Queens when reaching the end</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Credits Link -->
+  <a href="../LICENSE-GAMES.md" class="credits-link">📜 Credits</a>
+
+  <script src="game.js"></script>
+</body>
+</html>

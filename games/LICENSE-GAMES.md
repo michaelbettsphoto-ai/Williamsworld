@@ -30,25 +30,7 @@ All game implementations in this directory are original code created specificall
 ### Chess Game
 - **Location**: `/games/chess/`
 - **License**: MIT
-- **Uses**: 
-  - chess.js (https://github.com/jhlywa/chess.js) - MIT License
-  - chessboard.js (https://chessboardjs.com/) - MIT License
-
-## Third-Party Libraries Used
-
-### chess.js
-- **Version**: 0.12.0
-- **Author**: Jeff Hlywa
-- **License**: MIT License
-- **Repository**: https://github.com/jhlywa/chess.js
-- **Description**: A TypeScript chess library for chess move generation, validation, and more
-
-### chessboard.js
-- **Version**: 1.0.0
-- **Author**: Chris Oakman
-- **License**: MIT License
-- **Website**: https://chessboardjs.com/
-- **Description**: JavaScript chessboard component
+- **Description**: Simplified chess implementation with standard rules
 
 ## Privacy & Safety
 
