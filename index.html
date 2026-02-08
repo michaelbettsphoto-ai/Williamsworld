@@ -361,6 +361,13 @@
             lastCompletionDate: null
         };
 
+        // HTML escape function to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
         // Load state from localStorage
         function loadGameState() {
             const saved = localStorage.getItem('williamsWorldState');
@@ -439,12 +446,16 @@
             const input = document.getElementById('questInput');
             const xpInput = document.getElementById('xpInput');
             const text = input.value.trim();
-            const xp = parseInt(xpInput.value) || 50;
+            let xp = parseInt(xpInput.value) || 50;
 
             if (!text) {
                 alert('Please enter a quest description!');
                 return;
             }
+
+            // Validate XP value
+            if (xp < 1) xp = 1;
+            if (xp > 1000) xp = 1000;
 
             const quest = {
                 id: Date.now(),
@@ -529,7 +540,7 @@
                                id="quest-${quest.id}" 
                                ${quest.completed ? 'checked' : ''}
                                onchange="toggleQuest(${quest.id})">
-                        <label for="quest-${quest.id}">${quest.text}</label>
+                        <label for="quest-${quest.id}">${escapeHtml(quest.text)}</label>
                         <span class="xp-reward">+${quest.xp} XP</span>
                     </div>
                 `).join('');
