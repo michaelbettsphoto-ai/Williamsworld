@@ -2546,7 +2546,8 @@
     // Remove any existing animation
     williamAvatar.style.animation = 'none';
     
-    // Force reflow to restart animation
+    // Force browser reflow to restart animation from beginning
+    // This is a standard technique to retrigger CSS animations
     void williamAvatar.offsetWidth;
     
     // Pick a random animation
@@ -2557,15 +2558,17 @@
     
     // Remove animation after it completes
     setTimeout(() => {
-      williamAvatar.style.animation = 'none';
+      if (williamAvatar) williamAvatar.style.animation = 'none';
     }, 2000);
   }
 
-  // Start the animation timer (every 10 seconds)
-  setInterval(applyRandomWilliamAnimation, 10000);
-  
-  // Also trigger the first animation after 2 seconds
-  setTimeout(applyRandomWilliamAnimation, 2000);
+  // Start the animation timer (every 10 seconds) - only if element exists
+  if (document.getElementById('williamAvatar')) {
+    setInterval(applyRandomWilliamAnimation, 10000);
+    
+    // Also trigger the first animation after 2 seconds
+    setTimeout(applyRandomWilliamAnimation, 2000);
+  }
 
   // INIT
   applyAssets();
