@@ -94,10 +94,29 @@ Williams World includes a comprehensive audio system with:
 ### Testing Audio
 Open `audio-test.html` in your browser to preview all sound effects and test the audio system.
 
+### Getting Audio Files
+
+**🚀 Quick Start**: See `QUICKSTART_AUDIO.md` for the fastest way to add audio (5 minutes)
+
+**📚 Complete Guide**: See `AUDIO_SOURCING_GUIDE.md` for:
+- Verified CC0 sources (Kenney, Freesound, OpenGameArt)
+- Direct download links
+- File conversion instructions
+- Audio processing tips
+
+**🛠️ Helper Scripts**:
+```bash
+# Interactive guided download
+./download-audio-assets.sh
+
+# Generate test placeholders
+python3 generate-placeholder-audio.py
+```
+
 ### Adding Audio Files
-1. Place audio files in the appropriate `/audio/` subdirectory
-2. Use OGG format (primary) or MP3 (fallback)
-3. Update `ASSET_ATTRIBUTION.md` with source, author, license, and URL
+1. Download from CC0 sources (see guides above)
+2. Convert to OGG format if needed: `ffmpeg -i input.wav -c:a libvorbis -q:a 4 output.ogg`
+3. Place files in the appropriate `/audio/` subdirectory
 4. Files should be normalized, trimmed, and kid-safe
 5. See `/audio/sound-manifest.json` for complete sound mapping
 
