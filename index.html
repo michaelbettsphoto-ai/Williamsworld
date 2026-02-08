@@ -1041,6 +1041,26 @@
       position: static;
     }
   }
+
+  /* Hero CTA Button Styles */
+  #ww .heroCTA {
+    padding: 16px 32px;
+    font-size: 18px;
+    width: 100%;
+    max-width: 400px;
+  }
+
+  /* War Chest specific styles */
+  #ww .warChestNote {
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  #ww .warChestMeter {
+    margin-top: 8px;
+  }
+  #ww .warChestProgressLabel {
+    margin-bottom: 4px;
+  }
 </style>
 
 <div id="ww">
@@ -1116,7 +1136,7 @@
           
           <!-- CTA Button -->
           <div style="margin-top:16px;">
-            <button id="heroCTA" class="questBtn green" style="padding:16px 32px; font-size:18px; width:100%; max-width:400px;">
+            <button id="heroCTA" class="questBtn green heroCTA">
               🎯 Start Today's Quest!
             </button>
           </div>
@@ -1376,10 +1396,10 @@
         <div class="warChestPanel" id="warChestPanel">
           <h4>⚔️ War Chest ⚔️</h4>
           <div class="warChestAmount"><span id="warChestGold">0</span> 🪙</div>
-          <div class="small" style="color:var(--muted); margin-bottom:8px;">Award 50 gold to a companion!</div>
-          <div class="meter" style="margin-top:8px;">
+          <div class="small warChestNote">Award 50 gold to a companion!</div>
+          <div class="meter warChestMeter">
             <div class="meterTop">
-              <div class="small" style="margin-bottom:4px;">Progress to Next Reward (50 🪙)</div>
+              <div class="small warChestProgressLabel">Progress to Next Reward (50 🪙)</div>
             </div>
             <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0" aria-label="War Chest Progress"><div id="warChestBar"></div></div>
           </div>
@@ -2361,11 +2381,11 @@
     if(heroCTA){
       const allComplete = TASKS.every(t => state.days[TODAY]?.tasks[t.id]);
       if(allComplete){
-        heroCTA.innerHTML = '🏆 Grade My Day!';
+        heroCTA.textContent = '🏆 Grade My Day!';
         heroCTA.classList.remove('green');
         heroCTA.classList.add('blue');
       } else {
-        heroCTA.innerHTML = '🎯 Start Today\'s Quest!';
+        heroCTA.textContent = '🎯 Start Today\'s Quest!';
         heroCTA.classList.remove('blue');
         heroCTA.classList.add('green');
       }
