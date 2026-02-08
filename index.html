@@ -297,7 +297,7 @@
     -webkit-backdrop-filter: var(--glass-blur);
     min-height: 420px;
   }
-  #ww .banner-inner{padding:18px; display:grid; grid-template-columns: 120px 1fr; gap:20px; align-items:start}
+  #ww .banner-inner{padding:18px; display:grid; grid-template-columns: 200px 1fr; gap:20px; align-items:start}
   #ww .banner-inner > .card{grid-column: 1 / -1}
   @media (max-width:980px){ #ww .banner-inner{grid-template-columns:1fr; justify-items:center} }
   #ww h1{margin:0 0 6px; font-size:48px; font-weight:900; color:var(--gold); 
@@ -321,16 +321,17 @@
     letter-spacing: 1px;
   }
   #ww .william-avatar {
-    width: 120px;
-    height: 120px;
+    width: 200px;
+    height: 200px;
     border-radius: 0;
     border: none;
     overflow: visible;
     box-shadow: none;
     flex-shrink: 0;
-    background: linear-gradient(135deg, rgba(139,74,63,.3) 0%, rgba(61,36,72,.3) 50%, rgba(26,10,46,.3) 100%);
-    padding: 10px;
+    background: transparent;
+    padding: 0;
     position: relative;
+    z-index: 100;
     transition: transform 0.5s ease, filter 0.5s ease;
   }
   #ww .william-avatar img {
@@ -2883,12 +2884,134 @@
     }
   }
 
+  // William Collision Detection and Interaction System
+  function setupWilliamCollisionDetection() {
+    const williamAvatar = document.getElementById('williamAvatar');
+    if (!williamAvatar) return;
+
+    let isDragging = false;
+    let currentX = 0;
+    let currentY = 0;
+    let initialX = 0;
+    let initialY = 0;
+
+    // Make William draggable
+    williamAvatar.style.cursor = 'grab';
+    williamAvatar.style.userSelect = 'none';
+
+    function handleDragStart(e) {
+      // Determine if it's a touch or mouse event
+      const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+      const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+
+      isDragging = true;
+      initialX = clientX - currentX;
+      initialY = clientY - currentY;
+      williamAvatar.style.cursor = 'grabbing';
+    }
+
+    function handleDragMove(e) {
+      if (!isDragging) return;
+      
+      e.preventDefault();
+      
+      const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+      const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+
+      currentX = clientX - initialX;
+      currentY = clientY - initialY;
+
+      williamAvatar.style.transform = `translate(${currentX}px, ${currentY}px)`;
+
+      // Check for collisions with other elements
+      checkCollisions(williamAvatar);
+    }
+
+    function handleDragEnd() {
+      if (!isDragging) return;
+      
+      isDragging = false;
+      williamAvatar.style.cursor = 'grab';
+    }
+
+    // Check collisions with elements below William
+    function checkCollisions(williamEl) {
+      const williamRect = williamEl.getBoundingClientRect();
+      
+      // Get all interactive elements that William can collide with
+      const interactiveElements = document.querySelectorAll('.questCard, .pill, .btn, .card');
+      
+      interactiveElements.forEach(element => {
+        const elementRect = element.getBoundingClientRect();
+        
+        // Check if William overlaps with this element
+        if (isColliding(williamRect, elementRect)) {
+          // Apply a "push" effect to the element
+          const pushX = (williamRect.left + williamRect.width / 2) - (elementRect.left + elementRect.width / 2);
+          const pushY = (williamRect.top + williamRect.height / 2) - (elementRect.top + elementRect.height / 2);
+          
+          // Normalize the push direction
+          const distance = Math.sqrt(pushX * pushX + pushY * pushY);
+          if (distance > 0) {
+            const pushStrength = 20; // How far elements get pushed
+            const normalizedX = (pushX / distance) * pushStrength;
+            const normalizedY = (pushY / distance) * pushStrength;
+            
+            // Apply transform to push the element away
+            element.style.transition = 'transform 0.3s ease-out';
+            element.style.transform = `translate(${-normalizedX}px, ${-normalizedY}px)`;
+            
+            // Reset after a delay
+            setTimeout(() => {
+              element.style.transition = 'transform 0.5s ease-in';
+              element.style.transform = 'translate(0, 0)';
+            }, 300);
+          }
+        }
+      });
+    }
+
+    // Helper function to check if two rectangles are colliding
+    function isColliding(rect1, rect2) {
+      return !(
+        rect1.right < rect2.left ||
+        rect1.left > rect2.right ||
+        rect1.bottom < rect2.top ||
+        rect1.top > rect2.bottom
+      );
+    }
+
+    // Attach event listeners for dragging
+    williamAvatar.addEventListener('mousedown', handleDragStart);
+    williamAvatar.addEventListener('touchstart', handleDragStart, { passive: false });
+    
+    document.addEventListener('mousemove', handleDragMove);
+    document.addEventListener('touchmove', handleDragMove, { passive: false });
+    
+    document.addEventListener('mouseup', handleDragEnd);
+    document.addEventListener('touchend', handleDragEnd);
+
+    // Double-click to reset position
+    williamAvatar.addEventListener('dblclick', () => {
+      currentX = 0;
+      currentY = 0;
+      williamAvatar.style.transition = 'transform 0.5s ease';
+      williamAvatar.style.transform = 'translate(0, 0)';
+      setTimeout(() => {
+        williamAvatar.style.transition = 'transform 0.5s ease, filter 0.5s ease';
+      }, 500);
+    });
+  }
+
   // Start the animation timer (every 10 seconds) - only if element exists
   if (document.getElementById('williamAvatar')) {
     setInterval(applyRandomWilliamAnimation, 10000);
     
     // Also trigger the first animation after 2 seconds
     setTimeout(applyRandomWilliamAnimation, 2000);
+
+    // Setup collision detection after DOM is ready
+    setTimeout(setupWilliamCollisionDetection, 100);
   }
 
   // INIT
