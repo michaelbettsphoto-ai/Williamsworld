@@ -1175,7 +1175,7 @@
                 <div class="name">Ember</div>
                 <div class="type">🔥 Fire Tiger</div>
                 <div class="level">Lvl <span class="companionLevel">1</span></div>
-                <div class="companionTitle" id="emberTitle">Blaze Cub</div>
+                <div class="companionTitle" id="emberTitle"></div>
               </div>
             </div>
             <div class="statBar">
@@ -1193,7 +1193,7 @@
                 <div class="name">Sprite</div>
                 <div class="type">✨ Light Fairy</div>
                 <div class="level">Lvl <span class="companionLevel">1</span></div>
-                <div class="companionTitle" id="spriteTitle">Glow Dancer</div>
+                <div class="companionTitle" id="spriteTitle"></div>
               </div>
             </div>
             <div class="statBar">
@@ -1211,7 +1211,7 @@
                 <div class="name">Golem</div>
                 <div class="type">🗿 Stone Guardian</div>
                 <div class="level">Lvl <span class="companionLevel">1</span></div>
-                <div class="companionTitle" id="golemTitle">Boulder Buddy</div>
+                <div class="companionTitle" id="golemTitle"></div>
               </div>
             </div>
             <div class="statBar">
@@ -1417,6 +1417,11 @@
   }
 
   const KEY = "williams_world_embed_state_v1";
+  const WAR_CHEST_XP_RATE = 0.25;       // 25% of task XP goes to war chest
+  const WAR_CHEST_AWARD_COST = 50;      // Gold cost per companion award
+  const COMPANION_XP_PER_LEVEL = 100;   // XP needed for companion level-up
+  const LEVEL_DOWN_HP_RESET = 50;       // HP after level-down
+  const HP_PER_STREAK = 100;            // Extra max HP per streak day
   const TASKS = [
     // Night-Before Quest
     { id:"n_trapper",  label:"Night-Before: Trapper ready", xp:15, quest:"night" },
@@ -1544,7 +1549,7 @@
     if (state.hp <= 0 && state.level > 1) {
       state.level = Math.max(1, state.level - 1);
       state.xp = 0;
-      state.hp = 50;
+      state.hp = LEVEL_DOWN_HP_RESET;
       save();
       showLevelDown(state.level);
       toast(`💀 LEVEL DOWN! Dropped to Level ${state.level}: ${getLevelTitle(state.level)}`);
@@ -1605,7 +1610,7 @@
 
   let state = load();
   const TODAY = todayKey();
-  function getMaxHP() { return 100 + (state.streak * 100); }
+  function getMaxHP() { return 100 + (state.streak * HP_PER_STREAK); }
   if(!state.days[TODAY]){
     state.days[TODAY]={ tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), result:"Not graded" };
     save();
@@ -1688,8 +1693,8 @@
       const prevLevel = state.companions[comp].level;
       state.companions[comp].xp += Math.floor(amount);
       // Companions level up every 100 XP
-      while (state.companions[comp].xp >= 100) {
-        state.companions[comp].xp -= 100;
+      while (state.companions[comp].xp >= COMPANION_XP_PER_LEVEL) {
+        state.companions[comp].xp -= COMPANION_XP_PER_LEVEL;
         state.companions[comp].level += 1;
       }
       if (state.companions[comp].level > prevLevel) {
@@ -1759,7 +1764,7 @@
     const warChestGold = $("warChestGold");
     if (warChestGold) warChestGold.textContent = state.warChest;
     document.querySelectorAll('.awardBtn').forEach(btn => {
-      btn.disabled = state.warChest < 50;
+      btn.disabled = state.warChest < WAR_CHEST_AWARD_COST;
     });
   }
   
@@ -1934,7 +1939,7 @@
         if(!was && cb.checked){ 
           state.xp += t.xp; 
           addCompanionXP(t.xp / 3); // Companions get 1/3 of player XP
-          state.warChest += Math.floor(t.xp * 0.25); // 25% to war chest
+          state.warChest += Math.floor(t.xp * WAR_CHEST_XP_RATE);
           recalcLevel(); 
           toast(`+${t.xp} XP`); 
         }
@@ -1975,7 +1980,7 @@
           // Task just completed
           state.xp += task.xp;
           addCompanionXP(task.xp / 3); // Companions get 1/3 of player XP
-          state.warChest += Math.floor(task.xp * 0.25); // 25% to war chest
+          state.warChest += Math.floor(task.xp * WAR_CHEST_XP_RATE);
           recalcLevel();
           
           // Show floating XP animation
@@ -2117,15 +2122,15 @@
   document.querySelectorAll('.awardBtn').forEach(btn => {
     btn.addEventListener('click', () => {
       const comp = btn.dataset.award;
-      if (state.warChest < 50) {
+      if (state.warChest < WAR_CHEST_AWARD_COST) {
         toast('Not enough gold in the War Chest!');
         return;
       }
-      state.warChest -= 50;
-      addCompanionXP(50, comp);
+      state.warChest -= WAR_CHEST_AWARD_COST;
+      addCompanionXP(WAR_CHEST_AWARD_COST, comp);
       save();
       updateHeader();
-      toast(`🪙 Awarded 50 gold to ${COMPANION_NAMES[comp]}!`);
+      toast(`🪙 Awarded ${WAR_CHEST_AWARD_COST} gold to ${COMPANION_NAMES[comp]}!`);
     });
   });
 
