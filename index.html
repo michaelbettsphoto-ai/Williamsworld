@@ -321,8 +321,8 @@
     letter-spacing: 1px;
   }
   #ww .william-avatar {
-    width: 200px;
-    height: 200px;
+    width: 300px;
+    height: 300px;
     border-radius: 0;
     border: none;
     overflow: visible;
@@ -333,6 +333,11 @@
     position: relative;
     z-index: 100;
     transition: transform 0.5s ease, filter 0.5s ease;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
   }
   #ww .william-avatar img {
     width: 100%;
@@ -3084,6 +3089,82 @@
     }
   }
 
+  // William Collision Detection System
+  function setupWilliamCollisionDetection() {
+    const williamAvatar = document.getElementById('williamAvatar');
+    if (!williamAvatar) return;
+    
+    // Get all interactive elements that can be bumped
+    const interactiveElements = [
+      ...document.querySelectorAll('.quest-card'),
+      ...document.querySelectorAll('.btn'),
+      ...document.querySelectorAll('.stat-card'),
+      document.getElementById('weatherToggle'),
+      document.getElementById('settingsToggle')
+    ].filter(el => el && el !== williamAvatar);
+    
+    // Check for collisions periodically
+    setInterval(() => {
+      const williamRect = williamAvatar.getBoundingClientRect();
+      
+      interactiveElements.forEach(element => {
+        if (!element) return;
+        
+        const elementRect = element.getBoundingClientRect();
+        
+        // Check if William is colliding with this element
+        const isColliding = !(
+          williamRect.right < elementRect.left ||
+          williamRect.left > elementRect.right ||
+          williamRect.bottom < elementRect.top ||
+          williamRect.top > elementRect.bottom
+        );
+        
+        if (isColliding) {
+          // Calculate push direction based on William's position relative to element
+          const williamCenterX = williamRect.left + williamRect.width / 2;
+          const williamCenterY = williamRect.top + williamRect.height / 2;
+          const elementCenterX = elementRect.left + elementRect.width / 2;
+          const elementCenterY = elementRect.top + elementRect.height / 2;
+          
+          const deltaX = elementCenterX - williamCenterX;
+          const deltaY = elementCenterY - williamCenterY;
+          
+          // Determine primary direction
+          const angle = Math.atan2(deltaY, deltaX);
+          const pushDistance = 10;
+          
+          // Apply push effect
+          const currentTransform = element.style.transform || '';
+          const translateMatch = currentTransform.match(/translate\(([^,]+),\s*([^)]+)\)/);
+          
+          let currentX = 0, currentY = 0;
+          if (translateMatch) {
+            currentX = parseFloat(translateMatch[1]) || 0;
+            currentY = parseFloat(translateMatch[2]) || 0;
+          }
+          
+          const newX = currentX + Math.cos(angle) * pushDistance;
+          const newY = currentY + Math.sin(angle) * pushDistance;
+          
+          // Apply wobble animation and translation
+          element.style.transition = 'transform 0.3s ease-out';
+          element.style.transform = `translate(${newX}px, ${newY}px)`;
+          
+          // Add wobble effect
+          element.style.animation = 'william-wobble 0.5s ease-in-out';
+          
+          // Reset after animation
+          setTimeout(() => {
+            element.style.animation = '';
+            element.style.transition = 'transform 1s ease-in-out';
+            element.style.transform = 'translate(0, 0)';
+          }, 500);
+        }
+      });
+    }, 100);
+  }
+
   // Weather Effects System
   const weatherContainer = document.getElementById('weatherContainer');
   const weatherLightning = document.getElementById('weatherLightning');
@@ -3263,12 +3344,12 @@
   const savedWeather = localStorage.getItem(WEATHER_STORAGE_KEY) || 'none';
   setWeather(savedWeather);
 
-  // Start the animation timer (every 10 seconds) - only if element exists
+  // Start the animation timer (every 5 seconds for more shenanigans!) - only if element exists
   if (document.getElementById('williamAvatar')) {
-    setInterval(applyRandomWilliamAnimation, 10000);
+    setInterval(applyRandomWilliamAnimation, 5000);
     
-    // Also trigger the first animation after 2 seconds
-    setTimeout(applyRandomWilliamAnimation, 2000);
+    // Also trigger the first animation after 1 second
+    setTimeout(applyRandomWilliamAnimation, 1000);
 
     // Setup collision detection after DOM is ready
     setTimeout(setupWilliamCollisionDetection, 100);
