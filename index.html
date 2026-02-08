@@ -1030,13 +1030,13 @@
       <div class="dashPanel">
         <h3>🗺️ World Map - Zone Progress</h3>
         <div style="display:grid; gap:16px; margin-top:16px;">
-          <div class="zone locked" id="zone1">
+          <div class="zone unlocked" id="zone1">
             <div class="zoneIcon">
               <img id="zone1Img" alt="Launch Meadow">
             </div>
             <div class="zoneInfo">
               <div class="zoneName">Launch Meadow</div>
-              <div class="zoneStatus locked">🔒 Unlocked at 1 day</div>
+              <div class="zoneStatus unlocked">✓ UNLOCKED!</div>
             </div>
           </div>
           
@@ -1159,7 +1159,7 @@
   
   const getLevelTitle = (level) => {
     if (level <= 20) return LEVEL_TITLES[level];
-    return level > 20 ? "Dragon Master" : "Apprentice Adventurer";
+    return "Dragon Master";
   };
 
   const KEY = "williams_world_embed_state_v1";
@@ -1340,7 +1340,7 @@
   // Add XP to companions
   function addCompanionXP(amount) {
     COMPANIONS.forEach(comp => {
-      state.companions[comp].xp += amount;
+      state.companions[comp].xp += Math.floor(amount);
       // Companions level up every 100 XP
       while (state.companions[comp].xp >= 100) {
         state.companions[comp].xp -= 100;
