@@ -72,6 +72,22 @@ You can easily customize:
 - Colors and styling in the `<style>` section
 - Add your own character images in the `assets/` directory
 
+## 🖼️ Images & Assets
+
+The application uses Google Drive to host images:
+
+### Currently Active Images (3):
+- **Logo** - Small branding icon in the header
+- **Banner** - Background image for the main banner section
+- **Map Strip** - World map visualization
+
+### Unused Image References (7):
+The code includes definitions for additional images that are not currently displayed:
+- **Companions** (3): ember, sprite, golem - Missing HTML elements (`<img id="emberImg">`, etc.)
+- **Zones** (4): z1-z4 zone images - Defined but never referenced in the code
+
+To validate which images are loading correctly, open `validate-images.html` in your browser.
+
 ## 📝 Data Storage
 
 All game data is stored in your browser's localStorage under the key `williamsWorldState`. This includes:
