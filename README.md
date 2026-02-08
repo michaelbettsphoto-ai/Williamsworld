@@ -8,6 +8,7 @@ An interactive quest tracker and gamification system that helps track daily task
 
 ## ✨ Features
 
+### Quest Tracker
 - **📋 Quest Management**: Add custom quests with customizable XP rewards
 - **⭐ Level System**: Earn XP and level up as you complete quests
 - **🔥 Streak Tracking**: Maintain daily completion streaks to stay motivated
@@ -17,6 +18,14 @@ An interactive quest tracker and gamification system that helps track daily task
 - **🎵 Audio System**: Dynamic sound effects, weather ambience, and customizable audio controls
 - **🎭 William Avatar**: Interactive character with idle animations and fun Easter egg sounds
 - **🌤️ Weather Effects**: Visual and audio weather system (rain, snow, storm, etc.)
+
+### ⚔️ Battle System (NEW!)
+- **🎴 Character Cards**: Pokemon × D&D mashup with 6 roles and 10 element types
+- **⚡ Turn-Based Combat**: 3v3 tactical battles with type effectiveness
+- **🎯 18+ Keywords**: Standardized effects (Damage, Heal, Shield, Stun, Poison, etc.)
+- **📊 Type Chart**: Strategic elemental matchups with SUPER/RESIST feedback
+- **🌟 Progression**: 3-rank system (Starter → Expert → Legendary)
+- **🎮 Interactive Demo**: Try the battle simulator at `/battle-system-demo.html`
 
 ## 🎯 How It Works
 
@@ -70,6 +79,20 @@ audio/
 ├── weather/     # Weather ambient loops (rain, storm, snow, etc.)
 ├── music/       # Background music loops
 └── gameplay/    # Mini-game sound effects
+
+battle-system/   # NEW: Character cards and battle mechanics
+├── SPECIFICATION.md        # Complete design specification
+├── IMPLEMENTATION_GUIDE.md # Developer implementation guide
+├── data/
+│   ├── game-constants.json # Roles, types, keywords, type chart
+│   └── characters/         # Character card data (JSON)
+├── logic/
+│   ├── battle-engine.js    # Core battle mechanics
+│   └── battle-simulator.js # Testing utilities
+└── ui/
+    ├── character-cards.css # Complete UI component library
+    ├── card-templates.html # Visual component examples
+    └── README.md           # UI component documentation
 ```
 
 Replace the placeholder SVG files with your own images. Update paths in the `ASSETS` object in `index.html` if you change filenames or formats.
@@ -122,11 +145,18 @@ python3 generate-placeholder-audio.py
 
 ## 🎨 Customization
 
-You can easily customize:
+### Quest Tracker
 - Default quests in the `loadGameState()` function
 - XP multipliers in the `xpForLevel()` function
 - Colors and styling in the `<style>` section
 - Add your own character images in the `assets/` directory
+
+### Battle System
+- Create new characters using the JSON template in `/battle-system/data/characters/`
+- Add new element types by updating `game-constants.json`
+- Customize UI components in `/battle-system/ui/character-cards.css`
+- Extend battle mechanics in `/battle-system/logic/battle-engine.js`
+- See `/battle-system/IMPLEMENTATION_GUIDE.md` for detailed instructions
 
 ## 🖼️ Images & Assets
 
