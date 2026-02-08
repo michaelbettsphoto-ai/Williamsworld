@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mini Games - William's World</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          🎮 William's World - Mini Games
+        </div>
+        <a href="../index.html" class="btn">← Back to Home</a>
+      </div>
+    </div>
+
+    <!-- Page Title -->
+    <div class="panel" style="text-align: center; margin-bottom: 30px;">
+      <h1 style="font-family: var(--fantasy-font); color: var(--gold); font-size: 36px; margin-bottom: 15px;">
+        Choose Your Quest
+      </h1>
+      <p style="color: var(--muted); font-size: 16px;">
+        Select a game to play! All scores are saved locally on your device.
+      </p>
+    </div>
+
+    <!-- Game Selection Grid -->
+    <div class="game-grid">
+      <!-- Snake Game -->
+      <a href="snake/index.html" class="game-card">
+        <div class="game-icon">🐍</div>
+        <h2>Snake</h2>
+        <p>Guide the snake to eat food and grow longer. Don't hit the walls or yourself!</p>
+        <div class="high-score" id="snake-score">High Score: 0</div>
+      </a>
+
+      <!-- 2048 Game -->
+      <a href="2048/index.html" class="game-card">
+        <div class="game-icon">🔢</div>
+        <h2>2048</h2>
+        <p>Slide tiles to combine numbers. Reach 2048 to win!</p>
+        <div class="high-score" id="2048-score">High Score: 0</div>
+      </a>
+
+      <!-- Tetris Game -->
+      <a href="tetris/index.html" class="game-card">
+        <div class="game-icon">🧱</div>
+        <h2>Tetris</h2>
+        <p>Rotate and drop blocks to create complete rows. Clear rows to score!</p>
+        <div class="high-score" id="tetris-score">High Score: 0</div>
+      </a>
+
+      <!-- Checkers Game -->
+      <a href="checkers/index.html" class="game-card">
+        <div class="game-icon">⚫</div>
+        <h2>Checkers</h2>
+        <p>Classic checkers game. Capture all opponent pieces to win!</p>
+        <div class="high-score" id="checkers-score">Games Won: 0</div>
+      </a>
+
+      <!-- Chess Game -->
+      <a href="chess/index.html" class="game-card">
+        <div class="game-icon">♟️</div>
+        <h2>Chess</h2>
+        <p>Strategic board game. Checkmate your opponent's king!</p>
+        <div class="high-score" id="chess-score">Games Won: 0</div>
+      </a>
+    </div>
+
+    <!-- Information Panel -->
+    <div class="panel" style="margin-top: 40px;">
+      <h3 style="font-family: var(--fantasy-font); color: var(--gold); margin-bottom: 15px;">
+        📋 Game Features
+      </h3>
+      <ul style="color: var(--muted); line-height: 1.8;">
+        <li>✅ All games work offline - no internet needed!</li>
+        <li>✅ Your scores are saved on your device</li>
+        <li>✅ No accounts required</li>
+        <li>✅ No data collection or tracking</li>
+        <li>✅ Kid-friendly and safe</li>
+        <li>✅ Play/Pause/Restart controls</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Credits Link -->
+  <a href="LICENSE-GAMES.md" class="credits-link">📜 Credits</a>
+
+  <script>
+    // Load and display high scores from localStorage
+    function loadHighScores() {
+      const snakeScore = localStorage.getItem('ww-snake-highscore') || '0';
+      const game2048Score = localStorage.getItem('ww-2048-highscore') || '0';
+      const tetrisScore = localStorage.getItem('ww-tetris-highscore') || '0';
+      const checkersWins = localStorage.getItem('ww-checkers-wins') || '0';
+      const chessWins = localStorage.getItem('ww-chess-wins') || '0';
+
+      document.getElementById('snake-score').textContent = `High Score: ${snakeScore}`;
+      document.getElementById('2048-score').textContent = `High Score: ${game2048Score}`;
+      document.getElementById('tetris-score').textContent = `High Score: ${tetrisScore}`;
+      document.getElementById('checkers-score').textContent = `Games Won: ${checkersWins}`;
+      document.getElementById('chess-score').textContent = `Games Won: ${chessWins}`;
+    }
+
+    // Load scores on page load
+    loadHighScores();
+  </script>
+</body>
+</html>

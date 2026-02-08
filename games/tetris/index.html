@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tetris - William's World Games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">🧱 Tetris Game</div>
+        <a href="../index.html" class="btn">← Back to Games</a>
+      </div>
+    </div>
+
+    <!-- Game Panel -->
+    <div class="panel">
+      <!-- Score Display -->
+      <div class="score-display">
+        Score: <span id="score">0</span> | Lines: <span id="lines">0</span> | High Score: <span id="highscore">0</span>
+      </div>
+
+      <!-- Game Controls -->
+      <div class="game-controls">
+        <button id="startBtn" class="btn btn-primary">Start</button>
+        <button id="pauseBtn" class="btn" disabled>Pause</button>
+        <button id="restartBtn" class="btn">Restart</button>
+        <button id="muteBtn" class="btn">🔊 Sound</button>
+      </div>
+
+      <!-- Canvas -->
+      <div class="game-canvas-container">
+        <canvas id="gameCanvas" width="300" height="600"></canvas>
+      </div>
+
+      <!-- Instructions -->
+      <div class="instructions">
+        <h3>📖 How to Play</h3>
+        <ul>
+          <li>← → Arrow keys: Move piece left/right</li>
+          <li>↓ Arrow key: Move piece down faster</li>
+          <li>↑ Arrow key or Space: Rotate piece</li>
+          <li>Complete horizontal lines to clear them</li>
+          <li>Game ends when pieces reach the top</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Credits Link -->
+  <a href="../LICENSE-GAMES.md" class="credits-link">📜 Credits</a>
+
+  <script src="game.js"></script>
+</body>
+</html>
