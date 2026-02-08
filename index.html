@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Williams World - Quest Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #764ba2;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            font-size: 0.9em;
+            margin-bottom: 10px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-card .value {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .level-indicator {
+            font-size: 1.2em;
+            margin-top: 5px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .quests-section {
+            margin-top: 30px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .quest-item {
+            background: #f8f9fa;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            border-left: 4px solid #667eea;
+        }
+
+        .quest-item:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .quest-item.completed {
+            opacity: 0.6;
+            border-left-color: #28a745;
+        }
+
+        .quest-item input[type="checkbox"] {
+            width: 24px;
+            height: 24px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: #667eea;
+        }
+
+        .quest-item label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+
+        .quest-item.completed label {
+            text-decoration: line-through;
+        }
+
+        .xp-reward {
+            background: #ffc107;
+            color: #333;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+
+        .add-quest-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+
+        .add-quest-section input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            transition: border-color 0.3s ease;
+        }
+
+        .add-quest-section input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            margin-top: 10px;
+        }
+
+        .character-image {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .character-image img {
+            max-width: 200px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .celebration {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+            text-align: center;
+        }
+
+        .celebration.show {
+            display: block;
+            animation: bounce 0.5s ease;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.1); }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        .streak-flame {
+            display: inline-block;
+            animation: flicker 1.5s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="overlay"></div>
+    <div class="celebration" id="celebration">
+        <h2>🎉 Level Up! 🎉</h2>
+        <p style="font-size: 1.5em; margin: 20px 0;">You reached Level <span id="newLevel"></span>!</p>
+        <button class="btn" onclick="closeCelebration()">Awesome!</button>
+    </div>
+
+    <div class="container">
+        <h1>🎮 Williams World</h1>
+        <p class="subtitle">Quest Tracker & Adventure Log</p>
+
+        <!-- Character image section - add your own Google Drive image URL -->
+        <!-- <div class="character-image">
+            <img src="https://drive.google.com/uc?export=view&id=YOUR_IMAGE_ID" alt="Williams Character" id="characterImg" onerror="this.style.display='none'">
+        </div> -->
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Experience</h3>
+                <div class="value" id="xpDisplay">0</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="xpProgress"></div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <h3>Level</h3>
+                <div class="value" id="levelDisplay">1</div>
+                <div class="level-indicator">Next: <span id="xpToNext">100</span> XP</div>
+            </div>
+
+            <div class="stat-card">
+                <h3>Streak</h3>
+                <div class="value">
+                    <span class="streak-flame">🔥</span>
+                    <span id="streakDisplay">0</span>
+                </div>
+                <div style="font-size: 0.9em; margin-top: 5px;">days</div>
+            </div>
+
+            <div class="stat-card">
+                <h3>Total Quests</h3>
+                <div class="value" id="totalQuests">0</div>
+                <div style="font-size: 0.9em; margin-top: 5px;">completed</div>
+            </div>
+        </div>
+
+        <div class="quests-section">
+            <h2 class="section-title">📋 Active Quests</h2>
+            <div id="questList">
+                <!-- Quests will be dynamically added here -->
+            </div>
+        </div>
+
+        <div class="add-quest-section">
+            <h3 style="margin-bottom: 15px; color: #667eea;">➕ Add New Quest</h3>
+            <label for="questInput" style="display: block; margin-bottom: 5px; color: #667eea; font-weight: 500;">Quest Description:</label>
+            <input type="text" id="questInput" placeholder="Enter your quest..." maxlength="100" aria-label="Quest description">
+            <label for="xpInput" style="display: block; margin-bottom: 5px; margin-top: 10px; color: #667eea; font-weight: 500;">XP Reward:</label>
+            <input type="number" id="xpInput" placeholder="XP Reward (default: 50)" min="1" max="1000" value="50" aria-label="XP reward value">
+            <button class="btn" onclick="addQuest()">Add Quest</button>
+            <button class="btn reset-btn" onclick="resetProgress()">Reset All Progress</button>
+        </div>
+    </div>
+
+    <script>
+        // Game State
+        let gameState = {
+            xp: 0,
+            level: 1,
+            streak: 0,
+            totalCompleted: 0,
+            quests: [],
+            lastCompletionDate: null
+        };
+
+        // HTML escape function to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Load state from localStorage
+        function loadGameState() {
+            const saved = localStorage.getItem('williamsWorldState');
+            if (saved) {
+                gameState = JSON.parse(saved);
+                updateStreak();
+            } else {
+                // Initialize with default quests
+                gameState.quests = [
+                    { id: 1, text: "Complete daily homework", xp: 50, completed: false },
+                    { id: 2, text: "Read for 30 minutes", xp: 75, completed: false },
+                    { id: 3, text: "Practice coding challenge", xp: 100, completed: false },
+                    { id: 4, text: "Exercise for 20 minutes", xp: 60, completed: false },
+                    { id: 5, text: "Help with chores", xp: 40, completed: false }
+                ];
+            }
+            renderQuests();
+            updateStats();
+        }
+
+        // Save state to localStorage
+        function saveGameState() {
+            localStorage.setItem('williamsWorldState', JSON.stringify(gameState));
+        }
+
+        // Calculate XP needed for next level
+        function xpForLevel(level) {
+            return Math.floor(100 * Math.pow(1.5, level - 1));
+        }
+
+        // Update streak based on last completion
+        function updateStreak() {
+            if (!gameState.lastCompletionDate) return;
+
+            const lastDate = new Date(gameState.lastCompletionDate);
+            const today = new Date();
+            
+            // Reset time to midnight for comparison
+            lastDate.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+
+            const diffDays = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+
+            if (diffDays > 1) {
+                gameState.streak = 0; // Streak broken
+            }
+        }
+
+        // Update streak on completion
+        function updateStreakOnCompletion() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (!gameState.lastCompletionDate) {
+                gameState.streak = 1;
+            } else {
+                const lastDate = new Date(gameState.lastCompletionDate);
+                lastDate.setHours(0, 0, 0, 0);
+
+                const diffDays = Math.floor((today - lastDate) / (1000 * 60 * 60 * 24));
+
+                if (diffDays === 1) {
+                    gameState.streak++;
+                } else if (diffDays === 0) {
+                    // Same day, don't update streak
+                } else {
+                    gameState.streak = 1; // Reset streak
+                }
+            }
+
+            gameState.lastCompletionDate = new Date().toISOString();
+        }
+
+        // Add new quest
+        function addQuest() {
+            const input = document.getElementById('questInput');
+            const xpInput = document.getElementById('xpInput');
+            const text = input.value.trim();
+            let xp = parseInt(xpInput.value) || 50;
+
+            if (!text) {
+                alert('Please enter a quest description!');
+                return;
+            }
+
+            // Validate XP value
+            if (xp < 1) xp = 1;
+            if (xp > 1000) xp = 1000;
+
+            const quest = {
+                id: Date.now(),
+                text: text,
+                xp: xp,
+                completed: false
+            };
+
+            gameState.quests.push(quest);
+            input.value = '';
+            xpInput.value = 50;
+
+            saveGameState();
+            renderQuests();
+        }
+
+        // Toggle quest completion
+        function toggleQuest(id) {
+            const quest = gameState.quests.find(q => q.id === id);
+            if (!quest) return;
+
+            quest.completed = !quest.completed;
+
+            if (quest.completed) {
+                // Award XP
+                const oldLevel = gameState.level;
+                gameState.xp += quest.xp;
+                gameState.totalCompleted++;
+
+                // Check for level up
+                while (gameState.xp >= xpForLevel(gameState.level)) {
+                    gameState.xp -= xpForLevel(gameState.level);
+                    gameState.level++;
+                }
+
+                // Show celebration if leveled up
+                if (gameState.level > oldLevel) {
+                    showCelebration(gameState.level);
+                }
+
+                // Update streak
+                updateStreakOnCompletion();
+
+                // Add completion animation
+                const questElement = document.querySelector(`[data-quest-id="${id}"]`);
+                if (questElement) {
+                    questElement.style.animation = 'bounce 0.5s ease';
+                }
+            } else {
+                // Remove XP if unchecked
+                gameState.xp = Math.max(0, gameState.xp - quest.xp);
+                gameState.totalCompleted = Math.max(0, gameState.totalCompleted - 1);
+            }
+
+            saveGameState();
+            updateStats();
+            renderQuests();
+        }
+
+        // Delete quest
+        function deleteQuest(id) {
+            if (confirm('Are you sure you want to delete this quest?')) {
+                gameState.quests = gameState.quests.filter(q => q.id !== id);
+                saveGameState();
+                renderQuests();
+            }
+        }
+
+        // Render quests
+        function renderQuests() {
+            const questList = document.getElementById('questList');
+            
+            if (gameState.quests.length === 0) {
+                questList.innerHTML = '<p style="text-align: center; color: #999; padding: 20px;">No quests yet. Add one below!</p>';
+                return;
+            }
+
+            questList.innerHTML = gameState.quests
+                .map(quest => `
+                    <div class="quest-item ${quest.completed ? 'completed' : ''}" data-quest-id="${quest.id}">
+                        <input type="checkbox" 
+                               id="quest-${quest.id}" 
+                               ${quest.completed ? 'checked' : ''}
+                               onchange="toggleQuest(${quest.id})">
+                        <label for="quest-${quest.id}">${escapeHtml(quest.text)}</label>
+                        <span class="xp-reward">+${quest.xp} XP</span>
+                    </div>
+                `).join('');
+        }
+
+        // Update stats display
+        function updateStats() {
+            document.getElementById('xpDisplay').textContent = gameState.xp;
+            document.getElementById('levelDisplay').textContent = gameState.level;
+            document.getElementById('streakDisplay').textContent = gameState.streak;
+            document.getElementById('totalQuests').textContent = gameState.totalCompleted;
+            document.getElementById('xpToNext').textContent = xpForLevel(gameState.level);
+
+            // Update progress bar
+            const xpNeeded = xpForLevel(gameState.level);
+            const progress = (gameState.xp / xpNeeded) * 100;
+            document.getElementById('xpProgress').style.width = progress + '%';
+        }
+
+        // Show level up celebration
+        function showCelebration(level) {
+            document.getElementById('newLevel').textContent = level;
+            document.getElementById('celebration').classList.add('show');
+            document.getElementById('overlay').classList.add('show');
+        }
+
+        // Close celebration
+        function closeCelebration() {
+            document.getElementById('celebration').classList.remove('show');
+            document.getElementById('overlay').classList.remove('show');
+        }
+
+        // Reset all progress
+        function resetProgress() {
+            if (confirm('Are you sure you want to reset ALL progress? This cannot be undone!')) {
+                if (confirm('Really sure? All your XP, level, and quests will be deleted!')) {
+                    localStorage.removeItem('williamsWorldState');
+                    gameState = {
+                        xp: 0,
+                        level: 1,
+                        streak: 0,
+                        totalCompleted: 0,
+                        quests: [],
+                        lastCompletionDate: null
+                    };
+                    saveGameState();
+                    loadGameState();
+                }
+            }
+        }
+
+        // Handle Enter key in quest input
+        document.addEventListener('DOMContentLoaded', function() {
+            const questInput = document.getElementById('questInput');
+            questInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    addQuest();
+                }
+            });
+
+            // Load initial state
+            loadGameState();
+        });
+    </script>
+</body>
+</html>
