@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <!-- Sky gradient background -->
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4682B4;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="fortressGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B7355;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#654321;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="wallGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#A0826D;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B7355;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Sky -->
+  <rect width="256" height="256" fill="url(#skyGrad)"/>
+  
+  <!-- Ground -->
+  <rect y="180" width="256" height="76" fill="#6B8E23"/>
+  <rect y="200" width="256" height="56" fill="#556B2F"/>
+  
+  <!-- Castle/Fortress Base -->
+  <rect x="60" y="120" width="136" height="80" fill="url(#wallGrad)" stroke="#654321" stroke-width="2"/>
+  
+  <!-- Castle Towers -->
+  <rect x="50" y="100" width="35" height="100" fill="url(#fortressGrad)" stroke="#654321" stroke-width="2"/>
+  <rect x="171" y="100" width="35" height="100" fill="url(#fortressGrad)" stroke="#654321" stroke-width="2"/>
+  
+  <!-- Tower Tops -->
+  <polygon points="67.5,100 50,90 85,90" fill="#654321"/>
+  <polygon points="188.5,100 171,90 206,90" fill="#654321"/>
+  
+  <!-- Battlements on towers -->
+  <rect x="50" y="95" width="8" height="8" fill="#654321"/>
+  <rect x="68" y="95" width="8" height="8" fill="#654321"/>
+  <rect x="171" y="95" width="8" height="8" fill="#654321"/>
+  <rect x="189" y="95" width="8" height="8" fill="#654321"/>
+  
+  <!-- Castle Gate/Door -->
+  <rect x="110" y="160" width="36" height="40" rx="18" fill="#4A3520" stroke="#2C1F15" stroke-width="2"/>
+  
+  <!-- Windows -->
+  <rect x="70" y="130" width="12" height="16" fill="#FFA500" stroke="#654321" stroke-width="1"/>
+  <rect x="174" y="130" width="12" height="16" fill="#FFA500" stroke="#654321" stroke-width="1"/>
+  <rect x="100" y="135" width="10" height="14" fill="#4A3520"/>
+  <rect x="146" y="135" width="10" height="14" fill="#4A3520"/>
+  
+  <!-- Backpack emblem on main wall -->
+  <g transform="translate(128, 145) scale(0.6)">
+    <!-- Backpack shape -->
+    <rect x="-15" y="-10" width="30" height="35" rx="3" fill="#8B4513" stroke="#654321" stroke-width="2"/>
+    <rect x="-12" y="-8" width="24" height="28" fill="#A0522D"/>
+    <!-- Straps -->
+    <path d="M -8,-10 L -8,-20 L -3,-20 L -3,-10" fill="none" stroke="#654321" stroke-width="2"/>
+    <path d="M 8,-10 L 8,-20 L 3,-20 L 3,-10" fill="none" stroke="#654321" stroke-width="2"/>
+    <!-- Pocket -->
+    <rect x="-10" y="5" width="20" height="12" rx="2" fill="#654321"/>
+  </g>
+  
+  <!-- Path/Road -->
+  <path d="M 128,256 L 128,200 Q 128,180 140,180 L 180,180" fill="none" stroke="#8B7765" stroke-width="20" opacity="0.5"/>
+  
+  <!-- Small clouds -->
+  <ellipse cx="200" cy="40" rx="20" ry="12" fill="white" opacity="0.8"/>
+  <ellipse cx="190" cy="45" rx="18" ry="10" fill="white" opacity="0.8"/>
+  <ellipse cx="210" cy="45" rx="18" ry="10" fill="white" opacity="0.8"/>
+  
+  <ellipse cx="50" cy="60" rx="18" ry="10" fill="white" opacity="0.7"/>
+  <ellipse cx="40" cy="65" rx="15" ry="8" fill="white" opacity="0.7"/>
+  <ellipse cx="60" cy="65" rx="15" ry="8" fill="white" opacity="0.7"/>
+</svg>
