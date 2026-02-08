@@ -772,7 +772,7 @@
 
           <div class="statRow">
             <div class="pill"><span class="dot"></span> Level <span id="levelNum">1</span></div>
-            <div class="pill hpPill"><span class="dot"></span> HP <span id="hpNum">100</span>/100</div>
+            <div class="pill hpPill"><span class="dot"></span> HP <span id="hpNum">100</span>/<span id="hpMaxPill">100</span></div>
             <div class="pill"><span class="dot green"></span> Streak <span id="streakNum">0</span> days</div>
             <div class="pill"><span class="dot gold"></span> Today: <span id="dayResult">Not graded</span></div>
           </div>
@@ -925,7 +925,7 @@
         <h3>XP & Streaks</h3>
         <div class="xpDisplay" id="dashXP">0</div>
         <div class="streakInfo"><span class="streakFire">🔥</span> <span id="dashStreak">0</span> Days Streak</div>
-        <div class="small" style="margin-top:8px;">❤️ HP: <span id="dashHP">100</span>/100</div>
+        <div class="small" style="margin-top:8px;">❤️ HP: <span id="dashHP">100</span>/<span id="dashHPMax">100</span></div>
         <div class="meter hpMeter" style="margin-top:6px;" id="hpMeterDash">
           <div class="bar"><div id="dashHPBar"></div></div>
         </div>
@@ -1354,6 +1354,7 @@
       state.hp = Math.max(0, state.hp - totalDamage);
       save();
       // Defer toast until after UI is ready
+      // Defer toast so it appears after the UI has initialized
       setTimeout(() => toast(`💀 Midnight damage! -${totalDamage} HP for missed tasks`), 500);
     }
   }
@@ -1419,10 +1420,12 @@
     // Update HP display
     const hpPct = Math.max(0, Math.min(100, Math.round((state.hp / MAX_HP) * 100)));
     $("hpNum").textContent = state.hp;
+    $("hpMaxPill").textContent = MAX_HP;
     $("hpNow").textContent = state.hp;
     $("hpMax").textContent = MAX_HP;
     $("hpBar").style.width = hpPct + "%";
     $("dashHP").textContent = state.hp;
+    $("dashHPMax").textContent = MAX_HP;
     $("dashHPBar").style.width = hpPct + "%";
     
     // Low HP warning
