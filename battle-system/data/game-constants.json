@@ -1,0 +1,372 @@
+{
+  "roles": {
+    "striker": {
+      "name": "Striker",
+      "description": "Win fast. High damage or crit. Often fragile.",
+      "vfx_language": "Slashes, bursts, impact rings, sharp shapes",
+      "primary_color": "#dc2626",
+      "secondary_color": "#ff9d5c"
+    },
+    "defender": {
+      "name": "Defender",
+      "description": "Protect team. Soak hits. Mark enemies. Provide shields.",
+      "vfx_language": "Barriers, domes, metal clang, sturdy shapes",
+      "primary_color": "#3b82f6",
+      "secondary_color": "#60a5fa"
+    },
+    "support": {
+      "name": "Support",
+      "description": "Heal, shield, cleanse, and buff the party.",
+      "vfx_language": "Warm glow, sparkles, musical/holy rings",
+      "primary_color": "#7dffb4",
+      "secondary_color": "#34d399"
+    },
+    "controller": {
+      "name": "Controller",
+      "description": "Control tempo. Stun/sleep/slow. Manipulate turn order.",
+      "vfx_language": "Runes, time-warp, frost haze, chain effects",
+      "primary_color": "#7c3aed",
+      "secondary_color": "#a78bfa"
+    },
+    "summoner": {
+      "name": "Summoner/Builder",
+      "description": "Creates board advantage: hazards, totems, minions, stacking power.",
+      "vfx_language": "Totems, gadgets, spores, stacking icons",
+      "primary_color": "#10b981",
+      "secondary_color": "#6ee7b7"
+    },
+    "scout": {
+      "name": "Scout/Utility",
+      "description": "Info + reposition. Reveal intents, exploit weaknesses, pivot.",
+      "vfx_language": "Scan lines, target reticles, map tools",
+      "primary_color": "#fbbf24",
+      "secondary_color": "#fcd34d"
+    }
+  },
+  "types": {
+    "fire": {
+      "name": "Fire",
+      "primary_color": "#ef4444",
+      "secondary_color": "#fb923c",
+      "icon": "🔥"
+    },
+    "water": {
+      "name": "Water",
+      "primary_color": "#3b82f6",
+      "secondary_color": "#0ea5e9",
+      "icon": "💧"
+    },
+    "grass": {
+      "name": "Grass",
+      "primary_color": "#22c55e",
+      "secondary_color": "#84cc16",
+      "icon": "🌿"
+    },
+    "electric": {
+      "name": "Electric",
+      "primary_color": "#eab308",
+      "secondary_color": "#facc15",
+      "icon": "⚡"
+    },
+    "ice": {
+      "name": "Ice",
+      "primary_color": "#06b6d4",
+      "secondary_color": "#67e8f9",
+      "icon": "❄️"
+    },
+    "rock": {
+      "name": "Rock",
+      "primary_color": "#78716c",
+      "secondary_color": "#a8a29e",
+      "icon": "🪨"
+    },
+    "shadow": {
+      "name": "Shadow",
+      "primary_color": "#6366f1",
+      "secondary_color": "#818cf8",
+      "icon": "🌙"
+    },
+    "light": {
+      "name": "Light",
+      "primary_color": "#fbbf24",
+      "secondary_color": "#fde047",
+      "icon": "✨"
+    },
+    "wind": {
+      "name": "Wind",
+      "primary_color": "#14b8a6",
+      "secondary_color": "#5eead4",
+      "icon": "💨"
+    },
+    "metal": {
+      "name": "Metal",
+      "primary_color": "#71717a",
+      "secondary_color": "#d4d4d8",
+      "icon": "⚙️"
+    }
+  },
+  "type_chart": {
+    "fire": {
+      "fire": 1.0,
+      "water": 0.5,
+      "grass": 2.0,
+      "electric": 1.0,
+      "ice": 2.0,
+      "rock": 0.5,
+      "shadow": 1.0,
+      "light": 1.0,
+      "wind": 1.0,
+      "metal": 0.5
+    },
+    "water": {
+      "fire": 2.0,
+      "water": 1.0,
+      "grass": 0.5,
+      "electric": 0.5,
+      "ice": 0.5,
+      "rock": 2.0,
+      "shadow": 1.0,
+      "light": 1.0,
+      "wind": 1.0,
+      "metal": 1.0
+    },
+    "grass": {
+      "fire": 0.5,
+      "water": 2.0,
+      "grass": 1.0,
+      "electric": 0.5,
+      "ice": 2.0,
+      "rock": 2.0,
+      "shadow": 0.5,
+      "light": 1.0,
+      "wind": 0.5,
+      "metal": 1.0
+    },
+    "electric": {
+      "fire": 1.0,
+      "water": 2.0,
+      "grass": 1.0,
+      "electric": 0.5,
+      "ice": 1.0,
+      "rock": 1.0,
+      "shadow": 1.0,
+      "light": 1.0,
+      "wind": 2.0,
+      "metal": 2.0
+    },
+    "ice": {
+      "fire": 0.5,
+      "water": 1.0,
+      "grass": 2.0,
+      "electric": 1.0,
+      "ice": 0.5,
+      "rock": 2.0,
+      "shadow": 1.0,
+      "light": 1.0,
+      "wind": 2.0,
+      "metal": 0.5
+    },
+    "rock": {
+      "fire": 2.0,
+      "water": 0.5,
+      "grass": 1.0,
+      "electric": 0.5,
+      "ice": 2.0,
+      "rock": 1.0,
+      "shadow": 1.0,
+      "light": 1.0,
+      "wind": 0.5,
+      "metal": 1.0
+    },
+    "shadow": {
+      "fire": 1.0,
+      "water": 1.0,
+      "grass": 1.0,
+      "electric": 1.0,
+      "ice": 1.0,
+      "rock": 1.0,
+      "shadow": 0.5,
+      "light": 2.0,
+      "wind": 1.0,
+      "metal": 1.0
+    },
+    "light": {
+      "fire": 1.0,
+      "water": 1.0,
+      "grass": 1.0,
+      "electric": 1.0,
+      "ice": 1.0,
+      "rock": 1.0,
+      "shadow": 2.0,
+      "light": 0.5,
+      "wind": 1.0,
+      "metal": 1.0
+    },
+    "wind": {
+      "fire": 1.0,
+      "water": 1.0,
+      "grass": 2.0,
+      "electric": 0.5,
+      "ice": 0.5,
+      "rock": 1.0,
+      "shadow": 1.0,
+      "light": 1.0,
+      "wind": 1.0,
+      "metal": 1.0
+    },
+    "metal": {
+      "fire": 2.0,
+      "water": 1.0,
+      "grass": 1.0,
+      "electric": 0.5,
+      "ice": 2.0,
+      "rock": 2.0,
+      "shadow": 1.0,
+      "light": 1.0,
+      "wind": 1.0,
+      "metal": 0.5
+    }
+  },
+  "keywords": {
+    "damage": {
+      "name": "Damage",
+      "description": "Deals HP damage",
+      "icon": "⚔️",
+      "type": "offensive"
+    },
+    "heal": {
+      "name": "Heal",
+      "description": "Restores HP",
+      "icon": "❤️",
+      "type": "supportive"
+    },
+    "shield": {
+      "name": "Shield",
+      "description": "Adds a shield that absorbs damage until depleted or expires",
+      "icon": "🛡️",
+      "type": "protective"
+    },
+    "cleanse": {
+      "name": "Cleanse",
+      "description": "Removes 1 negative status effect",
+      "icon": "✨",
+      "type": "supportive"
+    },
+    "buff": {
+      "name": "Buff",
+      "description": "Raises a stat (Power/Defense/Speed) for X turns",
+      "icon": "⬆️",
+      "type": "supportive"
+    },
+    "debuff": {
+      "name": "Debuff",
+      "description": "Lowers a stat for X turns",
+      "icon": "⬇️",
+      "type": "offensive"
+    },
+    "stun": {
+      "name": "Stun",
+      "description": "Target loses its next turn (or acts last)",
+      "icon": "💫",
+      "type": "control"
+    },
+    "sleep": {
+      "name": "Sleep",
+      "description": "Target cannot act for X turns; waking early on hit is optional",
+      "icon": "😴",
+      "type": "control"
+    },
+    "freeze": {
+      "name": "Freeze",
+      "description": "Target has a chance to miss a turn; breaks on fire damage",
+      "icon": "🧊",
+      "type": "control"
+    },
+    "poison": {
+      "name": "Poison",
+      "description": "Damage over time each end of round",
+      "icon": "🧪",
+      "type": "offensive"
+    },
+    "burn": {
+      "name": "Burn",
+      "description": "DoT + reduces Power slightly",
+      "icon": "🔥",
+      "type": "offensive"
+    },
+    "shock": {
+      "name": "Shock",
+      "description": "Small chance to fail a move; or reduces Speed",
+      "icon": "⚡",
+      "type": "control"
+    },
+    "mark": {
+      "name": "Mark",
+      "description": "Defender tag: marked enemies are encouraged/forced to hit the defender",
+      "icon": "🎯",
+      "type": "tactical"
+    },
+    "taunt": {
+      "name": "Taunt",
+      "description": "Target must use attacking moves for X turns (cannot use support/control)",
+      "icon": "😠",
+      "type": "control"
+    },
+    "push": {
+      "name": "Push",
+      "description": "Reposition or change target focus",
+      "icon": "👊",
+      "type": "tactical"
+    },
+    "pull": {
+      "name": "Pull",
+      "description": "Reposition or change target focus",
+      "icon": "🪝",
+      "type": "tactical"
+    },
+    "summon": {
+      "name": "Summon",
+      "description": "Creates a helper unit or totem with its own effects",
+      "icon": "👻",
+      "type": "tactical"
+    },
+    "terrain": {
+      "name": "Terrain",
+      "description": "Creates a zone that persists for X rounds",
+      "icon": "🌍",
+      "type": "tactical"
+    }
+  },
+  "target_types": {
+    "single_enemy": {
+      "name": "Single Enemy",
+      "icon": "👤",
+      "description": "Targets one enemy"
+    },
+    "all_enemies": {
+      "name": "All Enemies",
+      "icon": "👥",
+      "description": "Targets all enemies"
+    },
+    "self": {
+      "name": "Self",
+      "icon": "⭕",
+      "description": "Targets self"
+    },
+    "single_ally": {
+      "name": "Single Ally",
+      "icon": "👤✨",
+      "description": "Targets one ally"
+    },
+    "all_allies": {
+      "name": "All Allies",
+      "icon": "👥✨",
+      "description": "Targets all allies"
+    },
+    "all_units": {
+      "name": "All Units",
+      "icon": "🌐",
+      "description": "Targets all units on the battlefield"
+    }
+  }
+}

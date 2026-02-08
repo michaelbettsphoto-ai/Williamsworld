@@ -1,0 +1,184 @@
+{
+  "id": "glowmoss_spore_sage",
+  "name": "Glowmoss",
+  "title": "Spore Sage",
+  "role_primary": "summoner",
+  "role_secondary": "controller",
+  "types": ["grass", "shadow"],
+  "rarity": "legendary",
+  "rank": 0,
+  "stats": {
+    "hp": 100,
+    "power": 45,
+    "defense": 40,
+    "magicResist": 50,
+    "speed": 30
+  },
+  "passive": {
+    "name": "Fungal Bloom",
+    "icon": "🍄",
+    "description": "Whenever you apply Poison, gain 1 Bloom. At 3 Bloom, summon a Spore Totem for 2 rounds.",
+    "rules": {
+      "trigger": "on_apply_poison",
+      "effect": "gain_stack",
+      "stack_name": "bloom",
+      "stack_max": 3,
+      "on_max_stack": {
+        "action": "summon_unit",
+        "unit_type": "spore_totem",
+        "duration": 2,
+        "reset_stacks": true
+      }
+    }
+  },
+  "moves": [
+    {
+      "name": "Spore Dart",
+      "type": "grass",
+      "target": "single_enemy",
+      "power": 25,
+      "keywords": ["damage", "poison"],
+      "description": "Fire a toxic spore that poisons the target over time.",
+      "cooldown": 0,
+      "rules": {
+        "damage_formula": "standard",
+        "apply_status": {
+          "status": "poison",
+          "duration": 2,
+          "damage_per_turn": 10
+        }
+      }
+    },
+    {
+      "name": "Totem Call",
+      "type": "grass",
+      "target": "self",
+      "power": 0,
+      "keywords": ["summon"],
+      "description": "Directly summon a Spore Totem to aid you in battle.",
+      "cooldown": 2,
+      "rules": {
+        "summon_unit": {
+          "unit_type": "spore_totem",
+          "duration": 3
+        }
+      }
+    },
+    {
+      "name": "Dark Mist",
+      "type": "shadow",
+      "target": "all_enemies",
+      "power": 0,
+      "keywords": ["debuff"],
+      "description": "Shroud all enemies in shadow, reducing their accuracy.",
+      "cooldown": 2,
+      "rules": {
+        "apply_debuff": {
+          "stat": "accuracy",
+          "amount": -20,
+          "duration": 2
+        }
+      }
+    },
+    {
+      "name": "Overgrowth Field",
+      "type": "grass",
+      "target": "all_units",
+      "power": 0,
+      "keywords": ["terrain"],
+      "description": "Create a poisonous spore field that damages enemies each turn.",
+      "cooldown": 3,
+      "rules": {
+        "create_terrain": {
+          "terrain_type": "spore_field",
+          "duration": 3,
+          "effect": {
+            "on_enemy_turn_start": {
+              "apply_status": {
+                "status": "poison",
+                "duration": 1,
+                "damage_per_turn": 8
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "synergy_tags": ["Poison", "Summon", "Terrain", "Control"],
+  "exploration_perk": {
+    "name": "Fungal Network",
+    "description": "Can communicate with mushroom colonies to gain information about nearby areas and hazards."
+  },
+  "quirks": [
+    {
+      "trigger": "idle",
+      "behavior": "Gently pulses with bioluminescent glow, releasing harmless spores"
+    },
+    {
+      "trigger": "summon_totem",
+      "behavior": "Spreads mycelium tendrils across the ground"
+    },
+    {
+      "trigger": "low_hp",
+      "behavior": "Dims glow and hunkers into defensive mushroom cap"
+    }
+  ],
+  "vfx_profile": {
+    "roleColors": ["#10b981", "#6ee7b7"],
+    "iconSet": "summoner_totems",
+    "animations": {
+      "idle": "gentle_sway",
+      "attack": "spore_burst",
+      "summon": "mycelium_spread",
+      "special": "shadow_bloom"
+    }
+  },
+  "progression": {
+    "ranks": [
+      {
+        "rank": 0,
+        "name": "Starter",
+        "unlock_requirement": "Default",
+        "visual_changes": "Small glowing mushroom creature with basic cap"
+      },
+      {
+        "rank": 1,
+        "name": "Expert",
+        "unlock_requirement": "Reach Level 15 and summon 100 totems",
+        "visual_changes": "Larger with multiple mushroom caps and enhanced glow",
+        "stat_upgrades": {
+          "hp": 115,
+          "power": 55,
+          "magicResist": 60
+        },
+        "move_upgrade": {
+          "move": "Spore Dart",
+          "improvement": "Poison duration increased to 3 turns, damage per turn increased to 12"
+        }
+      },
+      {
+        "rank": 2,
+        "name": "Legendary",
+        "unlock_requirement": "Reach Level 25 and master the Ancient Grove",
+        "visual_changes": "Magnificent colony form with ethereal shadow-grass aura",
+        "stat_upgrades": {
+          "hp": 135,
+          "power": 65,
+          "magicResist": 75
+        },
+        "passive_upgrade": {
+          "description": "Fungal Bloom now requires only 2 Bloom stacks, and totems last for 3 rounds."
+        }
+      }
+    ]
+  },
+  "summons": {
+    "spore_totem": {
+      "name": "Spore Totem",
+      "hp": 30,
+      "effect": "At end of each round, applies Poison (1 turn) to one random enemy",
+      "visual": "A glowing mushroom totem with pulsing spores"
+    }
+  }
+}

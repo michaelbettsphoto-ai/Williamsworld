@@ -1,0 +1,168 @@
+{
+  "id": "trapper_backpack_bastion",
+  "name": "Trapper",
+  "title": "Backpack Bastion",
+  "role_primary": "defender",
+  "role_secondary": null,
+  "types": ["metal", "light"],
+  "rarity": "rare",
+  "rank": 0,
+  "stats": {
+    "hp": 120,
+    "power": 35,
+    "defense": 65,
+    "magicResist": 55,
+    "speed": 25
+  },
+  "passive": {
+    "name": "Pack Guard",
+    "icon": "🎒",
+    "description": "When an ally takes damage, gain 1 Guard. At 3 Guard, auto-shield the lowest-HP ally for 20.",
+    "rules": {
+      "trigger": "on_ally_damage",
+      "effect": "gain_stack",
+      "stack_name": "guard",
+      "stack_max": 3,
+      "on_max_stack": {
+        "action": "apply_shield",
+        "target": "lowest_hp_ally",
+        "amount": 20,
+        "reset_stacks": true
+      }
+    }
+  },
+  "moves": [
+    {
+      "name": "Shield Slam",
+      "type": "metal",
+      "target": "single_enemy",
+      "power": 30,
+      "keywords": ["damage", "mark"],
+      "description": "Strike an enemy with your shield and mark them to focus on you.",
+      "cooldown": 0,
+      "rules": {
+        "damage_formula": "standard",
+        "apply_status": {
+          "status": "mark",
+          "duration": 2
+        }
+      }
+    },
+    {
+      "name": "Barrier Bubble",
+      "type": "light",
+      "target": "all_allies",
+      "power": 25,
+      "keywords": ["shield"],
+      "description": "Create a protective barrier around all allies.",
+      "cooldown": 2,
+      "rules": {
+        "apply_shield": {
+          "amount": 25,
+          "duration": 2
+        }
+      }
+    },
+    {
+      "name": "Taunt Roar",
+      "type": "metal",
+      "target": "single_enemy",
+      "power": 0,
+      "keywords": ["taunt"],
+      "description": "Enrage an enemy, forcing them to attack for 2 turns.",
+      "cooldown": 2,
+      "rules": {
+        "apply_status": {
+          "status": "taunt",
+          "duration": 2
+        }
+      }
+    },
+    {
+      "name": "Emergency Cover",
+      "type": "light",
+      "target": "single_ally",
+      "power": 30,
+      "keywords": ["shield", "cleanse"],
+      "description": "Grant Guard to an ally and remove one negative effect.",
+      "cooldown": 3,
+      "rules": {
+        "apply_shield": {
+          "amount": 30,
+          "duration": 3
+        },
+        "apply_effect": {
+          "effect": "cleanse",
+          "count": 1
+        }
+      }
+    }
+  ],
+  "synergy_tags": ["Shield", "Mark", "Taunt", "Protect"],
+  "exploration_perk": {
+    "name": "Heavy Lifter",
+    "description": "Can carry extra supplies, increasing party inventory capacity by 25%."
+  },
+  "quirks": [
+    {
+      "trigger": "idle",
+      "behavior": "Adjusts backpack straps and checks equipment"
+    },
+    {
+      "trigger": "victory",
+      "behavior": "Taps shield triumphantly"
+    },
+    {
+      "trigger": "low_hp",
+      "behavior": "Hunkers behind shield defensively"
+    }
+  ],
+  "vfx_profile": {
+    "roleColors": ["#3b82f6", "#60a5fa"],
+    "iconSet": "defender_shields",
+    "animations": {
+      "idle": "shield_stance",
+      "attack": "shield_bash",
+      "defend": "barrier_raise",
+      "special": "light_dome"
+    }
+  },
+  "progression": {
+    "ranks": [
+      {
+        "rank": 0,
+        "name": "Starter",
+        "unlock_requirement": "Default",
+        "visual_changes": "Basic backpack and wooden shield"
+      },
+      {
+        "rank": 1,
+        "name": "Expert",
+        "unlock_requirement": "Reach Level 10 and complete 50 battles",
+        "visual_changes": "Reinforced backpack with metal plating, upgraded shield",
+        "stat_upgrades": {
+          "hp": 140,
+          "defense": 75
+        },
+        "move_upgrade": {
+          "move": "Barrier Bubble",
+          "improvement": "Shield amount increased to 35"
+        }
+      },
+      {
+        "rank": 2,
+        "name": "Legendary",
+        "unlock_requirement": "Reach Level 25 and defeat the Guardian of Light",
+        "visual_changes": "Radiant crystalline shield, enchanted backpack with glowing runes",
+        "stat_upgrades": {
+          "hp": 165,
+          "defense": 85,
+          "magicResist": 70
+        },
+        "passive_upgrade": {
+          "description": "Pack Guard now triggers at 2 stacks instead of 3, and shields for 30."
+        }
+      }
+    ]
+  }
+}

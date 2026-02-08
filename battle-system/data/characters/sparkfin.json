@@ -1,0 +1,177 @@
+{
+  "id": "sparkfin_storm_trickster",
+  "name": "Sparkfin",
+  "title": "Storm Trickster",
+  "role_primary": "scout",
+  "role_secondary": "support",
+  "types": ["water", "electric"],
+  "rarity": "epic",
+  "rank": 0,
+  "stats": {
+    "hp": 85,
+    "power": 55,
+    "defense": 35,
+    "magicResist": 40,
+    "speed": 70
+  },
+  "passive": {
+    "name": "Quick Scan",
+    "icon": "🔍",
+    "description": "At start of round, reveal the next enemy move icon and gain +10 Speed if you are below 50% HP.",
+    "rules": {
+      "trigger": "start_of_round",
+      "effects": [
+        {
+          "action": "reveal_intent",
+          "target": "random_enemy"
+        },
+        {
+          "condition": "self_hp_below_50_percent",
+          "action": "buff_stat",
+          "stat": "speed",
+          "amount": 10,
+          "duration": 1
+        }
+      ]
+    }
+  },
+  "moves": [
+    {
+      "name": "Zap Splash",
+      "type": "electric",
+      "target": "single_enemy",
+      "power": 35,
+      "keywords": ["damage", "shock"],
+      "description": "A quick electric-water attack that may reduce enemy speed.",
+      "cooldown": 0,
+      "rules": {
+        "damage_formula": "standard",
+        "apply_status": {
+          "status": "shock",
+          "duration": 1,
+          "chance": 0.3
+        }
+      }
+    },
+    {
+      "name": "Slipstream",
+      "type": "water",
+      "target": "single_ally",
+      "power": 0,
+      "keywords": ["buff"],
+      "description": "Boost an ally's speed with a rushing water current.",
+      "cooldown": 1,
+      "rules": {
+        "apply_buff": {
+          "stat": "speed",
+          "amount": 20,
+          "duration": 2
+        }
+      }
+    },
+    {
+      "name": "Backstep",
+      "type": "water",
+      "target": "self",
+      "power": 0,
+      "keywords": ["buff"],
+      "description": "Evade the next incoming attack with fluid movement.",
+      "cooldown": 2,
+      "rules": {
+        "apply_effect": {
+          "effect": "dodge_next",
+          "duration": 1
+        }
+      }
+    },
+    {
+      "name": "Weakness Mark",
+      "type": "electric",
+      "target": "single_enemy",
+      "power": 40,
+      "keywords": ["damage", "mark", "debuff"],
+      "description": "Mark an enemy's weak point and reduce their defense.",
+      "cooldown": 3,
+      "rules": {
+        "damage_formula": "standard",
+        "apply_status": {
+          "status": "mark",
+          "duration": 2
+        },
+        "apply_debuff": {
+          "stat": "defense",
+          "amount": -15,
+          "duration": 2
+        }
+      }
+    }
+  ],
+  "synergy_tags": ["Speed", "Scout", "Shock", "Debuff"],
+  "exploration_perk": {
+    "name": "Treasure Sense",
+    "description": "Can detect hidden caches and secret passages within a 30-foot radius."
+  },
+  "quirks": [
+    {
+      "trigger": "idle",
+      "behavior": "Swims in a lazy circle with occasional spark effects"
+    },
+    {
+      "trigger": "victory",
+      "behavior": "Does a celebratory loop-de-loop with electric trails"
+    },
+    {
+      "trigger": "critical_hit",
+      "behavior": "Flashes brightly with excitement"
+    }
+  ],
+  "vfx_profile": {
+    "roleColors": ["#fbbf24", "#fcd34d"],
+    "iconSet": "scout_reticles",
+    "animations": {
+      "idle": "floating_swim",
+      "attack": "zap_dash",
+      "buff": "water_swirl",
+      "special": "storm_surge"
+    }
+  },
+  "progression": {
+    "ranks": [
+      {
+        "rank": 0,
+        "name": "Starter",
+        "unlock_requirement": "Default",
+        "visual_changes": "Small fish with basic electric fins"
+      },
+      {
+        "rank": 1,
+        "name": "Expert",
+        "unlock_requirement": "Reach Level 12 and explore 30 zones",
+        "visual_changes": "Larger with enhanced electric patterns and glowing markings",
+        "stat_upgrades": {
+          "hp": 95,
+          "power": 65,
+          "speed": 80
+        },
+        "move_upgrade": {
+          "move": "Zap Splash",
+          "improvement": "Power increased to 40, shock chance increased to 50%"
+        }
+      },
+      {
+        "rank": 2,
+        "name": "Legendary",
+        "unlock_requirement": "Reach Level 25 and complete the Storm Trials",
+        "visual_changes": "Majestic form with crackling storm aura and prismatic scales",
+        "stat_upgrades": {
+          "hp": 110,
+          "power": 75,
+          "speed": 95
+        },
+        "passive_upgrade": {
+          "description": "Quick Scan now reveals all enemy intents and grants +15 Speed below 50% HP."
+        }
+      }
+    ]
+  }
+}
