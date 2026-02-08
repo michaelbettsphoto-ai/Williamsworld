@@ -467,6 +467,13 @@
     opacity: .5;
   }
   
+  /* HP Bar Styles */
+  #ww .hpMeter { margin-top: 8px; }
+  #ww .hpMeter .bar { background: #1a0a0a; }
+  #ww .hpMeter .bar > div { background: linear-gradient(90deg, #dc2626, #ff4444); transition: width .4s ease; }
+  #ww .hpMeter.low .bar > div { background: linear-gradient(90deg, #991b1b, #dc2626); animation: pulse 1s ease-in-out infinite; }
+  #ww .hpPill .dot { background: var(--red); }
+  
   /* Streak Fire Icon Enhancement */
   .streakFire {
     display: inline-block;
@@ -765,6 +772,7 @@
 
           <div class="statRow">
             <div class="pill"><span class="dot"></span> Level <span id="levelNum">1</span></div>
+            <div class="pill hpPill"><span class="dot"></span> HP <span id="hpNum">100</span>/<span id="hpMaxPill">100</span></div>
             <div class="pill"><span class="dot green"></span> Streak <span id="streakNum">0</span> days</div>
             <div class="pill"><span class="dot gold"></span> Today: <span id="dayResult">Not graded</span></div>
           </div>
@@ -775,6 +783,13 @@
               <div class="small">Complete all quests to earn rewards!</div>
             </div>
             <div class="bar"><div id="xpBar"></div></div>
+          </div>
+          <div class="meter hpMeter" id="hpMeterBanner">
+            <div class="meterTop">
+              <div><b>❤️ HP</b>: <span id="hpNow">100</span> / <span id="hpMax">100</span></div>
+              <div class="small">Missed tasks deal damage at midnight!</div>
+            </div>
+            <div class="bar"><div id="hpBar"></div></div>
           </div>
         </div>
 
@@ -910,7 +925,11 @@
         <h3>XP & Streaks</h3>
         <div class="xpDisplay" id="dashXP">0</div>
         <div class="streakInfo"><span class="streakFire">🔥</span> <span id="dashStreak">0</span> Days Streak</div>
-        <div class="small" style="margin-top:12px;">Next Badge: <span id="nextBadge">Bronze Shield</span></div>
+        <div class="small" style="margin-top:8px;">❤️ HP: <span id="dashHP">100</span>/<span id="dashHPMax">100</span></div>
+        <div class="meter hpMeter" style="margin-top:6px;" id="hpMeterDash">
+          <div class="bar"><div id="dashHPBar"></div></div>
+        </div>
+        <div class="small" style="margin-top:8px;">Next Badge: <span id="nextBadge">Bronze Shield</span></div>
         <div class="meter" style="margin-top:12px;">
           <div class="meterTop">
             <div class="small">Progress to Next Level</div>
@@ -1209,12 +1228,15 @@
           golem: { level: 1, xp: 0 }
         };
       }
+      // Ensure hp exists
+      if (data.hp === undefined) data.hp = 100;
       return data;
     }catch{
       return { 
         xp:0, 
         level:1, 
         streak:0, 
+        hp:100,
         days:{},
         companions: {
           ember: { level: 1, xp: 0 },
@@ -1298,10 +1320,45 @@
 
   let state = load();
   const TODAY = todayKey();
+  const MAX_HP = 100;
   if(!state.days[TODAY]){
     state.days[TODAY]={ tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), result:"Not graded" };
     save();
   }
+
+  // Calculate damage for incomplete tasks in a day
+  function calcDamage(dayData) {
+    let dmg = 0;
+    TASKS.forEach(t => {
+      if (!dayData.tasks[t.id]) dmg += t.xp;
+    });
+    return dmg;
+  }
+
+  // Midnight check: auto-grade any past ungraded days as FAIL and apply damage
+  function midnightCheck() {
+    let totalDamage = 0;
+    const sortedKeys = Object.keys(state.days).sort();
+    sortedKeys.forEach(dateKey => {
+      if (dateKey >= TODAY) return; // skip today
+      const day = state.days[dateKey];
+      if (day.result === "Not graded") {
+        // Midnight passed without grading — auto-FAIL and apply damage
+        day.result = "FAIL";
+        const dmg = calcDamage(day);
+        totalDamage += dmg;
+        state.streak = 0;
+      }
+    });
+    if (totalDamage > 0) {
+      state.hp = Math.max(0, state.hp - totalDamage);
+      save();
+      // Defer toast until after UI is ready
+      // Defer toast so it appears after the UI has initialized
+      setTimeout(() => toast(`💀 Midnight damage! -${totalDamage} HP for missed tasks`), 500);
+    }
+  }
+  midnightCheck();
 
   function isPassDay(){
     const day = state.days[TODAY];
@@ -1360,6 +1417,28 @@
 
     $("dayResult").textContent = state.days[TODAY].result;
     
+    // Update HP display
+    const hpPct = Math.max(0, Math.min(100, Math.round((state.hp / MAX_HP) * 100)));
+    $("hpNum").textContent = state.hp;
+    $("hpMaxPill").textContent = MAX_HP;
+    $("hpNow").textContent = state.hp;
+    $("hpMax").textContent = MAX_HP;
+    $("hpBar").style.width = hpPct + "%";
+    $("dashHP").textContent = state.hp;
+    $("dashHPMax").textContent = MAX_HP;
+    $("dashHPBar").style.width = hpPct + "%";
+    
+    // Low HP warning
+    const hpMeterBanner = $("hpMeterBanner");
+    const hpMeterDash = $("hpMeterDash");
+    if (hpPct <= 25) {
+      if (hpMeterBanner) hpMeterBanner.classList.add("low");
+      if (hpMeterDash) hpMeterDash.classList.add("low");
+    } else {
+      if (hpMeterBanner) hpMeterBanner.classList.remove("low");
+      if (hpMeterDash) hpMeterDash.classList.remove("low");
+    }
+
     // Update dashboard
     $("dashXP").textContent = state.xp;
     $("dashStreak").textContent = state.streak;
@@ -1680,9 +1759,13 @@
     const pass = isPassDay();
     state.days[TODAY].result = pass ? "PASS" : "FAIL";
     state.streak = pass ? (state.streak+1) : 0;
+    if (!pass) {
+      const dmg = calcDamage(state.days[TODAY]);
+      state.hp = Math.max(0, state.hp - dmg);
+    }
     save();
     updateHeader();
-    toast(pass ? "🎉 PASS! Streak +1" : "⚠️ FAIL. Streak reset");
+    toast(pass ? "🎉 PASS! Streak +1" : `⚠️ FAIL. Streak reset. -${calcDamage(state.days[TODAY])} HP!`);
   }
 
   document.querySelectorAll("#ww .nav button").forEach(btn=>{
