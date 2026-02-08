@@ -2889,11 +2889,18 @@
     const williamAvatar = document.getElementById('williamAvatar');
     if (!williamAvatar) return;
 
+    // Configuration constants
+    const PUSH_STRENGTH = 20;
+    const PUSH_DURATION_MS = 300;
+
     let isDragging = false;
-    let currentX = 0;
-    let currentY = 0;
-    let initialX = 0;
-    let initialY = 0;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+    let dragStartX = 0;
+    let dragStartY = 0;
+
+    // Cache interactive elements for better performance
+    const interactiveElements = document.querySelectorAll('.questCard, .pill, .btn, .card');
 
     // Make William draggable
     williamAvatar.style.cursor = 'grab';
@@ -2905,8 +2912,8 @@
       const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
 
       isDragging = true;
-      initialX = clientX - currentX;
-      initialY = clientY - currentY;
+      dragStartX = clientX - dragOffsetX;
+      dragStartY = clientY - dragOffsetY;
       williamAvatar.style.cursor = 'grabbing';
     }
 
@@ -2918,10 +2925,10 @@
       const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
       const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
 
-      currentX = clientX - initialX;
-      currentY = clientY - initialY;
+      dragOffsetX = clientX - dragStartX;
+      dragOffsetY = clientY - dragStartY;
 
-      williamAvatar.style.transform = `translate(${currentX}px, ${currentY}px)`;
+      williamAvatar.style.transform = `translate(${dragOffsetX}px, ${dragOffsetY}px)`;
 
       // Check for collisions with other elements
       checkCollisions(williamAvatar);
@@ -2938,9 +2945,6 @@
     function checkCollisions(williamEl) {
       const williamRect = williamEl.getBoundingClientRect();
       
-      // Get all interactive elements that William can collide with
-      const interactiveElements = document.querySelectorAll('.questCard, .pill, .btn, .card');
-      
       interactiveElements.forEach(element => {
         const elementRect = element.getBoundingClientRect();
         
@@ -2953,19 +2957,18 @@
           // Normalize the push direction
           const distance = Math.sqrt(pushX * pushX + pushY * pushY);
           if (distance > 0) {
-            const pushStrength = 20; // How far elements get pushed
-            const normalizedX = (pushX / distance) * pushStrength;
-            const normalizedY = (pushY / distance) * pushStrength;
+            const normalizedX = (pushX / distance) * PUSH_STRENGTH;
+            const normalizedY = (pushY / distance) * PUSH_STRENGTH;
             
             // Apply transform to push the element away
-            element.style.transition = 'transform 0.3s ease-out';
+            element.style.transition = `transform ${PUSH_DURATION_MS}ms ease-out`;
             element.style.transform = `translate(${-normalizedX}px, ${-normalizedY}px)`;
             
             // Reset after a delay
             setTimeout(() => {
               element.style.transition = 'transform 0.5s ease-in';
               element.style.transform = 'translate(0, 0)';
-            }, 300);
+            }, PUSH_DURATION_MS);
           }
         }
       });
@@ -2993,8 +2996,8 @@
 
     // Double-click to reset position
     williamAvatar.addEventListener('dblclick', () => {
-      currentX = 0;
-      currentY = 0;
+      dragOffsetX = 0;
+      dragOffsetY = 0;
       williamAvatar.style.transition = 'transform 0.5s ease';
       williamAvatar.style.transform = 'translate(0, 0)';
       setTimeout(() => {
