@@ -219,6 +219,137 @@
     100% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); }
   }
   
+  /* Easter Egg Emotes (Click-Triggered) - 15 Animations */
+  @keyframes easter-confetti-sneezus {
+    0% { transform: scale(1); }
+    20% { transform: scale(0.95, 1.05); } /* Scrunch face */
+    40% { transform: scale(1.15, 0.9); } /* Big sneeze prep */
+    50% { transform: scale(0.9, 1.1); } /* Sneeze! */
+    70% { transform: scale(1.05, 0.98) rotate(-5deg); } /* Recoil */
+    85% { transform: scale(1.02) rotate(2deg); } /* Blink confused */
+    100% { transform: scale(1) rotate(0deg); }
+  }
+  @keyframes easter-banana-slip {
+    0% { transform: translateX(0) translateY(0) rotate(0deg); }
+    15% { transform: translateX(10px) translateY(-5px) rotate(-10deg); } /* Slip */
+    30% { transform: translateX(20px) translateY(-15px) rotate(90deg) scale(0.95); } /* Flail */
+    50% { transform: translateX(30px) translateY(-20px) rotate(180deg) scale(0.9); } /* Spin */
+    70% { transform: translateX(20px) translateY(-5px) rotate(270deg) scale(0.95); } /* More spin */
+    85% { transform: translateX(0) translateY(0) rotate(360deg) scale(1.05); } /* Landing */
+    100% { transform: translateX(0) translateY(0) rotate(360deg) scale(1); } /* Seated + thumbs up */
+  }
+  @keyframes easter-bubble-burp {
+    0% { transform: scale(1); }
+    20% { transform: scale(1.1, 0.95); } /* Tiny burp prep */
+    40% { transform: scale(0.95, 1.05); } /* Burp */
+    60% { transform: scale(1.02, 0.98); }
+    100% { transform: scale(1); }
+  }
+  @keyframes easter-pie-trap {
+    0% { transform: translateX(0) rotate(0deg); }
+    15% { transform: translateX(5px) rotate(5deg); } /* Trip */
+    30% { transform: translateX(-5px) rotate(-5deg) scale(1.05); } /* Stumble */
+    50% { transform: scale(0.95, 1.1) rotate(0deg); } /* Pie splat! */
+    70% { transform: scale(1.05, 0.95); } /* Recoil */
+    85% { transform: scale(1.02) rotate(-3deg); } /* Wipe face */
+    100% { transform: scale(1) rotate(0deg); } /* "Really?" */
+  }
+  @keyframes easter-rubber-chicken {
+    0% { transform: rotate(0deg) scale(1); }
+    20% { transform: rotate(-15deg) scale(1.05); } /* Opens backpack */
+    40% { transform: rotate(10deg) scale(1.1); } /* Chicken appears */
+    60% { transform: rotate(-10deg) scale(1.08); } /* Squeeze */
+    80% { transform: rotate(5deg) scale(1.03); } /* Poof prep */
+    100% { transform: rotate(0deg) scale(1); } /* Away */
+  }
+  @keyframes easter-hero-landing {
+    0% { transform: translateY(0) scale(1); }
+    30% { transform: translateY(-15px) scale(1.05); } /* Tiny hop */
+    60% { transform: translateY(0) scale(1.1, 0.9) rotate(-3deg); } /* Dramatic landing */
+    80% { transform: scale(1.05) rotate(2deg); } /* Impact */
+    100% { transform: scale(1) rotate(0deg); } /* Shrug */
+  }
+  @keyframes easter-endless-scarf {
+    0% { transform: translateX(0) scale(1); }
+    30% { transform: translateX(-10px) scale(1.05) rotate(-5deg); } /* Pull scarf */
+    60% { transform: translateX(-15px) scale(1.08) rotate(-8deg); } /* More scarf */
+    80% { transform: translateX(-8px) scale(1.03) rotate(-3deg); } /* Piles up */
+    90% { transform: translateX(5px) scale(0.98) rotate(5deg); } /* Light trip */
+    100% { transform: translateX(0) scale(1) rotate(0deg); }
+  }
+  @keyframes easter-frog-crown {
+    0% { transform: scale(1) rotate(0deg); }
+    20% { transform: scale(1.05) rotate(-10deg); } /* Cast gesture */
+    40% { transform: scale(1.1) rotate(10deg); } /* Frog pops on head */
+    60% { transform: scale(1.08) rotate(-5deg); }
+    80% { transform: scale(1.03) rotate(3deg); } /* Ribbit */
+    100% { transform: scale(1) rotate(0deg); } /* Smile */
+  }
+  @keyframes easter-chipmunk-voice {
+    0% { transform: scale(1); }
+    20% { transform: scale(1.05, 0.98) rotate(-5deg); } /* Drinks potion */
+    40% { transform: scale(0.95, 1.1) rotate(5deg); } /* Musical notes */
+    60% { transform: scale(1.08, 0.95) rotate(-3deg); } /* Squeaky talking */
+    80% { transform: scale(0.98, 1.05) rotate(3deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+  @keyframes easter-marshmallow-volley {
+    0% { transform: rotate(0deg) scale(1); }
+    20% { transform: rotate(-20deg) scale(1.05); } /* Fires */
+    40% { transform: rotate(10deg) scale(1.08); } /* Rebound */
+    60% { transform: scale(1.1, 0.95) rotate(0deg); } /* Bonk forehead */
+    80% { transform: scale(0.95, 1.05) rotate(-5deg); } /* Wobble */
+    100% { transform: scale(1) rotate(0deg); }
+  }
+  @keyframes easter-hair-tornado {
+    0% { transform: rotate(0deg) scale(1); }
+    20% { transform: rotate(180deg) scale(1.1); } /* Mini whirlwind */
+    40% { transform: rotate(360deg) scale(1.15); } /* Spins */
+    60% { transform: rotate(540deg) scale(1.1); } /* Wild hair */
+    80% { transform: rotate(720deg) scale(1.05); } /* Tries to fix */
+    100% { transform: rotate(720deg) scale(1); } /* Shocked */
+  }
+  @keyframes easter-tiger-shuffle {
+    0%, 100% { transform: translateX(0) rotate(0deg) scale(1); }
+    15% { transform: translateX(-15px) rotate(-10deg) scale(1.05); } /* Dance left */
+    30% { transform: translateX(15px) rotate(10deg) scale(1.08); } /* Dance right */
+    45% { transform: translateX(-12px) rotate(-8deg) scale(1.05); }
+    60% { transform: translateX(12px) rotate(8deg) scale(1.08); }
+    75% { transform: translateX(-8px) rotate(-5deg) scale(1.03); }
+    90% { transform: translateX(0) rotate(0deg) scale(1.05); }
+  }
+  @keyframes easter-lego-step {
+    0% { transform: translateY(0) scale(1); }
+    20% { transform: translateY(-10px) scale(1.05, 0.98); } /* "Ouch" face */
+    40% { transform: translateY(-25px) scale(1.08, 0.95) rotate(-10deg); } /* One-foot hop */
+    60% { transform: translateY(-15px) scale(1.05, 0.98) rotate(5deg); }
+    80% { transform: translateY(-5px) scale(1.02) rotate(-3deg); } /* Shakes foot */
+    100% { transform: translateY(0) scale(1) rotate(0deg); } /* Points at ground */
+  }
+  @keyframes easter-goose-chase {
+    0%, 100% { transform: translateX(0) rotate(0deg) scale(1); }
+    20% { transform: translateX(20px) rotate(10deg) scale(1.05); } /* Goose honks */
+    40% { transform: translateX(40px) rotate(-10deg) scale(1.08); } /* Chase */
+    60% { transform: translateX(20px) rotate(5deg) scale(1.05); } /* More chase */
+    80% { transform: translateX(-10px) rotate(-5deg) scale(1.02); } /* Feather gift */
+    95% { transform: translateX(0) rotate(0deg) scale(1.05); } /* Friends */
+  }
+  @keyframes easter-sock-chest {
+    0% { transform: scale(1) rotate(0deg); }
+    15% { transform: scale(1.05) rotate(-5deg); } /* Opens chest */
+    30% { transform: scale(1.1, 0.95) rotate(5deg); } /* Excited */
+    50% { transform: scale(0.95, 1.1) rotate(-10deg); } /* Socks explode out */
+    70% { transform: scale(1.05, 0.98) rotate(5deg); } /* Offended face */
+    90% { transform: scale(1.02) rotate(-3deg); } /* Slow facepalm */
+    100% { transform: scale(1) rotate(0deg); }
+  }
+  
+  /* Easter Egg Rest State */
+  @keyframes easter-rest-state {
+    0%, 100% { transform: translateY(10px) rotate(-90deg) scale(1); } /* Laying down */
+    50% { transform: translateY(12px) rotate(-90deg) scale(1.02); } /* Breathing */
+  }
+  
   /* Particle effect animations */
   @keyframes fireParticle {
     0% { transform: translateX(0) translateY(0) scale(1); opacity: 1; }
@@ -358,12 +489,19 @@
     position: relative;
     z-index: 100;
     transition: transform 0.5s ease, filter 0.5s ease, left 0.5s ease, top 0.5s ease;
-    pointer-events: none;
+    pointer-events: auto;
+    cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     margin: 10px;
+  }
+  #ww .william-avatar:hover {
+    filter: drop-shadow(0 0 15px rgba(255,211,110,0.6));
+  }
+  #ww .william-avatar.clickable-glow {
+    animation: glow 2s ease-in-out infinite;
   }
   #ww .william-avatar img {
     width: 100%;
@@ -561,6 +699,47 @@
     border-radius: 50%;
     animation: particles 2s ease-out forwards;
     pointer-events: none;
+  }
+  
+  /* William Rest State Overlay */
+  #williamRestOverlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--glass-strong-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 3px solid var(--golden-border);
+    border-radius: var(--r1);
+    padding: 24px;
+    display: none;
+    z-index: 10001;
+    text-align: center;
+    box-shadow: var(--shadow), 0 0 30px rgba(255,211,110,.4);
+    animation: slideUp .3s ease-out;
+    max-width: 90%;
+    width: 400px;
+  }
+  #williamRestOverlay.show {
+    display: block;
+  }
+  #williamRestOverlay .message {
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--ink);
+    text-shadow: 2px 2px 4px rgba(0,0,0,.8);
+    margin-bottom: 12px;
+  }
+  #williamRestOverlay .countdown {
+    font-size: 16px;
+    color: var(--muted);
+    font-weight: 650;
+  }
+  #williamRestOverlay .zzz {
+    font-size: 32px;
+    animation: float 2s ease-in-out infinite;
+    margin-top: 10px;
   }
   
   /* Companion Party Styles */
@@ -2001,6 +2180,13 @@
       <div class="levelInfo">Level <span id="levelUpNumber"></span></div>
       <div class="levelTitle" id="levelUpTitle"></div>
     </div>
+  </div>
+  
+  <!-- William Rest State Overlay -->
+  <div id="williamRestOverlay">
+    <div class="message">💤 I'm on a break for a minute. 💤</div>
+    <div class="countdown">Time remaining: <span id="restCountdown">60</span>s</div>
+    <div class="zzz">Zzz...</div>
   </div>
   
   <!-- Companion Reward Card Overlay -->
@@ -3504,12 +3690,684 @@
   const savedWeather = localStorage.getItem(WEATHER_STORAGE_KEY) || 'none';
   setWeather(savedWeather);
 
-  // Start the animation timer (every 5 seconds for more shenanigans!) - only if element exists
-  if (document.getElementById('williamAvatar')) {
-    setInterval(applyRandomWilliamAnimation, 5000);
+  // ============================================
+  // WILLIAM EASTER EGG EMOTE SYSTEM
+  // ============================================
+  
+  // Easter Egg Animations (Click-Triggered)
+  const easterEggEmotes = [
+    { name: 'easter-confetti-sneezus', effect: 'confettiSneeze', duration: 3000 },
+    { name: 'easter-banana-slip', effect: 'bananaSlip', duration: 4000 },
+    { name: 'easter-bubble-burp', effect: 'bubbleBurp', duration: 3000 },
+    { name: 'easter-pie-trap', effect: 'pieTrap', duration: 3000 },
+    { name: 'easter-rubber-chicken', effect: 'rubberChicken', duration: 3000 },
+    { name: 'easter-hero-landing', effect: 'heroLanding', duration: 2500 },
+    { name: 'easter-endless-scarf', effect: 'endlessScarf', duration: 4000 },
+    { name: 'easter-frog-crown', effect: 'frogCrown', duration: 3000 },
+    { name: 'easter-chipmunk-voice', effect: 'chipmunkVoice', duration: 3000 },
+    { name: 'easter-marshmallow-volley', effect: 'marshmallowVolley', duration: 3000 },
+    { name: 'easter-hair-tornado', effect: 'hairTornado', duration: 3500 },
+    { name: 'easter-tiger-shuffle', effect: 'tigerShuffle', duration: 3000 },
+    { name: 'easter-lego-step', effect: 'legoStep', duration: 3000 },
+    { name: 'easter-goose-chase', effect: 'gooseChase', duration: 4000 },
+    { name: 'easter-sock-chest', effect: 'sockChest', duration: 3500 }
+  ];
+  
+  // State machine for William animations
+  let williamState = {
+    current: 'idle', // idle, auto-emote, easter-egg, rest
+    lastEasterEgg: null,
+    clickCount: 0,
+    clickTimestamps: [],
+    isOnCooldown: false,
+    restUntil: null,
+    autoEmoteTimer: null,
+    nextAutoEmoteTime: null
+  };
+  
+  // Easter Egg Particle Effects
+  function createConfettiSneezeEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const confetti = ['🎊', '🎉', '✨', '⭐', '💫'];
+    for (let i = 0; i < 20; i++) {
+      setTimeout(() => {
+        const particle = document.createElement('div');
+        particle.textContent = confetti[Math.floor(Math.random() * confetti.length)];
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 80 + Math.random() * 70;
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+        particle.style.cssText = `
+          position: fixed;
+          left: ${rect.right - 10}px;
+          top: ${rect.top + 40}px;
+          font-size: ${20 + Math.random() * 15}px;
+          pointer-events: none;
+          z-index: 10000;
+        `;
+        particle.animate([
+          { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+          { transform: `translate(${x}px, ${y}px) scale(0.3) rotate(${Math.random() * 720}deg)`, opacity: 0 }
+        ], { duration: 1000, easing: 'ease-out', fill: 'forwards' });
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 1000);
+      }, i * 30);
+    }
+  }
+  
+  function createBananaSlipEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const banana = document.createElement('div');
+    banana.textContent = '🍌';
+    banana.style.cssText = `
+      position: fixed;
+      left: ${rect.left - 20}px;
+      top: ${rect.bottom - 10}px;
+      font-size: 30px;
+      pointer-events: none;
+      z-index: 10000;
+    `;
+    document.body.appendChild(banana);
+    setTimeout(() => banana.remove(), 2000);
     
-    // Also trigger the first animation after 1 second
+    // Thumbs up at the end
+    setTimeout(() => {
+      const thumbsUp = document.createElement('div');
+      thumbsUp.textContent = '👍';
+      thumbsUp.style.cssText = `
+        position: fixed;
+        left: ${rect.right + 10}px;
+        top: ${rect.top + 20}px;
+        font-size: 40px;
+        pointer-events: none;
+        z-index: 10000;
+      `;
+      thumbsUp.animate([
+        { transform: 'scale(0)', opacity: 0 },
+        { transform: 'scale(1.2)', opacity: 1 },
+        { transform: 'scale(1)', opacity: 1 }
+      ], { duration: 500, easing: 'ease-out' });
+      document.body.appendChild(thumbsUp);
+      setTimeout(() => thumbsUp.remove(), 1500);
+    }, 3000);
+  }
+  
+  function createBubbleBurpEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const bubble = document.createElement('div');
+    bubble.textContent = '💭';
+    bubble.style.cssText = `
+      position: fixed;
+      left: ${rect.right}px;
+      top: ${rect.top + 30}px;
+      font-size: 40px;
+      pointer-events: none;
+      z-index: 10000;
+    `;
+    bubble.animate([
+      { transform: 'translateY(0) scale(0.8)', opacity: 0.8 },
+      { transform: 'translateY(-100px) scale(1.5)', opacity: 0 }
+    ], { duration: 2000, easing: 'ease-out', fill: 'forwards' });
+    document.body.appendChild(bubble);
+    
+    // Sparkles when it pops
+    setTimeout(() => {
+      const sparkles = ['✨', '⭐', '💫'];
+      for (let i = 0; i < 8; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+        const angle = (Math.PI * 2 * i) / 8;
+        const distance = 50;
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
+        sparkle.style.cssText = `
+          position: fixed;
+          left: ${rect.right}px;
+          top: ${rect.top - 70}px;
+          font-size: 20px;
+          pointer-events: none;
+          z-index: 10000;
+        `;
+        sparkle.animate([
+          { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+          { transform: `translate(${x}px, ${y}px) scale(0.5)`, opacity: 0 }
+        ], { duration: 600, easing: 'ease-out', fill: 'forwards' });
+        document.body.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 600);
+      }
+    }, 1800);
+    setTimeout(() => bubble.remove(), 2000);
+  }
+  
+  function createPieTrapEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const pie = document.createElement('div');
+    pie.textContent = '🥧';
+    pie.style.cssText = `
+      position: fixed;
+      left: ${rect.right - 20}px;
+      top: ${rect.top + 10}px;
+      font-size: 50px;
+      pointer-events: none;
+      z-index: 10000;
+    `;
+    pie.animate([
+      { transform: 'scale(0) rotate(0deg)', opacity: 0 },
+      { transform: 'scale(1.5) rotate(360deg)', opacity: 1 },
+      { transform: 'scale(1) rotate(360deg)', opacity: 0 }
+    ], { duration: 800, easing: 'ease-out', fill: 'forwards' });
+    document.body.appendChild(pie);
+    setTimeout(() => pie.remove(), 800);
+  }
+  
+  function createRubberChickenEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const chicken = document.createElement('div');
+    chicken.textContent = '🐔';
+    chicken.style.cssText = `
+      position: fixed;
+      left: ${rect.right + 10}px;
+      top: ${rect.top + 30}px;
+      font-size: 40px;
+      pointer-events: none;
+      z-index: 10000;
+    `;
+    chicken.animate([
+      { transform: 'translateY(20px) scale(0)', opacity: 0 },
+      { transform: 'translateY(0) scale(1)', opacity: 1 },
+      { transform: 'translateY(0) scale(1.1)', opacity: 1 },
+      { transform: 'translateY(20px) scale(0)', opacity: 0 }
+    ], { duration: 2500, easing: 'ease-in-out', fill: 'forwards' });
+    document.body.appendChild(chicken);
+    setTimeout(() => chicken.remove(), 2500);
+  }
+  
+  function createHeroLandingEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const impact = document.createElement('div');
+    impact.textContent = '💥';
+    impact.style.cssText = `
+      position: fixed;
+      left: ${rect.left + rect.width / 2 - 20}px;
+      top: ${rect.bottom - 10}px;
+      font-size: 40px;
+      pointer-events: none;
+      z-index: 10000;
+    `;
+    impact.animate([
+      { transform: 'scale(0)', opacity: 0 },
+      { transform: 'scale(1.5)', opacity: 1 },
+      { transform: 'scale(0)', opacity: 0 }
+    ], { duration: 600, easing: 'ease-out', fill: 'forwards' });
+    document.body.appendChild(impact);
+    setTimeout(() => impact.remove(), 600);
+  }
+  
+  function createEndlessScarfEffect(element) {
+    const rect = element.getBoundingClientRect();
+    for (let i = 0; i < 10; i++) {
+      setTimeout(() => {
+        const scarf = document.createElement('div');
+        scarf.textContent = '🧣';
+        scarf.style.cssText = `
+          position: fixed;
+          left: ${rect.right + (i * 15)}px;
+          top: ${rect.top + 40}px;
+          font-size: 25px;
+          pointer-events: none;
+          z-index: 10000;
+        `;
+        scarf.animate([
+          { transform: 'translateX(0) scale(0)', opacity: 0 },
+          { transform: 'translateX(0) scale(1)', opacity: 1 },
+          { transform: 'translateX(0) scale(1)', opacity: 0.5 }
+        ], { duration: 300, easing: 'ease-out', fill: 'forwards' });
+        document.body.appendChild(scarf);
+        setTimeout(() => scarf.remove(), 3000);
+      }, i * 200);
+    }
+  }
+  
+  function createFrogCrownEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const frog = document.createElement('div');
+    frog.textContent = '🐸';
+    frog.style.cssText = `
+      position: fixed;
+      left: ${rect.left + rect.width / 2 - 20}px;
+      top: ${rect.top - 40}px;
+      font-size: 40px;
+      pointer-events: none;
+      z-index: 10000;
+    `;
+    frog.animate([
+      { transform: 'translateY(20px) scale(0)', opacity: 0 },
+      { transform: 'translateY(0) scale(1)', opacity: 1 }
+    ], { duration: 500, easing: 'ease-out', fill: 'forwards' });
+    document.body.appendChild(frog);
+    setTimeout(() => frog.remove(), 2500);
+    
+    // Ribbit text
+    setTimeout(() => {
+      const text = document.createElement('div');
+      text.textContent = 'Ribbit!';
+      text.style.cssText = `
+        position: fixed;
+        left: ${rect.right + 10}px;
+        top: ${rect.top}px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #4ade80;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        pointer-events: none;
+        z-index: 10000;
+      `;
+      text.animate([
+        { transform: 'scale(0)', opacity: 0 },
+        { transform: 'scale(1.2)', opacity: 1 },
+        { transform: 'scale(1)', opacity: 0 }
+      ], { duration: 1000, easing: 'ease-out', fill: 'forwards' });
+      document.body.appendChild(text);
+      setTimeout(() => text.remove(), 1000);
+    }, 1000);
+  }
+  
+  function createChipmunkVoiceEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const notes = ['🎵', '🎶', '🎼'];
+    for (let i = 0; i < 6; i++) {
+      setTimeout(() => {
+        const note = document.createElement('div');
+        note.textContent = notes[Math.floor(Math.random() * notes.length)];
+        note.style.cssText = `
+          position: fixed;
+          left: ${rect.right + (i * 10)}px;
+          top: ${rect.top + 20}px;
+          font-size: ${20 + Math.random() * 10}px;
+          pointer-events: none;
+          z-index: 10000;
+        `;
+        note.animate([
+          { transform: 'translateY(0) scale(0.5)', opacity: 1 },
+          { transform: 'translateY(-60px) scale(1)', opacity: 0 }
+        ], { duration: 1500, easing: 'ease-out', fill: 'forwards' });
+        document.body.appendChild(note);
+        setTimeout(() => note.remove(), 1500);
+      }, i * 200);
+    }
+  }
+  
+  function createMarshmallowVolleyEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const marshmallow = document.createElement('div');
+    marshmallow.textContent = '🍡';
+    marshmallow.style.cssText = `
+      position: fixed;
+      left: ${rect.right}px;
+      top: ${rect.top + rect.height / 2}px;
+      font-size: 30px;
+      pointer-events: none;
+      z-index: 10000;
+    `;
+    marshmallow.animate([
+      { transform: 'translateX(0) translateY(0)', opacity: 1 },
+      { transform: 'translateX(150px) translateY(-60px)', opacity: 1 },
+      { transform: 'translateX(0) translateY(0)', opacity: 1 }
+    ], { duration: 1500, easing: 'ease-in-out', fill: 'forwards' });
+    document.body.appendChild(marshmallow);
+    setTimeout(() => marshmallow.remove(), 1500);
+  }
+  
+  function createHairTornadoEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const tornado = document.createElement('div');
+    tornado.textContent = '🌪️';
+    tornado.style.cssText = `
+      position: fixed;
+      left: ${rect.left + rect.width / 2 - 20}px;
+      top: ${rect.top - 50}px;
+      font-size: 50px;
+      pointer-events: none;
+      z-index: 10000;
+    `;
+    tornado.animate([
+      { transform: 'scale(0) rotate(0deg)', opacity: 0 },
+      { transform: 'scale(1) rotate(360deg)', opacity: 1 },
+      { transform: 'scale(1) rotate(720deg)', opacity: 1 },
+      { transform: 'scale(0) rotate(1080deg)', opacity: 0 }
+    ], { duration: 2000, easing: 'ease-in-out', fill: 'forwards' });
+    document.body.appendChild(tornado);
+    setTimeout(() => tornado.remove(), 2000);
+  }
+  
+  function createTigerShuffleEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const pawPrints = ['🐾'];
+    for (let i = 0; i < 8; i++) {
+      setTimeout(() => {
+        const paw = document.createElement('div');
+        paw.textContent = pawPrints[0];
+        paw.style.cssText = `
+          position: fixed;
+          left: ${rect.left + rect.width / 2 + (i % 2 === 0 ? -30 : 30)}px;
+          top: ${rect.bottom - 20 + (i * 10)}px;
+          font-size: 25px;
+          pointer-events: none;
+          z-index: 9999;
+        `;
+        paw.animate([
+          { transform: 'scale(0)', opacity: 0 },
+          { transform: 'scale(1)', opacity: 1 },
+          { transform: 'scale(1)', opacity: 0 }
+        ], { duration: 800, easing: 'ease-out', fill: 'forwards' });
+        document.body.appendChild(paw);
+        setTimeout(() => paw.remove(), 800);
+      }, i * 150);
+    }
+  }
+  
+  function createLegoStepEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const lego = document.createElement('div');
+    lego.textContent = '🧱';
+    lego.style.cssText = `
+      position: fixed;
+      left: ${rect.left + rect.width / 2 - 15}px;
+      top: ${rect.bottom - 10}px;
+      font-size: 30px;
+      pointer-events: none;
+      z-index: 10000;
+    `;
+    document.body.appendChild(lego);
+    setTimeout(() => lego.remove(), 2500);
+    
+    // "OUCH!" text
+    const text = document.createElement('div');
+    text.textContent = 'OUCH!';
+    text.style.cssText = `
+      position: fixed;
+      left: ${rect.right + 10}px;
+      top: ${rect.top}px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #ef4444;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+      pointer-events: none;
+      z-index: 10000;
+    `;
+    text.animate([
+      { transform: 'scale(0)', opacity: 0 },
+      { transform: 'scale(1.3)', opacity: 1 },
+      { transform: 'scale(1)', opacity: 0 }
+    ], { duration: 1000, easing: 'ease-out', fill: 'forwards' });
+    document.body.appendChild(text);
+    setTimeout(() => text.remove(), 1000);
+  }
+  
+  function createGooseChaseEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const goose = document.createElement('div');
+    goose.textContent = '🦆';
+    goose.style.cssText = `
+      position: fixed;
+      left: ${rect.right + 20}px;
+      top: ${rect.top + rect.height / 2 - 20}px;
+      font-size: 40px;
+      pointer-events: none;
+      z-index: 10000;
+    `;
+    goose.animate([
+      { transform: 'translateX(0) scale(1)', opacity: 1 },
+      { transform: 'translateX(-50px) scale(1.1)', opacity: 1 },
+      { transform: 'translateX(0) scale(1)', opacity: 1 }
+    ], { duration: 2000, easing: 'ease-in-out', fill: 'forwards' });
+    document.body.appendChild(goose);
+    
+    // Feather at the end
+    setTimeout(() => {
+      const feather = document.createElement('div');
+      feather.textContent = '🪶';
+      feather.style.cssText = `
+        position: fixed;
+        left: ${rect.right + 20}px;
+        top: ${rect.top + rect.height / 2 - 20}px;
+        font-size: 30px;
+        pointer-events: none;
+        z-index: 10000;
+      `;
+      feather.animate([
+        { transform: 'translateY(0) rotate(0deg) scale(0)', opacity: 0 },
+        { transform: 'translateY(-50px) rotate(360deg) scale(1)', opacity: 1 }
+      ], { duration: 1000, easing: 'ease-out', fill: 'forwards' });
+      document.body.appendChild(feather);
+      setTimeout(() => feather.remove(), 2000);
+    }, 2500);
+    
+    setTimeout(() => goose.remove(), 3500);
+  }
+  
+  function createSockChestEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const chest = document.createElement('div');
+    chest.textContent = '🧦🧦🧦';
+    chest.style.cssText = `
+      position: fixed;
+      left: ${rect.right}px;
+      top: ${rect.top + 20}px;
+      font-size: 35px;
+      pointer-events: none;
+      z-index: 10000;
+    `;
+    chest.animate([
+      { transform: 'translateY(20px) scale(0)', opacity: 0 },
+      { transform: 'translateY(0) scale(1.2)', opacity: 1 },
+      { transform: 'translateY(-10px) scale(1)', opacity: 1 }
+    ], { duration: 800, easing: 'ease-out', fill: 'forwards' });
+    document.body.appendChild(chest);
+    setTimeout(() => chest.remove(), 2500);
+  }
+  
+  // Call particle effect based on emote name
+  function triggerEasterEggEffect(effectName, element) {
+    const effects = {
+      confettiSneeze: createConfettiSneezeEffect,
+      bananaSlip: createBananaSlipEffect,
+      bubbleBurp: createBubbleBurpEffect,
+      pieTrap: createPieTrapEffect,
+      rubberChicken: createRubberChickenEffect,
+      heroLanding: createHeroLandingEffect,
+      endlessScarf: createEndlessScarfEffect,
+      frogCrown: createFrogCrownEffect,
+      chipmunkVoice: createChipmunkVoiceEffect,
+      marshmallowVolley: createMarshmallowVolleyEffect,
+      hairTornado: createHairTornadoEffect,
+      tigerShuffle: createTigerShuffleEffect,
+      legoStep: createLegoStepEffect,
+      gooseChase: createGooseChaseEffect,
+      sockChest: createSockChestEffect
+    };
+    
+    if (effects[effectName]) {
+      effects[effectName](element);
+    }
+  }
+  
+  // Apply Easter egg emote
+  function applyEasterEggEmote() {
+    const williamAvatar = document.getElementById('williamAvatar');
+    if (!williamAvatar || williamState.current === 'rest') return;
+    
+    // Get available emotes (exclude last played for no immediate repeats)
+    let availableEmotes = easterEggEmotes;
+    if (williamState.lastEasterEgg) {
+      availableEmotes = easterEggEmotes.filter(e => e.name !== williamState.lastEasterEgg);
+    }
+    
+    // Pick random Easter egg
+    const emote = availableEmotes[Math.floor(Math.random() * availableEmotes.length)];
+    williamState.lastEasterEgg = emote.name;
+    williamState.current = 'easter-egg';
+    
+    // Remove any existing animation
+    williamAvatar.style.animation = 'none';
+    void williamAvatar.offsetWidth;
+    
+    // Apply the Easter egg animation
+    williamAvatar.style.animation = `${emote.name} ${emote.duration}ms ease-in-out`;
+    
+    // Trigger particle effect
+    triggerEasterEggEffect(emote.effect, williamAvatar);
+    
+    // Return to idle after animation completes
+    setTimeout(() => {
+      williamAvatar.style.animation = 'none';
+      williamState.current = 'idle';
+      
+      // If auto-emote was scheduled during Easter egg, reschedule it
+      if (williamState.nextAutoEmoteTime && Date.now() > williamState.nextAutoEmoteTime) {
+        scheduleNextAutoEmote();
+      }
+    }, emote.duration);
+  }
+  
+  // Check for anti-spam (5+ clicks in ~3 seconds)
+  function checkAntiSpam() {
+    const now = Date.now();
+    williamState.clickTimestamps = williamState.clickTimestamps.filter(t => now - t < 3000);
+    
+    if (williamState.clickTimestamps.length >= 5) {
+      enterRestState();
+      return true;
+    }
+    return false;
+  }
+  
+  // Enter rest state (60 second break)
+  function enterRestState() {
+    const williamAvatar = document.getElementById('williamAvatar');
+    const restOverlay = document.getElementById('williamRestOverlay');
+    if (!williamAvatar || !restOverlay) return;
+    
+    williamState.current = 'rest';
+    williamState.restUntil = Date.now() + 60000; // 60 seconds
+    williamState.clickTimestamps = [];
+    
+    // Clear auto-emote timer
+    if (williamState.autoEmoteTimer) {
+      clearTimeout(williamState.autoEmoteTimer);
+      williamState.autoEmoteTimer = null;
+    }
+    
+    // Apply rest animation
+    williamAvatar.style.animation = 'none';
+    void williamAvatar.offsetWidth;
+    williamAvatar.style.animation = 'easter-rest-state 3s ease-in-out infinite';
+    
+    // Show rest overlay
+    restOverlay.classList.add('show');
+    
+    // Countdown timer
+    const countdownEl = document.getElementById('restCountdown');
+    const countdownInterval = setInterval(() => {
+      const remaining = Math.ceil((williamState.restUntil - Date.now()) / 1000);
+      if (countdownEl) countdownEl.textContent = Math.max(0, remaining);
+      
+      if (remaining <= 0) {
+        clearInterval(countdownInterval);
+        exitRestState();
+      }
+    }, 1000);
+  }
+  
+  // Exit rest state
+  function exitRestState() {
+    const williamAvatar = document.getElementById('williamAvatar');
+    const restOverlay = document.getElementById('williamRestOverlay');
+    if (!williamAvatar || !restOverlay) return;
+    
+    williamState.current = 'idle';
+    williamState.restUntil = null;
+    
+    // Remove rest animation
+    williamAvatar.style.animation = 'none';
+    
+    // Hide rest overlay
+    restOverlay.classList.remove('show');
+    
+    // Resume auto-emote cycle
+    scheduleNextAutoEmote();
+  }
+  
+  // Handle William avatar click
+  function handleWilliamClick() {
+    if (williamState.current === 'rest') {
+      // During rest, just show a tiny blink (do nothing for now)
+      return;
+    }
+    
+    // Track click for anti-spam
+    williamState.clickTimestamps.push(Date.now());
+    
+    // Check for spam
+    if (checkAntiSpam()) {
+      return;
+    }
+    
+    // Check cooldown
+    if (williamState.isOnCooldown) {
+      return;
+    }
+    
+    // Trigger Easter egg emote
+    applyEasterEggEmote();
+    
+    // Set cooldown (1-2 seconds random)
+    williamState.isOnCooldown = true;
+    const cooldownDuration = 1000 + Math.random() * 1000; // 1-2 seconds
+    setTimeout(() => {
+      williamState.isOnCooldown = false;
+    }, cooldownDuration);
+  }
+  
+  // Schedule next auto-emote
+  function scheduleNextAutoEmote() {
+    // Clear existing timer
+    if (williamState.autoEmoteTimer) {
+      clearTimeout(williamState.autoEmoteTimer);
+    }
+    
+    // Schedule next emote in 10 seconds
+    williamState.nextAutoEmoteTime = Date.now() + 10000;
+    williamState.autoEmoteTimer = setTimeout(() => {
+      // Only play if not in Easter egg or rest state
+      if (williamState.current === 'idle') {
+        applyRandomWilliamAnimation();
+      }
+      
+      // Schedule next one
+      scheduleNextAutoEmote();
+    }, 10000);
+  }
+  
+  // Start the animation timer (every 10 seconds for Easter egg unlock window) - only if element exists
+  if (document.getElementById('williamAvatar')) {
+    const williamAvatar = document.getElementById('williamAvatar');
+    
+    // Add click handler
+    williamAvatar.addEventListener('click', handleWilliamClick);
+    williamAvatar.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      handleWilliamClick();
+    });
+    
+    // Add glow class for affordance
+    williamAvatar.classList.add('clickable-glow');
+    
+    // Trigger the first animation after 1 second
     setTimeout(applyRandomWilliamAnimation, 1000);
+    
+    // Start the 10-second cycle
+    scheduleNextAutoEmote();
 
     // Setup collision detection after DOM is ready
     setTimeout(setupWilliamCollisionDetection, 100);
