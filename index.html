@@ -296,9 +296,10 @@
         <h1>🎮 Williams World</h1>
         <p class="subtitle">Quest Tracker & Adventure Log</p>
 
-        <div class="character-image">
-            <img src="https://drive.google.com/uc?export=view&id=1example" alt="Williams Character" id="characterImg" onerror="this.style.display='none'">
-        </div>
+        <!-- Character image section - add your own Google Drive image URL -->
+        <!-- <div class="character-image">
+            <img src="https://drive.google.com/uc?export=view&id=YOUR_IMAGE_ID" alt="Williams Character" id="characterImg" onerror="this.style.display='none'">
+        </div> -->
 
         <div class="stats-container">
             <div class="stat-card">
@@ -340,8 +341,10 @@
 
         <div class="add-quest-section">
             <h3 style="margin-bottom: 15px; color: #667eea;">➕ Add New Quest</h3>
-            <input type="text" id="questInput" placeholder="Enter your quest..." maxlength="100">
-            <input type="number" id="xpInput" placeholder="XP Reward (default: 50)" min="1" max="1000" value="50">
+            <label for="questInput" style="display: block; margin-bottom: 5px; color: #667eea; font-weight: 500;">Quest Description:</label>
+            <input type="text" id="questInput" placeholder="Enter your quest..." maxlength="100" aria-label="Quest description">
+            <label for="xpInput" style="display: block; margin-bottom: 5px; margin-top: 10px; color: #667eea; font-weight: 500;">XP Reward:</label>
+            <input type="number" id="xpInput" placeholder="XP Reward (default: 50)" min="1" max="1000" value="50" aria-label="XP reward value">
             <button class="btn" onclick="addQuest()">Add Quest</button>
             <button class="btn reset-btn" onclick="resetProgress()">Reset All Progress</button>
         </div>
