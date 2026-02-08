@@ -12,10 +12,10 @@
 
 <style>
   :root{
-    --bg0:#0a0612; --bg1:#120a1e; --panel:rgba(20, 10, 30, 0.85); --ink:#eaf0ff; --muted:#b9c6ffcc;
+    --bg0:#0a0612; --bg1:#120a1e; --panel:rgba(12, 8, 20, 0.90); --ink:#eaf0ff; --muted:#c8d4ffdd;
     --line:#c8862a; --gold:#f0a830; --green:#7dffb4; --blue:#7aa2ff;
     --purple:#6b46c1; --orange:#ff8c42; --red:#dc2626; 
-    --shadow:0 18px 60px rgba(0,0,0,.45); --r1:22px; --r2:16px; --pad:16px; --max:1280px;
+    --shadow:0 18px 60px rgba(0,0,0,.45); --r1:20px; --r2:12px; --pad:16px; --max:1280px;
     --font:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
     --fantasy-font:'Cinzel', 'MedievalSharp', serif;
   }
@@ -92,9 +92,19 @@
     pointer-events: none;
     z-index: 1;
   }
-  #ww{font-family:var(--font); color:var(--ink); position: relative; z-index: 10;}
+  #ww{
+    font-family:var(--font); 
+    color:var(--ink); 
+    position: relative; 
+    z-index: 10;
+    min-height: 100vh;
+    background: rgba(10, 10, 20, 0.55);
+    backdrop-filter: blur(6px);
+  }
   #ww *{box-sizing:border-box}
-  #ww .wrap{max-width:var(--max); margin:0 auto; padding:14px}
+  #ww .wrap{max-width:var(--max); margin:0 auto; padding:16px 24px}
+  @media (max-width:768px){ #ww .wrap{padding:12px} }
+  @media (max-width:768px){ #ww{background: rgba(10, 10, 20, 0.70)} }
   #ww .topbar{
     position:sticky; top:0; z-index:60;
     background: linear-gradient(180deg, rgba(20,10,30,.96), rgba(20,10,30,.78));
@@ -115,7 +125,7 @@
   }
   #ww .nav button.active{background: rgba(240,168,48,.18); border-color: var(--gold)}
   #ww .banner{
-    margin-top:12px; border-radius:26px; border:3px solid var(--gold);
+    margin-top:12px; border-radius:20px; border:3px solid var(--gold);
     box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.4); overflow:hidden; position:relative;
     background: linear-gradient(180deg, rgba(30,15,50,.25), rgba(20,10,30,.15));
     min-height: 420px;
@@ -159,7 +169,7 @@
     object-fit: cover;
     display: block;
   }
-  #ww p{margin:0; color:var(--muted); font-weight:650}
+  #ww p{margin:0; color:var(--muted); font-weight:650; font-size:14px}
   #ww .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
   #ww .btn{
     border:2px solid var(--line); background: rgba(20,10,30,.28); color:var(--ink);
@@ -189,13 +199,13 @@
     border-color: rgba(255,107,138,.6);
   }
   #ww .statRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
-  #ww .pill{border:2px solid var(--line); background: rgba(20,10,30,.28); border-radius:999px; padding:8px 10px; display:flex; gap:8px; align-items:center; font-weight:900; font-size:13px; box-shadow: 0 0 10px rgba(240,168,48,.2);}
+  #ww .pill{border:1px solid rgba(200, 134, 42, 0.4); background: rgba(20,10,30,.28); border-radius:999px; padding:8px 10px; display:flex; gap:8px; align-items:center; font-weight:900; font-size:14px;}
   #ww .dot{width:10px;height:10px;border-radius:999px;background:var(--blue)}
   #ww .dot.green{background:var(--green)}
   #ww .dot.gold{background:var(--gold)}
-  #ww .meter{border:2px solid var(--line); border-radius:14px; background: rgba(20,10,30,.22); padding:10px; margin-top:10px}
+  #ww .meter{border:1px solid rgba(200, 134, 42, 0.4); border-radius:12px; background: rgba(20,10,30,.22); padding:10px; margin-top:10px}
   #ww .meterTop{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:8px}
-  #ww .small{font-size:12px; color:var(--muted); font-weight:650}
+  #ww .small{font-size:12px; color:var(--muted); font-weight:650; text-shadow: 1px 1px 2px rgba(0,0,0,.6);}
   #ww .bar{height:16px;border-radius:999px;background: rgba(50,30,20,.55);overflow:hidden;border:2px solid var(--line); position: relative;}
   #ww .bar > div{
     height:100%; width:0%; 
@@ -224,10 +234,10 @@
   @media (max-width:980px){ #ww .grid{grid-template-columns:1fr} }
   #ww .card{border:2px solid var(--line); background: rgba(20,10,30,.62); border-radius:var(--r1); box-shadow:var(--shadow), 0 0 15px rgba(240,168,48,.2); padding:var(--pad)}
   #ww .card h2{margin:0 0 10px; font-size:15px; display:flex; justify-content:space-between; align-items:center; gap:10px}
-  #ww .tag{font-size:12px; padding:6px 10px; border-radius:999px; border:2px solid var(--line); background: rgba(20,10,30,.45); color:var(--muted); font-weight:900}
-  #ww .frame{border:2px solid var(--line); background: rgba(20,10,30,.22); border-radius:var(--r2); padding:12px}
+  #ww .tag{font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid rgba(200, 134, 42, 0.4); background: rgba(20,10,30,.45); color:var(--muted); font-weight:900}
+  #ww .frame{border:1px solid rgba(200, 134, 42, 0.4); background: rgba(20,10,30,.22); border-radius:var(--r2); padding:12px}
   #ww .taskList{display:grid; gap:10px; margin-top:10px}
-  #ww .task{display:grid; grid-template-columns:28px 1fr auto; gap:10px; align-items:center; border:2px solid var(--line); background: rgba(20,10,30,.20); border-radius:16px; padding:10px}
+  #ww .task{display:grid; grid-template-columns:28px 1fr auto; gap:10px; align-items:center; border:1px solid rgba(200, 134, 42, 0.4); background: rgba(20,10,30,.20); border-radius:12px; padding:10px}
   #ww .task input{width:20px;height:20px; accent-color: var(--green)}
   #ww .task .name{font-weight:950}
   #ww .task .xp{font-weight:1000; padding:6px 9px; border-radius:999px; border:1px solid rgba(125,255,180,.45); background: rgba(125,255,180,.10); font-size:12px; min-width:74px; text-align:center}
@@ -523,14 +533,15 @@
   /* Quest Cards Layout */
   #ww .questGrid{margin-top:20px; display:grid; grid-template-columns:repeat(3, 1fr); gap:20px}
   @media (max-width:980px){ #ww .questGrid{grid-template-columns:repeat(2, 1fr)} }
+  @media (max-width:768px){ #ww .questGrid{grid-template-columns:1fr; gap:16px} }
   @media (max-width:520px){ #ww .questGrid{grid-template-columns:1fr} }
   
   #ww .questCard{
     border:3px solid var(--gold); 
-    background: rgba(20,10,30,.90); 
-    border-radius:24px; 
-    box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.5), inset 0 2px 0 rgba(255,255,255,.1); 
-    padding:24px; 
+    background: rgba(12, 8, 20, 0.90); 
+    border-radius:20px; 
+    box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.5); 
+    padding:20px; 
     position:relative;
     overflow:hidden; 
     min-height:450px; 
@@ -539,9 +550,10 @@
     transition: all .3s ease;
     background-size: 200% 200%;
   }
+  @media (min-width:769px){ #ww .questCard{padding:24px} }
   #ww .questCard:hover {
     transform: translateY(-4px);
-    box-shadow:var(--shadow), 0 0 40px rgba(240,168,48,.7), inset 0 2px 0 rgba(255,255,255,.2);
+    box-shadow:var(--shadow), 0 0 40px rgba(240,168,48,.7);
     border-color: rgba(240,168,48,1);
   }
   #ww .questCard::before{
@@ -595,14 +607,15 @@
   
   #ww .questChecklist{margin:16px 0; flex:1}
   #ww .questChecklist .checkItem{
-    display:flex; align-items:center; gap:12px; padding:10px 12px; 
-    font-weight:700; font-size:15px;
+    display:flex; align-items:center; gap:12px; padding:12px; 
+    font-weight:700; font-size:14px;
     background: rgba(0,0,0,.2);
     border-radius: 12px;
     margin-bottom: 10px;
-    border: 2px solid rgba(255,255,255,.1);
+    border: 1px solid rgba(200, 134, 42, 0.4);
     transition: all .3s ease;
     cursor: pointer;
+    min-height: 44px;
   }
   #ww .questChecklist .checkItem:hover{
     background: rgba(0,0,0,.3);
@@ -669,6 +682,7 @@
     box-shadow: 0 6px 12px rgba(0,0,0,.4), inset 0 2px 0 rgba(255,255,255,.2);
     position: relative;
     overflow: hidden;
+    min-height: 44px;
   }
   #ww .questBtn::before {
     content: "";
@@ -705,15 +719,18 @@
   /* Bottom Dashboard */
   #ww .dashboard{margin-top:24px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px}
   @media (max-width:980px){ #ww .dashboard{grid-template-columns:1fr} }
+  @media (max-width:768px){ #ww .dashboard{grid-template-columns:1fr; gap:16px} }
   
   #ww .dashPanel{
-    border:3px solid var(--gold); background: rgba(20,10,30,.82); border-radius:20px;
-    box-shadow:var(--shadow), 0 0 20px rgba(240,168,48,.3); padding:20px;
+    border:3px solid var(--gold); background: rgba(12, 8, 20, 0.88); border-radius:20px;
+    box-shadow:var(--shadow), 0 0 20px rgba(240,168,48,.3); padding:16px;
   }
+  @media (min-width:769px){ #ww .dashPanel{padding:20px} }
   
   #ww .dashPanel h3{
     margin:0 0 16px; font-size:18px; font-weight:1000; color:var(--gold);
     text-shadow: 2px 2px 0 rgba(0,0,0,.9);
+    font-family: var(--fantasy-font);
   }
   
   #ww .xpDisplay{
@@ -790,13 +807,28 @@
 
   /* War Chest Panel */
   #ww .warChestPanel {
-    background: linear-gradient(135deg, rgba(255,211,110,.12), rgba(255,170,50,.08));
+    background: linear-gradient(135deg, rgba(255,211,110,.18), rgba(255,170,50,.12), rgba(255,211,110,.18));
+    background-size: 200% 200%;
     border: 3px solid var(--gold);
-    border-radius: 18px;
+    border-radius: 16px;
     padding: 16px;
     margin-top: 16px;
     text-align: center;
-    box-shadow: 0 0 20px rgba(255,211,110,.2), 0 4px 12px rgba(0,0,0,.3);
+    box-shadow: 0 0 25px rgba(255,211,110,.3), 0 4px 12px rgba(0,0,0,.3);
+    animation: shimmer 3s linear infinite;
+    position: relative;
+  }
+  #ww .warChestPanel::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, transparent, rgba(255,211,110,.4), transparent);
+    border-radius: 16px;
+    animation: shimmer 2s linear infinite;
+    z-index: -1;
   }
   #ww .warChestPanel h4 {
     margin: 0 0 8px;
@@ -953,6 +985,15 @@
     color: var(--gold);
     font-family: var(--fantasy-font);
   }
+
+  /* Accessibility - Focus Styles */
+  #ww button:focus-visible,
+  #ww input:focus-visible,
+  #ww .checkItem:focus-visible,
+  #ww .awardBtn:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
 </style>
 
 <div id="ww">
@@ -968,10 +1009,10 @@
           <span class="badge" id="todayLabel">Today</span>
         </div>
         <div class="nav">
-          <button class="active" data-section="home">Home</button>
-          <button data-section="tracker">Tracker</button>
-          <button data-section="party">Party</button>
-          <button data-section="map">Map</button>
+          <button class="active" data-section="home" aria-label="Navigate to Home section">Home</button>
+          <button data-section="tracker" aria-label="Navigate to Quest Tracker section">Tracker</button>
+          <button data-section="party" aria-label="Navigate to Companion Party section">Party</button>
+          <button data-section="map" aria-label="Navigate to World Map section">Map</button>
         </div>
       </div>
     </div>
@@ -998,14 +1039,21 @@
               <div><b>XP</b>: <span id="xpNow">0</span> / <span id="xpNext">100</span></div>
               <div class="small">Complete all quests to earn rewards!</div>
             </div>
-            <div class="bar"><div id="xpBar"></div></div>
+            <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="XP Progress"><div id="xpBar"></div></div>
           </div>
           <div class="meter hpMeter" id="hpMeterBanner">
             <div class="meterTop">
               <div><b>❤️ HP</b>: <span id="hpNow">100</span> / <span id="hpMax">100</span></div>
               <div class="small">Missed tasks deal damage at midnight!</div>
             </div>
-            <div class="bar"><div id="hpBar"></div></div>
+            <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-label="HP Progress"><div id="hpBar"></div></div>
+          </div>
+          
+          <!-- CTA Button -->
+          <div style="margin-top:16px;">
+            <button id="heroCTA" class="questBtn green" style="padding:16px 32px; font-size:18px; width:100%; max-width:400px;">
+              🎯 Start Today's Quest!
+            </button>
           </div>
         </div>
 
@@ -1263,7 +1311,13 @@
         <div class="warChestPanel" id="warChestPanel">
           <h4>⚔️ War Chest ⚔️</h4>
           <div class="warChestAmount"><span id="warChestGold">0</span> 🪙</div>
-          <div class="small" style="color:var(--muted);">Award 50 gold to a companion!</div>
+          <div class="small" style="color:var(--muted); margin-bottom:8px;">Award 50 gold to a companion!</div>
+          <div class="meter" style="margin-top:8px;">
+            <div class="meterTop">
+              <div class="small" style="margin-bottom:4px;">Progress to Next Reward (50 🪙)</div>
+            </div>
+            <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0" aria-label="War Chest Progress"><div id="warChestBar"></div></div>
+          </div>
           <div class="awardBtnRow">
             <button class="awardBtn" data-award="ember">🔥 Award Ember</button>
             <button class="awardBtn" data-award="sprite">✨ Award Sprite</button>
@@ -1828,6 +1882,18 @@
     // Update War Chest display
     const warChestGold = $("warChestGold");
     if (warChestGold) warChestGold.textContent = state.warChest;
+    
+    // Update War Chest progress bar
+    const warChestBar = $("warChestBar");
+    if (warChestBar) {
+      const progress = Math.min(100, Math.round((state.warChest / WAR_CHEST_AWARD_COST) * 100));
+      warChestBar.style.width = progress + "%";
+      const warChestBarContainer = warChestBar.parentElement;
+      if (warChestBarContainer) {
+        warChestBarContainer.setAttribute('aria-valuenow', state.warChest);
+      }
+    }
+    
     document.querySelectorAll('.awardBtn').forEach(btn => {
       btn.disabled = state.warChest < WAR_CHEST_AWARD_COST;
     });
@@ -2062,6 +2128,7 @@
         day.result = "Not graded";
         save();
         updateHeader();
+        updateCTAButton();
         updateQuestProgress(task.quest);
         renderTasks(); // Keep backward compat task list in sync
       });
@@ -2199,11 +2266,45 @@
     });
   });
 
+  // Hero CTA Button Handler
+  const heroCTA = document.getElementById('heroCTA');
+  if(heroCTA){
+    heroCTA.addEventListener('click', () => {
+      const allComplete = TASKS.every(t => state.days[TODAY]?.tasks[t.id]);
+      if(allComplete){
+        gradeDay();
+      } else {
+        const trackerSection = document.getElementById('tracker');
+        if(trackerSection){
+          trackerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  }
+  
+  // Update CTA button text based on completion
+  function updateCTAButton(){
+    const heroCTA = document.getElementById('heroCTA');
+    if(heroCTA){
+      const allComplete = TASKS.every(t => state.days[TODAY]?.tasks[t.id]);
+      if(allComplete){
+        heroCTA.innerHTML = '🏆 Grade My Day!';
+        heroCTA.classList.remove('green');
+        heroCTA.classList.add('blue');
+      } else {
+        heroCTA.innerHTML = '🎯 Start Today\'s Quest!';
+        heroCTA.classList.remove('blue');
+        heroCTA.classList.add('green');
+      }
+    }
+  }
+
   // INIT
   applyAssets();
   renderTasks();
   setupQuestCheckboxes();
   updateHeader();
+  updateCTAButton();
 </script>
 
 </body>
