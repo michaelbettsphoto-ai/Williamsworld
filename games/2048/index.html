@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2048 - William's World Games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../shared.css">
+  <style>
+    #gameBoard {
+      display: grid;
+      grid-template-columns: repeat(4, 90px);
+      grid-gap: 10px;
+      padding: 10px;
+      background: rgba(30, 15, 40, 0.85);
+      border-radius: 16px;
+      margin: 0 auto;
+      width: fit-content;
+    }
+    
+    .tile {
+      width: 90px;
+      height: 90px;
+      background: rgba(200, 148, 42, 0.2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: bold;
+      font-family: var(--fantasy-font);
+      transition: all 0.15s ease;
+    }
+    
+    .tile[data-value="2"] { background: #7dffb4; color: #1a0e2e; }
+    .tile[data-value="4"] { background: #5ac99a; color: #1a0e2e; }
+    .tile[data-value="8"] { background: #ffd36e; color: #1a0e2e; }
+    .tile[data-value="16"] { background: #d4a530; color: #fff5e6; }
+    .tile[data-value="32"] { background: #ff9d5c; color: #fff5e6; }
+    .tile[data-value="64"] { background: #ff7b3d; color: #fff5e6; }
+    .tile[data-value="128"] { background: #7c3aed; color: #fff5e6; font-size: 28px; }
+    .tile[data-value="256"] { background: #6b32d1; color: #fff5e6; font-size: 28px; }
+    .tile[data-value="512"] { background: #5a29b5; color: #fff5e6; font-size: 28px; }
+    .tile[data-value="1024"] { background: #492099; color: #fff5e6; font-size: 24px; }
+    .tile[data-value="2048"] { background: #ffd36e; color: #1a0e2e; font-size: 24px; box-shadow: 0 0 20px #ffd36e; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">🔢 2048 Game</div>
+        <a href="../index.html" class="btn">← Back to Games</a>
+      </div>
+    </div>
+
+    <!-- Game Panel -->
+    <div class="panel">
+      <!-- Score Display -->
+      <div class="score-display">
+        Score: <span id="score">0</span> | High Score: <span id="highscore">0</span>
+      </div>
+
+      <!-- Game Controls -->
+      <div class="game-controls">
+        <button id="startBtn" class="btn btn-primary">New Game</button>
+        <button id="muteBtn" class="btn">🔊 Sound</button>
+      </div>
+
+      <!-- Game Board -->
+      <div class="game-canvas-container">
+        <div id="gameBoard"></div>
+      </div>
+
+      <!-- Instructions -->
+      <div class="instructions">
+        <h3>📖 How to Play</h3>
+        <ul>
+          <li>Use arrow keys (↑ ↓ ← →) to slide tiles</li>
+          <li>Tiles with the same number merge when they touch</li>
+          <li>Reach the 2048 tile to win!</li>
+          <li>Keep playing to get an even higher score</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Credits Link -->
+  <a href="../LICENSE-GAMES.md" class="credits-link">📜 Credits</a>
+
+  <script src="game.js"></script>
+</body>
+</html>
