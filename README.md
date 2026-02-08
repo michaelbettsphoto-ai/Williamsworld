@@ -14,6 +14,9 @@ An interactive quest tracker and gamification system that helps track daily task
 - **💾 Auto-Save**: All progress is automatically saved to your browser's local storage
 - **📱 Mobile Friendly**: Responsive design works perfectly on phones and tablets
 - **🎨 Beautiful UI**: Modern gradient design with smooth animations
+- **🎵 Audio System**: Dynamic sound effects, weather ambience, and customizable audio controls
+- **🎭 William Avatar**: Interactive character with idle animations and fun Easter egg sounds
+- **🌤️ Weather Effects**: Visual and audio weather system (rain, snow, storm, etc.)
 
 ## 🎯 How It Works
 
@@ -60,9 +63,62 @@ assets/
 ├── ui/          # UI elements (banner, logo, map)
 ├── img/         # Game images (companions, zones)
 └── icons/       # Icon assets
+
+audio/
+├── ui/          # UI sound effects (clicks, toggles, success/error)
+├── avatar/      # William avatar sounds (idle, Easter eggs)
+├── weather/     # Weather ambient loops (rain, storm, snow, etc.)
+├── music/       # Background music loops
+└── gameplay/    # Mini-game sound effects
 ```
 
 Replace the placeholder SVG files with your own images. Update paths in the `ASSETS` object in `index.html` if you change filenames or formats.
+
+## 🎵 Audio System
+
+Williams World includes a comprehensive audio system with:
+
+- **UI Sound Effects** - Button clicks, panel open/close, success/error feedback
+- **William Avatar Sounds** - Idle emotes and fun Easter egg sounds
+- **Weather Ambience** - Dynamic ambient sounds that change with weather
+- **Background Music** - Optional looping music tracks
+- **User Controls** - Master mute, separate volume sliders, reduce sound mode
+
+### Audio Controls
+- Click the 🔊 icon in the bottom-right to open audio settings
+- Adjust Music, Ambience, and SFX volumes independently
+- Shift+Click the audio icon for quick mute/unmute
+- Enable "Reduce Sound Mode" to minimize idle sounds
+- All preferences are saved to localStorage
+
+### Testing Audio
+Open `audio-test.html` in your browser to preview all sound effects and test the audio system.
+
+### Getting Audio Files
+
+**🚀 Quick Start**: See `QUICKSTART_AUDIO.md` for the fastest way to add audio (5 minutes)
+
+**📚 Complete Guide**: See `AUDIO_SOURCING_GUIDE.md` for:
+- Verified CC0 sources (Kenney, Freesound, OpenGameArt)
+- Direct download links
+- File conversion instructions
+- Audio processing tips
+
+**🛠️ Helper Scripts**:
+```bash
+# Interactive guided download
+./download-audio-assets.sh
+
+# Generate test placeholders
+python3 generate-placeholder-audio.py
+```
+
+### Adding Audio Files
+1. Download from CC0 sources (see guides above)
+2. Convert to OGG format if needed: `ffmpeg -i input.wav -c:a libvorbis -q:a 4 output.ogg`
+3. Place files in the appropriate `/audio/` subdirectory
+4. Files should be normalized, trimmed, and kid-safe
+5. See `/audio/sound-manifest.json` for complete sound mapping
 
 ## 🎨 Customization
 

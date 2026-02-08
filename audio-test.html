@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Williams World - Audio Test Page</title>
+  <style>
+    :root {
+      --bg: #1a0e2e;
+      --panel: rgba(30,15,40,0.85);
+      --ink: #fff5e6;
+      --gold: #ffd36e;
+      --green: #7dffb4;
+      --red: #dc2626;
+      --border: #d4a530;
+    }
+    
+    body {
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, var(--bg) 0%, #2a1a4e 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    h1 {
+      text-align: center;
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+      margin-bottom: 10px;
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: var(--ink);
+      opacity: 0.8;
+      margin-bottom: 40px;
+    }
+    
+    .section {
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    }
+    
+    .section h2 {
+      color: var(--gold);
+      margin-top: 0;
+      font-size: 24px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .sound-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 16px;
+    }
+    
+    .sound-card {
+      background: rgba(20,10,35,0.5);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .sound-card:hover {
+      background: rgba(255,211,110,0.15);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255,211,110,0.3);
+    }
+    
+    .sound-card h3 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+      color: var(--gold);
+    }
+    
+    .sound-card .key {
+      font-family: monospace;
+      font-size: 12px;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    
+    .sound-card .info {
+      font-size: 12px;
+      color: var(--ink);
+      opacity: 0.7;
+      line-height: 1.4;
+    }
+    
+    .play-icon {
+      font-size: 24px;
+      float: right;
+    }
+    
+    .controls {
+      background: rgba(20,10,35,0.5);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .control-group {
+      flex: 1;
+      min-width: 200px;
+    }
+    
+    .control-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: var(--gold);
+    }
+    
+    .control-group input[type="range"] {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(20,10,35,0.8);
+      border: 1px solid var(--border);
+    }
+    
+    .control-group input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--gold);
+      cursor: pointer;
+    }
+    
+    button {
+      background: var(--panel);
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 24px;
+      color: var(--ink);
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    button:hover {
+      background: rgba(255,211,110,0.2);
+      border-color: var(--gold);
+      transform: translateY(-2px);
+    }
+    
+    .status {
+      background: rgba(125,255,180,0.15);
+      border: 2px solid var(--green);
+      border-radius: 8px;
+      padding: 12px 20px;
+      text-align: center;
+      font-weight: 700;
+      color: var(--green);
+    }
+    
+    .log {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 12px;
+      margin-top: 16px;
+    }
+    
+    .log-entry {
+      padding: 4px 0;
+      border-bottom: 1px solid rgba(212,165,48,0.2);
+    }
+    
+    .log-entry:last-child {
+      border-bottom: none;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+  
+<div class="container">
+  <h1>🎵 Williams World Audio Test Page</h1>
+  <p class="subtitle">Test and preview all sound effects before deploying actual audio files</p>
+  
+  <div class="section">
+    <h2>🎛️ Audio Controls</h2>
+    <div class="controls">
+      <div class="control-group">
+        <label>Music Volume: <span id="musicVol">20%</span></label>
+        <input type="range" id="musicSlider" min="0" max="100" value="20">
+      </div>
+      <div class="control-group">
+        <label>Ambience Volume: <span id="ambienceVol">30%</span></label>
+        <input type="range" id="ambienceSlider" min="0" max="100" value="30">
+      </div>
+      <div class="control-group">
+        <label>SFX Volume: <span id="sfxVol">70%</span></label>
+        <input type="range" id="sfxSlider" min="0" max="100" value="70">
+      </div>
+      <button id="muteBtn">🔊 Toggle Mute</button>
+    </div>
+    <div class="status" id="status">✅ Audio system ready (console logging mode)</div>
+  </div>
+  
+  <div class="section">
+    <h2>🔘 UI Sound Effects</h2>
+    <div class="sound-grid" id="uiSounds"></div>
+  </div>
+  
+  <div class="section">
+    <h2>🎭 William Avatar Sounds</h2>
+    <div class="sound-grid" id="avatarSounds"></div>
+  </div>
+  
+  <div class="section">
+    <h2>🌤️ Weather Ambient Sounds</h2>
+    <div class="sound-grid" id="weatherSounds"></div>
+  </div>
+  
+  <div class="section">
+    <h2>🎵 Background Music</h2>
+    <div class="sound-grid" id="musicSounds"></div>
+  </div>
+  
+  <div class="section">
+    <h2>📋 Sound Event Log</h2>
+    <div class="log" id="soundLog">
+      <div class="log-entry">Audio test page loaded - click any sound card to test</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Simple audio test system (mirrors AudioManager structure)
+  const soundCatalog = {
+    ui: [
+      { key: 'ui.click', name: 'Button Click', info: 'Primary button clicks with 3 variations', files: 3 },
+      { key: 'ui.hover', name: 'Hover Tick', info: 'Subtle hover/focus sound', files: 1 },
+      { key: 'ui.panelOpen', name: 'Panel Open', info: 'Whoosh + sparkle for opening', files: 1 },
+      { key: 'ui.panelClose', name: 'Panel Close', info: 'Reverse whoosh for closing', files: 1 },
+      { key: 'ui.toggleOn', name: 'Toggle On', info: 'Switch on sound', files: 1 },
+      { key: 'ui.toggleOff', name: 'Toggle Off', info: 'Switch off sound', files: 1 },
+      { key: 'ui.tabChange', name: 'Tab Change', info: 'Small confirmation tick', files: 1 },
+      { key: 'ui.success', name: 'Success', info: 'Celebration chime with 3 variations', files: 3 },
+      { key: 'ui.error', name: 'Error', info: 'Soft boop for errors', files: 1 },
+      { key: 'ui.notification', name: 'Notification', info: 'Friendly ping', files: 1 },
+    ],
+    avatar: [
+      { key: 'avatar.idle', name: 'Idle Emote', info: 'Quiet idle sounds (3 variations)', files: 3 },
+      { key: 'avatar.tap', name: 'William Tap', info: 'Consistent tap sound', files: 1 },
+      { key: 'avatar.easterEgg', name: 'Easter Egg', info: 'Random fun sounds (15 variations)', files: 15 },
+      { key: 'avatar.onBreak', name: 'On Break', info: 'Spam prevention message', files: 1 },
+    ],
+    weather: [
+      { key: 'weather.sunny', name: 'Sunny', info: 'Birds + breeze (looping)', files: 1 },
+      { key: 'weather.cloudy', name: 'Cloudy', info: 'Wind + rustle (looping)', files: 1 },
+      { key: 'weather.rain', name: 'Rain', info: 'Light rain (looping)', files: 1 },
+      { key: 'weather.storm', name: 'Storm', info: 'Rain + wind + thunder (looping)', files: 1 },
+      { key: 'weather.snow', name: 'Snow', info: 'Soft wind + muffled (looping)', files: 1 },
+    ],
+    music: [
+      { key: 'music.hub', name: 'Hub Loop', info: 'Town hub music (looping)', files: 1 },
+      { key: 'music.forest', name: 'Forest Loop', info: 'Forest path music (looping)', files: 1 },
+      { key: 'music.dungeon', name: 'Dungeon Loop', info: 'Dungeon corridor music (looping)', files: 1 },
+    ]
+  };
+  
+  let volumes = { music: 0.2, ambience: 0.3, sfx: 0.7 };
+  let isMuted = false;
+  
+  function logSound(message) {
+    const log = document.getElementById('soundLog');
+    const entry = document.createElement('div');
+    entry.className = 'log-entry';
+    entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+    log.insertBefore(entry, log.firstChild);
+    
+    // Keep only last 20 entries
+    while (log.children.length > 20) {
+      log.removeChild(log.lastChild);
+    }
+  }
+  
+  function playSound(key, category) {
+    if (isMuted) {
+      logSound(`🔇 Muted: ${key}`);
+      return;
+    }
+    
+    let volume = volumes.sfx;
+    if (key.startsWith('weather.')) volume = volumes.ambience;
+    if (key.startsWith('music.')) volume = volumes.music;
+    
+    logSound(`🔊 Playing: ${key} (volume: ${(volume * 100).toFixed(0)}%)`);
+    console.log(`🔊 Playing: ${key} at volume ${volume.toFixed(2)}`);
+  }
+  
+  function createSoundCard(sound, category) {
+    const card = document.createElement('div');
+    card.className = 'sound-card';
+    card.innerHTML = `
+      <span class="play-icon">▶️</span>
+      <h3>${sound.name}</h3>
+      <div class="key">${sound.key}</div>
+      <div class="info">${sound.info}</div>
+      <div class="info" style="margin-top: 8px; color: var(--green);">
+        ${sound.files} file${sound.files > 1 ? 's' : ''}
+      </div>
+    `;
+    
+    card.addEventListener('click', () => {
+      playSound(sound.key, category);
+    });
+    
+    return card;
+  }
+  
+  function initPage() {
+    // Populate sound grids
+    Object.entries(soundCatalog).forEach(([category, sounds]) => {
+      const container = document.getElementById(`${category}Sounds`);
+      if (container) {
+        sounds.forEach(sound => {
+          container.appendChild(createSoundCard(sound, category));
+        });
+      }
+    });
+    
+    // Setup controls
+    const musicSlider = document.getElementById('musicSlider');
+    const ambienceSlider = document.getElementById('ambienceSlider');
+    const sfxSlider = document.getElementById('sfxSlider');
+    const muteBtn = document.getElementById('muteBtn');
+    
+    musicSlider.addEventListener('input', () => {
+      volumes.music = musicSlider.value / 100;
+      document.getElementById('musicVol').textContent = musicSlider.value + '%';
+      logSound(`🎵 Music volume: ${musicSlider.value}%`);
+    });
+    
+    ambienceSlider.addEventListener('input', () => {
+      volumes.ambience = ambienceSlider.value / 100;
+      document.getElementById('ambienceVol').textContent = ambienceSlider.value + '%';
+      logSound(`🌤️ Ambience volume: ${ambienceSlider.value}%`);
+    });
+    
+    sfxSlider.addEventListener('input', () => {
+      volumes.sfx = sfxSlider.value / 100;
+      document.getElementById('sfxVol').textContent = sfxSlider.value + '%';
+      logSound(`🔔 SFX volume: ${sfxSlider.value}%`);
+      playSound('ui.click', 'ui');
+    });
+    
+    muteBtn.addEventListener('click', () => {
+      isMuted = !isMuted;
+      muteBtn.textContent = isMuted ? '🔇 Toggle Mute' : '🔊 Toggle Mute';
+      document.getElementById('status').textContent = isMuted ? '🔇 Audio muted' : '✅ Audio system ready (console logging mode)';
+      logSound(isMuted ? '🔇 Audio muted' : '🔊 Audio unmuted');
+    });
+    
+    logSound('✅ Audio test page initialized');
+  }
+  
+  // Initialize on load
+  document.addEventListener('DOMContentLoaded', initPage);
+</script>
+
+</body>
+</html>
