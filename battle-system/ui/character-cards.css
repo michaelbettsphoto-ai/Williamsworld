@@ -1,0 +1,733 @@
+/**
+ * William's World - Character Card UI Components
+ * Reusable CSS and HTML templates for character cards
+ */
+
+/* ============================================
+   CARD COMPONENT VARIABLES
+   ============================================ */
+:root {
+  /* Role Colors */
+  --role-striker: #dc2626;
+  --role-striker-light: #ff9d5c;
+  --role-defender: #3b82f6;
+  --role-defender-light: #60a5fa;
+  --role-support: #7dffb4;
+  --role-support-dark: #34d399;
+  --role-controller: #7c3aed;
+  --role-controller-light: #a78bfa;
+  --role-summoner: #10b981;
+  --role-summoner-light: #6ee7b7;
+  --role-scout: #fbbf24;
+  --role-scout-light: #fcd34d;
+
+  /* Element Type Colors */
+  --type-fire: #ef4444;
+  --type-fire-light: #fb923c;
+  --type-water: #3b82f6;
+  --type-water-light: #0ea5e9;
+  --type-grass: #22c55e;
+  --type-grass-light: #84cc16;
+  --type-electric: #eab308;
+  --type-electric-light: #facc15;
+  --type-ice: #06b6d4;
+  --type-ice-light: #67e8f9;
+  --type-rock: #78716c;
+  --type-rock-light: #a8a29e;
+  --type-shadow: #6366f1;
+  --type-shadow-light: #818cf8;
+  --type-light: #fbbf24;
+  --type-light-light: #fde047;
+  --type-wind: #14b8a6;
+  --type-wind-light: #5eead4;
+  --type-metal: #71717a;
+  --type-metal-light: #d4d4d8;
+
+  /* Card Dimensions */
+  --card-width-small: 200px;
+  --card-width-medium: 320px;
+  --card-width-large: 400px;
+  --card-border-radius: 16px;
+  --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  --card-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.5);
+
+  /* Typography */
+  --font-title: 'Cinzel', 'MedievalSharp', serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Colors */
+  --card-bg: rgba(30, 15, 40, 0.95);
+  --card-border: rgba(255, 255, 255, 0.15);
+  --text-primary: #fff5e6;
+  --text-secondary: #e6d4b8;
+  --text-muted: rgba(255, 255, 255, 0.6);
+  --gold: #ffd36e;
+}
+
+/* ============================================
+   COLLECTION GRID CARD (Small)
+   ============================================ */
+.card-collection {
+  width: var(--card-width-small);
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: var(--card-border-radius);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: var(--card-shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.card-collection:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--card-shadow-hover);
+  border-color: var(--gold);
+}
+
+.card-collection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--role-color-1), var(--role-color-2));
+  opacity: 0.8;
+}
+
+.card-collection-portrait {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  border-radius: 12px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4em;
+  border: 2px solid var(--card-border);
+}
+
+.card-collection-name {
+  font-family: var(--font-title);
+  font-size: 1.2em;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  text-align: center;
+}
+
+.card-collection-badges {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.card-role-badge {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
+  font-weight: bold;
+  background: var(--role-color-1);
+  border: 2px solid var(--role-color-2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.card-type-icons {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+
+.card-type-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  background: linear-gradient(135deg, var(--type-color-1), var(--type-color-2));
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.card-rarity {
+  text-align: center;
+  font-size: 0.8em;
+  color: var(--text-muted);
+  margin-top: 8px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ============================================
+   FULL DETAIL CARD (Front) - Medium/Large
+   ============================================ */
+.card-detail-front {
+  width: var(--card-width-large);
+  background: var(--card-bg);
+  border: 3px solid var(--card-border);
+  border-radius: var(--card-border-radius);
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+  backdrop-filter: blur(12px);
+}
+
+.card-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--card-border);
+}
+
+.card-detail-title-group {
+  flex: 1;
+}
+
+.card-detail-name {
+  font-family: var(--font-title);
+  font-size: 1.8em;
+  color: var(--gold);
+  margin-bottom: 4px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.card-detail-subtitle {
+  font-size: 1.1em;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.card-detail-roles {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.role-badge-large {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--role-color-1), var(--role-color-2));
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.2em;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.role-badge-small {
+  width: 32px;
+  height: 32px;
+  font-size: 0.9em;
+}
+
+.card-detail-types {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.type-badge {
+  padding: 6px 16px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, var(--type-color-1), var(--type-color-2));
+  color: white;
+  font-weight: bold;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.card-detail-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 12px;
+}
+
+.stat-box {
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 0.7em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  font-size: 1.4em;
+  font-weight: bold;
+  color: var(--gold);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.card-detail-passive {
+  background: linear-gradient(135deg, rgba(125, 255, 180, 0.1), rgba(16, 185, 129, 0.1));
+  border: 2px solid var(--role-support);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.passive-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.passive-icon {
+  font-size: 1.5em;
+}
+
+.passive-name {
+  font-weight: bold;
+  color: var(--role-support);
+  font-size: 1.1em;
+}
+
+.passive-description {
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-size: 0.95em;
+}
+
+.card-detail-moves {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.move-tile {
+  background: rgba(0, 0, 0, 0.4);
+  border: 2px solid var(--card-border);
+  border-radius: 12px;
+  padding: 14px;
+  transition: all 0.2s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.move-tile:hover {
+  transform: translateX(4px);
+  border-color: var(--gold);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.move-tile::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, var(--type-color-1), var(--type-color-2));
+}
+
+.move-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.move-name {
+  font-weight: bold;
+  color: var(--text-primary);
+  font-size: 1.05em;
+}
+
+.move-info {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.move-type-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--type-color-1), var(--type-color-2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9em;
+}
+
+.move-cooldown {
+  font-size: 0.8em;
+  color: var(--text-muted);
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.move-keywords {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.keyword-chip {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.75em;
+  background: rgba(96, 165, 250, 0.3);
+  border: 1px solid #60a5fa;
+  color: #60a5fa;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.move-description {
+  font-size: 0.85em;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+.card-detail-synergies {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.synergy-tag {
+  padding: 6px 14px;
+  border-radius: 16px;
+  background: rgba(255, 211, 110, 0.2);
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-size: 0.85em;
+  font-weight: 600;
+}
+
+/* ============================================
+   FULL DETAIL CARD (Back) - Progression
+   ============================================ */
+.card-detail-back {
+  width: var(--card-width-large);
+  background: var(--card-bg);
+  border: 3px solid var(--card-border);
+  border-radius: var(--card-border-radius);
+  padding: 24px;
+  box-shadow: var(--card-shadow);
+}
+
+.card-back-header {
+  text-align: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--card-border);
+}
+
+.card-back-title {
+  font-family: var(--font-title);
+  font-size: 1.6em;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+
+.progression-path {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.rank-stage {
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--card-border);
+  border-radius: 12px;
+  padding: 16px;
+  position: relative;
+}
+
+.rank-stage.active {
+  border-color: var(--gold);
+  background: rgba(255, 211, 110, 0.1);
+}
+
+.rank-stage.locked {
+  opacity: 0.6;
+}
+
+.rank-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.rank-name {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: var(--gold);
+}
+
+.rank-status {
+  font-size: 0.8em;
+  padding: 4px 12px;
+  border-radius: 12px;
+  background: rgba(125, 255, 180, 0.3);
+  border: 1px solid var(--role-support);
+  color: var(--role-support);
+}
+
+.rank-requirement {
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.rank-upgrades {
+  font-size: 0.85em;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.exploration-perk-box {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.1));
+  border: 2px solid var(--role-scout);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.perk-title {
+  font-weight: bold;
+  color: var(--role-scout);
+  font-size: 1.1em;
+  margin-bottom: 8px;
+}
+
+.perk-description {
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.quirks-box {
+  background: rgba(124, 58, 237, 0.1);
+  border: 2px solid var(--role-controller);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.quirks-title {
+  font-weight: bold;
+  color: var(--role-controller);
+  font-size: 1.1em;
+  margin-bottom: 12px;
+}
+
+.quirk-item {
+  margin-bottom: 8px;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  font-size: 0.9em;
+}
+
+.quirk-trigger {
+  color: var(--role-controller-light);
+  font-weight: 600;
+}
+
+.quirk-behavior {
+  color: var(--text-secondary);
+}
+
+/* ============================================
+   BATTLE MINI CARD (HUD)
+   ============================================ */
+.card-battle-mini {
+  width: 180px;
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: var(--card-shadow);
+}
+
+.battle-mini-name {
+  font-weight: bold;
+  color: var(--text-primary);
+  font-size: 0.9em;
+  margin-bottom: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.battle-hp-bar {
+  height: 20px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+}
+
+.battle-hp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7dffb4, #34d399);
+  transition: width 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
+  font-weight: bold;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.battle-hp-fill.low {
+  background: linear-gradient(90deg, #fbbf24, #f59e0b);
+}
+
+.battle-hp-fill.critical {
+  background: linear-gradient(90deg, #dc2626, #b91c1c);
+  animation: pulse-hp 1s infinite;
+}
+
+@keyframes pulse-hp {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.battle-status-icons {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+  min-height: 24px;
+}
+
+.battle-status-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(96, 165, 250, 0.3);
+  border: 1px solid #60a5fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8em;
+  position: relative;
+}
+
+.status-duration {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 14px;
+  height: 14px;
+  background: var(--gold);
+  border-radius: 50%;
+  font-size: 0.6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  font-weight: bold;
+}
+
+.battle-mini-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.battle-role-type {
+  display: flex;
+  gap: 4px;
+}
+
+.battle-mini-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7em;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+@media (max-width: 768px) {
+  .card-detail-front,
+  .card-detail-back {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .card-detail-stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .card-collection {
+    width: 160px;
+  }
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.card-grid-large {
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+.card-flippable {
+  perspective: 1000px;
+}
+
+.card-flipper {
+  position: relative;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card-flippable.flipped .card-flipper {
+  transform: rotateY(180deg);
+}
+
+.card-face-front,
+.card-face-back {
+  backface-visibility: hidden;
+}
+
+.card-face-back {
+  transform: rotateY(180deg);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
