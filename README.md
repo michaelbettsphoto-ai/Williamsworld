@@ -51,6 +51,18 @@ That's it! No dependencies or build process needed.
 - **Responsive Design** - Works on all screen sizes
 - **Progressive XP System** - Each level requires 50% more XP than the previous
 - **Streak Logic** - Tracks daily completions and resets after missing a day
+- **Local Assets** - All images stored in the repository (no external dependencies)
+
+## 📁 Asset Structure
+
+```
+assets/
+├── ui/          # UI elements (banner, logo, map)
+├── img/         # Game images (companions, zones)
+└── icons/       # Icon assets
+```
+
+Replace the placeholder SVG files with your own images. Update paths in the `ASSETS` object in `index.html` if you change filenames or formats.
 
 ## 🎨 Customization
 
@@ -58,7 +70,7 @@ You can easily customize:
 - Default quests in the `loadGameState()` function
 - XP multipliers in the `xpForLevel()` function
 - Colors and styling in the `<style>` section
-- Add your own character images (currently uses Google Drive placeholder)
+- Add your own character images in the `assets/` directory
 
 ## 🖼️ Images & Assets
 

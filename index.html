@@ -3,92 +3,529 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Williams World - Quest Tracker</title>
+  <title>William's World - Quest Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@700;900&family=Permanent+Marker&display=swap" rel="stylesheet">
 </head>
 <body>
 
 <style>
   :root{
-    --bg0:#070b16; --bg1:#0b1020; --panel:#0f1730cc; --ink:#eaf0ff; --muted:#b9c6ffcc;
-    --line:#26345f; --gold:#ffd36e; --green:#7dffb4; --blue:#7aa2ff;
-    --purple:#6b46c1; --orange:#ff8c42; --red:#dc2626; 
+    --bg0:#1a0e2e; --bg1:#1c1028; --panel:rgba(30,15,40,0.85); --ink:#fff5e6; --muted:#e6d4b8;
+    --line:#c8942a; --gold:#ffd36e; --green:#7dffb4; --blue:#d4a530;
+    --purple:#7c3aed; --orange:#ff9d5c; --red:#dc2626; 
+    --golden-border:#d4a530; --warm-glow:rgba(212,165,48,0.6);
     --shadow:0 18px 60px rgba(0,0,0,.45); --r1:22px; --r2:16px; --pad:16px; --max:1280px;
     --font:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+    --fantasy-font:'Cinzel', 'MedievalSharp', serif;
   }
-  #ww{font-family:var(--font); color:var(--ink);}
+  
+  /* Animated background */
+  @keyframes starfield {
+    0%, 100% { opacity: .3; transform: scale(1); }
+    50% { opacity: .8; transform: scale(1.1); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .6; }
+  }
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 10px rgba(255,211,110,.3), 0 0 20px rgba(255,211,110,.2); }
+    50% { box-shadow: 0 0 20px rgba(255,211,110,.6), 0 0 40px rgba(255,211,110,.4); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% center; }
+    100% { background-position: 200% center; }
+  }
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1); }
+  }
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes celebrate {
+    0% { transform: scale(0) rotate(0deg); opacity: 0; }
+    50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+    100% { transform: scale(1) rotate(360deg); opacity: 1; }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+    background: 
+      linear-gradient(180deg, rgba(26,10,46,.6) 0%, rgba(61,36,72,.5) 20%, rgba(139,74,63,.4) 40%, rgba(212,118,42,.4) 60%, rgba(61,36,72,.5) 80%, rgba(26,10,46,.6) 100%),
+      url("assets/ui/ChatGPT%20Image%20Feb%208,%202026,%2012_39_11%20AM.png") center/cover no-repeat fixed;
+      linear-gradient(180deg, rgba(26,10,46,.3) 0%, rgba(61,36,72,.25) 20%, rgba(139,74,63,.2) 40%, rgba(212,118,42,.2) 60%, rgba(61,36,72,.25) 80%, rgba(26,10,46,.3) 100%),
+      url("assets/ui/background.jpg") center top/cover no-repeat fixed;
+    background-color: #0a0612;
+    position: relative;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+  
+  /* Starfield background */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+      radial-gradient(2px 2px at 20% 30%, #ffd36e, transparent),
+      radial-gradient(2px 2px at 60% 70%, #ffd36e, transparent),
+      radial-gradient(1px 1px at 50% 50%, #fff5e6, transparent),
+      radial-gradient(1px 1px at 80% 10%, #ffd36e, transparent),
+      radial-gradient(2px 2px at 90% 60%, #fff5e6, transparent),
+      radial-gradient(1px 1px at 33% 80%, #ffd36e, transparent),
+      radial-gradient(2px 2px at 75% 40%, #fff5e6, transparent);
+    background-size: 200% 200%;
+    animation: starfield 8s ease-in-out infinite;
+    opacity: .15;
+    pointer-events: none;
+    z-index: 1;
+  }
+  #ww{font-family:var(--font); color:var(--ink); position: relative; z-index: 10;}
   #ww *{box-sizing:border-box}
   #ww .wrap{max-width:var(--max); margin:0 auto; padding:14px}
   #ww .topbar{
     position:sticky; top:0; z-index:60;
-    background: linear-gradient(180deg, rgba(7,11,22,.96), rgba(7,11,22,.78));
+    background: linear-gradient(180deg, rgba(26,14,46,.96), rgba(28,16,40,.78));
     backdrop-filter: blur(10px);
-    border:1px solid rgba(38,52,95,.55);
+    border:2px solid var(--golden-border);
     border-radius:18px;
     padding:10px 12px;
+    box-shadow: 0 0 15px rgba(212,165,48,.3);
   }
   #ww .topbar-inner{display:flex; gap:12px; justify-content:space-between; align-items:center; flex-wrap:wrap}
   #ww .brand{display:flex; gap:10px; align-items:center; font-weight:950}
-  #ww .logoMark{width:34px; height:34px; border-radius:12px; border:1px solid rgba(122,162,255,.55); overflow:hidden}
+  #ww .logoMark{width:34px; height:34px; border-radius:12px; border:2px solid var(--golden-border); overflow:hidden}
   #ww .logoMark img{width:100%;height:100%;object-fit:cover;display:block}
-  #ww .badge{font-size:12px; padding:4px 9px; border:1px solid rgba(122,162,255,.45); color:var(--muted); border-radius:999px; background: rgba(122,162,255,.10); font-weight:800}
+  #ww .badge{font-size:12px; padding:4px 9px; border:2px solid var(--golden-border); color:var(--gold); border-radius:999px; background: rgba(255,211,110,.15); font-weight:800}
   #ww .nav{display:flex; gap:8px; flex-wrap:wrap}
   #ww .nav button{
-    border:1px solid rgba(38,52,95,.85); background: rgba(15,23,48,.55); color:var(--ink);
+    border:2px solid var(--golden-border); background: rgba(30,15,40,.55); color:var(--ink);
     padding:8px 10px; border-radius:999px; cursor:pointer; font-weight:850; font-size:13px;
   }
-  #ww .nav button.active{background: rgba(122,162,255,.18); border-color: rgba(122,162,255,.75)}
+  #ww .nav button.active{background: rgba(255,211,110,.25); border-color: var(--gold); box-shadow: 0 0 10px rgba(255,211,110,.4)}
   #ww .banner{
     margin-top:12px; border-radius:26px; border:3px solid var(--gold);
-    box-shadow:var(--shadow), 0 0 30px rgba(255,211,110,.3); overflow:hidden; position:relative;
-    background: linear-gradient(180deg, rgba(17,26,51,.80), rgba(11,16,32,.55));
+    box-shadow:var(--shadow), 0 0 30px rgba(255,211,110,.4); overflow:hidden; position:relative;
+    background: linear-gradient(180deg, rgba(30,15,40,.80), rgba(26,14,46,.55));
+    box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.4); overflow:hidden; position:relative;
+    background: linear-gradient(180deg, rgba(30,15,50,.25), rgba(20,10,30,.15));
     min-height: 420px;
   }
-  #ww .banner-inner{padding:18px; display:grid; grid-template-columns: 1.25fr .75fr; gap:14px}
-  @media (max-width:980px){ #ww .banner-inner{grid-template-columns:1fr} }
-  #ww h1{margin:0 0 6px; font-size:38px; font-weight:1000; color:var(--gold); 
-    text-shadow: 3px 3px 0 rgba(0,0,0,.8), -1px -1px 0 rgba(0,0,0,.8), 1px -1px 0 rgba(0,0,0,.8), -1px 1px 0 rgba(0,0,0,.8);}
+  #ww .banner-inner{padding:18px; display:grid; grid-template-columns: 120px 1fr; gap:20px; align-items:start}
+  #ww .banner-inner > .card{grid-column: 1 / -1}
+  @media (max-width:980px){ #ww .banner-inner{grid-template-columns:1fr; justify-items:center} }
+  #ww h1{margin:0 0 6px; font-size:48px; font-weight:900; color:var(--gold); 
+    font-family: var(--fantasy-font);
+    text-shadow: 
+      3px 3px 0 rgba(0,0,0,.9), 
+      -2px -2px 0 rgba(0,0,0,.9), 
+      2px -2px 0 rgba(0,0,0,.9), 
+      -2px 2px 0 rgba(0,0,0,.9),
+      0 0 20px rgba(240,168,48,.7),
+      0 0 40px rgba(240,168,48,.5);
+    animation: float 3s ease-in-out infinite;
+  }
+  #ww .levelTitle {
+    font-family: var(--fantasy-font);
+    font-size: 20px;
+    color: var(--gold);
+    text-shadow: 2px 2px 4px rgba(0,0,0,.8);
+    margin-top: 8px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  #ww .william-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid var(--gold);
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(255,211,110,.4), 0 0 40px rgba(255,211,110,.2);
+    animation: glow 3s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  #ww .william-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
   #ww p{margin:0; color:var(--muted); font-weight:650}
   #ww .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
   #ww .btn{
-    border:1px solid rgba(38,52,95,.95); background: rgba(11,16,32,.28); color:var(--ink);
-    padding:10px 12px; border-radius:14px; cursor:pointer; font-weight:950; font-size:13px;
+    border:2px solid var(--golden-border); background: rgba(26,14,46,.40); color:var(--ink);
+    padding:12px 16px; border-radius:14px; cursor:pointer; font-weight:950; font-size:14px;
+    transition: all .3s ease;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.1), 0 0 10px rgba(240,168,48,.2);
   }
-  #ww .btn.primary{background: rgba(122,162,255,.18); border-color: rgba(122,162,255,.8)}
-  #ww .btn.gold{background: rgba(255,211,110,.14); border-color: rgba(255,211,110,.65)}
-  #ww .btn.danger{background: rgba(255,107,138,.10); border-color: rgba(255,107,138,.55)}
+  #ww .btn:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.2), 0 0 20px rgba(255,211,110,.4);
+  }
+  #ww .btn:active{
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,.3), inset 0 1px 0 rgba(0,0,0,.1);
+  }
+  #ww .btn.primary{
+    background: linear-gradient(135deg, rgba(212,165,48,.4), rgba(212,165,48,.25)); 
+    border-color: var(--golden-border);
+  }
+  #ww .btn.gold{
+    background: linear-gradient(135deg, rgba(240,168,48,.25), rgba(240,168,48,.15)); 
+    border-color: var(--gold);
+  }
+  #ww .btn.danger{
+    background: linear-gradient(135deg, rgba(255,107,138,.2), rgba(255,107,138,.1)); 
+    border-color: rgba(255,107,138,.6);
+  }
   #ww .statRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
-  #ww .pill{border:1px solid rgba(38,52,95,.85); background: rgba(7,11,22,.28); border-radius:999px; padding:8px 10px; display:flex; gap:8px; align-items:center; font-weight:900; font-size:13px}
-  #ww .dot{width:10px;height:10px;border-radius:999px;background:var(--blue)}
+  #ww .pill{border:2px solid var(--golden-border); background: rgba(26,14,46,.40); border-radius:999px; padding:8px 10px; display:flex; gap:8px; align-items:center; font-weight:900; font-size:13px}
+  #ww .dot{width:10px;height:10px;border-radius:999px;background:var(--golden-border)}
   #ww .dot.green{background:var(--green)}
   #ww .dot.gold{background:var(--gold)}
-  #ww .meter{border:1px solid rgba(38,52,95,.75); border-radius:14px; background: rgba(7,11,22,.22); padding:10px; margin-top:10px}
+  #ww .meter{border:2px solid var(--golden-border); border-radius:14px; background: rgba(26,14,46,.35); padding:10px; margin-top:10px}
   #ww .meterTop{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:8px}
   #ww .small{font-size:12px; color:var(--muted); font-weight:650}
-  #ww .bar{height:12px;border-radius:999px;background: rgba(38,52,95,.55);overflow:hidden;border:1px solid rgba(38,52,95,.85)}
-  #ww .bar > div{height:100%; width:0%; background: linear-gradient(90deg, rgba(122,162,255,.95), rgba(125,255,180,.95)); transition: width .25s ease}
+  #ww .bar{height:16px;border-radius:999px;background: rgba(50,30,20,.65);overflow:hidden;border:2px solid var(--golden-border); position: relative;}
+  #ww .bar > div{
+    height:100%; width:0%; 
+    background: linear-gradient(90deg, 
+      rgba(255,211,110,.95), 
+      rgba(255,170,50,.95), 
+      rgba(255,211,110,.95)
+    ); 
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+    transition: width .5s ease;
+    box-shadow: 0 0 10px rgba(255,211,110,.5), inset 0 1px 0 rgba(255,255,255,.3);
+    position: relative;
+  }
+  #ww .bar > div::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.3), transparent);
+    animation: shimmer 1.5s linear infinite;
+  }
   #ww .grid{margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:14px}
   @media (max-width:980px){ #ww .grid{grid-template-columns:1fr} }
-  #ww .card{border:1px solid rgba(38,52,95,.70); background: rgba(15,23,48,.62); border-radius:var(--r1); box-shadow:var(--shadow); padding:var(--pad)}
+  #ww .card{border:2px solid var(--golden-border); background: rgba(30,15,40,.72); border-radius:var(--r1); box-shadow:var(--shadow), 0 0 15px rgba(255,211,110,.2); padding:var(--pad)}
   #ww .card h2{margin:0 0 10px; font-size:15px; display:flex; justify-content:space-between; align-items:center; gap:10px}
-  #ww .tag{font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid rgba(38,52,95,.75); background: rgba(15,23,48,.45); color:var(--muted); font-weight:900}
-  #ww .frame{border:1px solid rgba(38,52,95,.60); background: rgba(7,11,22,.22); border-radius:var(--r2); padding:12px}
+  #ww .tag{font-size:12px; padding:6px 10px; border-radius:999px; border:2px solid var(--golden-border); background: rgba(30,15,40,.55); color:var(--gold); font-weight:900}
+  #ww .frame{border:2px solid var(--golden-border); background: rgba(26,14,46,.35); border-radius:var(--r2); padding:12px}
   #ww .taskList{display:grid; gap:10px; margin-top:10px}
-  #ww .task{display:grid; grid-template-columns:28px 1fr auto; gap:10px; align-items:center; border:1px solid rgba(38,52,95,.58); background: rgba(11,16,32,.20); border-radius:16px; padding:10px}
+  #ww .task{display:grid; grid-template-columns:28px 1fr auto; gap:10px; align-items:center; border:2px solid var(--golden-border); background: rgba(26,14,46,.30); border-radius:16px; padding:10px}
   #ww .task input{width:20px;height:20px; accent-color: var(--green)}
   #ww .task .name{font-weight:950}
-  #ww .task .xp{font-weight:1000; padding:6px 9px; border-radius:999px; border:1px solid rgba(125,255,180,.45); background: rgba(125,255,180,.10); font-size:12px; min-width:74px; text-align:center}
+  #ww .task .xp{font-weight:1000; padding:6px 9px; border-radius:999px; border:2px solid rgba(255,211,110,.55); background: rgba(255,211,110,.15); font-size:12px; min-width:74px; text-align:center; color:var(--gold)}
   #ww .party{display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:10px}
   @media (max-width:520px){ #ww .party{grid-template-columns:1fr} }
-  #ww .creature{border:1px solid rgba(38,52,95,.60); background: rgba(7,11,22,.22); border-radius:16px; padding:10px; display:flex; gap:10px; align-items:center}
-  #ww .avatar{width:42px;height:42px;border-radius:16px;border:1px solid rgba(38,52,95,.70);overflow:hidden}
+  #ww .creature{border:2px solid var(--golden-border); background: rgba(26,14,46,.35); border-radius:16px; padding:10px; display:flex; gap:10px; align-items:center}
+  #ww .avatar{width:42px;height:42px;border-radius:16px;border:2px solid var(--golden-border);overflow:hidden}
   #ww .avatar img{width:100%;height:100%;object-fit:cover;display:block}
   #ww .map{display:grid; gap:10px; margin-top:10px}
-  #ww .node{border:1px solid rgba(38,52,95,.58); background: rgba(7,11,22,.22); border-radius:16px; padding:10px; display:flex; justify-content:space-between; align-items:center; gap:10px}
+  #ww .node{border:2px solid var(--golden-border); background: rgba(26,14,46,.35); border-radius:16px; padding:10px; display:flex; justify-content:space-between; align-items:center; gap:10px}
   #ww .node .left{display:flex; gap:10px; align-items:center}
-  #ww .node .icon{width:36px;height:36px;border-radius:14px;border:1px solid rgba(38,52,95,.70); overflow:hidden}
+  #ww .node .icon{width:36px;height:36px;border-radius:14px;border:2px solid var(--golden-border); overflow:hidden}
   #ww .node .icon img{width:100%;height:100%;object-fit:cover;display:block}
-  #ww .toast{position:fixed; left:50%; bottom:16px; transform:translateX(-50%); background: rgba(15,23,48,.92);
-    border:1px solid rgba(122,162,255,.6); padding:10px 12px; border-radius:14px; box-shadow:var(--shadow); display:none; z-index:999; font-weight:900}
+  #ww .toast{
+    position:fixed; left:50%; bottom:24px; transform:translateX(-50%); 
+    background: linear-gradient(135deg, rgba(30,15,40,.95), rgba(50,30,60,.95));
+    border:2px solid var(--golden-border); 
+    padding:16px 24px; border-radius:16px; 
+    box-shadow:var(--shadow), 0 0 30px rgba(255,211,110,.5); 
+    display:none; z-index:999; 
+    font-weight:900; font-size:16px;
+    animation: slideUp .3s ease-out;
+    min-width: 200px;
+    text-align: center;
+  }
+  
+  /* Floating XP animation */
+  @keyframes floatXP {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-50px) scale(1.2); }
+  }
+  .floatingXP {
+    position: fixed;
+    font-weight: 900;
+    font-size: 24px;
+    color: var(--green);
+    text-shadow: 2px 2px 4px rgba(0,0,0,.8), 0 0 10px var(--green);
+    pointer-events: none;
+    z-index: 1000;
+    animation: floatXP 1.5s ease-out forwards;
+  }
+  
+  /* Level-Up Celebration Overlay */
+  #levelUpOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn .3s ease-out;
+  }
+  #levelUpOverlay.show {
+    display: flex;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  #levelUpOverlay .content {
+    text-align: center;
+    animation: celebrate .6s ease-out;
+  }
+  #levelUpOverlay .content h2 {
+    font-size: 72px;
+    font-family: var(--fantasy-font);
+    color: var(--gold);
+    text-shadow: 
+      4px 4px 0 rgba(0,0,0,.9),
+      0 0 30px rgba(240,168,48,.9),
+      0 0 60px rgba(240,168,48,.6);
+    margin: 0 0 20px;
+    animation: pulse 1s ease-in-out infinite;
+  }
+  #levelUpOverlay .levelInfo {
+    font-size: 32px;
+    font-family: var(--fantasy-font);
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  #levelUpOverlay .levelTitle {
+    font-size: 28px;
+    color: var(--gold);
+  }
+  #levelUpOverlay .william-avatar-overlay {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid var(--gold);
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(255,211,110,.6), 0 0 60px rgba(255,211,110,.3);
+    margin: 0 auto 20px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  #levelUpOverlay .william-avatar-overlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  @keyframes particles {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-100px) scale(0); opacity: 0; }
+  }
+  .particle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: particles 2s ease-out forwards;
+    pointer-events: none;
+  }
+  
+  /* Companion Party Styles */
+  #ww .companion {
+    border: 3px solid var(--line);
+    background: linear-gradient(135deg, rgba(20,10,30,.8), rgba(40,20,50,.8));
+    border-radius: 18px;
+    padding: 16px;
+    transition: all .3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,.3), 0 0 10px rgba(240,168,48,.2);
+  }
+  #ww .companion:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold);
+    box-shadow: 0 8px 20px rgba(0,0,0,.5), 0 0 20px rgba(240,168,48,.4);
+  }
+  #ww .companion .header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  #ww .companion .avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,.5);
+  }
+  #ww .companion .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #ww .companion .info {
+    flex: 1;
+  }
+  #ww .companion .name {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--gold);
+    font-family: var(--fantasy-font);
+  }
+  #ww .companion .type {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 700;
+  }
+  #ww .companion .level {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--green);
+    margin-top: 4px;
+  }
+  #ww .companion .statBar {
+    margin-top: 8px;
+  }
+  #ww .companion .statLabel {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  #ww .companion .bar {
+    height: 8px;
+  }
+  #ww .companion.evolved {
+    border-color: var(--gold);
+    box-shadow: 0 0 25px rgba(240,168,48,.5), 0 4px 12px rgba(0,0,0,.3);
+  }
+  
+  /* World Map Zone Styles */
+  #ww .zone {
+    border: 3px solid var(--golden-border);
+    background: linear-gradient(135deg, rgba(30,15,40,.8), rgba(50,30,60,.8));
+    border-radius: 18px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all .3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  #ww .zone::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,.03), transparent);
+    transform: translateX(-100%);
+    transition: transform .6s ease;
+  }
+  #ww .zone:hover::before {
+    transform: translateX(100%);
+  }
+  #ww .zone .zoneIcon {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    border: 3px solid var(--golden-border);
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,.5);
+  }
+  #ww .zone .zoneIcon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #ww .zone .zoneInfo {
+    flex: 1;
+  }
+  #ww .zone .zoneName {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--gold);
+    font-family: var(--fantasy-font);
+    margin-bottom: 6px;
+  }
+  #ww .zone .zoneStatus {
+    font-size: 13px;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 999px;
+    display: inline-block;
+  }
+  #ww .zone .zoneStatus.locked {
+    background: rgba(255,107,138,.15);
+    border: 2px solid rgba(255,107,138,.4);
+    color: rgba(255,107,138,.9);
+  }
+  #ww .zone .zoneStatus.unlocked {
+    background: rgba(125,255,180,.15);
+    border: 2px solid var(--green);
+    color: var(--green);
+  }
+  #ww .zone.locked {
+    opacity: .5;
+    filter: grayscale(80%);
+  }
+  #ww .zone.unlocked {
+    border-color: var(--green);
+    box-shadow: 0 0 25px rgba(125,255,180,.3), 0 4px 12px rgba(0,0,0,.3);
+  }
+  #ww .zone.unlocked:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 35px rgba(125,255,180,.5), 0 8px 20px rgba(0,0,0,.5);
+  }
+  #ww .lockIcon {
+    font-size: 32px;
+    opacity: .5;
+  }
+  
+  /* HP Bar Styles */
+  #ww .hpMeter { margin-top: 8px; }
+  #ww .hpMeter .bar { background: #1a0a0a; }
+  #ww .hpMeter .bar > div { background: linear-gradient(90deg, #dc2626, #ff4444); transition: width .4s ease; }
+  #ww .hpMeter.low .bar > div { background: linear-gradient(90deg, #991b1b, #dc2626); animation: pulse 1s ease-in-out infinite; }
+  #ww .hpPill .dot { background: var(--red); }
+  
+  /* Streak Fire Icon Enhancement */
+  .streakFire {
+    display: inline-block;
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+  .streakFire.mega {
+    font-size: 28px;
+    filter: drop-shadow(0 0 10px rgba(255,140,70,.8));
+  }
   
   /* Quest Cards Layout */
   #ww .questGrid{margin-top:20px; display:grid; grid-template-columns:repeat(3, 1fr); gap:20px}
@@ -96,40 +533,126 @@
   @media (max-width:520px){ #ww .questGrid{grid-template-columns:1fr} }
   
   #ww .questCard{
-    border:3px solid var(--gold); background: rgba(15,23,48,.82); border-radius:20px; 
-    box-shadow:var(--shadow), 0 0 20px rgba(255,211,110,.2); padding:20px; position:relative;
-    overflow:hidden; min-height:420px; display:flex; flex-direction:column;
+    border:4px solid var(--gold); 
+    background: rgba(30,15,40,.90); 
+    border-radius:24px; 
+    box-shadow:var(--shadow), 0 0 30px rgba(255,211,110,.5), inset 0 2px 0 rgba(255,255,255,.1); 
+    padding:24px; 
+    position:relative;
+    overflow:hidden; 
+    min-height:450px; 
+    display:flex; 
+    flex-direction:column;
+    transition: all .3s ease;
+    background-size: 200% 200%;
+  }
+  #ww .questCard:hover {
+    transform: translateY(-4px);
+    box-shadow:var(--shadow), 0 0 40px rgba(255,211,110,.7), inset 0 2px 0 rgba(255,255,255,.2);
+    border-color: rgba(255,211,110,1);
   }
   #ww .questCard::before{
     content:""; position:absolute; top:0; left:0; right:0; bottom:0; 
     background-size:cover; background-position:center; opacity:.2; z-index:0;
   }
+  #ww .questCard::after {
+    content: "";
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255,255,255,.03), transparent);
+    transform: rotate(45deg);
+    animation: shimmer 3s linear infinite;
+  }
   #ww .questCard > *{position:relative; z-index:1}
   
-  #ww .questCard.night{background: linear-gradient(135deg, rgba(75,35,130,.85), rgba(30,20,70,.95))}
-  #ww .questCard.morning{background: linear-gradient(135deg, rgba(255,170,50,.75), rgba(255,140,70,.85))}
-  #ww .questCard.backpack{background: linear-gradient(135deg, rgba(50,120,200,.75), rgba(70,100,180,.85))}
+  #ww .questCard.night{
+    background: linear-gradient(135deg, rgba(75,35,130,.90), rgba(50,25,90,.95));
+    border-color: #b794f4;
+  }
+  #ww .questCard.morning{
+    background: linear-gradient(135deg, rgba(255,170,50,.85), rgba(255,140,70,.90));
+    border-color: #ffd36e;
+  }
+  #ww .questCard.backpack{
+    background: linear-gradient(135deg, rgba(70,120,200,.80), rgba(90,100,180,.90));
+    border-color: #7ec8ff;
+  }
   
   #ww .questIcon{
-    width:60px; height:60px; border-radius:50%; border:3px solid var(--gold);
-    background: rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center;
-    font-size:32px; margin-bottom:12px; box-shadow:0 4px 12px rgba(0,0,0,.5);
+    width:70px; height:70px; border-radius:50%; border:4px solid var(--gold);
+    background: linear-gradient(135deg, rgba(0,0,0,.6), rgba(0,0,0,.4)); 
+    display:flex; align-items:center; justify-content:center;
+    font-size:36px; margin-bottom:14px; 
+    box-shadow:0 6px 16px rgba(0,0,0,.6), inset 0 2px 0 rgba(255,255,255,.2);
+    animation: bounce 2s ease-in-out infinite;
   }
   
   #ww .questCard h3{
-    margin:0 0 8px; font-size:22px; font-weight:1000; color:var(--gold);
-    text-shadow: 2px 2px 0 rgba(0,0,0,.9), -1px -1px 0 rgba(0,0,0,.9);
+    margin:0 0 12px; font-size:26px; font-weight:900; color:var(--gold);
+    font-family: var(--fantasy-font);
+    text-shadow: 
+      3px 3px 0 rgba(0,0,0,.9), 
+      -1px -1px 0 rgba(0,0,0,.9),
+      0 0 15px rgba(240,168,48,.6);
+    letter-spacing: 1px;
   }
   
   #ww .questChecklist{margin:16px 0; flex:1}
   #ww .questChecklist .checkItem{
-    display:flex; align-items:center; gap:10px; padding:8px 0; 
-    font-weight:700; font-size:14px;
+    display:flex; align-items:center; gap:12px; padding:10px 12px; 
+    font-weight:700; font-size:15px;
+    background: rgba(0,0,0,.2);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    border: 2px solid rgba(255,255,255,.1);
+    transition: all .3s ease;
+    cursor: pointer;
   }
-  #ww .questChecklist .checkItem::before{
-    content:"✓"; display:flex; align-items:center; justify-content:center;
-    width:24px; height:24px; border-radius:50%; background:var(--green);
-    color:#000; font-weight:1000; font-size:16px; flex-shrink:0;
+  #ww .questChecklist .checkItem:hover{
+    background: rgba(0,0,0,.3);
+    border-color: rgba(255,255,255,.2);
+    transform: translateX(4px);
+  }
+  #ww .questChecklist .checkItem input[type="checkbox"]{
+    width:24px; height:24px; 
+    cursor:pointer;
+    accent-color: var(--green);
+    flex-shrink: 0;
+  }
+  #ww .questChecklist .checkItem.completed {
+    opacity: .7;
+    text-decoration: line-through;
+  }
+  #ww .questChecklist .checkItem .xpTag {
+    margin-left: auto;
+    background: rgba(255,211,110,.25);
+    border: 2px solid var(--gold);
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 900;
+    color: var(--gold);
+  }
+  
+  /* Quest Progress Bar */
+  #ww .questProgress {
+    margin: 16px 0;
+    padding: 12px;
+    background: rgba(0,0,0,.3);
+    border-radius: 12px;
+    border: 2px solid rgba(255,255,255,.1);
+  }
+  #ww .questProgress .label {
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: var(--muted);
+  }
+  #ww .questProgress .bar {
+    height: 12px;
   }
   
   #ww .questNote{
@@ -140,27 +663,58 @@
   
   #ww .questFooter{display:flex; justify-content:space-between; align-items:center; margin-top:12px}
   #ww .xpBadge{
-    background: rgba(125,255,180,.2); border:2px solid var(--green);
+    background: rgba(255,211,110,.25); border:2px solid var(--gold);
     border-radius:999px; padding:6px 14px; font-weight:1000; font-size:14px;
-    color:var(--green);
+    color:var(--gold);
   }
   
   #ww .questBtn{
-    padding:12px 24px; border-radius:12px; border:none; font-weight:950; font-size:14px;
-    cursor:pointer; color:#fff; transition: transform .2s, box-shadow .2s;
+    padding:14px 28px; border-radius:14px; border:none; font-weight:950; font-size:15px;
+    cursor:pointer; color:#fff; 
+    transition: all .3s ease;
+    box-shadow: 0 6px 12px rgba(0,0,0,.4), inset 0 2px 0 rgba(255,255,255,.2);
+    position: relative;
+    overflow: hidden;
   }
-  #ww .questBtn:hover{transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.4)}
+  #ww .questBtn::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255,255,255,.3);
+    transform: translate(-50%, -50%);
+    transition: width .6s, height .6s;
+  }
+  #ww .questBtn:hover::before {
+    width: 300px;
+    height: 300px;
+  }
+  #ww .questBtn:hover{
+    transform:translateY(-3px); 
+    box-shadow:0 8px 20px rgba(0,0,0,.5), inset 0 2px 0 rgba(255,255,255,.3);
+  }
+  #ww .questBtn:active{
+    transform:translateY(-1px);
+    box-shadow:0 4px 8px rgba(0,0,0,.4);
+  }
   #ww .questBtn.red{background: linear-gradient(135deg, #dc2626, #991b1b)}
   #ww .questBtn.green{background: linear-gradient(135deg, #10b981, #059669)}
   #ww .questBtn.blue{background: linear-gradient(135deg, #3b82f6, #1d4ed8)}
+  #ww .questBtn.completed{
+    background: linear-gradient(135deg, #6b7280, #4b5563);
+    cursor: default;
+  }
   
   /* Bottom Dashboard */
   #ww .dashboard{margin-top:24px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px}
   @media (max-width:980px){ #ww .dashboard{grid-template-columns:1fr} }
   
   #ww .dashPanel{
-    border:3px solid var(--gold); background: rgba(15,23,48,.82); border-radius:20px;
-    box-shadow:var(--shadow), 0 0 20px rgba(255,211,110,.2); padding:20px;
+    border:3px solid var(--gold); background: rgba(30,15,40,.82); border-radius:20px;
+    box-shadow:var(--shadow), 0 0 20px rgba(255,211,110,.3); padding:20px;
   }
   
   #ww .dashPanel h3{
@@ -182,17 +736,42 @@
   
   #ww .badgeItem{text-align:center}
   #ww .badgeIcon{
-    width:70px; height:70px; border-radius:50%; border:3px solid var(--gold);
-    background: rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center;
-    font-size:32px; margin:0 auto 8px; box-shadow:0 4px 12px rgba(0,0,0,.5);
+    width:80px; height:80px; border-radius:50%; border:4px solid var(--golden-border);
+    background: linear-gradient(135deg, rgba(0,0,0,.6), rgba(0,0,0,.4)); 
+    display:flex; align-items:center; justify-content:center;
+    font-size:36px; margin:0 auto 10px; 
+    box-shadow:0 6px 16px rgba(0,0,0,.5), 0 0 10px rgba(240,168,48,.2);
+    transition: all .3s ease;
+    position: relative;
   }
-  #ww .badgeIcon.earned{background: linear-gradient(135deg, var(--gold), var(--orange)); border-color:var(--gold)}
-  #ww .badgeIcon.locked{opacity:.4; filter:grayscale(100%)}
-  #ww .badgeLabel{font-size:11px; font-weight:800; color:var(--muted)}
+  #ww .badgeIcon.earned{
+    background: linear-gradient(135deg, var(--gold), var(--orange), var(--gold)); 
+    background-size: 200% 200%;
+    border-color:var(--gold);
+    animation: shimmer 2s linear infinite, glow 2s ease-in-out infinite;
+    box-shadow:0 0 20px rgba(255,211,110,.6), 0 6px 16px rgba(0,0,0,.5);
+  }
+  #ww .badgeIcon.earned::after {
+    content: "✨";
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 20px;
+    animation: sparkle 1.5s ease-in-out infinite;
+  }
+  #ww .badgeIcon.locked{
+    opacity:.3; 
+    filter:grayscale(100%) brightness(.5);
+    cursor: not-allowed;
+  }
+  #ww .badgeIcon:hover:not(.locked) {
+    transform: scale(1.1) rotate(5deg);
+  }
+  #ww .badgeLabel{font-size:12px; font-weight:800; color:var(--muted)}
   
   #ww .weekGrid{display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; margin-top:12px}
   #ww .dayBox{
-    aspect-ratio:1; border:2px solid rgba(38,52,95,.75); background: rgba(7,11,22,.4);
+    aspect-ratio:1; border:2px solid var(--golden-border); background: rgba(26,14,46,.4);
     border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center;
     font-weight:900; font-size:12px; padding:8px;
   }
@@ -204,6 +783,182 @@
     border:2px solid var(--gold); border-radius:12px; padding:12px; margin-top:12px;
     font-weight:900; text-align:center; color:var(--gold);
   }
+
+  /* Companion Title Display */
+  #ww .companion .companionTitle {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--gold);
+    font-style: italic;
+    margin-top: 2px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,.6);
+  }
+
+  /* War Chest Panel */
+  #ww .warChestPanel {
+    background: linear-gradient(135deg, rgba(255,211,110,.12), rgba(255,170,50,.08));
+    border: 3px solid var(--gold);
+    border-radius: 18px;
+    padding: 16px;
+    margin-top: 16px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(255,211,110,.2), 0 4px 12px rgba(0,0,0,.3);
+  }
+  #ww .warChestPanel h4 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    font-family: var(--fantasy-font);
+    color: var(--gold);
+    text-shadow: 2px 2px 0 rgba(0,0,0,.8), 0 0 15px rgba(255,211,110,.5);
+  }
+  #ww .warChestAmount {
+    font-size: 36px;
+    font-weight: 1000;
+    color: var(--gold);
+    text-shadow: 2px 2px 0 rgba(0,0,0,.7), 0 0 20px rgba(255,211,110,.4);
+    margin: 8px 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  #ww .awardBtnRow {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 12px;
+  }
+  #ww .awardBtn {
+    border: 2px solid var(--gold);
+    background: linear-gradient(135deg, rgba(255,211,110,.20), rgba(255,170,50,.12));
+    color: var(--gold);
+    padding: 10px 16px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: 900;
+    font-size: 13px;
+    transition: all .3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.1);
+  }
+  #ww .awardBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,.4), 0 0 20px rgba(255,211,110,.5);
+    background: linear-gradient(135deg, rgba(255,211,110,.35), rgba(255,170,50,.25));
+  }
+  #ww .awardBtn:active {
+    transform: translateY(0);
+  }
+  #ww .awardBtn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Companion Reward Card Overlay */
+  #companionRewardOverlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,.85);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn .3s ease-out;
+  }
+  #companionRewardOverlay.show {
+    display: flex;
+  }
+  #companionRewardOverlay .content {
+    text-align: center;
+    animation: celebrate .6s ease-out;
+    padding: 40px;
+  }
+  #companionRewardOverlay .rewardEmoji {
+    font-size: 100px;
+    display: block;
+    margin-bottom: 16px;
+    animation: bounce 1s ease-in-out infinite;
+  }
+  #companionRewardOverlay .rewardHeading {
+    font-size: 48px;
+    font-family: var(--fantasy-font);
+    color: var(--green);
+    text-shadow:
+      4px 4px 0 rgba(0,0,0,.9),
+      0 0 30px rgba(125,255,180,.8),
+      0 0 60px rgba(125,255,180,.5);
+    margin: 0 0 12px;
+    animation: pulse 1s ease-in-out infinite;
+  }
+  #companionRewardOverlay .rewardName {
+    font-size: 32px;
+    font-family: var(--fantasy-font);
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  #companionRewardOverlay .rewardLevel {
+    font-size: 24px;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  #companionRewardOverlay .rewardTitle {
+    font-size: 28px;
+    color: var(--gold);
+    font-family: var(--fantasy-font);
+    text-shadow: 2px 2px 4px rgba(0,0,0,.8);
+  }
+  #companionRewardOverlay .rewardPower {
+    margin-top: 16px;
+    font-size: 20px;
+    color: var(--green);
+    font-weight: 900;
+    text-shadow: 0 0 10px rgba(125,255,180,.6);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  /* Level-Down Overlay */
+  #levelDownOverlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(80,0,0,.90);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    animation: fadeIn .3s ease-out;
+  }
+  #levelDownOverlay.show {
+    display: flex;
+  }
+  @keyframes shakeDown {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+    20%, 40%, 60%, 80% { transform: translateX(10px); }
+  }
+  #levelDownOverlay .content {
+    text-align: center;
+    animation: shakeDown .6s ease-out;
+    padding: 40px;
+  }
+  #levelDownOverlay .content h2 {
+    font-size: 72px;
+    font-family: var(--fantasy-font);
+    color: var(--red);
+    text-shadow:
+      4px 4px 0 rgba(0,0,0,.9),
+      0 0 30px rgba(220,38,38,.8),
+      0 0 60px rgba(220,38,38,.5);
+    margin: 0 0 20px;
+    animation: pulse 1s ease-in-out infinite;
+  }
+  #levelDownOverlay .levelInfo {
+    font-size: 28px;
+    color: var(--ink);
+    margin-bottom: 10px;
+  }
+  #levelDownOverlay .levelTitle {
+    font-size: 24px;
+    color: var(--gold);
+    font-family: var(--fantasy-font);
+  }
 </style>
 
 <div id="ww">
@@ -211,9 +966,9 @@
     <div class="topbar">
       <div class="topbar-inner">
         <div class="brand">
-          <div class="logoMark"><img id="logoImg" alt="Williams World"></div>
+          <div class="logoMark"><img id="logoImg" alt="William's World"></div>
           <div>
-            <div>Williams World</div>
+            <div>William's World</div>
             <div class="small">Quest UI • daily wins → XP → levels → streak rewards</div>
           </div>
           <span class="badge" id="todayLabel">Today</span>
@@ -229,12 +984,17 @@
 
     <section class="banner" data-banner id="home">
       <div class="banner-inner">
+        <div class="william-avatar" id="williamAvatar">
+          <img id="williamImg" alt="William character avatar" />
+        </div>
         <div>
-          <h1>Welcome to Williams World!</h1>
+          <h1>Welcome to William's World!</h1>
+          <div class="levelTitle" id="levelTitle">Apprentice Adventurer</div>
           <p>Complete daily quests to earn XP, level up, and unlock amazing rewards. Your adventure begins now!</p>
 
           <div class="statRow">
             <div class="pill"><span class="dot"></span> Level <span id="levelNum">1</span></div>
+            <div class="pill hpPill"><span class="dot"></span> HP <span id="hpNum">100</span>/<span id="hpMaxPill">100</span></div>
             <div class="pill"><span class="dot green"></span> Streak <span id="streakNum">0</span> days</div>
             <div class="pill"><span class="dot gold"></span> Today: <span id="dayResult">Not graded</span></div>
           </div>
@@ -245,6 +1005,13 @@
               <div class="small">Complete all quests to earn rewards!</div>
             </div>
             <div class="bar"><div id="xpBar"></div></div>
+          </div>
+          <div class="meter hpMeter" id="hpMeterBanner">
+            <div class="meterTop">
+              <div><b>❤️ HP</b>: <span id="hpNow">100</span> / <span id="hpMax">100</span></div>
+              <div class="small">Missed tasks deal damage at midnight!</div>
+            </div>
+            <div class="bar"><div id="hpBar"></div></div>
           </div>
         </div>
 
@@ -271,15 +1038,34 @@
         <div class="questIcon">🌙</div>
         <h3>Win Tomorrow Tonight</h3>
         <div class="questChecklist">
-          <div class="checkItem">Trapper Ready</div>
-          <div class="checkItem">Clothes Ready</div>
-          <div class="checkItem">Lunch Plan Ready</div>
-          <div class="checkItem">Shoes + Jacket Ready</div>
+          <label class="checkItem" data-task="n_trapper">
+            <input type="checkbox">
+            <span>Trapper Ready</span>
+            <span class="xpTag">+15 XP</span>
+          </label>
+          <label class="checkItem" data-task="n_clothes">
+            <input type="checkbox">
+            <span>Clothes Ready</span>
+            <span class="xpTag">+15 XP</span>
+          </label>
+          <label class="checkItem" data-task="n_lunch">
+            <input type="checkbox">
+            <span>Lunch Plan Ready</span>
+            <span class="xpTag">+10 XP</span>
+          </label>
+          <label class="checkItem" data-task="n_shoes">
+            <input type="checkbox">
+            <span>Shoes + Jacket Ready</span>
+            <span class="xpTag">+10 XP</span>
+          </label>
+        </div>
+        <div class="questProgress">
+          <div class="label"><span class="progressText">0/4 tasks</span></div>
+          <div class="bar"><div class="progressBar"></div></div>
         </div>
         <div class="questNote">No Screen Time Until Done!</div>
         <div class="questFooter">
-          <div class="xpBadge">+50 XP</div>
-          <button class="questBtn red" data-quest="night">Start Quest</button>
+          <div class="xpBadge">Total: +50 XP</div>
         </div>
       </div>
 
@@ -288,14 +1074,33 @@
         <div class="questIcon">☀️</div>
         <h3>Ready for School!</h3>
         <div class="questChecklist">
-          <div class="checkItem">Prayer & Breakfast</div>
-          <div class="checkItem">Get Dressed</div>
-          <div class="checkItem">Brush Teeth & Hair</div>
-          <div class="checkItem">Backpack Check</div>
+          <label class="checkItem" data-task="m_prayer">
+            <input type="checkbox">
+            <span>Prayer & Breakfast</span>
+            <span class="xpTag">+15 XP</span>
+          </label>
+          <label class="checkItem" data-task="m_dressed">
+            <input type="checkbox">
+            <span>Get Dressed</span>
+            <span class="xpTag">+10 XP</span>
+          </label>
+          <label class="checkItem" data-task="m_teeth">
+            <input type="checkbox">
+            <span>Brush Teeth & Hair</span>
+            <span class="xpTag">+15 XP</span>
+          </label>
+          <label class="checkItem" data-task="m_trappercheck">
+            <input type="checkbox">
+            <span>Backpack Check</span>
+            <span class="xpTag">+10 XP</span>
+          </label>
+        </div>
+        <div class="questProgress">
+          <div class="label"><span class="progressText">0/4 tasks</span></div>
+          <div class="bar"><div class="progressBar"></div></div>
         </div>
         <div class="questFooter">
-          <div class="xpBadge">+50 XP</div>
-          <button class="questBtn green" data-quest="morning">Start Quest</button>
+          <div class="xpBadge">Total: +50 XP</div>
         </div>
       </div>
 
@@ -304,14 +1109,33 @@
         <div class="questIcon">⭐</div>
         <h3>Trapper Ready Mission!</h3>
         <div class="questChecklist">
-          <div class="checkItem">Work & Papers</div>
-          <div class="checkItem">Notebooks Inside</div>
-          <div class="checkItem">Supplies Packed</div>
-          <div class="checkItem">Final Check</div>
+          <label class="checkItem" data-task="t_work">
+            <input type="checkbox">
+            <span>Work & Papers</span>
+            <span class="xpTag">+15 XP</span>
+          </label>
+          <label class="checkItem" data-task="t_notebooks">
+            <input type="checkbox">
+            <span>Notebooks Inside</span>
+            <span class="xpTag">+10 XP</span>
+          </label>
+          <label class="checkItem" data-task="t_supplies">
+            <input type="checkbox">
+            <span>Supplies Packed</span>
+            <span class="xpTag">+15 XP</span>
+          </label>
+          <label class="checkItem" data-task="t_check">
+            <input type="checkbox">
+            <span>Final Check</span>
+            <span class="xpTag">+10 XP</span>
+          </label>
+        </div>
+        <div class="questProgress">
+          <div class="label"><span class="progressText">0/4 tasks</span></div>
+          <div class="bar"><div class="progressBar"></div></div>
         </div>
         <div class="questFooter">
-          <div class="xpBadge">+50 XP</div>
-          <button class="questBtn blue" data-quest="backpack">Start Quest</button>
+          <div class="xpBadge">Total: +50 XP</div>
         </div>
       </div>
     </div>
@@ -321,9 +1145,13 @@
       <!-- XP & Streaks Panel -->
       <div class="dashPanel">
         <h3>XP & Streaks</h3>
-        <div class="xpDisplay" id="dashXP">320</div>
-        <div class="streakInfo">🔥 <span id="dashStreak">0</span> Days Streak</div>
-        <div class="small" style="margin-top:12px;">Next Badge: <span id="nextBadge">Trapper Master</span></div>
+        <div class="xpDisplay" id="dashXP">0</div>
+        <div class="streakInfo"><span class="streakFire">🔥</span> <span id="dashStreak">0</span> Days Streak</div>
+        <div class="small" style="margin-top:8px;">❤️ HP: <span id="dashHP">100</span>/<span id="dashHPMax">100</span></div>
+        <div class="meter hpMeter" style="margin-top:6px;" id="hpMeterDash">
+          <div class="bar"><div id="dashHPBar"></div></div>
+        </div>
+        <div class="small" style="margin-top:8px;">Next Badge: <span id="nextBadge">Bronze Shield</span></div>
         <div class="meter" style="margin-top:12px;">
           <div class="meterTop">
             <div class="small">Progress to Next Level</div>
@@ -332,32 +1160,180 @@
         </div>
       </div>
 
-      <!-- Badges Section -->
-      <div class="dashPanel" id="party">
-        <h3>Badges</h3>
+      <!-- Streak Milestone Badges -->
+      <div class="dashPanel">
+        <h3>Streak Milestones</h3>
         <div class="badgeGrid">
           <div class="badgeItem">
-            <div class="badgeIcon" id="badge1">🎒</div>
-            <div class="badgeLabel">Trapper Master</div>
+            <div class="badgeIcon locked" id="streakBadge3">🛡️</div>
+            <div class="badgeLabel">Bronze Shield<br>(3 days)</div>
           </div>
           <div class="badgeItem">
-            <div class="badgeIcon" id="badge2">🏆</div>
-            <div class="badgeLabel">Perfect Day</div>
+            <div class="badgeIcon locked" id="streakBadge5">⚔️</div>
+            <div class="badgeLabel">Silver Sword<br>(5 days)</div>
           </div>
           <div class="badgeItem">
-            <div class="badgeIcon" id="badge3">⭐</div>
-            <div class="badgeLabel">Streak Star</div>
+            <div class="badgeIcon locked" id="streakBadge7">👑</div>
+            <div class="badgeLabel">Gold Crown<br>(7 days)</div>
           </div>
           <div class="badgeItem">
-            <div class="badgeIcon" id="badge4">✓</div>
-            <div class="badgeLabel">No Missing Items</div>
+            <div class="badgeIcon locked" id="streakBadge10">🐉</div>
+            <div class="badgeLabel">Diamond Dragon<br>(10 days)</div>
           </div>
         </div>
       </div>
 
-      <!-- Weekly Tracker -->
-      <div class="dashPanel" id="map">
-        <h3>Weekly Tracker Reward ⭐</h3>
+      <!-- Task Badges -->
+      <div class="dashPanel">
+        <h3>Task Badges</h3>
+        <div class="badgeGrid">
+          <div class="badgeItem">
+            <div class="badgeIcon locked" id="badge1">🎒</div>
+            <div class="badgeLabel">Trapper Master</div>
+          </div>
+          <div class="badgeItem">
+            <div class="badgeIcon locked" id="badge2">🏆</div>
+            <div class="badgeLabel">Perfect Day</div>
+          </div>
+          <div class="badgeItem">
+            <div class="badgeIcon locked" id="badge3">⭐</div>
+            <div class="badgeLabel">Streak Star</div>
+          </div>
+          <div class="badgeItem">
+            <div class="badgeIcon locked" id="badge4">✓</div>
+            <div class="badgeLabel">No Missing Items</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Companion Party Section -->
+    <div id="party" style="margin-top:24px;">
+      <div class="dashPanel">
+        <h3>🎮 Companion Party</h3>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:16px;">
+          <div class="companion" id="companionEmber">
+            <div class="header">
+              <div class="avatar">
+                <img id="emberImg" alt="Ember">
+              </div>
+              <div class="info">
+                <div class="name">Ember</div>
+                <div class="type">🔥 Fire Tiger</div>
+                <div class="level">Lvl <span class="companionLevel">1</span></div>
+                <div class="companionTitle" id="emberTitle"></div>
+              </div>
+            </div>
+            <div class="statBar">
+              <div class="statLabel">XP Progress</div>
+              <div class="bar"><div class="companionXPBar"></div></div>
+            </div>
+          </div>
+          
+          <div class="companion" id="companionSprite">
+            <div class="header">
+              <div class="avatar">
+                <img id="spriteImg" alt="Sprite">
+              </div>
+              <div class="info">
+                <div class="name">Sprite</div>
+                <div class="type">✨ Light Fairy</div>
+                <div class="level">Lvl <span class="companionLevel">1</span></div>
+                <div class="companionTitle" id="spriteTitle"></div>
+              </div>
+            </div>
+            <div class="statBar">
+              <div class="statLabel">XP Progress</div>
+              <div class="bar"><div class="companionXPBar"></div></div>
+            </div>
+          </div>
+          
+          <div class="companion" id="companionGolem">
+            <div class="header">
+              <div class="avatar">
+                <img id="golemImg" alt="Golem">
+              </div>
+              <div class="info">
+                <div class="name">Golem</div>
+                <div class="type">🗿 Stone Guardian</div>
+                <div class="level">Lvl <span class="companionLevel">1</span></div>
+                <div class="companionTitle" id="golemTitle"></div>
+              </div>
+            </div>
+            <div class="statBar">
+              <div class="statLabel">XP Progress</div>
+              <div class="bar"><div class="companionXPBar"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="warChestPanel" id="warChestPanel">
+          <h4>⚔️ War Chest ⚔️</h4>
+          <div class="warChestAmount"><span id="warChestGold">0</span> 🪙</div>
+          <div class="small" style="color:var(--muted);">Award 50 gold to a companion!</div>
+          <div class="awardBtnRow">
+            <button class="awardBtn" data-award="ember">🔥 Award Ember</button>
+            <button class="awardBtn" data-award="sprite">✨ Award Sprite</button>
+            <button class="awardBtn" data-award="golem">🗿 Award Golem</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- World Map Section -->
+    <div id="map" style="margin-top:24px;">
+      <div class="dashPanel">
+        <h3>🗺️ World Map - Zone Progress</h3>
+        <div style="display:grid; gap:16px; margin-top:16px;">
+          <div class="zone unlocked" id="zone1">
+            <div class="zoneIcon">
+              <img id="zone1Img" alt="Launch Meadow">
+            </div>
+            <div class="zoneInfo">
+              <div class="zoneName">Launch Meadow</div>
+              <div class="zoneStatus unlocked">✓ UNLOCKED!</div>
+            </div>
+          </div>
+          
+          <div class="zone locked" id="zone2">
+            <div class="zoneIcon">
+              <img id="zone2Img" alt="Homework Hills">
+            </div>
+            <div class="zoneInfo">
+              <div class="zoneName">Homework Hills</div>
+              <div class="zoneStatus locked">🔒 Unlocks at 3 days</div>
+            </div>
+            <div class="lockIcon">🔒</div>
+          </div>
+          
+          <div class="zone locked" id="zone3">
+            <div class="zoneIcon">
+              <img id="zone3Img" alt="Backpack Bastion">
+            </div>
+            <div class="zoneInfo">
+              <div class="zoneName">Backpack Bastion</div>
+              <div class="zoneStatus locked">🔒 Unlocks at 5 days</div>
+            </div>
+            <div class="lockIcon">🔒</div>
+          </div>
+          
+          <div class="zone locked" id="zone4">
+            <div class="zoneIcon">
+              <img id="zone4Img" alt="Focus Forest">
+            </div>
+            <div class="zoneInfo">
+              <div class="zoneName">Focus Forest</div>
+              <div class="zoneStatus locked">🔒 Unlocks at 10 days</div>
+            </div>
+            <div class="lockIcon">🔒</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Weekly Tracker -->
+    <div style="margin-top:24px;">
+      <div class="dashPanel">
+        <h3>📅 Weekly Tracker Reward ⭐</h3>
         <div class="treasureNote">5 Organized Days = PRIZE!</div>
         <div class="weekGrid" id="weekGrid">
           <div class="dayBox" data-day="mon"><div>Mon</div></div>
@@ -380,35 +1356,135 @@
   </div>
 
   <div class="toast" id="toast"></div>
+  
+  <!-- Level Up Celebration Overlay -->
+  <div id="levelUpOverlay">
+    <div class="content">
+      <div class="william-avatar-overlay" id="williamAvatarOverlay">
+        <img id="williamImgOverlay" alt="William character avatar" />
+      </div>
+      <h2>LEVEL UP!</h2>
+      <div class="levelInfo">Level <span id="levelUpNumber"></span></div>
+      <div class="levelTitle" id="levelUpTitle"></div>
+    </div>
+  </div>
+  
+  <!-- Companion Reward Card Overlay -->
+  <div id="companionRewardOverlay">
+    <div class="content">
+      <span class="rewardEmoji" id="rewardEmoji"></span>
+      <div class="rewardHeading">COMPANION LEVEL UP!</div>
+      <div class="rewardName" id="rewardCompName"></div>
+      <div class="rewardLevel">Level <span id="rewardCompLevel"></span></div>
+      <div class="rewardTitle" id="rewardCompTitle"></div>
+      <div class="rewardPower">⚡ New Power Unlocked! ⚡</div>
+    </div>
+  </div>
+
+  <!-- Level Down Overlay -->
+  <div id="levelDownOverlay">
+    <div class="content">
+      <h2>💀 LEVEL DOWN! 💀</h2>
+      <div class="levelInfo">Dropped to Level <span id="levelDownNumber"></span></div>
+      <div class="levelTitle" id="levelDownTitle"></div>
+    </div>
+  </div>
 </div>
 
 <script>
-  const driveImg = (id) => `https://drive.google.com/uc?export=view&id=${id}`;
-
   const ASSETS = {
-    // ✅ Currently used images (3/10)
-    mapstrip: driveImg("1uRnf1lRrckwCio65JR4uoqLMJqdgTy3l"),
-    banner:   driveImg("1alP63TrXq74YiS1anmtcKXicjwt2l5_6"),
-    logo:     driveImg("10saxE0g59l5xok5O0pCRCu1JOQy3NlXb"),
-    
-    // ⚠️ Companion images defined but not used - missing HTML elements
-    // To use: Add <img id="emberImg">, <img id="spriteImg">, <img id="golemImg">
+    mapstrip: "assets/ui/mapstrip.svg",
+    banner:   "assets/ui/banner.svg",
+    logo:     "assets/ui/logo.svg",
+    william: {
+      level1: "assets/img/william-level1.png",
+      level2: "assets/img/william-level2.png",
+      level3: "assets/img/william-level3.png",
+    },
     companions: {
-      ember:  driveImg("1HCOGXn6fncfUGR9-wwwAoNB8DDQ_D-fN"),
-      sprite: driveImg("1bFthyxEFXuOgoGmDtgFNOQRm0diESurv"),
-      golem:  driveImg("1UBt7S_b51y8TscjiwN4go55iux0mRoL8"),
+      ember:  "assets/img/ember.svg",
+      sprite: "assets/img/sprite.svg",
+      golem:  "assets/img/golem.svg",
     },
     
     // ⚠️ Zone images defined but never referenced in code
     zones: {
-      z1: driveImg("1khkAGTYaqs2kcV47QlywWJV8nx6DCPT3"),
-      z2: driveImg("1Gqf9RB81VfNXhJTNGpZrqnGcnEq-gkCG"),
-      z3: driveImg("1QUjRAL_25vraSxiAUwh6DEi0VFZcUzvf"),
-      z4: driveImg("12nyjV7zm_bEzG2uDgPy6tv1Uo2rLZ5Gd"),
+      z1: "assets/img/zone1.svg",
+      z2: "assets/img/zone2.svg",
+      z3: "assets/img/zone3.svg",
+      z4: "assets/img/zone4.svg",
     }
   };
+  
+  // D&D-Style Level Titles
+  const LEVEL_TITLES = {
+    1: "Apprentice Adventurer",
+    2: "Brave Scout",
+    3: "Squire of the Realm",
+    4: "Woodland Ranger",
+    5: "Knight of Focus",
+    6: "Battle Mage",
+    7: "Dungeon Explorer",
+    8: "Dragon Slayer",
+    9: "Quest Master",
+    10: "Quest Champion",
+    11: "Elite Warrior",
+    12: "Arcane Sage",
+    13: "Shadow Hunter",
+    14: "Storm Bringer",
+    15: "Legendary Hero",
+    16: "Realm Protector",
+    17: "Titan Slayer",
+    18: "Cosmic Guardian",
+    19: "Eternal Champion",
+    20: "Dragon Master"
+  };
+  
+  const getLevelTitle = (level) => {
+    if (level <= 20) return LEVEL_TITLES[level];
+    return "Dragon Master";
+  };
+  
+  // Get William's character image based on current level
+  function getWilliamImage(level) {
+    if (level >= 14) return ASSETS.william.level3;  // Epic/powered-up form
+    if (level >= 7) return ASSETS.william.level2;    // Armored/mid-tier form
+    return ASSETS.william.level1;                     // Base/casual form
+  }
+
+  // Companion Level Titles
+  const COMPANION_TITLES = {
+    ember: {
+      1: "Tiny Spark", 2: "Flickering Flame", 3: "Blaze Cub", 4: "Fire Prowler",
+      5: "Inferno Striker", 6: "Magma Fang", 7: "Volcanic Hunter", 8: "Phoenix Fury",
+      9: "Solar Beast", 10: "Eternal Inferno"
+    },
+    sprite: {
+      1: "Dim Glimmer", 2: "Sparkle Wisp", 3: "Glow Dancer", 4: "Shimmer Wing",
+      5: "Radiant Pixie", 6: "Starlight Weaver", 7: "Aurora Enchanter", 8: "Prismatic Sage",
+      9: "Celestial Beacon", 10: "Eternal Luminary"
+    },
+    golem: {
+      1: "Pebble Scout", 2: "Rock Tumbler", 3: "Boulder Buddy", 4: "Granite Guard",
+      5: "Iron Fortress", 6: "Steel Sentinel", 7: "Diamond Wall", 8: "Obsidian Titan",
+      9: "Mountain King", 10: "Eternal Colossus"
+    }
+  };
+  const COMPANION_MAX_TITLES = { ember: "Supernova Tiger", sprite: "Supernova Fairy", golem: "World Shaker" };
+  const COMPANION_EMOJIS = { ember: "🔥", sprite: "✨", golem: "🗿" };
+  const COMPANION_NAMES = { ember: "Ember", sprite: "Sprite", golem: "Golem" };
+
+  function getCompanionTitle(companion, level) {
+    if (level >= 11) return COMPANION_MAX_TITLES[companion];
+    return COMPANION_TITLES[companion][level] || COMPANION_MAX_TITLES[companion];
+  }
 
   const KEY = "williams_world_embed_state_v1";
+  const WAR_CHEST_XP_RATE = 0.25;       // 25% of task XP goes to war chest
+  const WAR_CHEST_AWARD_COST = 50;      // Gold cost per companion award
+  const COMPANION_XP_PER_LEVEL = 100;   // XP needed for companion level-up
+  const LEVEL_DOWN_HP_RESET = 50;       // HP after level-down
+  const HP_PER_STREAK = 100;            // Extra max HP per streak day
   const TASKS = [
     // Night-Before Quest
     { id:"n_trapper",  label:"Night-Before: Trapper ready", xp:15, quest:"night" },
@@ -428,11 +1504,13 @@
   ];
 
   const MAP = [
-    { id:"z1", title:"Zone 1: Launch Meadow", need:1 },
-    { id:"z2", title:"Zone 2: Homework Hills", need:3 },
-    { id:"z3", title:"Zone 3: Backpack Bastion", need:5 },
-    { id:"z4", title:"Zone 4: Focus Forest", need:10 },
+    { id:"z1", title:"Launch Meadow", need:1 },
+    { id:"z2", title:"Homework Hills", need:3 },
+    { id:"z3", title:"Backpack Bastion", need:5 },
+    { id:"z4", title:"Focus Forest", need:10 },
   ];
+  
+  const COMPANIONS = ["ember", "sprite", "golem"];
 
   const $ = (id)=>document.getElementById(id);
   const todayKey = ()=>{
@@ -446,23 +1524,134 @@
     try{
       const raw = localStorage.getItem(KEY);
       if(!raw) throw 0;
-      return JSON.parse(raw);
+      const data = JSON.parse(raw);
+      // Ensure companions exist
+      if (!data.companions) {
+        data.companions = {
+          ember: { level: 3, xp: 0 },
+          sprite: { level: 3, xp: 0 },
+          golem: { level: 3, xp: 0 }
+        };
+      }
+      // Ensure hp exists
+      if (data.hp === undefined) data.hp = 100;
+      // Ensure warChest exists
+      if (data.warChest === undefined) data.warChest = 0;
+      return data;
     }catch{
-      return { xp:0, level:1, streak:0, days:{} };
+      return { 
+        xp:0, 
+        level:1, 
+        streak:0, 
+        hp:100,
+        warChest: 0,
+        days:{},
+        companions: {
+          ember: { level: 3, xp: 0 },
+          sprite: { level: 3, xp: 0 },
+          golem: { level: 3, xp: 0 }
+        }
+      };
     }
   }
   function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
 
   function toast(msg){
     const el=$("toast"); el.textContent=msg; el.style.display="block";
-    clearTimeout(toast._t); toast._t=setTimeout(()=>el.style.display="none", 1800);
+    clearTimeout(toast._t); toast._t=setTimeout(()=>el.style.display="none", 2500);
+  }
+  
+  // Show floating XP animation
+  function showFloatingXP(amount, x, y) {
+    const el = document.createElement('div');
+    el.className = 'floatingXP';
+    el.textContent = `+${amount} XP`;
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1500);
+  }
+  
+  // Show companion reward card
+  function showCompanionRewardCard(companion, newLevel) {
+    const overlay = $('companionRewardOverlay');
+    $('rewardEmoji').textContent = COMPANION_EMOJIS[companion];
+    $('rewardCompName').textContent = COMPANION_NAMES[companion];
+    $('rewardCompLevel').textContent = newLevel;
+    $('rewardCompTitle').textContent = getCompanionTitle(companion, newLevel);
+    overlay.classList.add('show');
+    
+    // Particle effects
+    for (let i = 0; i < 25; i++) {
+      setTimeout(() => {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * window.innerWidth + 'px';
+        particle.style.top = Math.random() * window.innerHeight + 'px';
+        const colors = ['var(--gold)', 'var(--green)', 'var(--blue)', '#ff6b8a', '#c084fc'];
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+        overlay.querySelector('.content').appendChild(particle);
+        setTimeout(() => particle.remove(), 2000);
+      }, i * 40);
+    }
+    
+    setTimeout(() => overlay.classList.remove('show'), 3000);
+  }
+
+  // Show level-down overlay
+  function showLevelDown(newLevel) {
+    const overlay = $('levelDownOverlay');
+    $('levelDownNumber').textContent = newLevel;
+    $('levelDownTitle').textContent = getLevelTitle(newLevel);
+    overlay.classList.add('show');
+    setTimeout(() => overlay.classList.remove('show'), 3000);
+  }
+
+  // Check for level down when HP reaches 0
+  function checkLevelDown() {
+    if (state.hp <= 0 && state.level > 1) {
+      state.level = Math.max(1, state.level - 1);
+      state.xp = 0;
+      state.hp = LEVEL_DOWN_HP_RESET;
+      save();
+      showLevelDown(state.level);
+      toast(`💀 LEVEL DOWN! Dropped to Level ${state.level}: ${getLevelTitle(state.level)}`);
+    }
+  }
+  function showLevelUpCelebration(level) {
+    const overlay = $('levelUpOverlay');
+    const levelNum = $('levelUpNumber');
+    const levelTitle = $('levelUpTitle');
+    const williamImgOverlay = $('williamImgOverlay');
+    
+    levelNum.textContent = level;
+    levelTitle.textContent = getLevelTitle(level);
+    if (williamImgOverlay) williamImgOverlay.src = getWilliamImage(level);
+    overlay.classList.add('show');
+    
+    // Create particle effects
+    for (let i = 0; i < 30; i++) {
+      setTimeout(() => {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * window.innerWidth + 'px';
+        particle.style.top = Math.random() * window.innerHeight + 'px';
+        overlay.querySelector('.content').appendChild(particle);
+        setTimeout(() => particle.remove(), 2000);
+      }, i * 50);
+    }
+    
+    // Auto-dismiss after 3 seconds
+    setTimeout(() => {
+      overlay.classList.remove('show');
+    }, 3000);
   }
 
   function applyAssets(){
     const bannerEl = document.querySelector("#ww [data-banner]");
     if(bannerEl){
       bannerEl.style.background =
-        `linear-gradient(180deg, rgba(7,11,22,.55), rgba(7,11,22,.78)),
+        `linear-gradient(180deg, rgba(7,11,22,.15), rgba(7,11,22,.20)),
          url("${ASSETS.banner}") center/cover no-repeat`;
     }
     const logoImg = $("logoImg");
@@ -476,14 +1665,63 @@
     if(emberImg) emberImg.src = ASSETS.companions.ember;
     if(spriteImg) spriteImg.src = ASSETS.companions.sprite;
     if(golemImg) golemImg.src = ASSETS.companions.golem;
+    
+    // Load William's character image
+    const williamImg = $("williamImg");
+    if(williamImg) williamImg.src = getWilliamImage(state.level);
+    
+    // Load zone images
+    if($("zone1Img")) $("zone1Img").src = ASSETS.zones.z1;
+    if($("zone2Img")) $("zone2Img").src = ASSETS.zones.z2;
+    if($("zone3Img")) $("zone3Img").src = ASSETS.zones.z3;
+    if($("zone4Img")) $("zone4Img").src = ASSETS.zones.z4;
   }
 
   let state = load();
   const TODAY = todayKey();
+  function getMaxHP() { return 100 + (state.streak * HP_PER_STREAK); }
   if(!state.days[TODAY]){
     state.days[TODAY]={ tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), result:"Not graded" };
     save();
   }
+
+  // Calculate damage for incomplete tasks in a day
+  function calcDamage(dayData) {
+    let dmg = 0;
+    TASKS.forEach(t => {
+      if (!dayData.tasks[t.id]) dmg += t.xp;
+    });
+    return dmg;
+  }
+
+  // Midnight check: auto-grade any past ungraded days as FAIL and apply damage
+  function midnightCheck() {
+    let totalDamage = 0;
+    const sortedKeys = Object.keys(state.days).sort();
+    sortedKeys.forEach(dateKey => {
+      if (dateKey >= TODAY) return; // skip today
+      const day = state.days[dateKey];
+      if (day.result === "Not graded") {
+        // Midnight passed without grading — auto-FAIL and apply damage
+        day.result = "FAIL";
+        const dmg = calcDamage(day);
+        totalDamage += dmg;
+        state.streak = 0;
+      }
+    });
+    if (totalDamage > 0) {
+      state.hp = Math.max(0, state.hp - totalDamage);
+      // Cap HP to max based on current streak
+      const maxHP = getMaxHP();
+      if (state.hp > maxHP) state.hp = maxHP;
+      save();
+      setTimeout(() => {
+        toast(`💀 Midnight damage! -${totalDamage} HP for missed tasks`);
+        checkLevelDown();
+      }, 500);
+    }
+  }
+  midnightCheck();
 
   function isPassDay(){
     const day = state.days[TODAY];
@@ -503,16 +1741,41 @@
   }
 
   function recalcLevel(){
+    let leveledUp = false;
+    let newLevel = state.level;
     while(state.xp >= xpForLevel(state.level)){
       state.xp -= xpForLevel(state.level);
       state.level += 1;
-      toast(`LEVEL UP → ${state.level}`);
+      newLevel = state.level;
+      leveledUp = true;
     }
+    if (leveledUp) {
+      showLevelUpCelebration(newLevel);
+      toast(`LEVEL UP → ${newLevel}: ${getLevelTitle(newLevel)}`);
+    }
+  }
+  
+  // Add XP to companions
+  function addCompanionXP(amount, specificComp) {
+    const comps = specificComp ? [specificComp] : COMPANIONS;
+    comps.forEach(comp => {
+      const prevLevel = state.companions[comp].level;
+      state.companions[comp].xp += Math.floor(amount);
+      // Companions level up every 100 XP
+      while (state.companions[comp].xp >= COMPANION_XP_PER_LEVEL) {
+        state.companions[comp].xp -= COMPANION_XP_PER_LEVEL;
+        state.companions[comp].level += 1;
+      }
+      if (state.companions[comp].level > prevLevel) {
+        showCompanionRewardCard(comp, state.companions[comp].level);
+      }
+    });
   }
 
   function updateHeader(){
     $("todayLabel").textContent = prettyToday();
     $("levelNum").textContent = state.level;
+    $("levelTitle").textContent = getLevelTitle(state.level);
     $("streakNum").textContent = state.streak;
 
     const need = xpForLevel(state.level);
@@ -522,13 +1785,147 @@
 
     $("dayResult").textContent = state.days[TODAY].result;
     
+    // Update William's character image based on level
+    const williamImg = $("williamImg");
+    if (williamImg) williamImg.src = getWilliamImage(state.level);
+    
+    // Update HP display
+    const maxHP = getMaxHP();
+    const hpPct = Math.max(0, Math.min(100, Math.round((state.hp / maxHP) * 100)));
+    $("hpNum").textContent = state.hp;
+    $("hpMaxPill").textContent = maxHP;
+    $("hpNow").textContent = state.hp;
+    $("hpMax").textContent = maxHP;
+    $("hpBar").style.width = hpPct + "%";
+    $("dashHP").textContent = state.hp;
+    $("dashHPMax").textContent = maxHP;
+    $("dashHPBar").style.width = hpPct + "%";
+    
+    // Low HP warning
+    const hpMeterBanner = $("hpMeterBanner");
+    const hpMeterDash = $("hpMeterDash");
+    if (hpPct <= 25) {
+      if (hpMeterBanner) hpMeterBanner.classList.add("low");
+      if (hpMeterDash) hpMeterDash.classList.add("low");
+    } else {
+      if (hpMeterBanner) hpMeterBanner.classList.remove("low");
+      if (hpMeterDash) hpMeterDash.classList.remove("low");
+    }
+
     // Update dashboard
     $("dashXP").textContent = state.xp;
     $("dashStreak").textContent = state.streak;
     $("dashXPBar").style.width = Math.max(0, Math.min(100, Math.round((state.xp/need)*100))) + "%";
     
+    // Update streak fire animation
+    const streakFire = document.querySelector('.streakFire');
+    if (streakFire) {
+      if (state.streak >= 10) {
+        streakFire.classList.add('mega');
+      } else {
+        streakFire.classList.remove('mega');
+      }
+    }
+    
     updateBadges();
+    updateStreakBadges();
     updateWeeklyTracker();
+    updateCompanions();
+    updateZones();
+    
+    // Update War Chest display
+    const warChestGold = $("warChestGold");
+    if (warChestGold) warChestGold.textContent = state.warChest;
+    document.querySelectorAll('.awardBtn').forEach(btn => {
+      btn.disabled = state.warChest < WAR_CHEST_AWARD_COST;
+    });
+  }
+  
+  // Update companion display
+  function updateCompanions() {
+    COMPANIONS.forEach(comp => {
+      const el = $(`companion${comp.charAt(0).toUpperCase() + comp.slice(1)}`);
+      if (!el) return;
+      
+      const compData = state.companions[comp];
+      el.querySelector('.companionLevel').textContent = compData.level;
+      el.querySelector('.companionXPBar').style.width = (compData.xp % 100) + '%';
+      
+      // Update companion title
+      const titleEl = $(`${comp}Title`);
+      if (titleEl) titleEl.textContent = getCompanionTitle(comp, compData.level);
+      
+      // Add evolved class for higher level companions
+      if (compData.level >= 5) {
+        el.classList.add('evolved');
+      } else {
+        el.classList.remove('evolved');
+      }
+    });
+  }
+  
+  // Update zone unlocking based on cumulative PASS days
+  function updateZones() {
+    const passCount = Object.values(state.days).filter(d => d.result === 'PASS').length;
+    
+    MAP.forEach((zone, idx) => {
+      const zoneEl = $(zone.id.replace('z', 'zone'));
+      if (!zoneEl) return;
+      
+      const isUnlocked = passCount >= zone.need;
+      const statusEl = zoneEl.querySelector('.zoneStatus');
+      const lockIcon = zoneEl.querySelector('.lockIcon');
+      
+      if (isUnlocked) {
+        zoneEl.classList.remove('locked');
+        zoneEl.classList.add('unlocked');
+        if (statusEl) {
+          statusEl.classList.remove('locked');
+          statusEl.classList.add('unlocked');
+          statusEl.textContent = '✓ UNLOCKED!';
+        }
+        if (lockIcon) lockIcon.style.display = 'none';
+      } else {
+        zoneEl.classList.add('locked');
+        zoneEl.classList.remove('unlocked');
+        if (statusEl) {
+          statusEl.classList.add('locked');
+          statusEl.classList.remove('unlocked');
+          statusEl.textContent = `🔒 Unlocks at ${zone.need} day${zone.need > 1 ? 's' : ''}`;
+        }
+        if (lockIcon) lockIcon.style.display = 'block';
+      }
+    });
+  }
+  
+  // Update streak milestone badges
+  function updateStreakBadges() {
+    const milestones = [
+      { days: 3, id: 'streakBadge3' },
+      { days: 5, id: 'streakBadge5' },
+      { days: 7, id: 'streakBadge7' },
+      { days: 10, id: 'streakBadge10' }
+    ];
+    
+    milestones.forEach(m => {
+      const badge = $(m.id);
+      if (!badge) return;
+      
+      if (state.streak >= m.days) {
+        badge.classList.add('earned');
+        badge.classList.remove('locked');
+      } else {
+        badge.classList.add('locked');
+        badge.classList.remove('earned');
+      }
+    });
+    
+    // Update next badge text
+    if (state.streak < 3) $("nextBadge").textContent = "Bronze Shield (3 days)";
+    else if (state.streak < 5) $("nextBadge").textContent = "Silver Sword (5 days)";
+    else if (state.streak < 7) $("nextBadge").textContent = "Gold Crown (7 days)";
+    else if (state.streak < 10) $("nextBadge").textContent = "Diamond Dragon (10 days)";
+    else $("nextBadge").textContent = "All Milestones Earned! 🎉";
   }
   
   function updateBadges(){
@@ -612,60 +2009,153 @@
         const was = day.tasks[t.id]===true;
         day.tasks[t.id] = cb.checked;
 
-        if(!was && cb.checked){ state.xp += t.xp; recalcLevel(); toast(`+${t.xp} XP`); }
+        if(!was && cb.checked){ 
+          state.xp += t.xp; 
+          addCompanionXP(t.xp / 3); // Companions get 1/3 of player XP
+          state.warChest += Math.floor(t.xp * WAR_CHEST_XP_RATE);
+          recalcLevel(); 
+          toast(`+${t.xp} XP`); 
+        }
         day.result="Not graded";
         save();
         updateHeader();
+        syncQuestCheckboxes();
       });
 
       list.appendChild(row);
     });
+  }
+  
+  // Setup quest card checkboxes
+  function setupQuestCheckboxes() {
+    const day = state.days[TODAY];
+    
+    // For each task, find its checkbox in the quest cards
+    TASKS.forEach(task => {
+      const checkItem = document.querySelector(`.checkItem[data-task="${task.id}"]`);
+      if (!checkItem) return;
+      
+      const checkbox = checkItem.querySelector('input[type="checkbox"]');
+      if (!checkbox) return;
+      
+      // Set initial state
+      checkbox.checked = day.tasks[task.id] === true;
+      if (checkbox.checked) {
+        checkItem.classList.add('completed');
+      }
+      
+      // Add change handler
+      checkbox.addEventListener('change', (e) => {
+        const wasChecked = day.tasks[task.id] === true;
+        day.tasks[task.id] = checkbox.checked;
+        
+        if (!wasChecked && checkbox.checked) {
+          // Task just completed
+          state.xp += task.xp;
+          addCompanionXP(task.xp / 3); // Companions get 1/3 of player XP
+          state.warChest += Math.floor(task.xp * WAR_CHEST_XP_RATE);
+          recalcLevel();
+          
+          // Show floating XP animation
+          const rect = checkItem.getBoundingClientRect();
+          showFloatingXP(task.xp, rect.left + rect.width / 2, rect.top);
+          
+          toast(`+${task.xp} XP Earned!`);
+          checkItem.classList.add('completed');
+        } else if (wasChecked && !checkbox.checked) {
+          // Task unchecked
+          checkItem.classList.remove('completed');
+        }
+        
+        day.result = "Not graded";
+        save();
+        updateHeader();
+        updateQuestProgress(task.quest);
+        renderTasks(); // Keep backward compat task list in sync
+      });
+    });
+    
+    // Initialize progress bars for all quests
+    ['night', 'morning', 'backpack'].forEach(questType => {
+      updateQuestProgress(questType);
+    });
+  }
+  
+  // Sync quest checkboxes with state (called from renderTasks)
+  function syncQuestCheckboxes() {
+    const day = state.days[TODAY];
+    TASKS.forEach(task => {
+      const checkItem = document.querySelector(`.checkItem[data-task="${task.id}"]`);
+      if (!checkItem) return;
+      
+      const checkbox = checkItem.querySelector('input[type="checkbox"]');
+      if (!checkbox) return;
+      
+      checkbox.checked = day.tasks[task.id] === true;
+      if (checkbox.checked) {
+        checkItem.classList.add('completed');
+      } else {
+        checkItem.classList.remove('completed');
+      }
+    });
+    
+    // Update progress bars
+    ['night', 'morning', 'backpack'].forEach(questType => {
+      updateQuestProgress(questType);
+    });
+  }
+  
+  // Update quest progress bar
+  function updateQuestProgress(questType) {
+    const day = state.days[TODAY];
+    const questTasks = TASKS.filter(t => t.quest === questType);
+    const completedCount = questTasks.filter(t => day.tasks[t.id] === true).length;
+    const totalCount = questTasks.length;
+    const percentage = (completedCount / totalCount) * 100;
+    
+    // Find the quest card
+    const cardId = questType === 'night' ? 'questNight' : 
+                   questType === 'morning' ? 'questMorning' : 'questBackpack';
+    const card = $(cardId);
+    if (!card) return;
+    
+    const progressText = card.querySelector('.progressText');
+    const progressBar = card.querySelector('.progressBar');
+    
+    if (progressText) {
+      progressText.textContent = `${completedCount}/${totalCount} tasks`;
+    }
+    if (progressBar) {
+      progressBar.style.width = percentage + '%';
+    }
+    
+    // Show quest complete celebration
+    if (completedCount === totalCount && completedCount > 0) {
+      // Check if we just completed it (to avoid showing multiple times)
+      if (!card.dataset.celebrated) {
+        card.dataset.celebrated = 'true';
+        toast(`🎉 ${questType.toUpperCase()} QUEST COMPLETE!`);
+      }
+    } else {
+      delete card.dataset.celebrated;
+    }
   }
 
   function gradeDay(){
     const pass = isPassDay();
     state.days[TODAY].result = pass ? "PASS" : "FAIL";
     state.streak = pass ? (state.streak+1) : 0;
+    if (!pass) {
+      const dmg = calcDamage(state.days[TODAY]);
+      state.hp = Math.max(0, state.hp - dmg);
+    }
+    // Cap HP to new max (streak may have changed)
+    const maxHP = getMaxHP();
+    if (state.hp > maxHP) state.hp = maxHP;
     save();
     updateHeader();
-    toast(pass ? "PASS! Streak +1" : "FAIL. Streak reset");
-  }
-  
-  // Quest button handlers
-  function handleQuestClick(questType){
-    const day = state.days[TODAY];
-    const questTasks = TASKS.filter(t=>t.quest === questType);
-    
-    // Quest display names for better UX
-    const questNames = { night: "Night Quest", morning: "Morning Quest", backpack: "Backpack Quest" };
-    const questName = questNames[questType] || questType;
-    
-    // Toggle all tasks in this quest
-    const allComplete = questTasks.every(t=>day.tasks[t.id]===true);
-    
-    if(allComplete){
-      toast(`${questName} Already Complete!`);
-    } else {
-      // Complete all tasks in this quest
-      let totalXP = 0;
-      questTasks.forEach(t=>{
-        if(!day.tasks[t.id]){
-          day.tasks[t.id] = true;
-          totalXP += t.xp;
-        }
-      });
-      
-      if(totalXP > 0){
-        state.xp += totalXP;
-        recalcLevel();
-        toast(`Quest Complete! +${totalXP} XP`);
-      }
-      
-      day.result="Not graded";
-      save();
-      renderTasks();
-      updateHeader();
-    }
+    toast(pass ? "🎉 PASS! Streak +1" : `⚠️ FAIL. Streak reset. -${calcDamage(state.days[TODAY])} HP!`);
+    if (!pass) checkLevelDown();
   }
 
   document.querySelectorAll("#ww .nav button").forEach(btn=>{
@@ -677,16 +2167,7 @@
       if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
     });
   });
-  
-  // Quest button event listeners
-  document.querySelectorAll(".questBtn").forEach(btn=>{
-    btn.addEventListener("click", ()=>{
-      const quest = btn.dataset.quest;
-      handleQuestClick(quest);
-    });
-  });
 
-  
   // Add grading and reset buttons to topbar actions
   const topbar = document.querySelector(".topbar-inner .nav");
   if(topbar){
@@ -701,14 +2182,35 @@
     resetBtn.setAttribute("aria-label", "Reset today's task completion");
     resetBtn.addEventListener("click", ()=>{
       state.days[TODAY]={ tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), result:"Not graded" };
-      save(); renderTasks(); updateHeader(); toast("Today reset");
+      save(); 
+      renderTasks(); 
+      setupQuestCheckboxes();
+      updateHeader(); 
+      toast("Today reset");
     });
     topbar.appendChild(resetBtn);
   }
 
+  // War Chest Award button handlers
+  document.querySelectorAll('.awardBtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const comp = btn.dataset.award;
+      if (state.warChest < WAR_CHEST_AWARD_COST) {
+        toast('Not enough gold in the War Chest!');
+        return;
+      }
+      state.warChest -= WAR_CHEST_AWARD_COST;
+      addCompanionXP(WAR_CHEST_AWARD_COST, comp);
+      save();
+      updateHeader();
+      toast(`🪙 Awarded ${WAR_CHEST_AWARD_COST} gold to ${COMPANION_NAMES[comp]}!`);
+    });
+  });
+
   // INIT
   applyAssets();
   renderTasks();
+  setupQuestCheckboxes();
   updateHeader();
 </script>
 

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="300" viewBox="0 0 1200 300">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#87CEEB"/>
+      <stop offset="100%" style="stop-color:#98FB98"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="300" fill="url(#sky)"/>
+  <rect y="200" width="1200" height="100" fill="#8B4513" rx="10"/>
+  <text x="600" y="160" font-family="Arial,sans-serif" font-size="24" fill="#333" text-anchor="middle">Quest Map</text>
+</svg>
