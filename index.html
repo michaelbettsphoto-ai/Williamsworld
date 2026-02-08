@@ -224,17 +224,11 @@
   }
   @keyframes sneezeParticle {
     0% { transform: translateX(0) translateY(0) scale(1); opacity: 1; }
-    100% { transform: translateX(${50 + Math.random() * 50}px) translateY(-${30 + Math.random() * 30}px) scale(0.3); opacity: 0; }
+    100% { transform: translateX(80px) translateY(-50px) scale(0.3); opacity: 0; }
   }
   @keyframes explodeParticle {
     0% { transform: translate(0, 0) scale(1); opacity: 1; }
-    100% { 
-      transform: translate(
-        calc(cos(var(--angle)) * 150px), 
-        calc(sin(var(--angle)) * 150px)
-      ) scale(0.5); 
-      opacity: 0; 
-    }
+    100% { transform: translate(150px, -50px) scale(0.5); opacity: 0; }
   }
   
   body {
@@ -2802,6 +2796,8 @@
     for (let i = 0; i < 10; i++) {
       const sneeze = document.createElement('div');
       sneeze.textContent = ['💦', '💧', '🤧'][Math.floor(Math.random() * 3)];
+      const randomX = 50 + Math.random() * 50;
+      const randomY = 30 + Math.random() * 30;
       sneeze.style.cssText = `
         position: fixed;
         left: ${rect.right - 10}px;
@@ -2810,7 +2806,19 @@
         pointer-events: none;
         z-index: 10000;
         animation: sneezeParticle ${0.8 + Math.random() * 0.4}s ease-out forwards;
+        --random-x: ${randomX}px;
+        --random-y: ${randomY}px;
       `;
+      // Apply random transform using custom animation
+      const duration = 0.8 + Math.random() * 0.4;
+      sneeze.animate([
+        { transform: 'translateX(0) translateY(0) scale(1)', opacity: 1 },
+        { transform: `translateX(${randomX}px) translateY(-${randomY}px) scale(0.3)`, opacity: 0 }
+      ], {
+        duration: duration * 1000,
+        easing: 'ease-out',
+        fill: 'forwards'
+      });
       document.body.appendChild(sneeze);
       setTimeout(() => sneeze.remove(), 1200);
     }
@@ -2828,8 +2836,15 @@
       text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
       pointer-events: none;
       z-index: 10000;
-      animation: sneezeParticle 1s ease-out forwards;
     `;
+    text.animate([
+      { transform: 'translateY(0) scale(0.8)', opacity: 1 },
+      { transform: 'translateY(-60px) scale(1.5)', opacity: 0 }
+    ], {
+      duration: 1000,
+      easing: 'ease-out',
+      fill: 'forwards'
+    });
     document.body.appendChild(text);
     setTimeout(() => text.remove(), 1000);
   }
@@ -2842,6 +2857,9 @@
         const particle = document.createElement('div');
         particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
         const angle = (Math.PI * 2 * i) / 20;
+        const distance = 150;
+        const x = Math.cos(angle) * distance;
+        const y = Math.sin(angle) * distance;
         particle.style.cssText = `
           position: fixed;
           left: ${rect.left + rect.width / 2}px;
@@ -2849,9 +2867,16 @@
           font-size: ${15 + Math.random() * 15}px;
           pointer-events: none;
           z-index: 10000;
-          --angle: ${angle}rad;
-          animation: explodeParticle 1s ease-out forwards;
         `;
+        // Apply transform using Web Animations API for full browser support
+        particle.animate([
+          { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+          { transform: `translate(${x}px, ${y}px) scale(0.5)`, opacity: 0 }
+        ], {
+          duration: 1000,
+          easing: 'ease-out',
+          fill: 'forwards'
+        });
         document.body.appendChild(particle);
         setTimeout(() => particle.remove(), 1000);
       }, i * 20);
