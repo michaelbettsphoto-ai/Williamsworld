@@ -62,7 +62,10 @@
   body {
     margin: 0;
     padding: 0;
-    background: linear-gradient(180deg, #1a0a2e 0%, #3d2448 20%, #8b4a3f 40%, #d4762a 60%, #3d2448 80%, #1a0a2e 100%);
+    background: 
+      linear-gradient(180deg, rgba(26,10,46,.6) 0%, rgba(61,36,72,.5) 20%, rgba(139,74,63,.4) 40%, rgba(212,118,42,.4) 60%, rgba(61,36,72,.5) 80%, rgba(26,10,46,.6) 100%),
+      url("assets/ui/ChatGPT%20Image%20Feb%208,%202026,%2012_39_11%20AM.png") center/cover no-repeat fixed;
+    background-color: #0a0612;
     position: relative;
     overflow-x: hidden;
   }
@@ -85,7 +88,7 @@
       radial-gradient(2px 2px at 75% 40%, white, transparent);
     background-size: 200% 200%;
     animation: starfield 8s ease-in-out infinite;
-    opacity: .3;
+    opacity: .15;
     pointer-events: none;
     z-index: 1;
   }
@@ -1639,7 +1642,7 @@
     const bannerEl = document.querySelector("#ww [data-banner]");
     if(bannerEl){
       bannerEl.style.background =
-        `linear-gradient(180deg, rgba(7,11,22,.55), rgba(7,11,22,.78)),
+        `linear-gradient(180deg, rgba(7,11,22,.45), rgba(7,11,22,.55)),
          url("${ASSETS.banner}") center/cover no-repeat`;
     }
     const logoImg = $("logoImg");
