@@ -1316,7 +1316,207 @@
     color: var(--gold);
     font-family: var(--fantasy-font);
   }
+
+  /* Weather Effects System */
+  #weatherContainer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+    overflow: hidden;
+  }
+
+  /* Rain effect */
+  @keyframes rainFall {
+    0% {
+      transform: translateY(-100vh) translateX(0);
+    }
+    100% {
+      transform: translateY(100vh) translateX(20px);
+    }
+  }
+
+  .raindrop {
+    position: absolute;
+    width: 2px;
+    height: 20px;
+    background: linear-gradient(to bottom, transparent, rgba(174, 194, 224, 0.8));
+    animation: rainFall linear infinite;
+  }
+
+  /* Snow effect */
+  @keyframes snowFall {
+    0% {
+      transform: translateY(-100vh) translateX(0) rotate(0deg);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(100vh) translateX(50px) rotate(360deg);
+      opacity: 0.4;
+    }
+  }
+
+  .snowflake {
+    position: absolute;
+    color: white;
+    font-size: 20px;
+    animation: snowFall linear infinite;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+  }
+
+  /* Cloud effect */
+  @keyframes cloudDrift {
+    0% {
+      transform: translateX(-20%);
+    }
+    100% {
+      transform: translateX(120%);
+    }
+  }
+
+  .cloud {
+    position: absolute;
+    opacity: 0.6;
+    animation: cloudDrift linear infinite;
+    font-size: 60px;
+    filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+  }
+
+  /* Lightning effect */
+  @keyframes lightning {
+    0%, 10%, 20%, 100% {
+      opacity: 0;
+    }
+    5%, 15% {
+      opacity: 1;
+    }
+  }
+
+  #weatherLightning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 4;
+  }
+
+  /* Weather toggle button */
+  #weatherToggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 100;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 2px solid var(--golden-border);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 28px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 15px rgba(212,165,48,0.3);
+    transition: all 0.3s ease;
+    pointer-events: auto;
+  }
+
+  #weatherToggle:hover {
+    transform: scale(1.1) rotate(10deg);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4), 0 0 25px rgba(212,165,48,0.5);
+  }
+
+  #weatherToggle:active {
+    transform: scale(0.95);
+  }
+
+  /* Weather menu */
+  #weatherMenu {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    z-index: 99;
+    background: var(--glass-strong-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 2px solid var(--golden-border);
+    border-radius: 16px;
+    padding: 12px;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 20px rgba(212,165,48,0.2);
+    pointer-events: auto;
+  }
+
+  #weatherMenu.show {
+    display: flex;
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .weatherOption {
+    background: var(--glass-bg);
+    border: 2px solid var(--golden-border);
+    border-radius: 12px;
+    padding: 10px 16px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 14px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+  }
+
+  .weatherOption:hover {
+    background: rgba(255,211,110,0.2);
+    border-color: var(--gold);
+    transform: translateX(-4px);
+  }
+
+  .weatherOption.active {
+    background: rgba(255,211,110,0.25);
+    border-color: var(--gold);
+    box-shadow: 0 0 10px rgba(255,211,110,0.4);
+  }
 </style>
+
+<!-- Weather Effects Container -->
+<div id="weatherContainer"></div>
+<div id="weatherLightning"></div>
+
+<!-- Weather Toggle Button -->
+<div id="weatherToggle" title="Weather Effects">🌤️</div>
+
+<!-- Weather Menu -->
+<div id="weatherMenu">
+  <div class="weatherOption" data-weather="none">
+    <span>☀️</span> Clear
+  </div>
+  <div class="weatherOption" data-weather="rain">
+    <span>🌧️</span> Rain
+  </div>
+  <div class="weatherOption" data-weather="snow">
+    <span>❄️</span> Snow
+  </div>
+  <div class="weatherOption" data-weather="clouds">
+    <span>☁️</span> Cloudy
+  </div>
+  <div class="weatherOption" data-weather="storm">
+    <span>⛈️</span> Storm
+  </div>
+</div>
 
 <div id="ww">
   <div class="wrap">
@@ -2882,6 +3082,180 @@
       }, i * 20);
     }
   }
+
+  // Weather Effects System
+  const weatherContainer = document.getElementById('weatherContainer');
+  const weatherLightning = document.getElementById('weatherLightning');
+  const weatherToggle = document.getElementById('weatherToggle');
+  const weatherMenu = document.getElementById('weatherMenu');
+  let currentWeather = 'none';
+  let weatherParticles = [];
+  let lightningInterval = null;
+
+  // Create rain
+  function createRain() {
+    clearWeather();
+    const rainCount = 100;
+    for (let i = 0; i < rainCount; i++) {
+      const drop = document.createElement('div');
+      drop.className = 'raindrop';
+      drop.style.left = Math.random() * 100 + '%';
+      drop.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
+      drop.style.animationDelay = Math.random() * 2 + 's';
+      weatherContainer.appendChild(drop);
+      weatherParticles.push(drop);
+    }
+  }
+
+  // Create snow
+  function createSnow() {
+    clearWeather();
+    const snowCount = 50;
+    const snowflakes = ['❄', '❅', '❆'];
+    for (let i = 0; i < snowCount; i++) {
+      const flake = document.createElement('div');
+      flake.className = 'snowflake';
+      flake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
+      flake.style.left = Math.random() * 100 + '%';
+      flake.style.fontSize = (Math.random() * 15 + 15) + 'px';
+      flake.style.animationDuration = (Math.random() * 3 + 3) + 's';
+      flake.style.animationDelay = Math.random() * 3 + 's';
+      weatherContainer.appendChild(flake);
+      weatherParticles.push(flake);
+    }
+  }
+
+  // Create clouds
+  function createClouds() {
+    clearWeather();
+    const cloudCount = 8;
+    const cloudEmojis = ['☁️', '☁', '🌥'];
+    for (let i = 0; i < cloudCount; i++) {
+      const cloud = document.createElement('div');
+      cloud.className = 'cloud';
+      cloud.textContent = cloudEmojis[Math.floor(Math.random() * cloudEmojis.length)];
+      cloud.style.top = (Math.random() * 40) + '%';
+      cloud.style.fontSize = (Math.random() * 40 + 40) + 'px';
+      cloud.style.animationDuration = (Math.random() * 20 + 20) + 's';
+      cloud.style.animationDelay = Math.random() * 10 + 's';
+      cloud.style.left = '-10%';
+      weatherContainer.appendChild(cloud);
+      weatherParticles.push(cloud);
+    }
+  }
+
+  // Create storm (rain + clouds + lightning)
+  function createStorm() {
+    clearWeather();
+    createRain();
+    
+    // Add some dark clouds
+    const cloudCount = 5;
+    for (let i = 0; i < cloudCount; i++) {
+      const cloud = document.createElement('div');
+      cloud.className = 'cloud';
+      cloud.textContent = '☁️';
+      cloud.style.top = (Math.random() * 30) + '%';
+      cloud.style.fontSize = (Math.random() * 50 + 50) + 'px';
+      cloud.style.animationDuration = (Math.random() * 15 + 15) + 's';
+      cloud.style.animationDelay = Math.random() * 8 + 's';
+      cloud.style.left = '-10%';
+      cloud.style.opacity = '0.8';
+      cloud.style.filter = 'brightness(0.6) drop-shadow(0 0 15px rgba(0, 0, 0, 0.5))';
+      weatherContainer.appendChild(cloud);
+      weatherParticles.push(cloud);
+    }
+
+    // Add lightning effect
+    if (lightningInterval) clearInterval(lightningInterval);
+    lightningInterval = setInterval(() => {
+      if (currentWeather === 'storm') {
+        weatherLightning.style.animation = 'lightning 0.4s ease-out';
+        setTimeout(() => {
+          weatherLightning.style.animation = '';
+        }, 400);
+      }
+    }, 5000 + Math.random() * 5000);
+  }
+
+  // Clear all weather
+  function clearWeather() {
+    weatherParticles.forEach(particle => particle.remove());
+    weatherParticles = [];
+    if (lightningInterval) {
+      clearInterval(lightningInterval);
+      lightningInterval = null;
+    }
+    weatherLightning.style.animation = '';
+  }
+
+  // Set weather
+  function setWeather(weather) {
+    currentWeather = weather;
+    
+    // Update weather icon
+    const weatherIcons = {
+      'none': '☀️',
+      'rain': '🌧️',
+      'snow': '❄️',
+      'clouds': '☁️',
+      'storm': '⛈️'
+    };
+    weatherToggle.textContent = weatherIcons[weather];
+
+    // Update active state
+    document.querySelectorAll('.weatherOption').forEach(option => {
+      option.classList.toggle('active', option.dataset.weather === weather);
+    });
+
+    // Apply weather effect
+    switch(weather) {
+      case 'rain':
+        createRain();
+        break;
+      case 'snow':
+        createSnow();
+        break;
+      case 'clouds':
+        createClouds();
+        break;
+      case 'storm':
+        createStorm();
+        break;
+      case 'none':
+      default:
+        clearWeather();
+        break;
+    }
+
+    // Save to localStorage
+    localStorage.setItem('williamsWorldWeather', weather);
+  }
+
+  // Toggle weather menu
+  weatherToggle.addEventListener('click', () => {
+    weatherMenu.classList.toggle('show');
+  });
+
+  // Weather option click handlers
+  document.querySelectorAll('.weatherOption').forEach(option => {
+    option.addEventListener('click', () => {
+      const weather = option.dataset.weather;
+      setWeather(weather);
+      weatherMenu.classList.remove('show');
+    });
+  });
+
+  // Close menu when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!weatherToggle.contains(e.target) && !weatherMenu.contains(e.target)) {
+      weatherMenu.classList.remove('show');
+    }
+  });
+
+  // Load saved weather on init
+  const savedWeather = localStorage.getItem('williamsWorldWeather') || 'none';
+  setWeather(savedWeather);
 
   // Start the animation timer (every 10 seconds) - only if element exists
   if (document.getElementById('williamAvatar')) {
