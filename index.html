@@ -117,8 +117,8 @@
     background: linear-gradient(180deg, rgba(17,26,51,.80), rgba(11,16,32,.55));
     min-height: 420px;
   }
-  #ww .banner-inner{padding:18px; display:grid; grid-template-columns: 1.25fr .75fr; gap:14px}
-  @media (max-width:980px){ #ww .banner-inner{grid-template-columns:1fr} }
+  #ww .banner-inner{padding:18px; display:grid; grid-template-columns: auto 1fr; gap:20px; align-items:start}
+  @media (max-width:980px){ #ww .banner-inner{grid-template-columns:1fr; justify-items:center} }
   #ww h1{margin:0 0 6px; font-size:48px; font-weight:900; color:var(--gold); 
     font-family: var(--fantasy-font);
     text-shadow: 
@@ -138,6 +138,22 @@
     margin-top: 8px;
     font-weight: 700;
     letter-spacing: 1px;
+  }
+  #ww .william-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid var(--gold);
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(255,211,110,.4), 0 0 40px rgba(255,211,110,.2);
+    animation: glow 3s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  #ww .william-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   #ww p{margin:0; color:var(--muted); font-weight:650}
   #ww .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
@@ -295,6 +311,22 @@
   #levelUpOverlay .levelTitle {
     font-size: 28px;
     color: var(--gold);
+  }
+  #levelUpOverlay .william-avatar-overlay {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 5px solid var(--gold);
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(255,211,110,.6), 0 0 60px rgba(255,211,110,.3);
+    margin: 0 auto 20px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  #levelUpOverlay .william-avatar-overlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
   @keyframes particles {
     0% { transform: translateY(0) scale(1); opacity: 1; }
@@ -941,6 +973,9 @@
 
     <section class="banner" data-banner id="home">
       <div class="banner-inner">
+        <div class="william-avatar" id="williamAvatar">
+          <img id="williamImg" alt="William" />
+        </div>
         <div>
           <h1>Welcome to Williams World!</h1>
           <div class="levelTitle" id="levelTitle">Apprentice Adventurer</div>
@@ -1314,6 +1349,9 @@
   <!-- Level Up Celebration Overlay -->
   <div id="levelUpOverlay">
     <div class="content">
+      <div class="william-avatar-overlay" id="williamAvatarOverlay">
+        <img id="williamImgOverlay" alt="William" />
+      </div>
       <h2>LEVEL UP!</h2>
       <div class="levelInfo">Level <span id="levelUpNumber"></span></div>
       <div class="levelTitle" id="levelUpTitle"></div>
@@ -1347,6 +1385,11 @@
     mapstrip: "assets/ui/mapstrip.svg",
     banner:   "assets/ui/banner.svg",
     logo:     "assets/ui/logo.svg",
+    william: {
+      level1: "assets/img/william-level1.png",
+      level2: "assets/img/william-level2.png",
+      level3: "assets/img/william-level3.png",
+    },
     companions: {
       ember:  "assets/img/ember.svg",
       sprite: "assets/img/sprite.svg",
@@ -1388,6 +1431,13 @@
     if (level <= 20) return LEVEL_TITLES[level];
     return "Dragon Master";
   };
+  
+  // Get William's character image based on current level
+  function getWilliamImage(level) {
+    if (level >= 14) return ASSETS.william.level3;  // Epic/powered-up form
+    if (level >= 7) return ASSETS.william.level2;    // Armored/mid-tier form
+    return ASSETS.william.level1;                     // Base/casual form
+  }
 
   // Companion Level Titles
   const COMPANION_TITLES = {
@@ -1559,9 +1609,11 @@
     const overlay = $('levelUpOverlay');
     const levelNum = $('levelUpNumber');
     const levelTitle = $('levelUpTitle');
+    const williamImgOverlay = $('williamImgOverlay');
     
     levelNum.textContent = level;
     levelTitle.textContent = getLevelTitle(level);
+    if (williamImgOverlay) williamImgOverlay.src = getWilliamImage(level);
     overlay.classList.add('show');
     
     // Create particle effects
@@ -1600,6 +1652,10 @@
     if(emberImg) emberImg.src = ASSETS.companions.ember;
     if(spriteImg) spriteImg.src = ASSETS.companions.sprite;
     if(golemImg) golemImg.src = ASSETS.companions.golem;
+    
+    // Load William's character image
+    const williamImg = $("williamImg");
+    if(williamImg) williamImg.src = getWilliamImage(state.level);
     
     // Load zone images
     if($("zone1Img")) $("zone1Img").src = ASSETS.zones.z1;
@@ -1715,6 +1771,10 @@
     $("xpBar").style.width = Math.max(0, Math.min(100, Math.round((state.xp/need)*100))) + "%";
 
     $("dayResult").textContent = state.days[TODAY].result;
+    
+    // Update William's character image based on level
+    const williamImg = $("williamImg");
+    if (williamImg) williamImg.src = getWilliamImage(state.level);
     
     // Update HP display
     const maxHP = getMaxHP();
