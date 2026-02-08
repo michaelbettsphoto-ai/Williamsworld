@@ -19,6 +19,9 @@
     --shadow:0 18px 60px rgba(0,0,0,.45); --r1:22px; --r2:16px; --pad:16px; --max:1280px;
     --font:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
     --fantasy-font:'Cinzel', 'MedievalSharp', serif;
+    --glass-bg:rgba(20,10,35,.55);
+    --glass-blur:blur(18px) saturate(1.3);
+    --glass-strong-bg:rgba(20,10,35,.68);
   }
   
   /* Animated background */
@@ -101,8 +104,9 @@
   #ww .wrap{max-width:var(--max); margin:0 auto; padding:14px}
   #ww .topbar{
     position:sticky; top:0; z-index:60;
-    background: linear-gradient(180deg, rgba(26,14,46,.96), rgba(28,16,40,.78));
-    backdrop-filter: blur(10px);
+    background: var(--glass-strong-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border:2px solid var(--golden-border);
     border-radius:18px;
     padding:10px 12px;
@@ -115,16 +119,16 @@
   #ww .badge{font-size:12px; padding:4px 9px; border:2px solid var(--golden-border); color:var(--gold); border-radius:999px; background: rgba(255,211,110,.15); font-weight:800}
   #ww .nav{display:flex; gap:8px; flex-wrap:wrap}
   #ww .nav button{
-    border:2px solid var(--golden-border); background: rgba(30,15,40,.55); color:var(--ink);
+    border:2px solid var(--golden-border); background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); color:var(--ink);
     padding:8px 10px; border-radius:999px; cursor:pointer; font-weight:850; font-size:13px;
   }
   #ww .nav button.active{background: rgba(255,211,110,.25); border-color: var(--gold); box-shadow: 0 0 10px rgba(255,211,110,.4)}
   #ww .banner{
     margin-top:12px; border-radius:26px; border:3px solid var(--gold);
-    box-shadow:var(--shadow), 0 0 30px rgba(255,211,110,.4); overflow:hidden; position:relative;
-    background: linear-gradient(180deg, rgba(30,15,40,.80), rgba(26,14,46,.55));
     box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.4); overflow:hidden; position:relative;
-    background: linear-gradient(180deg, rgba(30,15,50,.25), rgba(20,10,30,.15));
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     min-height: 420px;
   }
   #ww .banner-inner{padding:18px; display:grid; grid-template-columns: 120px 1fr; gap:20px; align-items:start}
@@ -166,10 +170,10 @@
     object-fit: cover;
     display: block;
   }
-  #ww p{margin:0; color:var(--muted); font-weight:650}
+  #ww p{margin:0; color:var(--muted); font-weight:650; text-shadow: 1px 1px 2px rgba(0,0,0,.7)}
   #ww .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
   #ww .btn{
-    border:2px solid var(--golden-border); background: rgba(26,14,46,.40); color:var(--ink);
+    border:2px solid var(--golden-border); background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); color:var(--ink);
     padding:12px 16px; border-radius:14px; cursor:pointer; font-weight:950; font-size:14px;
     transition: all .3s ease;
     position: relative;
@@ -184,25 +188,25 @@
     box-shadow: 0 2px 4px rgba(0,0,0,.3), inset 0 1px 0 rgba(0,0,0,.1);
   }
   #ww .btn.primary{
-    background: linear-gradient(135deg, rgba(212,165,48,.4), rgba(212,165,48,.25)); 
+    background: var(--glass-bg); 
     border-color: var(--golden-border);
   }
   #ww .btn.gold{
-    background: linear-gradient(135deg, rgba(240,168,48,.25), rgba(240,168,48,.15)); 
+    background: var(--glass-bg); 
     border-color: var(--gold);
   }
   #ww .btn.danger{
-    background: linear-gradient(135deg, rgba(255,107,138,.2), rgba(255,107,138,.1)); 
+    background: var(--glass-bg); 
     border-color: rgba(255,107,138,.6);
   }
   #ww .statRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
-  #ww .pill{border:2px solid var(--golden-border); background: rgba(26,14,46,.40); border-radius:999px; padding:8px 10px; display:flex; gap:8px; align-items:center; font-weight:900; font-size:13px}
+  #ww .pill{border:2px solid var(--golden-border); background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-radius:999px; padding:8px 10px; display:flex; gap:8px; align-items:center; font-weight:900; font-size:13px; text-shadow: 1px 1px 2px rgba(0,0,0,.7)}
   #ww .dot{width:10px;height:10px;border-radius:999px;background:var(--golden-border)}
   #ww .dot.green{background:var(--green)}
   #ww .dot.gold{background:var(--gold)}
-  #ww .meter{border:2px solid var(--golden-border); border-radius:14px; background: rgba(26,14,46,.35); padding:10px; margin-top:10px}
+  #ww .meter{border:2px solid var(--golden-border); border-radius:14px; background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); padding:10px; margin-top:10px}
   #ww .meterTop{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:8px}
-  #ww .small{font-size:12px; color:var(--muted); font-weight:650}
+  #ww .small{font-size:12px; color:var(--muted); font-weight:650; text-shadow: 1px 1px 2px rgba(0,0,0,.7)}
   #ww .bar{height:16px;border-radius:999px;background: rgba(50,30,20,.65);overflow:hidden;border:2px solid var(--golden-border); position: relative;}
   #ww .bar > div{
     height:100%; width:0%; 
@@ -229,28 +233,31 @@
   }
   #ww .grid{margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:14px}
   @media (max-width:980px){ #ww .grid{grid-template-columns:1fr} }
-  #ww .card{border:2px solid var(--golden-border); background: rgba(30,15,40,.72); border-radius:var(--r1); box-shadow:var(--shadow), 0 0 15px rgba(255,211,110,.2); padding:var(--pad)}
-  #ww .card h2{margin:0 0 10px; font-size:15px; display:flex; justify-content:space-between; align-items:center; gap:10px}
-  #ww .tag{font-size:12px; padding:6px 10px; border-radius:999px; border:2px solid var(--golden-border); background: rgba(30,15,40,.55); color:var(--gold); font-weight:900}
-  #ww .frame{border:2px solid var(--golden-border); background: rgba(26,14,46,.35); border-radius:var(--r2); padding:12px}
+  #ww .card{border:2px solid var(--golden-border); background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-radius:var(--r1); box-shadow:var(--shadow), 0 0 15px rgba(255,211,110,.2); padding:var(--pad)}
+  #ww .banner .card{background: var(--glass-strong-bg)}
+  #ww .card h2{margin:0 0 10px; font-size:15px; display:flex; justify-content:space-between; align-items:center; gap:10px; text-shadow: 1px 1px 3px rgba(0,0,0,.8)}
+  #ww .tag{font-size:12px; padding:6px 10px; border-radius:999px; border:2px solid var(--golden-border); background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); color:var(--gold); font-weight:900}
+  #ww .frame{border:2px solid var(--golden-border); background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-radius:var(--r2); padding:12px}
   #ww .taskList{display:grid; gap:10px; margin-top:10px}
-  #ww .task{display:grid; grid-template-columns:28px 1fr auto; gap:10px; align-items:center; border:2px solid var(--golden-border); background: rgba(26,14,46,.30); border-radius:16px; padding:10px}
+  #ww .task{display:grid; grid-template-columns:28px 1fr auto; gap:10px; align-items:center; border:2px solid var(--golden-border); background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-radius:16px; padding:10px}
   #ww .task input{width:20px;height:20px; accent-color: var(--green)}
   #ww .task .name{font-weight:950}
   #ww .task .xp{font-weight:1000; padding:6px 9px; border-radius:999px; border:2px solid rgba(255,211,110,.55); background: rgba(255,211,110,.15); font-size:12px; min-width:74px; text-align:center; color:var(--gold)}
   #ww .party{display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:10px}
   @media (max-width:520px){ #ww .party{grid-template-columns:1fr} }
-  #ww .creature{border:2px solid var(--golden-border); background: rgba(26,14,46,.35); border-radius:16px; padding:10px; display:flex; gap:10px; align-items:center}
+  #ww .creature{border:2px solid var(--golden-border); background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-radius:16px; padding:10px; display:flex; gap:10px; align-items:center}
   #ww .avatar{width:42px;height:42px;border-radius:16px;border:2px solid var(--golden-border);overflow:hidden}
   #ww .avatar img{width:100%;height:100%;object-fit:cover;display:block}
   #ww .map{display:grid; gap:10px; margin-top:10px}
-  #ww .node{border:2px solid var(--golden-border); background: rgba(26,14,46,.35); border-radius:16px; padding:10px; display:flex; justify-content:space-between; align-items:center; gap:10px}
+  #ww .node{border:2px solid var(--golden-border); background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-radius:16px; padding:10px; display:flex; justify-content:space-between; align-items:center; gap:10px}
   #ww .node .left{display:flex; gap:10px; align-items:center}
   #ww .node .icon{width:36px;height:36px;border-radius:14px;border:2px solid var(--golden-border); overflow:hidden}
   #ww .node .icon img{width:100%;height:100%;object-fit:cover;display:block}
   #ww .toast{
     position:fixed; left:50%; bottom:24px; transform:translateX(-50%); 
-    background: linear-gradient(135deg, rgba(30,15,40,.95), rgba(50,30,60,.95));
+    background: var(--glass-strong-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border:2px solid var(--golden-border); 
     padding:16px 24px; border-radius:16px; 
     box-shadow:var(--shadow), 0 0 30px rgba(255,211,110,.5); 
@@ -259,6 +266,7 @@
     animation: slideUp .3s ease-out;
     min-width: 200px;
     text-align: center;
+    text-shadow: 1px 1px 3px rgba(0,0,0,.8);
   }
   
   /* Floating XP animation */
@@ -356,7 +364,9 @@
   /* Companion Party Styles */
   #ww .companion {
     border: 3px solid var(--line);
-    background: linear-gradient(135deg, rgba(20,10,30,.8), rgba(40,20,50,.8));
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border-radius: 18px;
     padding: 16px;
     transition: all .3s ease;
@@ -427,7 +437,9 @@
   /* World Map Zone Styles */
   #ww .zone {
     border: 3px solid var(--golden-border);
-    background: linear-gradient(135deg, rgba(30,15,40,.8), rgba(50,30,60,.8));
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border-radius: 18px;
     padding: 16px;
     display: flex;
@@ -534,7 +546,9 @@
   
   #ww .questCard{
     border:4px solid var(--gold); 
-    background: rgba(30,15,40,.90); 
+    background: var(--glass-bg); 
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border-radius:24px; 
     box-shadow:var(--shadow), 0 0 30px rgba(255,211,110,.5), inset 0 2px 0 rgba(255,255,255,.1); 
     padding:24px; 
@@ -544,7 +558,6 @@
     display:flex; 
     flex-direction:column;
     transition: all .3s ease;
-    background-size: 200% 200%;
   }
   #ww .questCard:hover {
     transform: translateY(-4px);
@@ -568,17 +581,11 @@
   }
   #ww .questCard > *{position:relative; z-index:1}
   
-  #ww .questCard.night{
-    background: linear-gradient(135deg, rgba(75,35,130,.90), rgba(50,25,90,.95));
-    border-color: #b794f4;
-  }
-  #ww .questCard.morning{
-    background: linear-gradient(135deg, rgba(255,170,50,.85), rgba(255,140,70,.90));
-    border-color: #ffd36e;
-  }
+  #ww .questCard.night,
+  #ww .questCard.morning,
   #ww .questCard.backpack{
-    background: linear-gradient(135deg, rgba(70,120,200,.80), rgba(90,100,180,.90));
-    border-color: #7ec8ff;
+    background: var(--glass-bg);
+    border-color: var(--gold);
   }
   
   #ww .questIcon{
@@ -604,12 +611,13 @@
   #ww .questChecklist .checkItem{
     display:flex; align-items:center; gap:12px; padding:10px 12px; 
     font-weight:700; font-size:15px;
-    background: rgba(0,0,0,.2);
+    background: rgba(0,0,0,.25);
     border-radius: 12px;
     margin-bottom: 10px;
     border: 2px solid rgba(255,255,255,.1);
     transition: all .3s ease;
     cursor: pointer;
+    text-shadow: 1px 1px 2px rgba(0,0,0,.7);
   }
   #ww .questChecklist .checkItem:hover{
     background: rgba(0,0,0,.3);
@@ -641,7 +649,7 @@
   #ww .questProgress {
     margin: 16px 0;
     padding: 12px;
-    background: rgba(0,0,0,.3);
+    background: rgba(0,0,0,.25);
     border-radius: 12px;
     border: 2px solid rgba(255,255,255,.1);
   }
@@ -656,9 +664,10 @@
   }
   
   #ww .questNote{
-    background: rgba(255,107,138,.15); border:2px solid rgba(255,107,138,.5);
+    background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+    border:2px solid rgba(255,107,138,.5);
     border-radius:12px; padding:10px; margin:12px 0; font-weight:900; font-size:13px;
-    color:var(--ink);
+    color:var(--ink); text-shadow: 1px 1px 2px rgba(0,0,0,.7);
   }
   
   #ww .questFooter{display:flex; justify-content:space-between; align-items:center; margin-top:12px}
@@ -713,7 +722,7 @@
   @media (max-width:980px){ #ww .dashboard{grid-template-columns:1fr} }
   
   #ww .dashPanel{
-    border:3px solid var(--gold); background: rgba(30,15,40,.82); border-radius:20px;
+    border:3px solid var(--gold); background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); border-radius:20px;
     box-shadow:var(--shadow), 0 0 20px rgba(255,211,110,.3); padding:20px;
   }
   
@@ -729,6 +738,7 @@
   
   #ww .streakInfo{
     font-size:18px; font-weight:900; margin:8px 0; color:var(--ink);
+    text-shadow: 1px 1px 3px rgba(0,0,0,.7);
   }
   
   #ww .badgeGrid{display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-top:12px}
@@ -771,7 +781,8 @@
   
   #ww .weekGrid{display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; margin-top:12px}
   #ww .dayBox{
-    aspect-ratio:1; border:2px solid var(--golden-border); background: rgba(26,14,46,.4);
+    aspect-ratio:1; border:2px solid var(--golden-border); background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
     border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center;
     font-weight:900; font-size:12px; padding:8px;
   }
@@ -779,9 +790,11 @@
   #ww .dayBox.complete::after{content:"✓"; display:block; font-size:20px; color:var(--green); margin-top:4px}
   
   #ww .treasureNote{
-    background: linear-gradient(135deg, rgba(255,211,110,.15), rgba(255,170,50,.15));
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
     border:2px solid var(--gold); border-radius:12px; padding:12px; margin-top:12px;
     font-weight:900; text-align:center; color:var(--gold);
+    text-shadow: 1px 1px 3px rgba(0,0,0,.7);
   }
 
   /* Companion Title Display */
@@ -796,7 +809,9 @@
 
   /* War Chest Panel */
   #ww .warChestPanel {
-    background: linear-gradient(135deg, rgba(255,211,110,.12), rgba(255,170,50,.08));
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border: 3px solid var(--gold);
     border-radius: 18px;
     padding: 16px;
@@ -828,7 +843,9 @@
   }
   #ww .awardBtn {
     border: 2px solid var(--gold);
-    background: linear-gradient(135deg, rgba(255,211,110,.20), rgba(255,170,50,.12));
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     color: var(--gold);
     padding: 10px 16px;
     border-radius: 14px;
@@ -841,7 +858,6 @@
   #ww .awardBtn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(0,0,0,.4), 0 0 20px rgba(255,211,110,.5);
-    background: linear-gradient(135deg, rgba(255,211,110,.35), rgba(255,170,50,.25));
   }
   #ww .awardBtn:active {
     transform: translateY(0);
