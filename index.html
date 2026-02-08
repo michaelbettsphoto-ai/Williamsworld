@@ -994,10 +994,75 @@
     outline: 2px solid var(--gold);
     outline-offset: 2px;
   }
+
+  /* Mobile Sticky HUD - Compact Stats Bar */
+  #ww .mobileHUD {
+    display: none;
+    position: sticky;
+    top: 0;
+    z-index: 70;
+    background: linear-gradient(135deg, rgba(15, 8, 25, 0.98), rgba(25, 12, 35, 0.98));
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--gold);
+    padding: 8px 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,.6);
+  }
+  #ww .mobileHUD .hudInner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    font-weight: 900;
+  }
+  #ww .mobileHUD .hudStat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: rgba(0,0,0,.3);
+    border-radius: 999px;
+    border: 1px solid rgba(200, 134, 42, 0.4);
+  }
+  #ww .mobileHUD .hudDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+  #ww .mobileHUD .hudDot.blue { background: var(--blue); }
+  #ww .mobileHUD .hudDot.red { background: var(--red); }
+  #ww .mobileHUD .hudDot.green { background: var(--green); }
+  
+  @media (max-width:768px) {
+    #ww .mobileHUD {
+      display: block;
+    }
+    #ww .topbar {
+      position: static;
+    }
+  }
 </style>
 
 <div id="ww">
   <div class="wrap">
+    <!-- Mobile Sticky HUD -->
+    <div class="mobileHUD">
+      <div class="hudInner">
+        <div class="hudStat">
+          <span class="hudDot blue"></span>
+          <span>Lvl <span id="hudLevel">1</span></span>
+        </div>
+        <div class="hudStat">
+          <span class="hudDot red"></span>
+          <span>HP <span id="hudHP">100</span></span>
+        </div>
+        <div class="hudStat">
+          <span class="hudDot green"></span>
+          <span><span id="hudStreak">0</span>🔥</span>
+        </div>
+      </div>
+    </div>
+    
     <div class="topbar">
       <div class="topbar-inner">
         <div class="brand">
@@ -1830,6 +1895,14 @@
     $("xpBar").style.width = Math.max(0, Math.min(100, Math.round((state.xp/need)*100))) + "%";
 
     $("dayResult").textContent = state.days[TODAY].result;
+    
+    // Update mobile HUD
+    const hudLevel = $("hudLevel");
+    const hudHP = $("hudHP");
+    const hudStreak = $("hudStreak");
+    if (hudLevel) hudLevel.textContent = state.level;
+    if (hudHP) hudHP.textContent = state.hp;
+    if (hudStreak) hudStreak.textContent = state.streak;
     
     // Update William's character image based on level
     const williamImg = $("williamImg");
