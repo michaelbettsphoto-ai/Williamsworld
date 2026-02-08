@@ -130,7 +130,8 @@ function getValidMoves(row, col, checkForCheck = true) {
     const startRow = isWhite(piece) ? 6 : 1;
     
     // Move forward
-    if (board[row + direction]?.[col] === null) {
+    const forwardSquare = board[row + direction]?.[col];
+    if (forwardSquare !== undefined && forwardSquare === null) {
       moves.push({ row: row + direction, col });
       
       // Double move from start

@@ -11,7 +11,7 @@ const COLORS = [
   '#ffd36e', // O - Gold
   '#ff9d5c', // T - Orange
   '#7c3aed', // S - Purple
-  '#d4a530', // Z - Blue
+  '#d4a530', // Z - Gold/Yellow
   '#5ac99a', // J - Teal
   '#ff7b3d'  // L - Red
 ];

@@ -44,18 +44,27 @@ function saveHighScore() {
 
 // Generate random food position
 function generateFood() {
-  food = {
-    x: Math.floor(Math.random() * GRID_SIZE),
-    y: Math.floor(Math.random() * GRID_SIZE)
-  };
+  let attempts = 0;
+  const maxAttempts = 100;
   
-  // Make sure food doesn't spawn on snake
-  for (let segment of snake) {
-    if (segment.x === food.x && segment.y === food.y) {
-      generateFood();
-      return;
+  do {
+    food = {
+      x: Math.floor(Math.random() * GRID_SIZE),
+      y: Math.floor(Math.random() * GRID_SIZE)
+    };
+    attempts++;
+    
+    // Check if food is on snake
+    let onSnake = false;
+    for (let segment of snake) {
+      if (segment.x === food.x && segment.y === food.y) {
+        onSnake = true;
+        break;
+      }
     }
-  }
+    
+    if (!onSnake) break;
+  } while (attempts < maxAttempts);
 }
 
 // Draw game

@@ -129,12 +129,13 @@ function move(direction) {
       
       for (let i = 0; i < row.length; i++) {
         if (i < row.length - 1 && row[i] === row[i + 1]) {
-          merged.push(row[i] * 2);
-          score += row[i] * 2;
+          const newValue = row[i] * 2;
+          merged.push(newValue);
+          score += newValue;
           i++;
           
           // Check for win
-          if (row[i] * 2 === 2048 && !hasWon) {
+          if (newValue === 2048 && !hasWon) {
             hasWon = true;
             setTimeout(() => showWinMessage(), 300);
           }
@@ -152,11 +153,12 @@ function move(direction) {
       
       for (let i = row.length - 1; i >= 0; i--) {
         if (i > 0 && row[i] === row[i - 1]) {
-          merged.unshift(row[i] * 2);
-          score += row[i] * 2;
+          const newValue = row[i] * 2;
+          merged.unshift(newValue);
+          score += newValue;
           i--;
           
-          if (row[i] * 2 === 2048 && !hasWon) {
+          if (newValue === 2048 && !hasWon) {
             hasWon = true;
             setTimeout(() => showWinMessage(), 300);
           }
@@ -177,11 +179,12 @@ function move(direction) {
       const merged = [];
       for (let i = 0; i < col.length; i++) {
         if (i < col.length - 1 && col[i] === col[i + 1]) {
-          merged.push(col[i] * 2);
-          score += col[i] * 2;
+          const newValue = col[i] * 2;
+          merged.push(newValue);
+          score += newValue;
           i++;
           
-          if (col[i] * 2 === 2048 && !hasWon) {
+          if (newValue === 2048 && !hasWon) {
             hasWon = true;
             setTimeout(() => showWinMessage(), 300);
           }
@@ -204,11 +207,12 @@ function move(direction) {
       const merged = [];
       for (let i = col.length - 1; i >= 0; i--) {
         if (i > 0 && col[i] === col[i - 1]) {
-          merged.unshift(col[i] * 2);
-          score += col[i] * 2;
+          const newValue = col[i] * 2;
+          merged.unshift(newValue);
+          score += newValue;
           i--;
           
-          if (col[i] * 2 === 2048 && !hasWon) {
+          if (newValue === 2048 && !hasWon) {
             hasWon = true;
             setTimeout(() => showWinMessage(), 300);
           }
