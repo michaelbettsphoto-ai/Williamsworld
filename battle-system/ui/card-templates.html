@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>William's World - Character Card Templates</title>
+  <link rel="stylesheet" href="character-cards.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a0e2e 0%, #2d1b4e 100%);
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    .demo-container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .demo-header {
+      text-align: center;
+      color: var(--gold);
+      margin-bottom: 40px;
+    }
+
+    .demo-header h1 {
+      font-family: var(--font-title);
+      font-size: 3em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .demo-section {
+      margin-bottom: 60px;
+    }
+
+    .demo-section-title {
+      font-family: var(--font-title);
+      font-size: 2em;
+      color: var(--gold);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--card-border);
+    }
+
+    .demo-description {
+      color: var(--text-secondary);
+      margin-bottom: 30px;
+      line-height: 1.6;
+    }
+
+    .card-display-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .card-display-single {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <div class="demo-header">
+      <h1>⚔️ Character Card Templates ⚔️</h1>
+      <p style="font-size: 1.2em; opacity: 0.8;">UI Component Library for William's World</p>
+    </div>
+
+    <!-- Collection Grid Cards -->
+    <div class="demo-section">
+      <h2 class="demo-section-title">Collection Grid Cards</h2>
+      <p class="demo-description">
+        Small cards used in collection screens. Shows portrait, name, role badge, type icons, and rarity.
+      </p>
+      <div class="card-display-grid">
+        
+        <!-- Trapper Collection Card -->
+        <div class="card-collection" style="--role-color-1: var(--role-defender); --role-color-2: var(--role-defender-light);">
+          <div class="card-collection-portrait">🎒</div>
+          <div class="card-collection-name">Trapper</div>
+          <div class="card-collection-badges">
+            <div class="card-role-badge" style="--role-color-1: var(--role-defender); --role-color-2: var(--role-defender-light);">
+              🛡️
+            </div>
+          </div>
+          <div class="card-type-icons">
+            <div class="card-type-icon" style="--type-color-1: var(--type-metal); --type-color-2: var(--type-metal-light);">⚙️</div>
+            <div class="card-type-icon" style="--type-color-1: var(--type-light); --type-color-2: var(--type-light-light);">✨</div>
+          </div>
+          <div class="card-rarity">Rare</div>
+        </div>
+
+        <!-- Sparkfin Collection Card -->
+        <div class="card-collection" style="--role-color-1: var(--role-scout); --role-color-2: var(--role-scout-light);">
+          <div class="card-collection-portrait">🐠</div>
+          <div class="card-collection-name">Sparkfin</div>
+          <div class="card-collection-badges">
+            <div class="card-role-badge" style="--role-color-1: var(--role-scout); --role-color-2: var(--role-scout-light);">
+              🔍
+            </div>
+            <div class="card-role-badge role-badge-small" style="--role-color-1: var(--role-support); --role-color-2: var(--role-support-dark);">
+              ❤️
+            </div>
+          </div>
+          <div class="card-type-icons">
+            <div class="card-type-icon" style="--type-color-1: var(--type-water); --type-color-2: var(--type-water-light);">💧</div>
+            <div class="card-type-icon" style="--type-color-1: var(--type-electric); --type-color-2: var(--type-electric-light);">⚡</div>
+          </div>
+          <div class="card-rarity">Epic</div>
+        </div>
+
+        <!-- Glowmoss Collection Card -->
+        <div class="card-collection" style="--role-color-1: var(--role-summoner); --role-color-2: var(--role-summoner-light);">
+          <div class="card-collection-portrait">🍄</div>
+          <div class="card-collection-name">Glowmoss</div>
+          <div class="card-collection-badges">
+            <div class="card-role-badge" style="--role-color-1: var(--role-summoner); --role-color-2: var(--role-summoner-light);">
+              👻
+            </div>
+            <div class="card-role-badge role-badge-small" style="--role-color-1: var(--role-controller); --role-color-2: var(--role-controller-light);">
+              💫
+            </div>
+          </div>
+          <div class="card-type-icons">
+            <div class="card-type-icon" style="--type-color-1: var(--type-grass); --type-color-2: var(--type-grass-light);">🌿</div>
+            <div class="card-type-icon" style="--type-color-1: var(--type-shadow); --type-color-2: var(--type-shadow-light);">🌙</div>
+          </div>
+          <div class="card-rarity">Legendary</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Full Detail Card (Front) -->
+    <div class="demo-section">
+      <h2 class="demo-section-title">Full Detail Card (Front)</h2>
+      <p class="demo-description">
+        Main card view showing stats, passive ability, 4 moves, and synergy tags.
+      </p>
+      <div class="card-display-single">
+        
+        <div class="card-detail-front">
+          <div class="card-detail-header">
+            <div class="card-detail-title-group">
+              <div class="card-detail-name">Trapper</div>
+              <div class="card-detail-subtitle">Backpack Bastion</div>
+            </div>
+            <div class="card-detail-roles">
+              <div class="role-badge-large" style="--role-color-1: var(--role-defender); --role-color-2: var(--role-defender-light);">
+                🛡️
+              </div>
+            </div>
+          </div>
+
+          <div class="card-detail-types">
+            <div class="type-badge" style="--type-color-1: var(--type-metal); --type-color-2: var(--type-metal-light);">
+              <span>⚙️</span> Metal
+            </div>
+            <div class="type-badge" style="--type-color-1: var(--type-light); --type-color-2: var(--type-light-light);">
+              <span>✨</span> Light
+            </div>
+          </div>
+
+          <div class="card-detail-stats">
+            <div class="stat-box">
+              <div class="stat-label">HP</div>
+              <div class="stat-value">120</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Power</div>
+              <div class="stat-value">35</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Defense</div>
+              <div class="stat-value">65</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">M.Res</div>
+              <div class="stat-value">55</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Speed</div>
+              <div class="stat-value">25</div>
+            </div>
+          </div>
+
+          <div class="card-detail-passive">
+            <div class="passive-header">
+              <span class="passive-icon">🎒</span>
+              <span class="passive-name">Pack Guard</span>
+            </div>
+            <div class="passive-description">
+              When an ally takes damage, gain 1 Guard. At 3 Guard, auto-shield the lowest-HP ally for 20.
+            </div>
+          </div>
+
+          <div class="card-detail-moves">
+            
+            <div class="move-tile" style="--type-color-1: var(--type-metal); --type-color-2: var(--type-metal-light);">
+              <div class="move-header">
+                <div class="move-name">Shield Slam</div>
+                <div class="move-info">
+                  <div class="move-type-icon">⚙️</div>
+                  <div class="move-cooldown">CD: 0</div>
+                </div>
+              </div>
+              <div class="move-keywords">
+                <span class="keyword-chip">⚔️ Damage</span>
+                <span class="keyword-chip">🎯 Mark</span>
+              </div>
+              <div class="move-description">
+                Strike an enemy with your shield and mark them to focus on you.
+              </div>
+            </div>
+
+            <div class="move-tile" style="--type-color-1: var(--type-light); --type-color-2: var(--type-light-light);">
+              <div class="move-header">
+                <div class="move-name">Barrier Bubble</div>
+                <div class="move-info">
+                  <div class="move-type-icon">✨</div>
+                  <div class="move-cooldown">CD: 2</div>
+                </div>
+              </div>
+              <div class="move-keywords">
+                <span class="keyword-chip">🛡️ Shield</span>
+              </div>
+              <div class="move-description">
+                Create a protective barrier around all allies.
+              </div>
+            </div>
+
+            <div class="move-tile" style="--type-color-1: var(--type-metal); --type-color-2: var(--type-metal-light);">
+              <div class="move-header">
+                <div class="move-name">Taunt Roar</div>
+                <div class="move-info">
+                  <div class="move-type-icon">⚙️</div>
+                  <div class="move-cooldown">CD: 2</div>
+                </div>
+              </div>
+              <div class="move-keywords">
+                <span class="keyword-chip">😠 Taunt</span>
+              </div>
+              <div class="move-description">
+                Enrage an enemy, forcing them to attack for 2 turns.
+              </div>
+            </div>
+
+            <div class="move-tile" style="--type-color-1: var(--type-light); --type-color-2: var(--type-light-light);">
+              <div class="move-header">
+                <div class="move-name">Emergency Cover</div>
+                <div class="move-info">
+                  <div class="move-type-icon">✨</div>
+                  <div class="move-cooldown">CD: 3</div>
+                </div>
+              </div>
+              <div class="move-keywords">
+                <span class="keyword-chip">🛡️ Shield</span>
+                <span class="keyword-chip">✨ Cleanse</span>
+              </div>
+              <div class="move-description">
+                Grant Guard to an ally and remove one negative effect.
+              </div>
+            </div>
+
+          </div>
+
+          <div class="card-detail-synergies">
+            <div class="synergy-tag">Shield</div>
+            <div class="synergy-tag">Mark</div>
+            <div class="synergy-tag">Taunt</div>
+            <div class="synergy-tag">Protect</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Battle Mini Cards -->
+    <div class="demo-section">
+      <h2 class="demo-section-title">Battle Mini Cards (HUD)</h2>
+      <p class="demo-description">
+        Compact in-battle cards showing HP, status icons, role/type, and cooldown indicators.
+      </p>
+      <div class="card-display-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+        
+        <div class="card-battle-mini">
+          <div class="battle-mini-name">Trapper</div>
+          <div class="battle-hp-bar">
+            <div class="battle-hp-fill" style="width: 85%;">102/120</div>
+          </div>
+          <div class="battle-status-icons">
+            <div class="battle-status-icon" title="Shield">
+              🛡️
+              <div class="status-duration">2</div>
+            </div>
+            <div class="battle-status-icon" title="Buff">
+              ⬆️
+              <div class="status-duration">1</div>
+            </div>
+          </div>
+          <div class="battle-mini-footer">
+            <div class="battle-role-type">
+              <div class="battle-mini-icon" style="background: var(--role-defender);">🛡️</div>
+              <div class="battle-mini-icon" style="background: var(--type-metal);">⚙️</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-battle-mini">
+          <div class="battle-mini-name">Sparkfin</div>
+          <div class="battle-hp-bar">
+            <div class="battle-hp-fill low" style="width: 45%;">38/85</div>
+          </div>
+          <div class="battle-status-icons">
+            <div class="battle-status-icon" title="Poison">
+              🧪
+              <div class="status-duration">2</div>
+            </div>
+          </div>
+          <div class="battle-mini-footer">
+            <div class="battle-role-type">
+              <div class="battle-mini-icon" style="background: var(--role-scout);">🔍</div>
+              <div class="battle-mini-icon" style="background: var(--type-water);">💧</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-battle-mini">
+          <div class="battle-mini-name">Glowmoss</div>
+          <div class="battle-hp-bar">
+            <div class="battle-hp-fill critical" style="width: 15%;">15/100</div>
+          </div>
+          <div class="battle-status-icons">
+            <div class="battle-status-icon" title="Burn">
+              🔥
+              <div class="status-duration">3</div>
+            </div>
+            <div class="battle-status-icon" title="Debuff">
+              ⬇️
+              <div class="status-duration">1</div>
+            </div>
+            <div class="battle-status-icon" title="Stun">
+              💫
+              <div class="status-duration">1</div>
+            </div>
+          </div>
+          <div class="battle-mini-footer">
+            <div class="battle-role-type">
+              <div class="battle-mini-icon" style="background: var(--role-summoner);">👻</div>
+              <div class="battle-mini-icon" style="background: var(--type-grass);">🌿</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Add interactivity to collection cards
+    document.querySelectorAll('.card-collection').forEach(card => {
+      card.addEventListener('click', () => {
+        alert('Card clicked! This would open the full detail view.');
+      });
+    });
+
+    // Add interactivity to move tiles
+    document.querySelectorAll('.move-tile').forEach(tile => {
+      tile.addEventListener('click', () => {
+        console.log('Move selected:', tile.querySelector('.move-name').textContent);
+      });
+    });
+  </script>
+</body>
+</html>
