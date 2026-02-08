@@ -12,10 +12,10 @@
 
 <style>
   :root{
-    --bg0:#0a0612; --bg1:#120a1e; --panel:rgba(12, 8, 20, 0.75); --ink:#eaf0ff; --muted:#c8d4ffdd;
+    --bg0:#0a0612; --bg1:#120a1e; --panel:rgba(20, 10, 30, 0.85); --ink:#eaf0ff; --muted:#b9c6ffcc;
     --line:#c8862a; --gold:#f0a830; --green:#7dffb4; --blue:#7aa2ff;
     --purple:#6b46c1; --orange:#ff8c42; --red:#dc2626; 
-    --shadow:0 18px 60px rgba(0,0,0,.45); --r1:20px; --r2:12px; --pad:16px; --max:1280px;
+    --shadow:0 18px 60px rgba(0,0,0,.45); --r1:22px; --r2:16px; --pad:16px; --max:1280px;
     --font:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
     --fantasy-font:'Cinzel', 'MedievalSharp', serif;
   }
@@ -63,6 +63,8 @@
     margin: 0;
     padding: 0;
     background: 
+      linear-gradient(180deg, rgba(26,10,46,.6) 0%, rgba(61,36,72,.5) 20%, rgba(139,74,63,.4) 40%, rgba(212,118,42,.4) 60%, rgba(61,36,72,.5) 80%, rgba(26,10,46,.6) 100%),
+      url("assets/ui/ChatGPT%20Image%20Feb%208,%202026,%2012_39_11%20AM.png") center/cover no-repeat fixed;
       linear-gradient(180deg, rgba(26,10,46,.3) 0%, rgba(61,36,72,.25) 20%, rgba(139,74,63,.2) 40%, rgba(212,118,42,.2) 60%, rgba(61,36,72,.25) 80%, rgba(26,10,46,.3) 100%),
       url("assets/ui/background.jpg") center top/cover no-repeat fixed;
     background-color: #0a0612;
@@ -92,22 +94,12 @@
     pointer-events: none;
     z-index: 1;
   }
-  #ww{
-    font-family:var(--font); 
-    color:var(--ink); 
-    position: relative; 
-    z-index: 10;
-    min-height: 100vh;
-    background: rgba(10, 10, 20, 0.25);
-    backdrop-filter: blur(2px);
-  }
+  #ww{font-family:var(--font); color:var(--ink); position: relative; z-index: 10;}
   #ww *{box-sizing:border-box}
-  #ww .wrap{max-width:var(--max); margin:0 auto; padding:20px 32px}
-  @media (max-width:768px){ #ww .wrap{padding:16px} }
-  @media (max-width:768px){ #ww{background: rgba(10, 10, 20, 0.40)} }
+  #ww .wrap{max-width:var(--max); margin:0 auto; padding:14px}
   #ww .topbar{
     position:sticky; top:0; z-index:60;
-    background: rgba(0, 0, 0, 0.1);
+    background: linear-gradient(180deg, rgba(20,10,30,.96), rgba(20,10,30,.78));
     backdrop-filter: blur(10px);
     border:2px solid var(--line);
     border-radius:18px;
@@ -120,15 +112,14 @@
   #ww .badge{font-size:12px; padding:4px 9px; border:1px solid rgba(240,168,48,.45); color:var(--muted); border-radius:999px; background: rgba(240,168,48,.10); font-weight:800}
   #ww .nav{display:flex; gap:8px; flex-wrap:wrap}
   #ww .nav button{
-    border:2px solid var(--line); background: rgba(0, 0, 0, 0.1); color:var(--ink);
+    border:2px solid var(--line); background: rgba(20,10,30,.55); color:var(--ink);
     padding:8px 10px; border-radius:999px; cursor:pointer; font-weight:850; font-size:13px;
   }
   #ww .nav button.active{background: rgba(240,168,48,.18); border-color: var(--gold)}
   #ww .banner{
-    margin-top:12px; border-radius:20px; border:2px dashed var(--gold);
-    box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.4), inset 0 0 0 1px rgba(240,168,48,.3); overflow:hidden; position:relative;
-    background: rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(8px);
+    margin-top:12px; border-radius:26px; border:3px solid var(--gold);
+    box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.4); overflow:hidden; position:relative;
+    background: linear-gradient(180deg, rgba(30,15,50,.25), rgba(20,10,30,.15));
     min-height: 420px;
   }
   #ww .banner-inner{padding:18px; display:grid; grid-template-columns: 120px 1fr; gap:20px; align-items:start}
@@ -170,10 +161,10 @@
     object-fit: cover;
     display: block;
   }
-  #ww p{margin:0; color:var(--muted); font-weight:650; font-size:14px; text-shadow: 1px 1px 3px rgba(0,0,0,.8);}
+  #ww p{margin:0; color:var(--muted); font-weight:650}
   #ww .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
   #ww .btn{
-    border:2px solid var(--line); background: rgba(0, 0, 0, 0.1); color:var(--ink);
+    border:2px solid var(--line); background: rgba(20,10,30,.28); color:var(--ink);
     padding:12px 16px; border-radius:14px; cursor:pointer; font-weight:950; font-size:14px;
     transition: all .3s ease;
     position: relative;
@@ -200,13 +191,13 @@
     border-color: rgba(255,107,138,.6);
   }
   #ww .statRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
-  #ww .pill{border:1px solid rgba(200, 134, 42, 0.4); background: rgba(0, 0, 0, 0.1); border-radius:999px; padding:8px 10px; display:flex; gap:8px; align-items:center; font-weight:900; font-size:14px;}
+  #ww .pill{border:2px solid var(--line); background: rgba(20,10,30,.28); border-radius:999px; padding:8px 10px; display:flex; gap:8px; align-items:center; font-weight:900; font-size:13px; box-shadow: 0 0 10px rgba(240,168,48,.2);}
   #ww .dot{width:10px;height:10px;border-radius:999px;background:var(--blue)}
   #ww .dot.green{background:var(--green)}
   #ww .dot.gold{background:var(--gold)}
-  #ww .meter{border:1px solid rgba(200, 134, 42, 0.4); border-radius:12px; background: rgba(0, 0, 0, 0.1); padding:10px; margin-top:10px}
+  #ww .meter{border:2px solid var(--line); border-radius:14px; background: rgba(20,10,30,.22); padding:10px; margin-top:10px}
   #ww .meterTop{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:8px}
-  #ww .small{font-size:12px; color:var(--muted); font-weight:650; text-shadow: 1px 1px 2px rgba(0,0,0,.6);}
+  #ww .small{font-size:12px; color:var(--muted); font-weight:650}
   #ww .bar{height:16px;border-radius:999px;background: rgba(50,30,20,.55);overflow:hidden;border:2px solid var(--line); position: relative;}
   #ww .bar > div{
     height:100%; width:0%; 
@@ -233,22 +224,22 @@
   }
   #ww .grid{margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:14px}
   @media (max-width:980px){ #ww .grid{grid-template-columns:1fr} }
-  #ww .card{border:2px solid var(--line); background: rgba(0, 0, 0, 0.1); border-radius:var(--r1); box-shadow:var(--shadow), 0 0 15px rgba(240,168,48,.2); padding:var(--pad)}
+  #ww .card{border:2px solid var(--line); background: rgba(20,10,30,.62); border-radius:var(--r1); box-shadow:var(--shadow), 0 0 15px rgba(240,168,48,.2); padding:var(--pad)}
   #ww .card h2{margin:0 0 10px; font-size:15px; display:flex; justify-content:space-between; align-items:center; gap:10px}
-  #ww .tag{font-size:12px; padding:6px 10px; border-radius:999px; border:1px solid rgba(200, 134, 42, 0.4); background: rgba(0, 0, 0, 0.1); color:var(--muted); font-weight:900}
-  #ww .frame{border:1px solid rgba(200, 134, 42, 0.4); background: rgba(0, 0, 0, 0.1); border-radius:var(--r2); padding:12px}
+  #ww .tag{font-size:12px; padding:6px 10px; border-radius:999px; border:2px solid var(--line); background: rgba(20,10,30,.45); color:var(--muted); font-weight:900}
+  #ww .frame{border:2px solid var(--line); background: rgba(20,10,30,.22); border-radius:var(--r2); padding:12px}
   #ww .taskList{display:grid; gap:10px; margin-top:10px}
-  #ww .task{display:grid; grid-template-columns:28px 1fr auto; gap:10px; align-items:center; border:1px solid rgba(200, 134, 42, 0.4); background: rgba(0, 0, 0, 0.1); border-radius:12px; padding:10px}
+  #ww .task{display:grid; grid-template-columns:28px 1fr auto; gap:10px; align-items:center; border:2px solid var(--line); background: rgba(20,10,30,.20); border-radius:16px; padding:10px}
   #ww .task input{width:20px;height:20px; accent-color: var(--green)}
   #ww .task .name{font-weight:950}
   #ww .task .xp{font-weight:1000; padding:6px 9px; border-radius:999px; border:1px solid rgba(125,255,180,.45); background: rgba(125,255,180,.10); font-size:12px; min-width:74px; text-align:center}
   #ww .party{display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:10px}
   @media (max-width:520px){ #ww .party{grid-template-columns:1fr} }
-  #ww .creature{border:2px solid var(--line); background: rgba(0, 0, 0, 0.1); border-radius:16px; padding:10px; display:flex; gap:10px; align-items:center}
+  #ww .creature{border:2px solid var(--line); background: rgba(20,10,30,.22); border-radius:16px; padding:10px; display:flex; gap:10px; align-items:center}
   #ww .avatar{width:42px;height:42px;border-radius:16px;border:2px solid var(--line);overflow:hidden}
   #ww .avatar img{width:100%;height:100%;object-fit:cover;display:block}
   #ww .map{display:grid; gap:10px; margin-top:10px}
-  #ww .node{border:2px solid var(--line); background: rgba(0, 0, 0, 0.1); border-radius:16px; padding:10px; display:flex; justify-content:space-between; align-items:center; gap:10px}
+  #ww .node{border:2px solid var(--line); background: rgba(20,10,30,.22); border-radius:16px; padding:10px; display:flex; justify-content:space-between; align-items:center; gap:10px}
   #ww .node .left{display:flex; gap:10px; align-items:center}
   #ww .node .icon{width:36px;height:36px;border-radius:14px;border:2px solid var(--line); overflow:hidden}
   #ww .node .icon img{width:100%;height:100%;object-fit:cover;display:block}
@@ -534,16 +525,14 @@
   /* Quest Cards Layout */
   #ww .questGrid{margin-top:20px; display:grid; grid-template-columns:repeat(3, 1fr); gap:20px}
   @media (max-width:980px){ #ww .questGrid{grid-template-columns:repeat(2, 1fr)} }
-  @media (max-width:768px){ #ww .questGrid{grid-template-columns:1fr; gap:16px} }
   @media (max-width:520px){ #ww .questGrid{grid-template-columns:1fr} }
   
   #ww .questCard{
-    border:2px dashed var(--gold); 
-    box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.5), inset 0 0 0 1px rgba(240,168,48,.3), inset 0 1px 0 rgba(255,255,255,.05);
-    background: rgba(0, 0, 0, 0.1); 
-    backdrop-filter: blur(8px);
-    border-radius:20px; 
-    padding:20px; 
+    border:3px solid var(--gold); 
+    background: rgba(20,10,30,.90); 
+    border-radius:24px; 
+    box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.5), inset 0 2px 0 rgba(255,255,255,.1); 
+    padding:24px; 
     position:relative;
     overflow:hidden; 
     min-height:450px; 
@@ -552,10 +541,9 @@
     transition: all .3s ease;
     background-size: 200% 200%;
   }
-  @media (min-width:769px){ #ww .questCard{padding:24px} }
   #ww .questCard:hover {
     transform: translateY(-4px);
-    box-shadow:var(--shadow), 0 0 40px rgba(240,168,48,.7);
+    box-shadow:var(--shadow), 0 0 40px rgba(240,168,48,.7), inset 0 2px 0 rgba(255,255,255,.2);
     border-color: rgba(240,168,48,1);
   }
   #ww .questCard::before{
@@ -576,15 +564,15 @@
   #ww .questCard > *{position:relative; z-index:1}
   
   #ww .questCard.night{
-    background: rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, rgba(40,20,80,.95), rgba(60,30,110,.95));
     border-color: #a98bd9;
   }
   #ww .questCard.morning{
-    background: rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, rgba(200,100,30,.85), rgba(240,140,50,.90));
     border-color: #ffb347;
   }
   #ww .questCard.backpack{
-    background: rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, rgba(50,120,200,.80), rgba(70,100,180,.90));
     border-color: #6eb5ff;
   }
   
@@ -609,17 +597,14 @@
   
   #ww .questChecklist{margin:16px 0; flex:1}
   #ww .questChecklist .checkItem{
-    display:flex; align-items:center; gap:12px; padding:12px; 
-    font-weight:700; font-size:14px;
-    background: rgba(0,0,0,.3);
-    backdrop-filter: blur(4px);
+    display:flex; align-items:center; gap:12px; padding:10px 12px; 
+    font-weight:700; font-size:15px;
+    background: rgba(0,0,0,.2);
     border-radius: 12px;
     margin-bottom: 10px;
-    border: 1px solid rgba(200, 134, 42, 0.4);
+    border: 2px solid rgba(255,255,255,.1);
     transition: all .3s ease;
     cursor: pointer;
-    min-height: 44px;
-    text-shadow: 1px 1px 2px rgba(0,0,0,.9);
   }
   #ww .questChecklist .checkItem:hover{
     background: rgba(0,0,0,.3);
@@ -686,7 +671,6 @@
     box-shadow: 0 6px 12px rgba(0,0,0,.4), inset 0 2px 0 rgba(255,255,255,.2);
     position: relative;
     overflow: hidden;
-    min-height: 44px;
   }
   #ww .questBtn::before {
     content: "";
@@ -723,22 +707,15 @@
   /* Bottom Dashboard */
   #ww .dashboard{margin-top:24px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px}
   @media (max-width:980px){ #ww .dashboard{grid-template-columns:1fr} }
-  @media (max-width:768px){ #ww .dashboard{grid-template-columns:1fr; gap:16px} }
   
   #ww .dashPanel{
-    border:2px dashed var(--gold); 
-    box-shadow:var(--shadow), 0 0 20px rgba(240,168,48,.3), inset 0 0 0 1px rgba(240,168,48,.3);
-    background: rgba(0, 0, 0, 0.1); 
-    backdrop-filter: blur(8px);
-    border-radius:20px;
-    padding:16px;
+    border:3px solid var(--gold); background: rgba(20,10,30,.82); border-radius:20px;
+    box-shadow:var(--shadow), 0 0 20px rgba(240,168,48,.3); padding:20px;
   }
-  @media (min-width:769px){ #ww .dashPanel{padding:20px} }
   
   #ww .dashPanel h3{
     margin:0 0 16px; font-size:18px; font-weight:1000; color:var(--gold);
     text-shadow: 2px 2px 0 rgba(0,0,0,.9);
-    font-family: var(--fantasy-font);
   }
   
   #ww .xpDisplay{
@@ -815,28 +792,13 @@
 
   /* War Chest Panel */
   #ww .warChestPanel {
-    background: rgba(0, 0, 0, 0.1);
-    background-size: 200% 200%;
-    border: 2px dashed var(--gold);
-    box-shadow: 0 0 25px rgba(255,211,110,.3), 0 4px 12px rgba(0,0,0,.3), inset 0 0 0 1px rgba(240,168,48,.3);
-    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(255,211,110,.12), rgba(255,170,50,.08));
+    border: 3px solid var(--gold);
+    border-radius: 18px;
     padding: 16px;
     margin-top: 16px;
     text-align: center;
-    animation: shimmer 3s linear infinite;
-    position: relative;
-  }
-  #ww .warChestPanel::before {
-    content: "";
-    position: absolute;
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
-    background: linear-gradient(45deg, transparent, rgba(255,211,110,.4), transparent);
-    border-radius: 16px;
-    animation: shimmer 2s linear infinite;
-    z-index: -1;
+    box-shadow: 0 0 20px rgba(255,211,110,.2), 0 4px 12px rgba(0,0,0,.3);
   }
   #ww .warChestPanel h4 {
     margin: 0 0 8px;
@@ -993,104 +955,10 @@
     color: var(--gold);
     font-family: var(--fantasy-font);
   }
-
-  /* Accessibility - Focus Styles */
-  #ww button:focus-visible,
-  #ww input:focus-visible,
-  #ww .checkItem:focus-visible,
-  #ww .awardBtn:focus-visible {
-    outline: 2px solid var(--gold);
-    outline-offset: 2px;
-  }
-
-  /* Mobile Sticky HUD - Compact Stats Bar */
-  #ww .mobileHUD {
-    display: none;
-    position: sticky;
-    top: 0;
-    z-index: 70;
-    background: linear-gradient(135deg, rgba(15, 8, 25, 0.98), rgba(25, 12, 35, 0.98));
-    backdrop-filter: blur(12px);
-    border-bottom: 2px solid var(--gold);
-    padding: 8px 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,.6);
-  }
-  #ww .mobileHUD .hudInner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    font-weight: 900;
-  }
-  #ww .mobileHUD .hudStat {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding: 4px 8px;
-    background: rgba(0,0,0,.3);
-    border-radius: 999px;
-    border: 1px solid rgba(200, 134, 42, 0.4);
-  }
-  #ww .mobileHUD .hudDot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-  }
-  #ww .mobileHUD .hudDot.blue { background: var(--blue); }
-  #ww .mobileHUD .hudDot.red { background: var(--red); }
-  #ww .mobileHUD .hudDot.green { background: var(--green); }
-  
-  @media (max-width:768px) {
-    #ww .mobileHUD {
-      display: block;
-    }
-    #ww .topbar {
-      position: static;
-    }
-  }
-
-  /* Hero CTA Button Styles */
-  #ww .heroCTA {
-    padding: 16px 32px;
-    font-size: 18px;
-    width: 100%;
-    max-width: 400px;
-  }
-
-  /* War Chest specific styles */
-  #ww .warChestNote {
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-  #ww .warChestMeter {
-    margin-top: 8px;
-  }
-  #ww .warChestProgressLabel {
-    margin-bottom: 4px;
-  }
 </style>
 
 <div id="ww">
   <div class="wrap">
-    <!-- Mobile Sticky HUD -->
-    <div class="mobileHUD">
-      <div class="hudInner">
-        <div class="hudStat">
-          <span class="hudDot blue"></span>
-          <span>Lvl <span id="hudLevel">1</span></span>
-        </div>
-        <div class="hudStat">
-          <span class="hudDot red"></span>
-          <span>HP <span id="hudHP">100</span></span>
-        </div>
-        <div class="hudStat">
-          <span class="hudDot green"></span>
-          <span><span id="hudStreak">0</span>🔥</span>
-        </div>
-      </div>
-    </div>
-    
     <div class="topbar">
       <div class="topbar-inner">
         <div class="brand">
@@ -1102,10 +970,10 @@
           <span class="badge" id="todayLabel">Today</span>
         </div>
         <div class="nav">
-          <button class="active" data-section="home" aria-label="Navigate to Home section">Home</button>
-          <button data-section="tracker" aria-label="Navigate to Quest Tracker section">Tracker</button>
-          <button data-section="party" aria-label="Navigate to Companion Party section">Party</button>
-          <button data-section="map" aria-label="Navigate to World Map section">Map</button>
+          <button class="active" data-section="home">Home</button>
+          <button data-section="tracker">Tracker</button>
+          <button data-section="party">Party</button>
+          <button data-section="map">Map</button>
         </div>
       </div>
     </div>
@@ -1132,21 +1000,14 @@
               <div><b>XP</b>: <span id="xpNow">0</span> / <span id="xpNext">100</span></div>
               <div class="small">Complete all quests to earn rewards!</div>
             </div>
-            <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="XP Progress"><div id="xpBar"></div></div>
+            <div class="bar"><div id="xpBar"></div></div>
           </div>
           <div class="meter hpMeter" id="hpMeterBanner">
             <div class="meterTop">
               <div><b>❤️ HP</b>: <span id="hpNow">100</span> / <span id="hpMax">100</span></div>
               <div class="small">Missed tasks deal damage at midnight!</div>
             </div>
-            <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" aria-label="HP Progress"><div id="hpBar"></div></div>
-          </div>
-          
-          <!-- CTA Button -->
-          <div style="margin-top:16px;">
-            <button id="heroCTA" class="questBtn green heroCTA">
-              🎯 Start Today's Quest!
-            </button>
+            <div class="bar"><div id="hpBar"></div></div>
           </div>
         </div>
 
@@ -1404,13 +1265,7 @@
         <div class="warChestPanel" id="warChestPanel">
           <h4>⚔️ War Chest ⚔️</h4>
           <div class="warChestAmount"><span id="warChestGold">0</span> 🪙</div>
-          <div class="small warChestNote">Award 50 gold to a companion!</div>
-          <div class="meter warChestMeter">
-            <div class="meterTop">
-              <div class="small warChestProgressLabel">Progress to Next Reward (50 🪙)</div>
-            </div>
-            <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="50" aria-valuenow="0" aria-label="War Chest Progress"><div id="warChestBar"></div></div>
-          </div>
+          <div class="small" style="color:var(--muted);">Award 50 gold to a companion!</div>
           <div class="awardBtnRow">
             <button class="awardBtn" data-award="ember">🔥 Award Ember</button>
             <button class="awardBtn" data-award="sprite">✨ Award Sprite</button>
@@ -1924,14 +1779,6 @@
 
     $("dayResult").textContent = state.days[TODAY].result;
     
-    // Update mobile HUD
-    const hudLevel = $("hudLevel");
-    const hudHP = $("hudHP");
-    const hudStreak = $("hudStreak");
-    if (hudLevel) hudLevel.textContent = state.level;
-    if (hudHP) hudHP.textContent = state.hp;
-    if (hudStreak) hudStreak.textContent = state.streak;
-    
     // Update William's character image based on level
     const williamImg = $("williamImg");
     if (williamImg) williamImg.src = getWilliamImage(state.level);
@@ -1983,18 +1830,6 @@
     // Update War Chest display
     const warChestGold = $("warChestGold");
     if (warChestGold) warChestGold.textContent = state.warChest;
-    
-    // Update War Chest progress bar
-    const warChestBar = $("warChestBar");
-    if (warChestBar) {
-      const progress = Math.min(100, Math.round((state.warChest / WAR_CHEST_AWARD_COST) * 100));
-      warChestBar.style.width = progress + "%";
-      const warChestBarContainer = warChestBar.parentElement;
-      if (warChestBarContainer) {
-        warChestBarContainer.setAttribute('aria-valuenow', state.warChest);
-      }
-    }
-    
     document.querySelectorAll('.awardBtn').forEach(btn => {
       btn.disabled = state.warChest < WAR_CHEST_AWARD_COST;
     });
@@ -2229,7 +2064,6 @@
         day.result = "Not graded";
         save();
         updateHeader();
-        updateCTAButton();
         updateQuestProgress(task.quest);
         renderTasks(); // Keep backward compat task list in sync
       });
@@ -2367,45 +2201,11 @@
     });
   });
 
-  // Hero CTA Button Handler
-  const heroCTA = document.getElementById('heroCTA');
-  if(heroCTA){
-    heroCTA.addEventListener('click', () => {
-      const allComplete = TASKS.every(t => state.days[TODAY]?.tasks[t.id]);
-      if(allComplete){
-        gradeDay();
-      } else {
-        const trackerSection = document.getElementById('tracker');
-        if(trackerSection){
-          trackerSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      }
-    });
-  }
-  
-  // Update CTA button text based on completion
-  function updateCTAButton(){
-    const heroCTA = document.getElementById('heroCTA');
-    if(heroCTA){
-      const allComplete = TASKS.every(t => state.days[TODAY]?.tasks[t.id]);
-      if(allComplete){
-        heroCTA.textContent = '🏆 Grade My Day!';
-        heroCTA.classList.remove('green');
-        heroCTA.classList.add('blue');
-      } else {
-        heroCTA.textContent = '🎯 Start Today\'s Quest!';
-        heroCTA.classList.remove('blue');
-        heroCTA.classList.add('green');
-      }
-    }
-  }
-
   // INIT
   applyAssets();
   renderTasks();
   setupQuestCheckboxes();
   updateHeader();
-  updateCTAButton();
 </script>
 
 </body>
