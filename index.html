@@ -1701,6 +1701,164 @@
     border-color: var(--gold);
     box-shadow: 0 0 10px rgba(255,211,110,0.4);
   }
+
+  /* Audio Controls */
+  #audioToggle {
+    position: fixed;
+    bottom: 20px;
+    right: 90px;
+    z-index: 100;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 2px solid var(--golden-border);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 28px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 15px rgba(212,165,48,0.3);
+    transition: all 0.3s ease;
+    pointer-events: auto;
+  }
+
+  #audioToggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4), 0 0 25px rgba(212,165,48,0.5);
+  }
+
+  #audioToggle:active {
+    transform: scale(0.95);
+  }
+
+  #audioToggle.muted {
+    opacity: 0.5;
+  }
+
+  /* Audio Settings Panel */
+  #audioSettings {
+    position: fixed;
+    bottom: 90px;
+    right: 90px;
+    z-index: 99;
+    background: var(--glass-strong-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 2px solid var(--golden-border);
+    border-radius: 16px;
+    padding: 16px;
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4), 0 0 20px rgba(212,165,48,0.2);
+    pointer-events: auto;
+    min-width: 220px;
+  }
+
+  #audioSettings.show {
+    display: flex;
+    animation: slideUp 0.3s ease-out;
+  }
+
+  #audioSettings h3 {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+    color: var(--gold);
+    font-family: var(--fantasy-font);
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+  }
+
+  .audioControl {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .audioControl label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .audioControl input[type="range"] {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--glass-bg);
+    border: 1px solid var(--golden-border);
+    outline: none;
+    -webkit-appearance: none;
+  }
+
+  .audioControl input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--gold);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .audioControl input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--gold);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  .audioCheckbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    background: var(--glass-bg);
+    border: 1px solid var(--golden-border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    transition: all 0.2s ease;
+  }
+
+  .audioCheckbox:hover {
+    background: rgba(255,211,110,0.15);
+    border-color: var(--gold);
+  }
+
+  .audioCheckbox input[type="checkbox"] {
+    cursor: pointer;
+  }
+
+  /* Mobile responsiveness for audio controls */
+  @media (max-width: 600px) {
+    #audioToggle {
+      bottom: 90px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+    }
+
+    #audioSettings {
+      bottom: 150px;
+      right: 20px;
+      min-width: 180px;
+    }
+  }
 </style>
 
 <!-- Weather Effects Container -->
@@ -1728,6 +1886,44 @@
     <span>⛈️</span> Storm
   </div>
 </div>
+
+<!-- Audio Toggle Button -->
+<div id="audioToggle" title="Audio Settings">🔊</div>
+
+<!-- Audio Settings Panel -->
+<div id="audioSettings">
+  <h3>🎵 Audio Settings</h3>
+  
+  <div class="audioControl">
+    <label>
+      <span>🎶 Music</span>
+      <span id="musicVolumeValue">20%</span>
+    </label>
+    <input type="range" id="musicVolume" min="0" max="100" value="20">
+  </div>
+  
+  <div class="audioControl">
+    <label>
+      <span>🌧️ Ambience</span>
+      <span id="ambienceVolumeValue">30%</span>
+    </label>
+    <input type="range" id="ambienceVolume" min="0" max="100" value="30">
+  </div>
+  
+  <div class="audioControl">
+    <label>
+      <span>🔔 Sound FX</span>
+      <span id="sfxVolumeValue">70%</span>
+    </label>
+    <input type="range" id="sfxVolume" min="0" max="100" value="70">
+  </div>
+  
+  <div class="audioCheckbox">
+    <input type="checkbox" id="reduceSoundMode">
+    <label for="reduceSoundMode" style="cursor: pointer; margin: 0;">Reduce Sound Mode</label>
+  </div>
+</div>
+
 
 <div id="ww">
   <div class="wrap">
@@ -2211,6 +2407,9 @@
   </div>
 </div>
 
+<!-- Howler.js Audio Library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js" integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
   const ASSETS = {
     mapstrip: "assets/ui/mapstrip.svg",
@@ -2339,6 +2538,284 @@
   const prettyToday = ()=>new Date().toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
 
   const xpForLevel = (lvl)=> 100 + (lvl-1)*20;
+
+  // ============================================
+  // AUDIO MANAGER - Centralized sound system
+  // ============================================
+  class AudioManager {
+    constructor() {
+      this.sounds = {};
+      this.currentWeatherSound = null;
+      this.currentMusicSound = null;
+      this.isInitialized = false;
+      this.isMuted = false;
+      this.activeSounds = [];
+      this.maxSimultaneousSounds = 4;
+      
+      // Load settings from localStorage
+      const savedSettings = this.loadSettings();
+      this.volumes = {
+        master: savedSettings.master !== undefined ? savedSettings.master : 1.0,
+        music: savedSettings.music !== undefined ? savedSettings.music : 0.2,
+        ambience: savedSettings.ambience !== undefined ? savedSettings.ambience : 0.3,
+        sfx: savedSettings.sfx !== undefined ? savedSettings.sfx : 0.7,
+      };
+      this.reduceSoundMode = savedSettings.reduceSoundMode || false;
+      
+      // William avatar sound tracking
+      this.williamLastEasterEgg = 0;
+      this.williamClickCount = 0;
+      this.williamClickTimestamps = [];
+      this.williamSpamCooldown = false;
+      
+      // Sound manifest mapping
+      this.soundMap = {
+        // UI sounds
+        'ui.click': ['ui/button-click-1', 'ui/button-click-2', 'ui/button-click-3'],
+        'ui.hover': ['ui/hover-tick'],
+        'ui.panelOpen': ['ui/panel-open'],
+        'ui.panelClose': ['ui/panel-close'],
+        'ui.toggleOn': ['ui/toggle-on'],
+        'ui.toggleOff': ['ui/toggle-off'],
+        'ui.tabChange': ['ui/tab-change'],
+        'ui.success': ['ui/success-1', 'ui/success-2', 'ui/success-3'],
+        'ui.error': ['ui/error-soft'],
+        'ui.notification': ['ui/notification-ping'],
+        
+        // Avatar sounds
+        'avatar.idle': ['avatar/idle-1', 'avatar/idle-2', 'avatar/idle-3'],
+        'avatar.tap': ['avatar/william-tap'],
+        'avatar.easterEgg': [
+          'avatar/confetti-sneeze',
+          'avatar/banana-slip',
+          'avatar/bubble-burp',
+          'avatar/pie-trap',
+          'avatar/rubber-chicken',
+          'avatar/hero-landing',
+          'avatar/endless-scarf',
+          'avatar/frog-crown',
+          'avatar/chipmunk-voice',
+          'avatar/marshmallow-volley',
+          'avatar/hair-tornado',
+          'avatar/tiger-shuffle',
+          'avatar/lego-step',
+          'avatar/goose-chase',
+          'avatar/treasure-socks'
+        ],
+        'avatar.onBreak': ['avatar/william-on-break'],
+        
+        // Weather sounds
+        'weather.sunny': ['weather/sunny-ambient'],
+        'weather.cloudy': ['weather/cloudy-ambient'],
+        'weather.rain': ['weather/rain-ambient'],
+        'weather.storm': ['weather/storm-ambient'],
+        'weather.snow': ['weather/snow-ambient'],
+        
+        // Music
+        'music.hub': ['music/hub-loop'],
+      };
+    }
+    
+    // Initialize audio on user interaction (required for mobile)
+    init() {
+      if (this.isInitialized) return;
+      this.isInitialized = true;
+      console.log('AudioManager initialized');
+      
+      // Preload core UI sounds
+      this.preloadSound('ui.click');
+      this.preloadSound('ui.panelOpen');
+      this.preloadSound('ui.panelClose');
+      this.preloadSound('ui.toggleOn');
+      this.preloadSound('ui.toggleOff');
+      this.preloadSound('ui.success');
+    }
+    
+    // Load settings from localStorage
+    loadSettings() {
+      try {
+        const saved = localStorage.getItem('williamsWorldAudioSettings');
+        return saved ? JSON.parse(saved) : {};
+      } catch {
+        return {};
+      }
+    }
+    
+    // Save settings to localStorage
+    saveSettings() {
+      const settings = {
+        master: this.volumes.master,
+        music: this.volumes.music,
+        ambience: this.volumes.ambience,
+        sfx: this.volumes.sfx,
+        reduceSoundMode: this.reduceSoundMode,
+      };
+      localStorage.setItem('williamsWorldAudioSettings', JSON.stringify(settings));
+    }
+    
+    // Get file path with extension
+    getFilePath(key) {
+      // For now, return placeholder path
+      // In production, these would be actual audio files
+      return `audio/${key}.ogg`;
+    }
+    
+    // Preload a sound
+    preloadSound(soundKey) {
+      if (!this.soundMap[soundKey]) return;
+      
+      const files = this.soundMap[soundKey];
+      files.forEach(file => {
+        if (!this.sounds[file]) {
+          // Placeholder: In production, would load actual Howler sound
+          this.sounds[file] = {
+            file: this.getFilePath(file),
+            loaded: false,
+          };
+        }
+      });
+    }
+    
+    // Play a sound effect
+    play(soundKey, options = {}) {
+      if (this.isMuted || !this.isInitialized) return;
+      
+      // Get sound files for this key
+      const files = this.soundMap[soundKey];
+      if (!files || files.length === 0) {
+        console.warn(`Sound not found: ${soundKey}`);
+        return;
+      }
+      
+      // Pick random variation
+      const file = files[Math.floor(Math.random() * files.length)];
+      
+      // Determine volume based on category
+      let volume = options.volume !== undefined ? options.volume : 1.0;
+      if (soundKey.startsWith('ui.')) {
+        volume *= this.volumes.sfx * this.volumes.master;
+      } else if (soundKey.startsWith('avatar.')) {
+        volume *= this.volumes.sfx * this.volumes.master;
+        if (this.reduceSoundMode && soundKey === 'avatar.idle') {
+          return; // Skip idle sounds in reduce mode
+        }
+      }
+      
+      // In production, would actually play the sound using Howler.js
+      // For now, just log it
+      console.log(`🔊 Playing: ${soundKey} (${file}) at volume ${volume.toFixed(2)}`);
+      
+      // Track active sound
+      this.activeSounds.push({ key: soundKey, time: Date.now() });
+      if (this.activeSounds.length > this.maxSimultaneousSounds) {
+        this.activeSounds.shift();
+      }
+    }
+    
+    // Play weather ambient sound with crossfade
+    playWeatherAmbience(weatherType) {
+      if (this.isMuted || !this.isInitialized) return;
+      
+      const soundKey = `weather.${weatherType}`;
+      if (!this.soundMap[soundKey]) return;
+      
+      const volume = this.volumes.ambience * this.volumes.master;
+      
+      // In production, would crossfade using Howler
+      console.log(`🌤️ Weather ambience: ${soundKey} at volume ${volume.toFixed(2)}`);
+      
+      this.currentWeatherSound = soundKey;
+    }
+    
+    // Stop weather ambience
+    stopWeatherAmbience() {
+      if (this.currentWeatherSound) {
+        console.log(`🌤️ Stopping weather ambience: ${this.currentWeatherSound}`);
+        this.currentWeatherSound = null;
+      }
+    }
+    
+    // Set volume for a category
+    setVolume(category, value) {
+      this.volumes[category] = Math.max(0, Math.min(1, value));
+      this.saveSettings();
+      
+      // Update any playing sounds in that category
+      if (category === 'ambience' && this.currentWeatherSound) {
+        // Update weather sound volume
+        console.log(`🔊 Updating ambience volume: ${value.toFixed(2)}`);
+      }
+      if (category === 'music' && this.currentMusicSound) {
+        // Update music volume
+        console.log(`🎵 Updating music volume: ${value.toFixed(2)}`);
+      }
+    }
+    
+    // Toggle mute
+    toggleMute() {
+      this.isMuted = !this.isMuted;
+      if (this.isMuted) {
+        // Stop all sounds
+        this.stopWeatherAmbience();
+        console.log('🔇 Audio muted');
+      } else {
+        console.log('🔊 Audio unmuted');
+      }
+      return this.isMuted;
+    }
+    
+    // Set reduce sound mode
+    setReduceSoundMode(enabled) {
+      this.reduceSoundMode = enabled;
+      this.saveSettings();
+      console.log(`Reduce sound mode: ${enabled ? 'enabled' : 'disabled'}`);
+    }
+    
+    // William avatar sound helpers
+    canPlayWilliamEasterEgg() {
+      const now = Date.now();
+      
+      // Check spam prevention
+      this.williamClickTimestamps = this.williamClickTimestamps.filter(t => now - t < 3000);
+      if (this.williamClickTimestamps.length >= 5) {
+        if (!this.williamSpamCooldown) {
+          this.williamSpamCooldown = true;
+          this.play('avatar.onBreak');
+          setTimeout(() => {
+            this.williamSpamCooldown = false;
+          }, 60000);
+        }
+        return false;
+      }
+      
+      // Check rate limit
+      if (now - this.williamLastEasterEgg < 1500) {
+        return false;
+      }
+      
+      return true;
+    }
+    
+    playWilliamTap() {
+      this.williamClickTimestamps.push(Date.now());
+      this.play('avatar.tap');
+    }
+    
+    playWilliamEasterEgg() {
+      if (!this.canPlayWilliamEasterEgg()) return;
+      
+      this.williamLastEasterEgg = Date.now();
+      this.play('avatar.easterEgg');
+    }
+    
+    playWilliamIdle() {
+      if (this.reduceSoundMode) return;
+      this.play('avatar.idle');
+    }
+  }
+  
+  // Create global audio manager instance
+  const audioManager = new AudioManager();
 
   function load(){
     try{
@@ -2982,6 +3459,8 @@
 
   document.querySelectorAll("#ww .nav button").forEach(btn=>{
     btn.addEventListener("click", ()=>{
+      initAudioOnInteraction();
+      audioManager.play('ui.click');
       document.querySelectorAll("#ww .nav button").forEach(b=>b.classList.remove("active"));
       btn.classList.add("active");
       const id = btn.dataset.section;
@@ -2996,13 +3475,24 @@
     const gradeBtn = document.createElement("button");
     gradeBtn.textContent = "🏆 Grade";
     gradeBtn.setAttribute("aria-label", "Grade today's progress and update streak");
-    gradeBtn.addEventListener("click", gradeDay);
+    gradeBtn.addEventListener("click", () => {
+      initAudioOnInteraction();
+      const pass = isPassDay();
+      if (pass) {
+        audioManager.play('ui.success');
+      } else {
+        audioManager.play('ui.error');
+      }
+      gradeDay();
+    });
     topbar.appendChild(gradeBtn);
     
     const resetBtn = document.createElement("button");
     resetBtn.textContent = "🧽 Reset";
     resetBtn.setAttribute("aria-label", "Reset today's task completion");
     resetBtn.addEventListener("click", ()=>{
+      initAudioOnInteraction();
+      audioManager.play('ui.click');
       state.days[TODAY]={ tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), result:"Not graded" };
       save(); 
       renderTasks(); 
@@ -3016,11 +3506,14 @@
   // War Chest Award button handlers
   document.querySelectorAll('.awardBtn').forEach(btn => {
     btn.addEventListener('click', () => {
+      initAudioOnInteraction();
       const comp = btn.dataset.award;
       if (state.warChest < WAR_CHEST_AWARD_COST) {
+        audioManager.play('ui.error');
         toast('Not enough gold in the War Chest!');
         return;
       }
+      audioManager.play('ui.success');
       state.warChest -= WAR_CHEST_AWARD_COST;
       addCompanionXP(WAR_CHEST_AWARD_COST, comp);
       save();
@@ -3063,6 +3556,9 @@
   function applyRandomWilliamAnimation() {
     const williamAvatar = document.getElementById('williamAvatar');
     if (!williamAvatar) return;
+
+    // Play idle sound
+    audioManager.playWilliamIdle();
 
     // Remove any existing animation
     williamAvatar.style.animation = 'none';
@@ -3673,6 +4169,8 @@
   // Weather option click handlers
   document.querySelectorAll('.weatherOption').forEach(option => {
     option.addEventListener('click', () => {
+      initAudioOnInteraction();
+      audioManager.play('ui.click');
       const weather = option.dataset.weather;
       setWeather(weather);
       weatherMenu.classList.remove('show');
@@ -3689,6 +4187,140 @@
   // Load saved weather on init
   const savedWeather = localStorage.getItem(WEATHER_STORAGE_KEY) || 'none';
   setWeather(savedWeather);
+
+  // ============================================
+  // AUDIO CONTROLS SYSTEM
+  // ============================================
+  
+  const audioToggle = document.getElementById('audioToggle');
+  const audioSettings = document.getElementById('audioSettings');
+  const musicVolumeSlider = document.getElementById('musicVolume');
+  const ambienceVolumeSlider = document.getElementById('ambienceVolume');
+  const sfxVolumeSlider = document.getElementById('sfxVolume');
+  const reduceSoundCheckbox = document.getElementById('reduceSoundMode');
+  
+  // Initialize audio on first user interaction
+  let audioInitialized = false;
+  function initAudioOnInteraction() {
+    if (!audioInitialized) {
+      audioInitialized = true;
+      audioManager.init();
+      console.log('Audio initialized on user interaction');
+    }
+  }
+  
+  // Initialize on any user interaction (required for mobile)
+  document.addEventListener('click', initAudioOnInteraction, { once: true });
+  document.addEventListener('touchstart', initAudioOnInteraction, { once: true });
+  
+  // Update volume display values
+  function updateVolumeDisplays() {
+    document.getElementById('musicVolumeValue').textContent = musicVolumeSlider.value + '%';
+    document.getElementById('ambienceVolumeValue').textContent = ambienceVolumeSlider.value + '%';
+    document.getElementById('sfxVolumeValue').textContent = sfxVolumeSlider.value + '%';
+  }
+  
+  // Load saved audio settings into UI
+  function loadAudioSettingsUI() {
+    musicVolumeSlider.value = Math.round(audioManager.volumes.music * 100);
+    ambienceVolumeSlider.value = Math.round(audioManager.volumes.ambience * 100);
+    sfxVolumeSlider.value = Math.round(audioManager.volumes.sfx * 100);
+    reduceSoundCheckbox.checked = audioManager.reduceSoundMode;
+    updateVolumeDisplays();
+    updateAudioToggleIcon();
+  }
+  
+  // Update audio toggle icon based on mute state
+  function updateAudioToggleIcon() {
+    if (audioManager.isMuted) {
+      audioToggle.textContent = '🔇';
+      audioToggle.classList.add('muted');
+    } else {
+      audioToggle.textContent = '🔊';
+      audioToggle.classList.remove('muted');
+    }
+  }
+  
+  // Toggle audio settings panel
+  audioToggle.addEventListener('click', (e) => {
+    initAudioOnInteraction();
+    
+    // If shift-click, toggle mute
+    if (e.shiftKey) {
+      audioManager.toggleMute();
+      updateAudioToggleIcon();
+      audioManager.play('ui.toggleOn');
+      return;
+    }
+    
+    audioSettings.classList.toggle('show');
+    if (audioSettings.classList.contains('show')) {
+      audioManager.play('ui.panelOpen');
+    } else {
+      audioManager.play('ui.panelClose');
+    }
+  });
+  
+  // Music volume slider
+  musicVolumeSlider.addEventListener('input', () => {
+    const value = musicVolumeSlider.value / 100;
+    audioManager.setVolume('music', value);
+    updateVolumeDisplays();
+  });
+  
+  // Ambience volume slider
+  ambienceVolumeSlider.addEventListener('input', () => {
+    const value = ambienceVolumeSlider.value / 100;
+    audioManager.setVolume('ambience', value);
+    updateVolumeDisplays();
+    
+    // Update current weather ambience if playing
+    if (currentWeather && currentWeather !== 'none') {
+      audioManager.playWeatherAmbience(currentWeather);
+    }
+  });
+  
+  // SFX volume slider
+  sfxVolumeSlider.addEventListener('input', () => {
+    const value = sfxVolumeSlider.value / 100;
+    audioManager.setVolume('sfx', value);
+    updateVolumeDisplays();
+    
+    // Play test sound
+    audioManager.play('ui.click');
+  });
+  
+  // Reduce sound mode checkbox
+  reduceSoundCheckbox.addEventListener('change', () => {
+    audioManager.setReduceSoundMode(reduceSoundCheckbox.checked);
+    audioManager.play('ui.toggleOn');
+  });
+  
+  // Close audio settings when clicking outside
+  document.addEventListener('click', (e) => {
+    if (!audioToggle.contains(e.target) && !audioSettings.contains(e.target)) {
+      if (audioSettings.classList.contains('show')) {
+        audioSettings.classList.remove('show');
+        audioManager.play('ui.panelClose');
+      }
+    }
+  });
+  
+  // Load audio settings on init
+  loadAudioSettingsUI();
+  
+  // Connect weather changes to audio
+  const originalSetWeather = setWeather;
+  setWeather = function(weather) {
+    originalSetWeather(weather);
+    
+    // Play weather ambience
+    if (weather === 'none') {
+      audioManager.playWeatherAmbience('sunny');
+    } else {
+      audioManager.playWeatherAmbience(weather);
+    }
+  };
 
   // ============================================
   // WILLIAM EASTER EGG EMOTE SYSTEM
@@ -4300,10 +4932,15 @@
   
   // Handle William avatar click
   function handleWilliamClick() {
+    initAudioOnInteraction(); // Initialize audio on first interaction
+    
     if (williamState.current === 'rest') {
       // During rest, just show a tiny blink (do nothing for now)
       return;
     }
+    
+    // Always play tap sound first
+    audioManager.playWilliamTap();
     
     // Track click for anti-spam
     williamState.clickTimestamps.push(Date.now());
@@ -4317,6 +4954,9 @@
     if (williamState.isOnCooldown) {
       return;
     }
+    
+    // Play Easter egg sound
+    audioManager.playWilliamEasterEgg();
     
     // Trigger Easter egg emote
     applyEasterEggEmote();
