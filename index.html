@@ -12,9 +12,10 @@
 
 <style>
   :root{
-    --bg0:#0a0612; --bg1:#120a1e; --panel:rgba(20, 10, 30, 0.85); --ink:#eaf0ff; --muted:#b9c6ffcc;
-    --line:#c8862a; --gold:#f0a830; --green:#7dffb4; --blue:#7aa2ff;
-    --purple:#6b46c1; --orange:#ff8c42; --red:#dc2626; 
+    --bg0:#1a0e2e; --bg1:#1c1028; --panel:rgba(30,15,40,0.85); --ink:#fff5e6; --muted:#e6d4b8;
+    --line:#c8942a; --gold:#ffd36e; --green:#7dffb4; --blue:#d4a530;
+    --purple:#7c3aed; --orange:#ff9d5c; --red:#dc2626; 
+    --golden-border:#d4a530; --warm-glow:rgba(212,165,48,0.6);
     --shadow:0 18px 60px rgba(0,0,0,.45); --r1:22px; --r2:16px; --pad:16px; --max:1280px;
     --font:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
     --fantasy-font:'Cinzel', 'MedievalSharp', serif;
@@ -34,8 +35,8 @@
     50% { opacity: .6; }
   }
   @keyframes glow {
-    0%, 100% { box-shadow: 0 0 10px rgba(125,255,180,.3), 0 0 20px rgba(125,255,180,.2); }
-    50% { box-shadow: 0 0 20px rgba(125,255,180,.6), 0 0 40px rgba(125,255,180,.4); }
+    0%, 100% { box-shadow: 0 0 10px rgba(255,211,110,.3), 0 0 20px rgba(255,211,110,.2); }
+    50% { box-shadow: 0 0 20px rgba(255,211,110,.6), 0 0 40px rgba(255,211,110,.4); }
   }
   @keyframes shimmer {
     0% { background-position: -200% center; }
@@ -70,6 +71,7 @@
     background-color: #0a0612;
     position: relative;
     overflow-x: hidden;
+    min-height: 100vh;
   }
   
   /* Starfield background */
@@ -81,13 +83,13 @@
     width: 100%;
     height: 100%;
     background-image: 
-      radial-gradient(2px 2px at 20% 30%, white, transparent),
-      radial-gradient(2px 2px at 60% 70%, white, transparent),
-      radial-gradient(1px 1px at 50% 50%, white, transparent),
-      radial-gradient(1px 1px at 80% 10%, white, transparent),
-      radial-gradient(2px 2px at 90% 60%, white, transparent),
-      radial-gradient(1px 1px at 33% 80%, white, transparent),
-      radial-gradient(2px 2px at 75% 40%, white, transparent);
+      radial-gradient(2px 2px at 20% 30%, #ffd36e, transparent),
+      radial-gradient(2px 2px at 60% 70%, #ffd36e, transparent),
+      radial-gradient(1px 1px at 50% 50%, #fff5e6, transparent),
+      radial-gradient(1px 1px at 80% 10%, #ffd36e, transparent),
+      radial-gradient(2px 2px at 90% 60%, #fff5e6, transparent),
+      radial-gradient(1px 1px at 33% 80%, #ffd36e, transparent),
+      radial-gradient(2px 2px at 75% 40%, #fff5e6, transparent);
     background-size: 200% 200%;
     animation: starfield 8s ease-in-out infinite;
     opacity: .15;
@@ -99,25 +101,28 @@
   #ww .wrap{max-width:var(--max); margin:0 auto; padding:14px}
   #ww .topbar{
     position:sticky; top:0; z-index:60;
-    background: linear-gradient(180deg, rgba(20,10,30,.96), rgba(20,10,30,.78));
+    background: linear-gradient(180deg, rgba(26,14,46,.96), rgba(28,16,40,.78));
     backdrop-filter: blur(10px);
-    border:2px solid var(--line);
+    border:2px solid var(--golden-border);
     border-radius:18px;
     padding:10px 12px;
+    box-shadow: 0 0 15px rgba(212,165,48,.3);
   }
   #ww .topbar-inner{display:flex; gap:12px; justify-content:space-between; align-items:center; flex-wrap:wrap}
   #ww .brand{display:flex; gap:10px; align-items:center; font-weight:950}
-  #ww .logoMark{width:34px; height:34px; border-radius:12px; border:2px solid var(--gold); overflow:hidden}
+  #ww .logoMark{width:34px; height:34px; border-radius:12px; border:2px solid var(--golden-border); overflow:hidden}
   #ww .logoMark img{width:100%;height:100%;object-fit:cover;display:block}
-  #ww .badge{font-size:12px; padding:4px 9px; border:1px solid rgba(240,168,48,.45); color:var(--muted); border-radius:999px; background: rgba(240,168,48,.10); font-weight:800}
+  #ww .badge{font-size:12px; padding:4px 9px; border:2px solid var(--golden-border); color:var(--gold); border-radius:999px; background: rgba(255,211,110,.15); font-weight:800}
   #ww .nav{display:flex; gap:8px; flex-wrap:wrap}
   #ww .nav button{
-    border:2px solid var(--line); background: rgba(20,10,30,.55); color:var(--ink);
+    border:2px solid var(--golden-border); background: rgba(30,15,40,.55); color:var(--ink);
     padding:8px 10px; border-radius:999px; cursor:pointer; font-weight:850; font-size:13px;
   }
-  #ww .nav button.active{background: rgba(240,168,48,.18); border-color: var(--gold)}
+  #ww .nav button.active{background: rgba(255,211,110,.25); border-color: var(--gold); box-shadow: 0 0 10px rgba(255,211,110,.4)}
   #ww .banner{
     margin-top:12px; border-radius:26px; border:3px solid var(--gold);
+    box-shadow:var(--shadow), 0 0 30px rgba(255,211,110,.4); overflow:hidden; position:relative;
+    background: linear-gradient(180deg, rgba(30,15,40,.80), rgba(26,14,46,.55));
     box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.4); overflow:hidden; position:relative;
     background: linear-gradient(180deg, rgba(30,15,50,.25), rgba(20,10,30,.15));
     min-height: 420px;
@@ -164,7 +169,7 @@
   #ww p{margin:0; color:var(--muted); font-weight:650}
   #ww .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
   #ww .btn{
-    border:2px solid var(--line); background: rgba(20,10,30,.28); color:var(--ink);
+    border:2px solid var(--golden-border); background: rgba(26,14,46,.40); color:var(--ink);
     padding:12px 16px; border-radius:14px; cursor:pointer; font-weight:950; font-size:14px;
     transition: all .3s ease;
     position: relative;
@@ -172,15 +177,15 @@
   }
   #ww .btn:hover{
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.2), 0 0 20px rgba(240,168,48,.4);
+    box-shadow: 0 6px 16px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.2), 0 0 20px rgba(255,211,110,.4);
   }
   #ww .btn:active{
     transform: translateY(0);
     box-shadow: 0 2px 4px rgba(0,0,0,.3), inset 0 1px 0 rgba(0,0,0,.1);
   }
   #ww .btn.primary{
-    background: linear-gradient(135deg, rgba(240,168,48,.3), rgba(240,168,48,.2)); 
-    border-color: var(--gold);
+    background: linear-gradient(135deg, rgba(212,165,48,.4), rgba(212,165,48,.25)); 
+    border-color: var(--golden-border);
   }
   #ww .btn.gold{
     background: linear-gradient(135deg, rgba(240,168,48,.25), rgba(240,168,48,.15)); 
@@ -191,25 +196,25 @@
     border-color: rgba(255,107,138,.6);
   }
   #ww .statRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
-  #ww .pill{border:2px solid var(--line); background: rgba(20,10,30,.28); border-radius:999px; padding:8px 10px; display:flex; gap:8px; align-items:center; font-weight:900; font-size:13px; box-shadow: 0 0 10px rgba(240,168,48,.2);}
-  #ww .dot{width:10px;height:10px;border-radius:999px;background:var(--blue)}
+  #ww .pill{border:2px solid var(--golden-border); background: rgba(26,14,46,.40); border-radius:999px; padding:8px 10px; display:flex; gap:8px; align-items:center; font-weight:900; font-size:13px}
+  #ww .dot{width:10px;height:10px;border-radius:999px;background:var(--golden-border)}
   #ww .dot.green{background:var(--green)}
   #ww .dot.gold{background:var(--gold)}
-  #ww .meter{border:2px solid var(--line); border-radius:14px; background: rgba(20,10,30,.22); padding:10px; margin-top:10px}
+  #ww .meter{border:2px solid var(--golden-border); border-radius:14px; background: rgba(26,14,46,.35); padding:10px; margin-top:10px}
   #ww .meterTop{display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:8px}
   #ww .small{font-size:12px; color:var(--muted); font-weight:650}
-  #ww .bar{height:16px;border-radius:999px;background: rgba(50,30,20,.55);overflow:hidden;border:2px solid var(--line); position: relative;}
+  #ww .bar{height:16px;border-radius:999px;background: rgba(50,30,20,.65);overflow:hidden;border:2px solid var(--golden-border); position: relative;}
   #ww .bar > div{
     height:100%; width:0%; 
     background: linear-gradient(90deg, 
-      rgba(240,168,48,.95), 
       rgba(255,211,110,.95), 
-      rgba(240,168,48,.95)
+      rgba(255,170,50,.95), 
+      rgba(255,211,110,.95)
     ); 
     background-size: 200% 100%;
     animation: shimmer 2s linear infinite;
     transition: width .5s ease;
-    box-shadow: 0 0 10px rgba(240,168,48,.6), inset 0 1px 0 rgba(255,255,255,.3);
+    box-shadow: 0 0 10px rgba(255,211,110,.5), inset 0 1px 0 rgba(255,255,255,.3);
     position: relative;
   }
   #ww .bar > div::after {
@@ -224,31 +229,31 @@
   }
   #ww .grid{margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:14px}
   @media (max-width:980px){ #ww .grid{grid-template-columns:1fr} }
-  #ww .card{border:2px solid var(--line); background: rgba(20,10,30,.62); border-radius:var(--r1); box-shadow:var(--shadow), 0 0 15px rgba(240,168,48,.2); padding:var(--pad)}
+  #ww .card{border:2px solid var(--golden-border); background: rgba(30,15,40,.72); border-radius:var(--r1); box-shadow:var(--shadow), 0 0 15px rgba(255,211,110,.2); padding:var(--pad)}
   #ww .card h2{margin:0 0 10px; font-size:15px; display:flex; justify-content:space-between; align-items:center; gap:10px}
-  #ww .tag{font-size:12px; padding:6px 10px; border-radius:999px; border:2px solid var(--line); background: rgba(20,10,30,.45); color:var(--muted); font-weight:900}
-  #ww .frame{border:2px solid var(--line); background: rgba(20,10,30,.22); border-radius:var(--r2); padding:12px}
+  #ww .tag{font-size:12px; padding:6px 10px; border-radius:999px; border:2px solid var(--golden-border); background: rgba(30,15,40,.55); color:var(--gold); font-weight:900}
+  #ww .frame{border:2px solid var(--golden-border); background: rgba(26,14,46,.35); border-radius:var(--r2); padding:12px}
   #ww .taskList{display:grid; gap:10px; margin-top:10px}
-  #ww .task{display:grid; grid-template-columns:28px 1fr auto; gap:10px; align-items:center; border:2px solid var(--line); background: rgba(20,10,30,.20); border-radius:16px; padding:10px}
+  #ww .task{display:grid; grid-template-columns:28px 1fr auto; gap:10px; align-items:center; border:2px solid var(--golden-border); background: rgba(26,14,46,.30); border-radius:16px; padding:10px}
   #ww .task input{width:20px;height:20px; accent-color: var(--green)}
   #ww .task .name{font-weight:950}
-  #ww .task .xp{font-weight:1000; padding:6px 9px; border-radius:999px; border:1px solid rgba(125,255,180,.45); background: rgba(125,255,180,.10); font-size:12px; min-width:74px; text-align:center}
+  #ww .task .xp{font-weight:1000; padding:6px 9px; border-radius:999px; border:2px solid rgba(255,211,110,.55); background: rgba(255,211,110,.15); font-size:12px; min-width:74px; text-align:center; color:var(--gold)}
   #ww .party{display:grid; grid-template-columns:repeat(3, 1fr); gap:10px; margin-top:10px}
   @media (max-width:520px){ #ww .party{grid-template-columns:1fr} }
-  #ww .creature{border:2px solid var(--line); background: rgba(20,10,30,.22); border-radius:16px; padding:10px; display:flex; gap:10px; align-items:center}
-  #ww .avatar{width:42px;height:42px;border-radius:16px;border:2px solid var(--line);overflow:hidden}
+  #ww .creature{border:2px solid var(--golden-border); background: rgba(26,14,46,.35); border-radius:16px; padding:10px; display:flex; gap:10px; align-items:center}
+  #ww .avatar{width:42px;height:42px;border-radius:16px;border:2px solid var(--golden-border);overflow:hidden}
   #ww .avatar img{width:100%;height:100%;object-fit:cover;display:block}
   #ww .map{display:grid; gap:10px; margin-top:10px}
-  #ww .node{border:2px solid var(--line); background: rgba(20,10,30,.22); border-radius:16px; padding:10px; display:flex; justify-content:space-between; align-items:center; gap:10px}
+  #ww .node{border:2px solid var(--golden-border); background: rgba(26,14,46,.35); border-radius:16px; padding:10px; display:flex; justify-content:space-between; align-items:center; gap:10px}
   #ww .node .left{display:flex; gap:10px; align-items:center}
-  #ww .node .icon{width:36px;height:36px;border-radius:14px;border:2px solid var(--line); overflow:hidden}
+  #ww .node .icon{width:36px;height:36px;border-radius:14px;border:2px solid var(--golden-border); overflow:hidden}
   #ww .node .icon img{width:100%;height:100%;object-fit:cover;display:block}
   #ww .toast{
     position:fixed; left:50%; bottom:24px; transform:translateX(-50%); 
-    background: linear-gradient(135deg, rgba(20,10,30,.95), rgba(40,20,50,.95));
-    border:2px solid var(--gold); 
+    background: linear-gradient(135deg, rgba(30,15,40,.95), rgba(50,30,60,.95));
+    border:2px solid var(--golden-border); 
     padding:16px 24px; border-radius:16px; 
-    box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.5); 
+    box-shadow:var(--shadow), 0 0 30px rgba(255,211,110,.5); 
     display:none; z-index:999; 
     font-weight:900; font-size:16px;
     animation: slideUp .3s ease-out;
@@ -421,8 +426,8 @@
   
   /* World Map Zone Styles */
   #ww .zone {
-    border: 3px solid var(--line);
-    background: linear-gradient(135deg, rgba(20,10,30,.8), rgba(40,20,50,.8));
+    border: 3px solid var(--golden-border);
+    background: linear-gradient(135deg, rgba(30,15,40,.8), rgba(50,30,60,.8));
     border-radius: 18px;
     padding: 16px;
     display: flex;
@@ -450,7 +455,7 @@
     width: 80px;
     height: 80px;
     border-radius: 16px;
-    border: 3px solid var(--line);
+    border: 3px solid var(--golden-border);
     overflow: hidden;
     flex-shrink: 0;
     box-shadow: 0 4px 12px rgba(0,0,0,.5);
@@ -528,10 +533,10 @@
   @media (max-width:520px){ #ww .questGrid{grid-template-columns:1fr} }
   
   #ww .questCard{
-    border:3px solid var(--gold); 
-    background: rgba(20,10,30,.90); 
+    border:4px solid var(--gold); 
+    background: rgba(30,15,40,.90); 
     border-radius:24px; 
-    box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.5), inset 0 2px 0 rgba(255,255,255,.1); 
+    box-shadow:var(--shadow), 0 0 30px rgba(255,211,110,.5), inset 0 2px 0 rgba(255,255,255,.1); 
     padding:24px; 
     position:relative;
     overflow:hidden; 
@@ -543,8 +548,8 @@
   }
   #ww .questCard:hover {
     transform: translateY(-4px);
-    box-shadow:var(--shadow), 0 0 40px rgba(240,168,48,.7), inset 0 2px 0 rgba(255,255,255,.2);
-    border-color: rgba(240,168,48,1);
+    box-shadow:var(--shadow), 0 0 40px rgba(255,211,110,.7), inset 0 2px 0 rgba(255,255,255,.2);
+    border-color: rgba(255,211,110,1);
   }
   #ww .questCard::before{
     content:""; position:absolute; top:0; left:0; right:0; bottom:0; 
@@ -564,16 +569,16 @@
   #ww .questCard > *{position:relative; z-index:1}
   
   #ww .questCard.night{
-    background: linear-gradient(135deg, rgba(40,20,80,.95), rgba(60,30,110,.95));
-    border-color: #a98bd9;
+    background: linear-gradient(135deg, rgba(75,35,130,.90), rgba(50,25,90,.95));
+    border-color: #b794f4;
   }
   #ww .questCard.morning{
-    background: linear-gradient(135deg, rgba(200,100,30,.85), rgba(240,140,50,.90));
-    border-color: #ffb347;
+    background: linear-gradient(135deg, rgba(255,170,50,.85), rgba(255,140,70,.90));
+    border-color: #ffd36e;
   }
   #ww .questCard.backpack{
-    background: linear-gradient(135deg, rgba(50,120,200,.80), rgba(70,100,180,.90));
-    border-color: #6eb5ff;
+    background: linear-gradient(135deg, rgba(70,120,200,.80), rgba(90,100,180,.90));
+    border-color: #7ec8ff;
   }
   
   #ww .questIcon{
@@ -623,13 +628,13 @@
   }
   #ww .questChecklist .checkItem .xpTag {
     margin-left: auto;
-    background: rgba(125,255,180,.2);
-    border: 1px solid var(--green);
+    background: rgba(255,211,110,.25);
+    border: 2px solid var(--gold);
     padding: 4px 10px;
     border-radius: 999px;
     font-size: 12px;
     font-weight: 900;
-    color: var(--green);
+    color: var(--gold);
   }
   
   /* Quest Progress Bar */
@@ -658,10 +663,9 @@
   
   #ww .questFooter{display:flex; justify-content:space-between; align-items:center; margin-top:12px}
   #ww .xpBadge{
-    background: rgba(240,168,48,.25); border:2px solid var(--gold);
+    background: rgba(255,211,110,.25); border:2px solid var(--gold);
     border-radius:999px; padding:6px 14px; font-weight:1000; font-size:14px;
     color:var(--gold);
-    box-shadow: 0 0 10px rgba(240,168,48,.3);
   }
   
   #ww .questBtn{
@@ -709,8 +713,8 @@
   @media (max-width:980px){ #ww .dashboard{grid-template-columns:1fr} }
   
   #ww .dashPanel{
-    border:3px solid var(--gold); background: rgba(20,10,30,.82); border-radius:20px;
-    box-shadow:var(--shadow), 0 0 20px rgba(240,168,48,.3); padding:20px;
+    border:3px solid var(--gold); background: rgba(30,15,40,.82); border-radius:20px;
+    box-shadow:var(--shadow), 0 0 20px rgba(255,211,110,.3); padding:20px;
   }
   
   #ww .dashPanel h3{
@@ -732,7 +736,7 @@
   
   #ww .badgeItem{text-align:center}
   #ww .badgeIcon{
-    width:80px; height:80px; border-radius:50%; border:4px solid var(--line);
+    width:80px; height:80px; border-radius:50%; border:4px solid var(--golden-border);
     background: linear-gradient(135deg, rgba(0,0,0,.6), rgba(0,0,0,.4)); 
     display:flex; align-items:center; justify-content:center;
     font-size:36px; margin:0 auto 10px; 
@@ -767,7 +771,7 @@
   
   #ww .weekGrid{display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; margin-top:12px}
   #ww .dayBox{
-    aspect-ratio:1; border:2px solid rgba(38,52,95,.75); background: rgba(7,11,22,.4);
+    aspect-ratio:1; border:2px solid var(--golden-border); background: rgba(26,14,46,.4);
     border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center;
     font-weight:900; font-size:12px; padding:8px;
   }
