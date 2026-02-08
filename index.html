@@ -3091,6 +3091,11 @@
   let currentWeather = 'none';
   let weatherParticles = [];
   let lightningInterval = null;
+  
+  // Constants
+  const WEATHER_STORAGE_KEY = 'williamsWorldWeather';
+  const MIN_LIGHTNING_INTERVAL = 5000; // 5 seconds
+  const LIGHTNING_INTERVAL_RANGE = 5000; // Additional random 0-5 seconds
 
   // Create rain
   function createRain() {
@@ -3175,7 +3180,7 @@
           weatherLightning.style.animation = '';
         }, 400);
       }
-    }, 5000 + Math.random() * 5000);
+    }, MIN_LIGHTNING_INTERVAL + Math.random() * LIGHTNING_INTERVAL_RANGE);
   }
 
   // Clear all weather
@@ -3229,7 +3234,7 @@
     }
 
     // Save to localStorage
-    localStorage.setItem('williamsWorldWeather', weather);
+    localStorage.setItem(WEATHER_STORAGE_KEY, weather);
   }
 
   // Toggle weather menu
@@ -3254,7 +3259,7 @@
   });
 
   // Load saved weather on init
-  const savedWeather = localStorage.getItem('williamsWorldWeather') || 'none';
+  const savedWeather = localStorage.getItem(WEATHER_STORAGE_KEY) || 'none';
   setWeather(savedWeather);
 
   // Start the animation timer (every 10 seconds) - only if element exists
