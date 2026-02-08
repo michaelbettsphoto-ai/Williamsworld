@@ -63,15 +63,12 @@
   body {
     margin: 0;
     padding: 0;
-    background: linear-gradient(180deg, 
-      #2d1b4e 0%, 
-      #3d2557 15%, 
-      #4a2c5e 30%, 
-      #7c3f5d 50%, 
-      #b8634d 70%, 
-      #2d1b3e 85%, 
-      #1a0e2e 100%
-    );
+    background: 
+      linear-gradient(180deg, rgba(26,10,46,.6) 0%, rgba(61,36,72,.5) 20%, rgba(139,74,63,.4) 40%, rgba(212,118,42,.4) 60%, rgba(61,36,72,.5) 80%, rgba(26,10,46,.6) 100%),
+      url("assets/ui/ChatGPT%20Image%20Feb%208,%202026,%2012_39_11%20AM.png") center/cover no-repeat fixed;
+      linear-gradient(180deg, rgba(26,10,46,.3) 0%, rgba(61,36,72,.25) 20%, rgba(139,74,63,.2) 40%, rgba(212,118,42,.2) 60%, rgba(61,36,72,.25) 80%, rgba(26,10,46,.3) 100%),
+      url("assets/ui/background.jpg") center top/cover no-repeat fixed;
+    background-color: #0a0612;
     position: relative;
     overflow-x: hidden;
     min-height: 100vh;
@@ -95,7 +92,7 @@
       radial-gradient(2px 2px at 75% 40%, #fff5e6, transparent);
     background-size: 200% 200%;
     animation: starfield 8s ease-in-out infinite;
-    opacity: .25;
+    opacity: .15;
     pointer-events: none;
     z-index: 1;
   }
@@ -126,9 +123,12 @@
     margin-top:12px; border-radius:26px; border:3px solid var(--gold);
     box-shadow:var(--shadow), 0 0 30px rgba(255,211,110,.4); overflow:hidden; position:relative;
     background: linear-gradient(180deg, rgba(30,15,40,.80), rgba(26,14,46,.55));
+    box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.4); overflow:hidden; position:relative;
+    background: linear-gradient(180deg, rgba(30,15,50,.25), rgba(20,10,30,.15));
     min-height: 420px;
   }
   #ww .banner-inner{padding:18px; display:grid; grid-template-columns: 120px 1fr; gap:20px; align-items:start}
+  #ww .banner-inner > .card{grid-column: 1 / -1}
   @media (max-width:980px){ #ww .banner-inner{grid-template-columns:1fr; justify-items:center} }
   #ww h1{margin:0 0 6px; font-size:48px; font-weight:900; color:var(--gold); 
     font-family: var(--fantasy-font);
@@ -1649,7 +1649,7 @@
     const bannerEl = document.querySelector("#ww [data-banner]");
     if(bannerEl){
       bannerEl.style.background =
-        `linear-gradient(180deg, rgba(7,11,22,.55), rgba(7,11,22,.78)),
+        `linear-gradient(180deg, rgba(7,11,22,.15), rgba(7,11,22,.20)),
          url("${ASSETS.banner}") center/cover no-repeat`;
     }
     const logoImg = $("logoImg");
