@@ -1,2 +1,89 @@
-# Williamsworld
-Williams gamr
+# Williams World - Quest Tracker
+
+An interactive quest tracker and gamification system that helps track daily tasks, earn experience points, level up, and maintain streaks!
+
+## 🎮 Play Now
+
+**Live Site:** [https://michaelbettsphoto-ai.github.io/Williamsworld/](https://michaelbettsphoto-ai.github.io/Williamsworld/)
+
+## ✨ Features
+
+- **📋 Quest Management**: Add custom quests with customizable XP rewards
+- **⭐ Level System**: Earn XP and level up as you complete quests
+- **🔥 Streak Tracking**: Maintain daily completion streaks to stay motivated
+- **💾 Auto-Save**: All progress is automatically saved to your browser's local storage
+- **📱 Mobile Friendly**: Responsive design works perfectly on phones and tablets
+- **🎨 Beautiful UI**: Modern gradient design with smooth animations
+
+## 🎯 How It Works
+
+1. **Add Quests**: Create your own tasks with custom XP rewards (or use the defaults)
+2. **Complete Quests**: Check off tasks as you complete them to earn XP
+3. **Level Up**: Accumulate XP to increase your level (XP requirements increase with each level)
+4. **Build Streaks**: Complete quests daily to maintain your streak counter
+5. **Track Progress**: View your stats including total XP, current level, streak, and completed quests
+
+## 💻 Local Development
+
+This is a static HTML/CSS/JavaScript application with no build requirements.
+
+1. Clone the repository:
+```bash
+git clone https://github.com/michaelbettsphoto-ai/Williamsworld.git
+```
+
+2. Open `index.html` in your browser:
+```bash
+cd Williamsworld
+open index.html  # macOS
+# or
+start index.html  # Windows
+# or
+xdg-open index.html  # Linux
+```
+
+That's it! No dependencies or build process needed.
+
+## 🛠️ Technical Details
+
+- **Pure HTML/CSS/JavaScript** - No frameworks or dependencies
+- **localStorage** - Data persists in your browser
+- **Responsive Design** - Works on all screen sizes
+- **Progressive XP System** - Each level requires 50% more XP than the previous
+- **Streak Logic** - Tracks daily completions and resets after missing a day
+
+## 🎨 Customization
+
+You can easily customize:
+- Default quests in the `loadGameState()` function
+- XP multipliers in the `xpForLevel()` function
+- Colors and styling in the `<style>` section
+- Add your own character images (currently uses Google Drive placeholder)
+
+## 📝 Data Storage
+
+All game data is stored in your browser's localStorage under the key `williamsWorldState`. This includes:
+- Current XP and level
+- Active quests and their completion status
+- Streak counter
+- Total completed quests
+- Last completion date
+
+## 🔒 Privacy
+
+All data is stored locally in your browser. No data is sent to any server or third party.
+
+## 📄 License
+
+Open source - feel free to fork, modify, and use for your own projects!
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to:
+- Report bugs
+- Suggest new features
+- Submit pull requests
+
+---
+
+**Created for Williams - Happy questing! 🎮✨**
