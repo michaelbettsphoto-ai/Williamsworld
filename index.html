@@ -204,6 +204,20 @@
     70% { transform: scale(1.3) rotate(270deg); filter: brightness(1.5); }
     100% { transform: scale(1) rotate(360deg); filter: brightness(1); }
   }
+  @keyframes william-water-balloon {
+    0% { transform: rotate(0deg) translateX(0) scale(1); }
+    20% { transform: rotate(-45deg) translateX(-20px) scale(1.1); }
+    50% { transform: rotate(20deg) translateX(10px) scale(1.05); }
+    100% { transform: rotate(0deg) translateX(0) scale(1); }
+  }
+  @keyframes william-slip-out {
+    0% { transform: translateX(0) translateY(0) rotate(0deg); }
+    20% { transform: translateX(50px) translateY(-30px) rotate(15deg) scale(0.95); }
+    40% { transform: translateX(100px) translateY(-20px) rotate(-10deg) scale(0.9); }
+    60% { transform: translateX(150px) translateY(-40px) rotate(20deg) scale(0.95); }
+    80% { transform: translateX(100px) translateY(-20px) rotate(-5deg) scale(0.95); }
+    100% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); }
+  }
   
   /* Particle effect animations */
   @keyframes fireParticle {
@@ -217,6 +231,17 @@
   @keyframes throwParticle {
     0% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); opacity: 1; }
     100% { transform: translateX(200px) translateY(-80px) rotate(720deg) scale(0.8); opacity: 0; }
+  }
+  @keyframes waterBalloonParticle {
+    0% { transform: translateX(0) translateY(0) rotate(0deg) scale(1); opacity: 1; }
+    70% { transform: translateX(180px) translateY(-60px) rotate(360deg) scale(1.1); opacity: 1; }
+    85% { transform: translateX(200px) translateY(-50px) rotate(400deg) scale(1.3); opacity: 0.8; }
+    100% { transform: translateX(220px) translateY(-40px) rotate(450deg) scale(0); opacity: 0; }
+  }
+  @keyframes waterSplash {
+    0% { transform: scale(0) rotate(0deg); opacity: 1; }
+    50% { transform: scale(1.5) rotate(180deg); opacity: 0.8; }
+    100% { transform: scale(2) rotate(360deg); opacity: 0; }
   }
   @keyframes burpParticle {
     0% { transform: translateY(0) scale(0.8); opacity: 1; }
@@ -297,7 +322,7 @@
     -webkit-backdrop-filter: var(--glass-blur);
     min-height: 420px;
   }
-  #ww .banner-inner{padding:18px; display:grid; grid-template-columns: 200px 1fr; gap:20px; align-items:start}
+  #ww .banner-inner{padding:18px; display:grid; grid-template-columns: 250px 1fr; gap:20px; align-items:center}
   #ww .banner-inner > .card{grid-column: 1 / -1}
   @media (max-width:980px){ #ww .banner-inner{grid-template-columns:1fr; justify-items:center} }
   #ww h1{margin:0 0 6px; font-size:48px; font-weight:900; color:var(--gold); 
@@ -321,8 +346,8 @@
     letter-spacing: 1px;
   }
   #ww .william-avatar {
-    width: 300px;
-    height: 300px;
+    width: 280px;
+    height: 280px;
     border-radius: 0;
     border: none;
     overflow: visible;
@@ -332,12 +357,13 @@
     padding: 0;
     position: relative;
     z-index: 100;
-    transition: transform 0.5s ease, filter 0.5s ease;
+    transition: transform 0.5s ease, filter 0.5s ease, left 0.5s ease, top 0.5s ease;
     pointer-events: none;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    margin: 10px;
   }
   #ww .william-avatar img {
     width: 100%;
@@ -2841,7 +2867,10 @@
     'william-sneeze',
     'william-dizzy',
     'william-dance',
-    'william-explode'
+    'william-explode',
+    // New skills!
+    'william-water-balloon',
+    'william-slip-out'
   ];
 
   function applyRandomWilliamAnimation() {
@@ -2874,6 +2903,10 @@
       createSneezeEffect(williamAvatar);
     } else if (randomAnimation === 'william-explode') {
       createExplodeEffect(williamAvatar);
+    } else if (randomAnimation === 'william-water-balloon') {
+      createWaterBalloonEffect(williamAvatar);
+    } else if (randomAnimation === 'william-slip-out') {
+      createSlipOutEffect(williamAvatar);
     }
     
     // Remove animation after it completes
@@ -3087,6 +3120,132 @@
         setTimeout(() => particle.remove(), 1000);
       }, i * 20);
     }
+  }
+  
+  function createWaterBalloonEffect(element) {
+    const rect = element.getBoundingClientRect();
+    const waterBalloon = document.createElement('div');
+    waterBalloon.textContent = '💧';
+    waterBalloon.style.cssText = `
+      position: fixed;
+      left: ${rect.right}px;
+      top: ${rect.top + rect.height / 2}px;
+      font-size: 40px;
+      pointer-events: none;
+      z-index: 10000;
+      animation: waterBalloonParticle 1.5s ease-out forwards;
+    `;
+    document.body.appendChild(waterBalloon);
+    
+    // Create splash effect at the end
+    setTimeout(() => {
+      const splash = document.createElement('div');
+      splash.textContent = '💦';
+      splash.style.cssText = `
+        position: fixed;
+        left: ${rect.right + 200}px;
+        top: ${rect.top + rect.height / 2 - 50}px;
+        font-size: 50px;
+        pointer-events: none;
+        z-index: 10000;
+        animation: waterSplash 0.6s ease-out forwards;
+      `;
+      document.body.appendChild(splash);
+      
+      // Find nearby elements and push them away from splash
+      const splashX = rect.right + 200;
+      const splashY = rect.top + rect.height / 2 - 50;
+      
+      const interactiveElements = [
+        ...document.querySelectorAll('.quest-card'),
+        ...document.querySelectorAll('.btn'),
+        ...document.querySelectorAll('.stat-card')
+      ];
+      
+      interactiveElements.forEach(element => {
+        const elementRect = element.getBoundingClientRect();
+        const elementCenterX = elementRect.left + elementRect.width / 2;
+        const elementCenterY = elementRect.top + elementRect.height / 2;
+        
+        const distance = Math.sqrt(
+          Math.pow(elementCenterX - splashX, 2) + 
+          Math.pow(elementCenterY - splashY, 2)
+        );
+        
+        // If element is within splash range
+        if (distance < 200) {
+          const angle = Math.atan2(elementCenterY - splashY, elementCenterX - splashX);
+          const pushDistance = 20 * (1 - distance / 200);
+          
+          const newX = Math.cos(angle) * pushDistance;
+          const newY = Math.sin(angle) * pushDistance;
+          
+          element.style.transition = 'transform 0.3s ease-out';
+          element.style.transform = `translate(${newX}px, ${newY}px)`;
+          element.style.animation = 'william-wobble 0.5s ease-in-out';
+          
+          setTimeout(() => {
+            element.style.animation = '';
+            element.style.transition = 'transform 1s ease-in-out';
+            element.style.transform = 'translate(0, 0)';
+          }, 500);
+        }
+      });
+      
+      setTimeout(() => splash.remove(), 600);
+    }, 1050);
+    
+    setTimeout(() => waterBalloon.remove(), 1500);
+  }
+  
+  function createSlipOutEffect(element) {
+    // Add trail of dust clouds as William slips out
+    for (let i = 0; i < 5; i++) {
+      setTimeout(() => {
+        const rect = element.getBoundingClientRect();
+        const dust = document.createElement('div');
+        dust.textContent = '💨';
+        dust.style.cssText = `
+          position: fixed;
+          left: ${rect.left + (i * 30)}px;
+          top: ${rect.bottom - 20}px;
+          font-size: 25px;
+          pointer-events: none;
+          z-index: 9999;
+          animation: fartParticle 1s ease-out forwards;
+        `;
+        document.body.appendChild(dust);
+        setTimeout(() => dust.remove(), 1000);
+      }, i * 200);
+    }
+    
+    // Add "Wheee!" text
+    setTimeout(() => {
+      const rect = element.getBoundingClientRect();
+      const text = document.createElement('div');
+      text.textContent = 'Wheee!';
+      text.style.cssText = `
+        position: fixed;
+        left: ${rect.right + 50}px;
+        top: ${rect.top}px;
+        font-size: 24px;
+        font-weight: bold;
+        color: #ffd36e;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        pointer-events: none;
+        z-index: 10000;
+      `;
+      text.animate([
+        { transform: 'translateY(0) scale(0.8)', opacity: 1 },
+        { transform: 'translateY(-40px) scale(1.2)', opacity: 0 }
+      ], {
+        duration: 1000,
+        easing: 'ease-out',
+        fill: 'forwards'
+      });
+      document.body.appendChild(text);
+      setTimeout(() => text.remove(), 1000);
+    }, 400);
   }
 
   // William Collision Detection System
