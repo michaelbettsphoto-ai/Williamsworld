@@ -12,7 +12,7 @@
 
 <style>
   :root{
-    --bg0:#0a0612; --bg1:#120a1e; --panel:rgba(12, 8, 20, 0.90); --ink:#eaf0ff; --muted:#c8d4ffdd;
+    --bg0:#0a0612; --bg1:#120a1e; --panel:rgba(12, 8, 20, 0.75); --ink:#eaf0ff; --muted:#c8d4ffdd;
     --line:#c8862a; --gold:#f0a830; --green:#7dffb4; --blue:#7aa2ff;
     --purple:#6b46c1; --orange:#ff8c42; --red:#dc2626; 
     --shadow:0 18px 60px rgba(0,0,0,.45); --r1:20px; --r2:12px; --pad:16px; --max:1280px;
@@ -63,8 +63,8 @@
     margin: 0;
     padding: 0;
     background: 
-      linear-gradient(180deg, rgba(26,10,46,.6) 0%, rgba(61,36,72,.5) 20%, rgba(139,74,63,.4) 40%, rgba(212,118,42,.4) 60%, rgba(61,36,72,.5) 80%, rgba(26,10,46,.6) 100%),
-      url("assets/ui/ChatGPT%20Image%20Feb%208,%202026,%2012_39_11%20AM.png") center/cover no-repeat fixed;
+      linear-gradient(180deg, rgba(26,10,46,.3) 0%, rgba(61,36,72,.25) 20%, rgba(139,74,63,.2) 40%, rgba(212,118,42,.2) 60%, rgba(61,36,72,.25) 80%, rgba(26,10,46,.3) 100%),
+      url("assets/ui/ChatGPT%20Image%20Feb%208,%202026,%2012_39_11%20AM.png") center top/cover no-repeat fixed;
     background-color: #0a0612;
     position: relative;
     overflow-x: hidden;
@@ -98,13 +98,13 @@
     position: relative; 
     z-index: 10;
     min-height: 100vh;
-    background: rgba(10, 10, 20, 0.55);
-    backdrop-filter: blur(6px);
+    background: rgba(10, 10, 20, 0.25);
+    backdrop-filter: blur(2px);
   }
   #ww *{box-sizing:border-box}
-  #ww .wrap{max-width:var(--max); margin:0 auto; padding:16px 24px}
-  @media (max-width:768px){ #ww .wrap{padding:12px} }
-  @media (max-width:768px){ #ww{background: rgba(10, 10, 20, 0.70)} }
+  #ww .wrap{max-width:var(--max); margin:0 auto; padding:20px 32px}
+  @media (max-width:768px){ #ww .wrap{padding:16px} }
+  @media (max-width:768px){ #ww{background: rgba(10, 10, 20, 0.40)} }
   #ww .topbar{
     position:sticky; top:0; z-index:60;
     background: linear-gradient(180deg, rgba(20,10,30,.96), rgba(20,10,30,.78));
@@ -127,7 +127,8 @@
   #ww .banner{
     margin-top:12px; border-radius:20px; border:3px solid var(--gold);
     box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.4); overflow:hidden; position:relative;
-    background: linear-gradient(180deg, rgba(30,15,50,.25), rgba(20,10,30,.15));
+    background: rgba(20, 10, 30, 0.60);
+    backdrop-filter: blur(8px);
     min-height: 420px;
   }
   #ww .banner-inner{padding:18px; display:grid; grid-template-columns: 120px 1fr; gap:20px; align-items:start}
@@ -169,7 +170,7 @@
     object-fit: cover;
     display: block;
   }
-  #ww p{margin:0; color:var(--muted); font-weight:650; font-size:14px}
+  #ww p{margin:0; color:var(--muted); font-weight:650; font-size:14px; text-shadow: 1px 1px 3px rgba(0,0,0,.8);}
   #ww .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
   #ww .btn{
     border:2px solid var(--line); background: rgba(20,10,30,.28); color:var(--ink);
@@ -538,9 +539,10 @@
   
   #ww .questCard{
     border:3px solid var(--gold); 
-    background: rgba(12, 8, 20, 0.90); 
+    background: rgba(12, 8, 20, 0.70); 
+    backdrop-filter: blur(8px);
     border-radius:20px; 
-    box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.5); 
+    box-shadow:var(--shadow), 0 0 30px rgba(240,168,48,.5), inset 0 1px 0 rgba(255,255,255,.05); 
     padding:20px; 
     position:relative;
     overflow:hidden; 
@@ -609,13 +611,15 @@
   #ww .questChecklist .checkItem{
     display:flex; align-items:center; gap:12px; padding:12px; 
     font-weight:700; font-size:14px;
-    background: rgba(0,0,0,.2);
+    background: rgba(0,0,0,.3);
+    backdrop-filter: blur(4px);
     border-radius: 12px;
     margin-bottom: 10px;
     border: 1px solid rgba(200, 134, 42, 0.4);
     transition: all .3s ease;
     cursor: pointer;
     min-height: 44px;
+    text-shadow: 1px 1px 2px rgba(0,0,0,.9);
   }
   #ww .questChecklist .checkItem:hover{
     background: rgba(0,0,0,.3);
@@ -722,8 +726,12 @@
   @media (max-width:768px){ #ww .dashboard{grid-template-columns:1fr; gap:16px} }
   
   #ww .dashPanel{
-    border:3px solid var(--gold); background: rgba(12, 8, 20, 0.88); border-radius:20px;
-    box-shadow:var(--shadow), 0 0 20px rgba(240,168,48,.3); padding:16px;
+    border:3px solid var(--gold); 
+    background: rgba(12, 8, 20, 0.70); 
+    backdrop-filter: blur(8px);
+    border-radius:20px;
+    box-shadow:var(--shadow), 0 0 20px rgba(240,168,48,.3); 
+    padding:16px;
   }
   @media (min-width:769px){ #ww .dashPanel{padding:20px} }
   
