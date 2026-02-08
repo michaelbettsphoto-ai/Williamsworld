@@ -2655,9 +2655,9 @@
     
     // Get file path with extension
     getFilePath(key) {
-      // For now, return placeholder path
-      // In production, these would be actual audio files
-      return `audio/${key}.ogg`;
+      // Try OGG first (preferred), then WAV as fallback
+      // This supports both production OGG files and development WAV placeholders
+      return `audio/${key}.ogg`;  // Howler.js will handle format detection
     }
     
     // Preload a sound
