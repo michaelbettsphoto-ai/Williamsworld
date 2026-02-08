@@ -386,14 +386,20 @@
   const driveImg = (id) => `https://drive.google.com/uc?export=view&id=${id}`;
 
   const ASSETS = {
+    // ✅ Currently used images (3/10)
     mapstrip: driveImg("1uRnf1lRrckwCio65JR4uoqLMJqdgTy3l"),
     banner:   driveImg("1alP63TrXq74YiS1anmtcKXicjwt2l5_6"),
     logo:     driveImg("10saxE0g59l5xok5O0pCRCu1JOQy3NlXb"),
+    
+    // ⚠️ Companion images defined but not used - missing HTML elements
+    // To use: Add <img id="emberImg">, <img id="spriteImg">, <img id="golemImg">
     companions: {
       ember:  driveImg("1HCOGXn6fncfUGR9-wwwAoNB8DDQ_D-fN"),
       sprite: driveImg("1bFthyxEFXuOgoGmDtgFNOQRm0diESurv"),
       golem:  driveImg("1UBt7S_b51y8TscjiwN4go55iux0mRoL8"),
     },
+    
+    // ⚠️ Zone images defined but never referenced in code
     zones: {
       z1: driveImg("1khkAGTYaqs2kcV47QlywWJV8nx6DCPT3"),
       z2: driveImg("1Gqf9RB81VfNXhJTNGpZrqnGcnEq-gkCG"),

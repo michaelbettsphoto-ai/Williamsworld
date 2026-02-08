@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Williams World - Image Validation</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    h1 {
+      color: #333;
+      border-bottom: 3px solid #4CAF50;
+      padding-bottom: 10px;
+    }
+    .section {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .image-test {
+      margin: 15px 0;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: #fafafa;
+    }
+    .image-test h3 {
+      margin-top: 0;
+      color: #555;
+    }
+    .status {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    .status.loading {
+      background: #FFF3CD;
+      color: #856404;
+    }
+    .status.success {
+      background: #D4EDDA;
+      color: #155724;
+    }
+    .status.error {
+      background: #F8D7DA;
+      color: #721C24;
+    }
+    .status.unused {
+      background: #E2E3E5;
+      color: #383D41;
+    }
+    .image-preview {
+      margin-top: 10px;
+      max-width: 400px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      display: none;
+    }
+    .image-preview.show {
+      display: block;
+    }
+    .url {
+      font-size: 11px;
+      color: #666;
+      word-break: break-all;
+      margin-top: 5px;
+    }
+    .summary {
+      background: #E7F3FF;
+      padding: 15px;
+      border-left: 4px solid #2196F3;
+      margin-top: 20px;
+    }
+    .summary h2 {
+      margin-top: 0;
+      color: #1976D2;
+    }
+  </style>
+</head>
+<body>
+  <h1>🖼️ Williams World - Image Validation Test</h1>
+  
+  <div class="section">
+    <h2>Images Currently Used in HTML</h2>
+    
+    <div class="image-test">
+      <h3>Logo <span class="status loading" id="status-logo">Testing...</span></h3>
+      <div class="url" id="url-logo"></div>
+      <img id="img-logo" class="image-preview" alt="Logo">
+    </div>
+    
+    <div class="image-test">
+      <h3>Banner <span class="status loading" id="status-banner">Testing...</span></h3>
+      <div class="url" id="url-banner"></div>
+      <img id="img-banner" class="image-preview" alt="Banner">
+    </div>
+    
+    <div class="image-test">
+      <h3>Map Strip <span class="status loading" id="status-mapstrip">Testing...</span></h3>
+      <div class="url" id="url-mapstrip"></div>
+      <img id="img-mapstrip" class="image-preview" alt="Map Strip">
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>Companion Images (Defined but NOT Used)</h2>
+    
+    <div class="image-test">
+      <h3>Ember <span class="status unused">UNUSED - No HTML Element</span></h3>
+      <div class="url" id="url-ember"></div>
+      <p style="color: #666; font-size: 14px;">Missing: &lt;img id="emberImg"&gt;</p>
+    </div>
+    
+    <div class="image-test">
+      <h3>Sprite <span class="status unused">UNUSED - No HTML Element</span></h3>
+      <div class="url" id="url-sprite"></div>
+      <p style="color: #666; font-size: 14px;">Missing: &lt;img id="spriteImg"&gt;</p>
+    </div>
+    
+    <div class="image-test">
+      <h3>Golem <span class="status unused">UNUSED - No HTML Element</span></h3>
+      <div class="url" id="url-golem"></div>
+      <p style="color: #666; font-size: 14px;">Missing: &lt;img id="golemImg"&gt;</p>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>Zone Images (Defined but NOT Referenced)</h2>
+    
+    <div class="image-test">
+      <h3>Zone 1: Launch Meadow <span class="status unused">UNUSED - Never Referenced</span></h3>
+      <div class="url" id="url-z1"></div>
+    </div>
+    
+    <div class="image-test">
+      <h3>Zone 2: Homework Hills <span class="status unused">UNUSED - Never Referenced</span></h3>
+      <div class="url" id="url-z2"></div>
+    </div>
+    
+    <div class="image-test">
+      <h3>Zone 3: Backpack Bastion <span class="status unused">UNUSED - Never Referenced</span></h3>
+      <div class="url" id="url-z3"></div>
+    </div>
+    
+    <div class="image-test">
+      <h3>Zone 4: Focus Forest <span class="status unused">UNUSED - Never Referenced</span></h3>
+      <div class="url" id="url-z4"></div>
+    </div>
+  </div>
+
+  <div class="summary">
+    <h2>Summary</h2>
+    <p><strong>Images Tested:</strong> <span id="tested-count">0</span> / <span id="total-count">10</span></p>
+    <p><strong>Successfully Loading:</strong> <span id="success-count">0</span></p>
+    <p><strong>Failed to Load:</strong> <span id="error-count">0</span></p>
+    <p><strong>Unused in Code:</strong> 7 (3 companions + 4 zones)</p>
+  </div>
+
+  <script>
+    const driveImg = (id) => `https://drive.google.com/uc?export=view&id=${id}`;
+
+    const ASSETS = {
+      logo:     { id: "10saxE0g59l5xok5O0pCRCu1JOQy3NlXb", used: true },
+      banner:   { id: "1alP63TrXq74YiS1anmtcKXicjwt2l5_6", used: true },
+      mapstrip: { id: "1uRnf1lRrckwCio65JR4uoqLMJqdgTy3l", used: true },
+      ember:    { id: "1HCOGXn6fncfUGR9-wwwAoNB8DDQ_D-fN", used: false },
+      sprite:   { id: "1bFthyxEFXuOgoGmDtgFNOQRm0diESurv", used: false },
+      golem:    { id: "1UBt7S_b51y8TscjiwN4go55iux0mRoL8", used: false },
+      z1:       { id: "1khkAGTYaqs2kcV47QlywWJV8nx6DCPT3", used: false },
+      z2:       { id: "1Gqf9RB81VfNXhJTNGpZrqnGcnEq-gkCG", used: false },
+      z3:       { id: "1QUjRAL_25vraSxiAUwh6DEi0VFZcUzvf", used: false },
+      z4:       { id: "12nyjV7zm_bEzG2uDgPy6tv1Uo2rLZ5Gd", used: false },
+    };
+
+    let successCount = 0;
+    let errorCount = 0;
+    let testedCount = 0;
+    const totalCount = Object.keys(ASSETS).length;
+
+    // Display URLs
+    for (const [name, data] of Object.entries(ASSETS)) {
+      const urlEl = document.getElementById(`url-${name}`);
+      if (urlEl) {
+        const url = driveImg(data.id);
+        urlEl.textContent = url;
+      }
+    }
+
+    // Test only images that are actually used in the HTML
+    function testImage(name, id) {
+      return new Promise((resolve) => {
+        const img = document.getElementById(`img-${name}`);
+        const status = document.getElementById(`status-${name}`);
+        const url = driveImg(id);
+        
+        if (!img) {
+          resolve({ name, success: false, reason: 'No HTML element' });
+          return;
+        }
+
+        const testImg = new Image();
+        
+        testImg.onload = () => {
+          img.src = url;
+          img.classList.add('show');
+          status.textContent = '✓ Loading Successfully';
+          status.className = 'status success';
+          successCount++;
+          testedCount++;
+          resolve({ name, success: true });
+        };
+        
+        testImg.onerror = () => {
+          status.textContent = '✗ Failed to Load';
+          status.className = 'status error';
+          errorCount++;
+          testedCount++;
+          resolve({ name, success: false, reason: 'Load error' });
+        };
+        
+        testImg.src = url;
+        
+        // Timeout after 10 seconds
+        setTimeout(() => {
+          if (status.textContent === 'Testing...') {
+            status.textContent = '⏱ Timeout';
+            status.className = 'status error';
+            errorCount++;
+            testedCount++;
+            resolve({ name, success: false, reason: 'Timeout' });
+          }
+        }, 10000);
+      });
+    }
+
+    // Update summary
+    function updateSummary() {
+      document.getElementById('tested-count').textContent = testedCount;
+      document.getElementById('total-count').textContent = totalCount;
+      document.getElementById('success-count').textContent = successCount;
+      document.getElementById('error-count').textContent = errorCount;
+    }
+
+    // Run tests
+    async function runTests() {
+      console.log('Starting image validation tests...');
+      
+      // Only test images that are marked as "used"
+      for (const [name, data] of Object.entries(ASSETS)) {
+        if (data.used) {
+          await testImage(name, data.id);
+          updateSummary();
+        }
+      }
+      
+      console.log('Image validation complete!');
+      console.log(`Success: ${successCount}, Errors: ${errorCount}, Unused: ${totalCount - testedCount}`);
+    }
+
+    // Start tests when page loads
+    window.addEventListener('load', () => {
+      setTimeout(runTests, 500);
+    });
+  </script>
+</body>
+</html>
