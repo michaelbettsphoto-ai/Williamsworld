@@ -19,9 +19,9 @@
     --shadow:0 18px 60px rgba(0,0,0,.45); --r1:22px; --r2:16px; --pad:16px; --max:1280px;
     --font:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
     --fantasy-font:'Cinzel', 'MedievalSharp', serif;
-    --glass-bg:rgba(20,10,35,.55);
+    --glass-bg:rgba(20,10,35,.25);
     --glass-blur:blur(18px) saturate(1.3);
-    --glass-strong-bg:rgba(20,10,35,.68);
+    --glass-strong-bg:rgba(20,10,35,.35);
   }
   
   /* Animated background */
@@ -527,6 +527,128 @@
   #ww .hpMeter.low .bar > div { background: linear-gradient(90deg, #991b1b, #dc2626); animation: pulse 1s ease-in-out infinite; }
   #ww .hpPill .dot { background: var(--red); }
   
+  /* Quest Map Sidebar Styles */
+  #ww .questMapSidebar {
+    border: 2px solid var(--golden-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: var(--shadow), 0 0 15px rgba(255,211,110,.2);
+  }
+  
+  #ww .questMapSidebar h3 {
+    margin: 0 0 12px 0;
+    font-size: 16px;
+    font-weight: 900;
+    color: var(--gold);
+    font-family: var(--fantasy-font);
+  }
+  
+  #ww .zoneIconList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  #ww .zoneIconItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border: 2px solid var(--golden-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 12px;
+    transition: all .3s ease;
+    cursor: pointer;
+  }
+  
+  #ww .zoneIconItem:hover {
+    transform: translateX(4px);
+    border-color: var(--gold);
+    box-shadow: 0 0 15px rgba(255,211,110,.3);
+  }
+  
+  #ww .zoneIconItem.unlocked {
+    border-color: var(--green);
+    box-shadow: 0 0 15px rgba(125,255,180,.2);
+  }
+  
+  #ww .zoneIconItem.unlocked:hover {
+    box-shadow: 0 0 20px rgba(125,255,180,.4);
+  }
+  
+  #ww .zoneIconItem.locked {
+    opacity: .6;
+    filter: grayscale(60%);
+  }
+  
+  #ww .zoneIconItem .zoneIconSmall {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    border: 2px solid var(--golden-border);
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  
+  #ww .zoneIconItem .zoneIconSmall img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  #ww .zoneIconItem .zoneIconInfo {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  #ww .zoneIconItem .zoneIconName {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  #ww .zoneIconItem .zoneIconStatus {
+    font-size: 11px;
+    font-weight: 700;
+    opacity: .8;
+  }
+  
+  #ww .zoneIconItem.unlocked .zoneIconStatus {
+    color: var(--green);
+  }
+  
+  #ww .zoneIconItem.locked .zoneIconStatus {
+    color: rgba(255,107,138,.9);
+  }
+  
+  #ww .currentQuestHeader {
+    border: 2px solid var(--golden-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 18px;
+    padding: 16px;
+    box-shadow: var(--shadow), 0 0 15px rgba(255,211,110,.2);
+  }
+  
+  #ww .currentQuestHeader h2 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
   /* Streak Fire Icon Enhancement */
   .streakFire {
     display: inline-block;
@@ -537,10 +659,46 @@
     filter: drop-shadow(0 0 10px rgba(255,140,70,.8));
   }
   
+  /* Main Content + Sidebar Layout */
+  #ww .contentWithSidebar {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    align-items: flex-start;
+  }
+  
+  #ww .mainContent {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  #ww .questSidebar {
+    width: 320px;
+    position: sticky;
+    top: 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+  
+  @media (max-width: 1100px) {
+    #ww .contentWithSidebar {
+      flex-direction: column;
+    }
+    #ww .questSidebar {
+      width: 100%;
+      position: relative;
+      top: 0;
+    }
+  }
+  
   /* Quest Cards Layout */
-  #ww .questGrid{margin-top:20px; display:grid; grid-template-columns:repeat(3, 1fr); gap:20px}
-  @media (max-width:980px){ #ww .questGrid{grid-template-columns:repeat(2, 1fr)} }
-  @media (max-width:520px){ #ww .questGrid{grid-template-columns:1fr} }
+  #ww .questGrid{display: flex; flex-direction: column; gap: 16px;}
+  
+  #ww .questSidebar .questCard {
+    min-height: auto;
+  }
   
   #ww .questCard{
     border:4px solid var(--gold); 
@@ -1028,25 +1186,64 @@
             <div class="bar"><div id="hpBar"></div></div>
           </div>
         </div>
-
-        <div class="card" style="margin:0;">
-          <h2>Current Quest <span class="tag">DAILY</span></h2>
-          <div class="frame" style="padding:0; overflow:hidden; margin-bottom:10px;">
-            <img id="mapstripImg" alt="World Map Strip" style="width:100%;height:auto;display:block;">
-          </div>
-          <div class="frame">
-            <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;">
-              <div style="font-weight:1000;">Quest Target</div>
-              <div class="tag">PASS = Complete All Quests</div>
-            </div>
-            <div class="small" style="margin-top:8px;">Start with the night quest, then morning, then backpack check!</div>
-          </div>
-        </div>
       </div>
     </section>
 
-    <!-- Quest Cards -->
-    <div class="questGrid" id="tracker">
+    <!-- Main Content with Sidebar Layout -->
+    <div class="contentWithSidebar">
+      <!-- Sidebar with Quest Tracker and Map -->
+      <aside class="questSidebar">
+        <!-- Current Quest Header -->
+        <div class="currentQuestHeader">
+          <h2>🎯 Current Quest <span class="tag">DAILY</span></h2>
+          <div class="small" style="margin-top:8px;">Complete all quests to pass the day!</div>
+        </div>
+
+        <!-- Quest Map with Icons -->
+        <div class="questMapSidebar">
+          <h3>🗺️ Quest Map</h3>
+          <div class="zoneIconList">
+            <div class="zoneIconItem unlocked" id="zoneIcon1">
+              <div class="zoneIconSmall">
+                <img id="zone1IconImg" alt="Launch Meadow">
+              </div>
+              <div class="zoneIconInfo">
+                <div class="zoneIconName">Launch Meadow</div>
+                <div class="zoneIconStatus">✓ Unlocked</div>
+              </div>
+            </div>
+            <div class="zoneIconItem locked" id="zoneIcon2">
+              <div class="zoneIconSmall">
+                <img id="zone2IconImg" alt="Homework Hills">
+              </div>
+              <div class="zoneIconInfo">
+                <div class="zoneIconName">Homework Hills</div>
+                <div class="zoneIconStatus">🔒 3 days</div>
+              </div>
+            </div>
+            <div class="zoneIconItem locked" id="zoneIcon3">
+              <div class="zoneIconSmall">
+                <img id="zone3IconImg" alt="Backpack Bastion">
+              </div>
+              <div class="zoneIconInfo">
+                <div class="zoneIconName">Backpack Bastion</div>
+                <div class="zoneIconStatus">🔒 5 days</div>
+              </div>
+            </div>
+            <div class="zoneIconItem locked" id="zoneIcon4">
+              <div class="zoneIconSmall">
+                <img id="zone4IconImg" alt="Focus Forest">
+              </div>
+              <div class="zoneIconInfo">
+                <div class="zoneIconName">Focus Forest</div>
+                <div class="zoneIconStatus">🔒 10 days</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quest Cards in Sidebar -->
+        <div class="questGrid" id="tracker">
       <!-- Quest 1: Win Tomorrow Tonight -->
       <div class="questCard night" id="questNight">
         <div class="questIcon">🌙</div>
@@ -1153,8 +1350,11 @@
         </div>
       </div>
     </div>
+    </aside>
 
-    <!-- Bottom Dashboard -->
+    <!-- Main Content Area -->
+    <div class="mainContent">
+      <!-- Bottom Dashboard -->
     <div class="dashboard">
       <!-- XP & Streaks Panel -->
       <div class="dashPanel">
@@ -1220,6 +1420,8 @@
         </div>
       </div>
     </div>
+    </div> <!-- end mainContent -->
+    </div> <!-- end contentWithSidebar -->
 
     <!-- Companion Party Section -->
     <div id="party" style="margin-top:24px;">
@@ -1685,6 +1887,12 @@
     if($("zone2Img")) $("zone2Img").src = ASSETS.zones.z2;
     if($("zone3Img")) $("zone3Img").src = ASSETS.zones.z3;
     if($("zone4Img")) $("zone4Img").src = ASSETS.zones.z4;
+    
+    // Load zone icon images in sidebar
+    if($("zone1IconImg")) $("zone1IconImg").src = ASSETS.zones.z1;
+    if($("zone2IconImg")) $("zone2IconImg").src = ASSETS.zones.z2;
+    if($("zone3IconImg")) $("zone3IconImg").src = ASSETS.zones.z3;
+    if($("zone4IconImg")) $("zone4IconImg").src = ASSETS.zones.z4;
   }
 
   let state = load();
