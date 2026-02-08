@@ -11,7 +11,8 @@
   :root{
     --bg0:#070b16; --bg1:#0b1020; --panel:#0f1730cc; --ink:#eaf0ff; --muted:#b9c6ffcc;
     --line:#26345f; --gold:#ffd36e; --green:#7dffb4; --blue:#7aa2ff;
-    --shadow:0 18px 60px rgba(0,0,0,.45); --r1:22px; --r2:16px; --pad:16px; --max:1080px;
+    --purple:#6b46c1; --orange:#ff8c42; --red:#dc2626; 
+    --shadow:0 18px 60px rgba(0,0,0,.45); --r1:22px; --r2:16px; --pad:16px; --max:1280px;
     --font:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
   }
   #ww{font-family:var(--font); color:var(--ink);}
@@ -37,14 +38,15 @@
   }
   #ww .nav button.active{background: rgba(122,162,255,.18); border-color: rgba(122,162,255,.75)}
   #ww .banner{
-    margin-top:12px; border-radius:26px; border:1px solid rgba(38,52,95,.65);
-    box-shadow:var(--shadow); overflow:hidden; position:relative;
+    margin-top:12px; border-radius:26px; border:3px solid var(--gold);
+    box-shadow:var(--shadow), 0 0 30px rgba(255,211,110,.3); overflow:hidden; position:relative;
     background: linear-gradient(180deg, rgba(17,26,51,.80), rgba(11,16,32,.55));
-    min-height: 340px;
+    min-height: 420px;
   }
   #ww .banner-inner{padding:18px; display:grid; grid-template-columns: 1.25fr .75fr; gap:14px}
   @media (max-width:980px){ #ww .banner-inner{grid-template-columns:1fr} }
-  #ww h1{margin:0 0 6px; font-size:28px; font-weight:1000}
+  #ww h1{margin:0 0 6px; font-size:38px; font-weight:1000; color:var(--gold); 
+    text-shadow: 3px 3px 0 rgba(0,0,0,.8), -1px -1px 0 rgba(0,0,0,.8), 1px -1px 0 rgba(0,0,0,.8), -1px 1px 0 rgba(0,0,0,.8);}
   #ww p{margin:0; color:var(--muted); font-weight:650}
   #ww .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
   #ww .btn{
@@ -87,6 +89,121 @@
   #ww .node .icon img{width:100%;height:100%;object-fit:cover;display:block}
   #ww .toast{position:fixed; left:50%; bottom:16px; transform:translateX(-50%); background: rgba(15,23,48,.92);
     border:1px solid rgba(122,162,255,.6); padding:10px 12px; border-radius:14px; box-shadow:var(--shadow); display:none; z-index:999; font-weight:900}
+  
+  /* Quest Cards Layout */
+  #ww .questGrid{margin-top:20px; display:grid; grid-template-columns:repeat(3, 1fr); gap:20px}
+  @media (max-width:980px){ #ww .questGrid{grid-template-columns:repeat(2, 1fr)} }
+  @media (max-width:520px){ #ww .questGrid{grid-template-columns:1fr} }
+  
+  #ww .questCard{
+    border:3px solid var(--gold); background: rgba(15,23,48,.82); border-radius:20px; 
+    box-shadow:var(--shadow), 0 0 20px rgba(255,211,110,.2); padding:20px; position:relative;
+    overflow:hidden; min-height:420px; display:flex; flex-direction:column;
+  }
+  #ww .questCard::before{
+    content:""; position:absolute; top:0; left:0; right:0; bottom:0; 
+    background-size:cover; background-position:center; opacity:.2; z-index:0;
+  }
+  #ww .questCard > *{position:relative; z-index:1}
+  
+  #ww .questCard.night{background: linear-gradient(135deg, rgba(75,35,130,.85), rgba(30,20,70,.95))}
+  #ww .questCard.morning{background: linear-gradient(135deg, rgba(255,170,50,.75), rgba(255,140,70,.85))}
+  #ww .questCard.backpack{background: linear-gradient(135deg, rgba(50,120,200,.75), rgba(70,100,180,.85))}
+  
+  #ww .questIcon{
+    width:60px; height:60px; border-radius:50%; border:3px solid var(--gold);
+    background: rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center;
+    font-size:32px; margin-bottom:12px; box-shadow:0 4px 12px rgba(0,0,0,.5);
+  }
+  
+  #ww .questCard h3{
+    margin:0 0 8px; font-size:22px; font-weight:1000; color:var(--gold);
+    text-shadow: 2px 2px 0 rgba(0,0,0,.9), -1px -1px 0 rgba(0,0,0,.9);
+  }
+  
+  #ww .questChecklist{margin:16px 0; flex:1}
+  #ww .questChecklist .checkItem{
+    display:flex; align-items:center; gap:10px; padding:8px 0; 
+    font-weight:700; font-size:14px;
+  }
+  #ww .questChecklist .checkItem::before{
+    content:"✓"; display:flex; align-items:center; justify-content:center;
+    width:24px; height:24px; border-radius:50%; background:var(--green);
+    color:#000; font-weight:1000; font-size:16px; flex-shrink:0;
+  }
+  
+  #ww .questNote{
+    background: rgba(255,107,138,.15); border:2px solid rgba(255,107,138,.5);
+    border-radius:12px; padding:10px; margin:12px 0; font-weight:900; font-size:13px;
+    color:var(--ink);
+  }
+  
+  #ww .questFooter{display:flex; justify-content:space-between; align-items:center; margin-top:12px}
+  #ww .xpBadge{
+    background: rgba(125,255,180,.2); border:2px solid var(--green);
+    border-radius:999px; padding:6px 14px; font-weight:1000; font-size:14px;
+    color:var(--green);
+  }
+  
+  #ww .questBtn{
+    padding:12px 24px; border-radius:12px; border:none; font-weight:950; font-size:14px;
+    cursor:pointer; color:#fff; transition: transform .2s, box-shadow .2s;
+  }
+  #ww .questBtn:hover{transform:translateY(-2px); box-shadow:0 6px 20px rgba(0,0,0,.4)}
+  #ww .questBtn.red{background: linear-gradient(135deg, #dc2626, #991b1b)}
+  #ww .questBtn.green{background: linear-gradient(135deg, #10b981, #059669)}
+  #ww .questBtn.blue{background: linear-gradient(135deg, #3b82f6, #1d4ed8)}
+  
+  /* Bottom Dashboard */
+  #ww .dashboard{margin-top:24px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px}
+  @media (max-width:980px){ #ww .dashboard{grid-template-columns:1fr} }
+  
+  #ww .dashPanel{
+    border:3px solid var(--gold); background: rgba(15,23,48,.82); border-radius:20px;
+    box-shadow:var(--shadow), 0 0 20px rgba(255,211,110,.2); padding:20px;
+  }
+  
+  #ww .dashPanel h3{
+    margin:0 0 16px; font-size:18px; font-weight:1000; color:var(--gold);
+    text-shadow: 2px 2px 0 rgba(0,0,0,.9);
+  }
+  
+  #ww .xpDisplay{
+    font-size:32px; font-weight:1000; color:var(--green); margin:12px 0;
+    text-shadow: 2px 2px 0 rgba(0,0,0,.7);
+  }
+  
+  #ww .streakInfo{
+    font-size:18px; font-weight:900; margin:8px 0; color:var(--ink);
+  }
+  
+  #ww .badgeGrid{display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; margin-top:12px}
+  @media (max-width:520px){ #ww .badgeGrid{grid-template-columns:repeat(2, 1fr)} }
+  
+  #ww .badgeItem{text-align:center}
+  #ww .badgeIcon{
+    width:70px; height:70px; border-radius:50%; border:3px solid var(--gold);
+    background: rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center;
+    font-size:32px; margin:0 auto 8px; box-shadow:0 4px 12px rgba(0,0,0,.5);
+  }
+  #ww .badgeIcon.earned{background: linear-gradient(135deg, var(--gold), var(--orange)); border-color:var(--gold)}
+  #ww .badgeIcon.locked{opacity:.4; filter:grayscale(100%)}
+  #ww .badgeLabel{font-size:11px; font-weight:800; color:var(--muted)}
+  
+  #ww .weekGrid{display:grid; grid-template-columns:repeat(5, 1fr); gap:10px; margin-top:12px}
+  #ww .dayBox{
+    aspect-ratio:1; border:2px solid rgba(38,52,95,.75); background: rgba(7,11,22,.4);
+    border-radius:12px; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    font-weight:900; font-size:12px; padding:8px;
+  }
+  #ww .dayBox.complete{background: rgba(125,255,180,.2); border-color:var(--green)}
+  #ww .dayBox.complete::after{content:"✓"; display:block; font-size:20px; color:var(--green); margin-top:4px}
+  
+  #ww .treasureNote{
+    background: linear-gradient(135deg, rgba(255,211,110,.15), rgba(255,170,50,.15));
+    border:2px solid var(--gold); border-radius:12px; padding:12px; margin-top:12px;
+    font-weight:900; text-align:center; color:var(--gold);
+  }
 </style>
 
 <div id="ww">
@@ -113,25 +230,19 @@
     <section class="banner" data-banner id="home">
       <div class="banner-inner">
         <div>
-          <h1>Start Adventure Mode</h1>
-          <p>This "game" turns routines into quests. Complete steps → earn XP → level up → keep a PASS streak.</p>
-
-          <div class="ctaRow">
-            <button class="btn primary" id="goTracker">⚔️ Start Today's Tracker</button>
-            <button class="btn gold" id="gradeDay">🏆 Grade Today</button>
-            <button class="btn danger" id="resetToday">🧽 Reset Today</button>
-          </div>
+          <h1>Welcome to Williams World!</h1>
+          <p>Complete daily quests to earn XP, level up, and unlock amazing rewards. Your adventure begins now!</p>
 
           <div class="statRow">
             <div class="pill"><span class="dot"></span> Level <span id="levelNum">1</span></div>
-            <div class="pill"><span class="dot green"></span> Streak <span id="streakNum">0</span> nights</div>
+            <div class="pill"><span class="dot green"></span> Streak <span id="streakNum">0</span> days</div>
             <div class="pill"><span class="dot gold"></span> Today: <span id="dayResult">Not graded</span></div>
           </div>
 
           <div class="meter">
             <div class="meterTop">
               <div><b>XP</b>: <span id="xpNow">0</span> / <span id="xpNext">100</span></div>
-              <div class="small">PASS rule: all Night-Before + Trapper Check</div>
+              <div class="small">Complete all quests to earn rewards!</div>
             </div>
             <div class="bar"><div id="xpBar"></div></div>
           </div>
@@ -145,39 +256,125 @@
           <div class="frame">
             <div style="display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;">
               <div style="font-weight:1000;">Quest Target</div>
-              <div class="tag">PASS = Night-Before + Trapper</div>
+              <div class="tag">PASS = Complete All Quests</div>
             </div>
-            <div class="small" style="margin-top:8px;">Do the first checkbox. Then the next.</div>
+            <div class="small" style="margin-top:8px;">Start with the night quest, then morning, then backpack check!</div>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="grid">
-      <section class="card" id="tracker">
+    <!-- Quest Cards -->
+    <div class="questGrid" id="tracker">
+      <!-- Quest 1: Win Tomorrow Tonight -->
+      <div class="questCard night" id="questNight">
+        <div class="questIcon">🌙</div>
+        <h3>Win Tomorrow Tonight</h3>
+        <div class="questChecklist">
+          <div class="checkItem">Trapper Ready</div>
+          <div class="checkItem">Clothes Ready</div>
+          <div class="checkItem">Lunch Plan Ready</div>
+          <div class="checkItem">Shoes + Jacket Ready</div>
+        </div>
+        <div class="questNote">No Screen Time Until Done!</div>
+        <div class="questFooter">
+          <div class="xpBadge">+50 XP</div>
+          <button class="questBtn red" data-quest="night">Start Quest</button>
+        </div>
+      </div>
+
+      <!-- Quest 2: Ready for School! -->
+      <div class="questCard morning" id="questMorning">
+        <div class="questIcon">☀️</div>
+        <h3>Ready for School!</h3>
+        <div class="questChecklist">
+          <div class="checkItem">Prayer & Breakfast</div>
+          <div class="checkItem">Get Dressed</div>
+          <div class="checkItem">Brush Teeth & Hair</div>
+          <div class="checkItem">Backpack Check</div>
+        </div>
+        <div class="questFooter">
+          <div class="xpBadge">+50 XP</div>
+          <button class="questBtn green" data-quest="morning">Start Quest</button>
+        </div>
+      </div>
+
+      <!-- Quest 3: Trapper Ready Mission! -->
+      <div class="questCard backpack" id="questBackpack">
+        <div class="questIcon">⭐</div>
+        <h3>Trapper Ready Mission!</h3>
+        <div class="questChecklist">
+          <div class="checkItem">Work & Papers</div>
+          <div class="checkItem">Notebooks Inside</div>
+          <div class="checkItem">Supplies Packed</div>
+          <div class="checkItem">Final Check</div>
+        </div>
+        <div class="questFooter">
+          <div class="xpBadge">+50 XP</div>
+          <button class="questBtn blue" data-quest="backpack">Start Quest</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Dashboard -->
+    <div class="dashboard">
+      <!-- XP & Streaks Panel -->
+      <div class="dashPanel">
+        <h3>XP & Streaks</h3>
+        <div class="xpDisplay" id="dashXP">320</div>
+        <div class="streakInfo">🔥 <span id="dashStreak">0</span> Days Streak</div>
+        <div class="small" style="margin-top:12px;">Next Badge: <span id="nextBadge">Trapper Master</span></div>
+        <div class="meter" style="margin-top:12px;">
+          <div class="meterTop">
+            <div class="small">Progress to Next Level</div>
+          </div>
+          <div class="bar"><div id="dashXPBar"></div></div>
+        </div>
+      </div>
+
+      <!-- Badges Section -->
+      <div class="dashPanel" id="party">
+        <h3>Badges</h3>
+        <div class="badgeGrid">
+          <div class="badgeItem">
+            <div class="badgeIcon" id="badge1">🎒</div>
+            <div class="badgeLabel">Trapper Master</div>
+          </div>
+          <div class="badgeItem">
+            <div class="badgeIcon" id="badge2">🏆</div>
+            <div class="badgeLabel">Perfect Day</div>
+          </div>
+          <div class="badgeItem">
+            <div class="badgeIcon" id="badge3">⭐</div>
+            <div class="badgeLabel">Streak Star</div>
+          </div>
+          <div class="badgeItem">
+            <div class="badgeIcon" id="badge4">✓</div>
+            <div class="badgeLabel">No Missing Items</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Tracker -->
+      <div class="dashPanel" id="map">
+        <h3>Weekly Tracker Reward ⭐</h3>
+        <div class="treasureNote">5 Organized Days = PRIZE!</div>
+        <div class="weekGrid" id="weekGrid">
+          <div class="dayBox" data-day="mon"><div>Mon</div></div>
+          <div class="dayBox" data-day="tue"><div>Tue</div></div>
+          <div class="dayBox" data-day="wed"><div>Wed</div></div>
+          <div class="dayBox" data-day="thu"><div>Thu</div></div>
+          <div class="dayBox" data-day="fri"><div>Fri</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hidden detailed task list for backward compatibility -->
+    <div style="display:none;">
+      <section class="card">
         <h2>Daily Checklist <span class="tag">XP + Streak</span></h2>
         <div class="frame"><div class="small"><b>PASS rule:</b> all Night-Before tasks + Trapper Check complete.</div></div>
         <div class="taskList" id="taskList"></div>
-      </section>
-
-      <section class="card" id="party">
-        <h2>Party Team <span class="tag">Companions</span></h2>
-        <div class="party">
-          <div class="creature"><div class="avatar"><img id="emberImg" alt="Ember"></div><div><b>Ember Tiger</b><div class="small">Start Fast</div></div></div>
-          <div class="creature"><div class="avatar"><img id="spriteImg" alt="Sprite"></div><div><b>Focus Sprite</b><div class="small">Night Wins</div></div></div>
-          <div class="creature"><div class="avatar"><img id="golemImg" alt="Golem"></div><div><b>Pack Golem</b><div class="small">Prepared</div></div></div>
-        </div>
-      </section>
-
-      <section class="card" id="map">
-        <h2>World Map <span class="tag">Zones</span></h2>
-        <p class="small">Unlock zones by keeping a PASS streak.</p>
-        <div class="map" id="mapNodes"></div>
-      </section>
-
-      <section class="card">
-        <h2>Rewards <span class="tag">5 PASS nights</span></h2>
-        <div class="frame"><div class="small" id="rewardStatus">Need 5 PASS nights.</div></div>
       </section>
     </div>
   </div>
@@ -207,17 +404,21 @@
 
   const KEY = "williams_world_embed_state_v1";
   const TASKS = [
-    { id:"m_prayer",   label:"Morning: Prayer / Quiet Moment (1 min)", xp:10 },
-    { id:"m_breakfast",label:"Morning: Breakfast (eat + drink)", xp:10 },
-    { id:"m_dressed",  label:"Morning: Get dressed (full outfit)", xp:10 },
-    { id:"m_teeth",    label:"Morning: Brush teeth", xp:10 },
-    { id:"m_hair",     label:"Morning: Brush hair", xp:10 },
-    { id:"m_trappercheck", label:"Morning: Backpack/Trapper check", xp:15 },
-    { id:"n_clothes",  label:"Night-Before: Clothes ready", xp:15 },
-    { id:"n_pack",     label:"Night-Before: Backpack packed", xp:15 },
-    { id:"n_trapper",  label:"Night-Before: Trapper ready", xp:20 },
-    { id:"n_teeth",    label:"Night-Before: Brush teeth", xp:15 },
-    { id:"n_bedtime",  label:"Night-Before: Bedtime routine done", xp:20 },
+    // Night-Before Quest
+    { id:"n_trapper",  label:"Night-Before: Trapper ready", xp:15, quest:"night" },
+    { id:"n_clothes",  label:"Night-Before: Clothes ready", xp:15, quest:"night" },
+    { id:"n_lunch",    label:"Night-Before: Lunch plan ready", xp:10, quest:"night" },
+    { id:"n_shoes",    label:"Night-Before: Shoes + Jacket ready", xp:10, quest:"night" },
+    // Morning Quest
+    { id:"m_prayer",   label:"Morning: Prayer & Breakfast", xp:15, quest:"morning" },
+    { id:"m_dressed",  label:"Morning: Get dressed", xp:10, quest:"morning" },
+    { id:"m_teeth",    label:"Morning: Brush teeth & hair", xp:15, quest:"morning" },
+    { id:"m_trappercheck", label:"Morning: Backpack check", xp:10, quest:"morning" },
+    // Trapper/Backpack Quest
+    { id:"t_work",     label:"Trapper: Work & Papers", xp:15, quest:"backpack" },
+    { id:"t_notebooks",label:"Trapper: Notebooks inside", xp:10, quest:"backpack" },
+    { id:"t_supplies", label:"Trapper: Supplies packed", xp:15, quest:"backpack" },
+    { id:"t_check",    label:"Trapper: Final check", xp:10, quest:"backpack" },
   ];
 
   const MAP = [
@@ -258,11 +459,17 @@
         `linear-gradient(180deg, rgba(7,11,22,.55), rgba(7,11,22,.78)),
          url("${ASSETS.banner}") center/cover no-repeat`;
     }
-    $("logoImg").src = ASSETS.logo;
-    $("mapstripImg").src = ASSETS.mapstrip;
-    $("emberImg").src = ASSETS.companions.ember;
-    $("spriteImg").src = ASSETS.companions.sprite;
-    $("golemImg").src = ASSETS.companions.golem;
+    const logoImg = $("logoImg");
+    const mapstripImg = $("mapstripImg");
+    const emberImg = $("emberImg");
+    const spriteImg = $("spriteImg");
+    const golemImg = $("golemImg");
+    
+    if(logoImg) logoImg.src = ASSETS.logo;
+    if(mapstripImg) mapstripImg.src = ASSETS.mapstrip;
+    if(emberImg) emberImg.src = ASSETS.companions.ember;
+    if(spriteImg) spriteImg.src = ASSETS.companions.sprite;
+    if(golemImg) golemImg.src = ASSETS.companions.golem;
   }
 
   let state = load();
@@ -274,10 +481,19 @@
 
   function isPassDay(){
     const day = state.days[TODAY];
-    const nightIds = ["n_clothes","n_pack","n_trapper","n_teeth","n_bedtime"];
-    const trap = day.tasks["m_trappercheck"] === true;
+    // PASS criteria: all three quest categories must be complete
+    // Night quest task IDs
+    const nightIds = ["n_trapper","n_clothes","n_lunch","n_shoes"];
+    // Morning quest task IDs
+    const morningIds = ["m_prayer","m_dressed","m_teeth","m_trappercheck"];
+    // Backpack/Trapper quest task IDs
+    const backpackIds = ["t_work","t_notebooks","t_supplies","t_check"];
+    
     const nightOk = nightIds.every(id=>day.tasks[id]===true);
-    return nightOk && trap;
+    const morningOk = morningIds.every(id=>day.tasks[id]===true);
+    const backpackOk = backpackIds.every(id=>day.tasks[id]===true);
+    
+    return nightOk && morningOk && backpackOk;
   }
 
   function recalcLevel(){
@@ -299,7 +515,76 @@
     $("xpBar").style.width = Math.max(0, Math.min(100, Math.round((state.xp/need)*100))) + "%";
 
     $("dayResult").textContent = state.days[TODAY].result;
-    $("rewardStatus").textContent = state.streak >= 5 ? "Reward ready 🎁" : `Need ${5-state.streak} more PASS night(s).`;
+    
+    // Update dashboard
+    $("dashXP").textContent = state.xp;
+    $("dashStreak").textContent = state.streak;
+    $("dashXPBar").style.width = Math.max(0, Math.min(100, Math.round((state.xp/need)*100))) + "%";
+    
+    updateBadges();
+    updateWeeklyTracker();
+  }
+  
+  function updateBadges(){
+    const day = state.days[TODAY];
+    
+    // Badge 1: Trapper Master (all backpack tasks complete)
+    const backpackIds = ["t_work","t_notebooks","t_supplies","t_check"];
+    const trapperMaster = backpackIds.every(id=>day.tasks[id]===true);
+    const b1 = $("badge1");
+    if(trapperMaster){ b1.classList.add("earned"); b1.classList.remove("locked"); }
+    else{ b1.classList.add("locked"); b1.classList.remove("earned"); }
+    
+    // Badge 2: Perfect Day (all tasks complete)
+    const perfectDay = TASKS.every(t=>day.tasks[t.id]===true);
+    const b2 = $("badge2");
+    if(perfectDay){ b2.classList.add("earned"); b2.classList.remove("locked"); }
+    else{ b2.classList.add("locked"); b2.classList.remove("earned"); }
+    
+    // Badge 3: Streak Star (3+ day streak)
+    const b3 = $("badge3");
+    if(state.streak >= 3){ b3.classList.add("earned"); b3.classList.remove("locked"); }
+    else{ b3.classList.add("locked"); b3.classList.remove("earned"); }
+    
+    // Badge 4: No Missing Items (morning backpack check complete)
+    const noMissing = day.tasks["m_trappercheck"] === true;
+    const b4 = $("badge4");
+    if(noMissing){ b4.classList.add("earned"); b4.classList.remove("locked"); }
+    else{ b4.classList.add("locked"); b4.classList.remove("earned"); }
+    
+    // Update next badge text
+    if(!trapperMaster) $("nextBadge").textContent = "Trapper Master";
+    else if(!noMissing) $("nextBadge").textContent = "No Missing Items";
+    else if(!perfectDay) $("nextBadge").textContent = "Perfect Day";
+    else if(state.streak < 3) $("nextBadge").textContent = "Streak Star";
+    else $("nextBadge").textContent = "All Earned! 🎉";
+  }
+  
+  function updateWeeklyTracker(){
+    // Get current week's days (Mon-Fri)
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
+    
+    // Calculate dates for Mon-Fri of current week
+    const weekDays = ["mon","tue","wed","thu","fri"];
+    weekDays.forEach((dayName, idx) => {
+      const dayBox = document.querySelector(`[data-day="${dayName}"]`);
+      if(!dayBox) return;
+      
+      // Calculate date for this day (Mon=1, Tue=2, ..., Fri=5)
+      const targetDay = idx + 1;
+      const diff = targetDay - dayOfWeek;
+      const date = new Date(today);
+      date.setDate(date.getDate() + diff);
+      const dateKey = `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,"0")}-${String(date.getDate()).padStart(2,"0")}`;
+      
+      // Check if this day is PASS
+      if(state.days[dateKey] && state.days[dateKey].result === "PASS"){
+        dayBox.classList.add("complete");
+      } else {
+        dayBox.classList.remove("complete");
+      }
+    });
   }
 
   function renderTasks(){
@@ -325,36 +610,9 @@
         day.result="Not graded";
         save();
         updateHeader();
-        renderMap();
       });
 
       list.appendChild(row);
-    });
-  }
-
-  function renderMap(){
-    const el=$("mapNodes"); el.innerHTML="";
-    MAP.forEach(z=>{
-      const unlocked = state.streak >= z.need;
-
-      const node=document.createElement("div");
-      node.className="node";
-
-      const left=document.createElement("div"); left.className="left";
-      const icon=document.createElement("div"); icon.className="icon";
-      icon.innerHTML = `<img src="${ASSETS.zones[z.id]}" style="filter:${unlocked?"none":"grayscale(100%) brightness(.7)"}">`;
-
-      const text=document.createElement("div");
-      text.innerHTML = `<div style="font-weight:1000;">${z.title}</div><div class="small">${unlocked?"UNLOCKED":"LOCKED"} • need ${z.need}</div>`;
-
-      left.appendChild(icon); left.appendChild(text);
-
-      const tag=document.createElement("span");
-      tag.className="tag";
-      tag.textContent = unlocked ? "UNLOCKED" : `LOCKED (${z.need})`;
-
-      node.appendChild(left); node.appendChild(tag);
-      el.appendChild(node);
     });
   }
 
@@ -364,8 +622,44 @@
     state.streak = pass ? (state.streak+1) : 0;
     save();
     updateHeader();
-    renderMap();
     toast(pass ? "PASS! Streak +1" : "FAIL. Streak reset");
+  }
+  
+  // Quest button handlers
+  function handleQuestClick(questType){
+    const day = state.days[TODAY];
+    const questTasks = TASKS.filter(t=>t.quest === questType);
+    
+    // Quest display names for better UX
+    const questNames = { night: "Night Quest", morning: "Morning Quest", backpack: "Backpack Quest" };
+    const questName = questNames[questType] || questType;
+    
+    // Toggle all tasks in this quest
+    const allComplete = questTasks.every(t=>day.tasks[t.id]===true);
+    
+    if(allComplete){
+      toast(`${questName} Already Complete!`);
+    } else {
+      // Complete all tasks in this quest
+      let totalXP = 0;
+      questTasks.forEach(t=>{
+        if(!day.tasks[t.id]){
+          day.tasks[t.id] = true;
+          totalXP += t.xp;
+        }
+      });
+      
+      if(totalXP > 0){
+        state.xp += totalXP;
+        recalcLevel();
+        toast(`Quest Complete! +${totalXP} XP`);
+      }
+      
+      day.result="Not graded";
+      save();
+      renderTasks();
+      updateHeader();
+    }
   }
 
   document.querySelectorAll("#ww .nav button").forEach(btn=>{
@@ -373,21 +667,42 @@
       document.querySelectorAll("#ww .nav button").forEach(b=>b.classList.remove("active"));
       btn.classList.add("active");
       const id = btn.dataset.section;
-      document.getElementById(id).scrollIntoView({behavior:"smooth", block:"start"});
+      const target = document.getElementById(id);
+      if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  });
+  
+  // Quest button event listeners
+  document.querySelectorAll(".questBtn").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const quest = btn.dataset.quest;
+      handleQuestClick(quest);
     });
   });
 
-  $("goTracker").addEventListener("click", ()=>document.getElementById("tracker").scrollIntoView({behavior:"smooth"}));
-  $("gradeDay").addEventListener("click", gradeDay);
-  $("resetToday").addEventListener("click", ()=>{
-    state.days[TODAY]={ tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), result:"Not graded" };
-    save(); renderTasks(); updateHeader(); renderMap(); toast("Today reset");
-  });
+  
+  // Add grading and reset buttons to topbar actions
+  const topbar = document.querySelector(".topbar-inner .nav");
+  if(topbar){
+    const gradeBtn = document.createElement("button");
+    gradeBtn.textContent = "🏆 Grade";
+    gradeBtn.setAttribute("aria-label", "Grade today's progress and update streak");
+    gradeBtn.addEventListener("click", gradeDay);
+    topbar.appendChild(gradeBtn);
+    
+    const resetBtn = document.createElement("button");
+    resetBtn.textContent = "🧽 Reset";
+    resetBtn.setAttribute("aria-label", "Reset today's task completion");
+    resetBtn.addEventListener("click", ()=>{
+      state.days[TODAY]={ tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), result:"Not graded" };
+      save(); renderTasks(); updateHeader(); toast("Today reset");
+    });
+    topbar.appendChild(resetBtn);
+  }
 
   // INIT
   applyAssets();
   renderTasks();
-  renderMap();
   updateHeader();
 </script>
 
