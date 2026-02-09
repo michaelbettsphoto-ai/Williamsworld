@@ -476,12 +476,6 @@
     font-weight: 700;
     letter-spacing: 1px;
   }
-  #ww .levelClass {
-    font-size: 16px;
-    font-weight: 800;
-    color: var(--green);
-    margin-top: 4px;
-  }
   #ww .william-avatar {
     width: 280px;
     height: 280px;
@@ -676,35 +670,6 @@
   #levelUpOverlay .levelTitle {
     font-size: 28px;
     color: var(--gold);
-  }
-  #levelUpOverlay .levelSummary {
-    margin-top: 16px;
-    display: grid;
-    gap: 8px;
-  }
-  #levelUpOverlay .levelName {
-    font-size: 24px;
-    font-weight: 900;
-    color: var(--gold);
-  }
-  #levelUpOverlay .levelClass {
-    font-size: 20px;
-    color: var(--green);
-    font-weight: 800;
-  }
-  #levelUpOverlay .levelStats,
-  #levelUpOverlay .levelAbilities {
-    font-size: 16px;
-    color: var(--ink);
-    text-shadow: 1px 1px 3px rgba(0,0,0,.7);
-  }
-  #levelUpOverlay .levelAbilities ul {
-    list-style: none;
-    margin: 6px 0 0;
-    padding: 0;
-  }
-  #levelUpOverlay .levelAbilities li {
-    margin: 4px 0;
   }
   #levelUpOverlay .william-avatar-overlay {
     width: 150px;
@@ -1480,21 +1445,6 @@
     margin-bottom: 16px;
     animation: bounce 1s ease-in-out infinite;
   }
-  #companionRewardOverlay .rewardAvatar {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 12px;
-    border-radius: 50%;
-    border: 4px solid var(--gold);
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(255,211,110,.5);
-  }
-  #companionRewardOverlay .rewardAvatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
   #companionRewardOverlay .rewardHeading {
     font-size: 48px;
     font-family: var(--fantasy-font);
@@ -1523,11 +1473,6 @@
     font-family: var(--fantasy-font);
     text-shadow: 2px 2px 4px rgba(0,0,0,.8);
   }
-  #companionRewardOverlay .rewardStats {
-    margin-top: 10px;
-    font-size: 16px;
-    color: var(--ink);
-  }
   #companionRewardOverlay .rewardPower {
     margin-top: 16px;
     font-size: 20px;
@@ -1535,42 +1480,6 @@
     font-weight: 900;
     text-shadow: 0 0 10px rgba(125,255,180,.6);
     animation: pulse 1.5s ease-in-out infinite;
-  }
-
-  /* XP Recap Overlay */
-  #xpRecapOverlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,.75);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    animation: fadeIn .3s ease-out;
-  }
-  #xpRecapOverlay.show {
-    display: flex;
-  }
-  #xpRecapOverlay .content {
-    text-align: center;
-    padding: 32px 40px;
-    background: var(--glass-strong-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: 3px solid var(--golden-border);
-    border-radius: var(--r1);
-    box-shadow: var(--shadow);
-  }
-  #xpRecapOverlay h2 {
-    font-size: 40px;
-    font-family: var(--fantasy-font);
-    color: var(--gold);
-    margin-bottom: 12px;
-  }
-  #xpRecapOverlay .xpRecapValue {
-    font-size: 28px;
-    font-weight: 900;
-    color: var(--green);
   }
 
   /* Level-Down Overlay */
@@ -2347,7 +2256,6 @@
         <div>
           <h1>Welcome to William's World!</h1>
           <div class="levelTitle" id="levelTitle">Apprentice Adventurer</div>
-          <div class="levelClass" id="williamClassTitle"></div>
           <p>Complete daily quests to earn XP, level up, and unlock amazing rewards. Your adventure begins now!</p>
 
           <div class="statRow">
@@ -2359,7 +2267,7 @@
 
           <div class="meter">
             <div class="meterTop">
-              <div><b>XP</b>: <span id="xpNow">0</span> / <span id="xpNext">400</span></div>
+              <div><b>XP</b>: <span id="xpNow">0</span> / <span id="xpNext">100</span></div>
               <div class="small">Complete all quests to earn rewards!</div>
             </div>
             <div class="bar"><div id="xpBar"></div></div>
@@ -2617,11 +2525,11 @@
           <div class="companion" id="companionEmber">
             <div class="header">
               <div class="avatar">
-                <img id="emberImg" alt="Companion portrait">
+                <img id="emberImg" alt="Ember">
               </div>
               <div class="info">
-                <div class="name" id="emberName"></div>
-                <div class="type" id="emberClass"></div>
+                <div class="name">Ember</div>
+                <div class="type">🔥 Fire Tiger</div>
                 <div class="level">Lvl <span class="companionLevel">1</span></div>
                 <div class="companionTitle" id="emberTitle"></div>
               </div>
@@ -2635,11 +2543,11 @@
           <div class="companion" id="companionSprite">
             <div class="header">
               <div class="avatar">
-                <img id="spriteImg" alt="Companion portrait">
+                <img id="spriteImg" alt="Sprite">
               </div>
               <div class="info">
-                <div class="name" id="spriteName"></div>
-                <div class="type" id="spriteClass"></div>
+                <div class="name">Sprite</div>
+                <div class="type">✨ Light Fairy</div>
                 <div class="level">Lvl <span class="companionLevel">1</span></div>
                 <div class="companionTitle" id="spriteTitle"></div>
               </div>
@@ -2653,11 +2561,11 @@
           <div class="companion" id="companionGolem">
             <div class="header">
               <div class="avatar">
-                <img id="golemImg" alt="Companion portrait">
+                <img id="golemImg" alt="Golem">
               </div>
               <div class="info">
-                <div class="name" id="golemName"></div>
-                <div class="type" id="golemClass"></div>
+                <div class="name">Golem</div>
+                <div class="type">🗿 Stone Guardian</div>
                 <div class="level">Lvl <span class="companionLevel">1</span></div>
                 <div class="companionTitle" id="golemTitle"></div>
               </div>
@@ -2673,9 +2581,9 @@
           <div class="warChestAmount"><span id="warChestGold">0</span> 🪙</div>
           <div class="small" style="color:var(--muted);">Award 50 gold to a companion!</div>
           <div class="awardBtnRow">
-            <button class="awardBtn" data-award="ember">🔥 Award <span class="awardName" data-companion="ember"></span></button>
-            <button class="awardBtn" data-award="sprite">✨ Award <span class="awardName" data-companion="sprite"></span></button>
-            <button class="awardBtn" data-award="golem">🗿 Award <span class="awardName" data-companion="golem"></span></button>
+            <button class="awardBtn" data-award="ember">🔥 Award Ember</button>
+            <button class="awardBtn" data-award="sprite">✨ Award Sprite</button>
+            <button class="awardBtn" data-award="golem">🗿 Award Golem</button>
           </div>
         </div>
       </div>
@@ -2766,14 +2674,8 @@
         <img id="williamImgOverlay" alt="William character avatar" />
       </div>
       <h2>LEVEL UP!</h2>
-      <div class="levelInfo">Level <span id="levelUpFrom"></span> → <span id="levelUpTo"></span></div>
+      <div class="levelInfo">Level <span id="levelUpNumber"></span></div>
       <div class="levelTitle" id="levelUpTitle"></div>
-      <div class="levelSummary">
-        <div class="levelName" id="levelUpName"></div>
-        <div class="levelClass" id="levelUpClass"></div>
-        <div class="levelStats" id="levelUpStats"></div>
-        <div class="levelAbilities" id="levelUpAbilities"></div>
-      </div>
     </div>
   </div>
   
@@ -2787,23 +2689,12 @@
   <!-- Companion Reward Card Overlay -->
   <div id="companionRewardOverlay">
     <div class="content">
-      <div class="rewardAvatar"><img id="rewardCompImg" alt="Companion portrait"></div>
       <span class="rewardEmoji" id="rewardEmoji"></span>
       <div class="rewardHeading">COMPANION LEVEL UP!</div>
       <div class="rewardName" id="rewardCompName"></div>
-      <div class="rewardTitle" id="rewardCompClass"></div>
-      <div class="rewardLevel">Level <span id="rewardCompFrom"></span> → <span id="rewardCompLevel"></span></div>
+      <div class="rewardLevel">Level <span id="rewardCompLevel"></span></div>
       <div class="rewardTitle" id="rewardCompTitle"></div>
-      <div class="rewardStats" id="rewardCompStats"></div>
-      <div class="rewardPower" id="rewardCompPower"></div>
-    </div>
-  </div>
-
-  <!-- XP Recap Overlay -->
-  <div id="xpRecapOverlay">
-    <div class="content">
-      <h2>XP Earned Today</h2>
-      <div class="xpRecapValue" id="xpRecapValue"></div>
+      <div class="rewardPower">⚡ New Power Unlocked! ⚡</div>
     </div>
   </div>
 
@@ -2821,42 +2712,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js" integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script>
-  (async () => {
-  const DATA_PATHS = {
-    progression: "./assets/data/heroes-and-companions.json",
-    audio: "./assets/data/audio-events.json"
-  };
-  const PROGRESSION_CACHE_KEY = "williamsworld_progression_data_v2";
-  const AUDIO_EVENTS_CACHE_KEY = "williamsworld_audio_events_v1";
-  
-  async function loadJsonWithCache(path, cacheKey) {
-    try {
-      const response = await fetch(path, { cache: "no-store" });
-      if (!response.ok) throw new Error(`Failed to load ${path}`);
-      const data = await response.json();
-      localStorage.setItem(cacheKey, JSON.stringify(data));
-      return data;
-    } catch (error) {
-      console.warn(error);
-      const cached = localStorage.getItem(cacheKey);
-      if (cached) {
-        try {
-          return JSON.parse(cached);
-        } catch (parseError) {
-          console.warn(parseError);
-        }
-      }
-      return null;
-    }
-  }
-
-  const progressionData = await loadJsonWithCache(DATA_PATHS.progression, PROGRESSION_CACHE_KEY);
-  const audioEventsData = await loadJsonWithCache(DATA_PATHS.audio, AUDIO_EVENTS_CACHE_KEY);
-  if (!progressionData) {
-    throw new Error("Missing progression data.");
-  }
-  const characterMap = Object.fromEntries(progressionData.characters.map(char => [char.id, char]));
-
   const ASSETS = {
     mapstrip: "./assets/images/mapstrip.svg",
     banner:   "./assets/images/banner.svg",
@@ -2937,9 +2792,7 @@
   };
   const COMPANION_MAX_TITLES = { ember: "Supernova Tiger", sprite: "Supernova Fairy", golem: "World Shaker" };
   const COMPANION_EMOJIS = { ember: "🔥", sprite: "✨", golem: "🗿" };
-  const COMPANION_IDS = progressionData.characters.filter(char => char.id !== "william").map(char => char.id);
-  const COMPANION_NAMES = Object.fromEntries(COMPANION_IDS.map(id => [id, characterMap[id].displayName]));
-  const COMPANION_CLASSES = Object.fromEntries(COMPANION_IDS.map(id => [id, characterMap[id].classTitle]));
+  const COMPANION_NAMES = { ember: "Ember", sprite: "Sprite", golem: "Golem" };
 
   function getCompanionTitle(companion, level) {
     if (level >= 11) return COMPANION_MAX_TITLES[companion];
@@ -2949,7 +2802,7 @@
   const KEY = "williams_world_embed_state_v1";
   const WAR_CHEST_XP_RATE = 0.25;       // 25% of task XP goes to war chest
   const WAR_CHEST_AWARD_COST = 50;      // Gold cost per companion award
-  const COMPANION_XP_SHARE = progressionData.xpRules.companionXpShareOfHero;
+  const COMPANION_XP_PER_LEVEL = 100;   // XP needed for companion level-up
   const LEVEL_DOWN_HP_RESET = 50;       // HP after level-down
   const HP_PER_STREAK = 100;            // Extra max HP per streak day
   const TASKS = [
@@ -2971,13 +2824,13 @@
   ];
 
   const MAP = [
-    { id:"z1", slug:"launch-meadow", title:"Launch Meadow", need:0 },
-    { id:"z2", slug:"homework-hills", title:"Homework Hills", need:3 },
-    { id:"z3", slug:"backpack-bastion", title:"Backpack Bastion", need:5 },
-    { id:"z4", slug:"focus-forest", title:"Focus Forest", need:10 },
+    { id:"z1", title:"Launch Meadow", need:1 },
+    { id:"z2", title:"Homework Hills", need:3 },
+    { id:"z3", title:"Backpack Bastion", need:5 },
+    { id:"z4", title:"Focus Forest", need:10 },
   ];
   
-  const COMPANIONS = [...COMPANION_IDS];
+  const COMPANIONS = ["ember", "sprite", "golem"];
 
   // ============================================
   // MORNING MISSION CONSTANTS
@@ -3011,62 +2864,7 @@
   };
   const prettyToday = ()=>new Date().toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
 
-  const HERO_XP_THRESHOLDS = progressionData.xpRules.heroXpThresholds;
-  const COMPANION_XP_THRESHOLDS = progressionData.xpRules.companionXpThresholds;
-
-  const xpForLevel = (lvl)=> {
-    const key = String(lvl);
-    if (HERO_XP_THRESHOLDS[key]) return HERO_XP_THRESHOLDS[key];
-    const maxLevel = Math.max(...Object.keys(HERO_XP_THRESHOLDS).map(Number));
-    return HERO_XP_THRESHOLDS[String(maxLevel)];
-  };
-
-  const companionXpForLevel = (lvl)=> {
-    const key = String(lvl);
-    if (COMPANION_XP_THRESHOLDS[key]) return COMPANION_XP_THRESHOLDS[key];
-    const maxLevel = Math.max(...Object.keys(COMPANION_XP_THRESHOLDS).map(Number));
-    return COMPANION_XP_THRESHOLDS[String(maxLevel)];
-  };
-
-  const STAT_GROWTH = progressionData.xpRules.statGrowthPerLevel;
-
-  function getCharacterStats(characterId, level) {
-    const base = characterMap[characterId]?.stats;
-    if (!base) return { hp: 0, atk: 0, def: 0, spd: 0 };
-    const multiplier = Math.max(0, level - 1);
-    const applyGrowth = (value, pct) => Math.round(value * Math.pow(1 + pct, multiplier));
-    return {
-      hp: applyGrowth(base.hp, STAT_GROWTH.hpPct),
-      atk: applyGrowth(base.atk, STAT_GROWTH.atkPct),
-      def: applyGrowth(base.def, STAT_GROWTH.defPct),
-      spd: applyGrowth(base.spd, STAT_GROWTH.spdPct)
-    };
-  }
-
-  function formatStatChange(oldStats, newStats) {
-    return `HP +${newStats.hp - oldStats.hp} • ATK +${newStats.atk - oldStats.atk} • DEF +${newStats.def - oldStats.def} • SPD +${newStats.spd - oldStats.spd}`;
-  }
-
-  function getAbilityUpdates(characterId, level) {
-    const character = characterMap[characterId];
-    if (!character) return [];
-    const unlocks = character.abilities
-      .filter(ability => ability.unlockLevel === level)
-      .map(ability => ({
-        name: `${ability.name} Unlocked`,
-        changes: [ability.description]
-      }));
-    const upgrades = character.abilityUpgrades
-      .filter(upgrade => upgrade.atLevel === level)
-      .map(upgrade => {
-        const ability = character.abilities.find(a => a.abilityId === upgrade.abilityId);
-        return {
-          name: ability ? `${ability.name} Upgrade` : "Ability Upgrade",
-          changes: upgrade.changes
-        };
-      });
-    return [...unlocks, ...upgrades];
-  }
+  const xpForLevel = (lvl)=> 100 + (lvl-1)*20;
 
   // ============================================
   // TIME UTILITY FUNCTIONS (America/Chicago)
@@ -3167,33 +2965,26 @@
   // AUDIO MANAGER - Centralized sound system
   // ============================================
   class AudioManager {
-    constructor(audioEvents) {
+    constructor() {
       this.sounds = {};
       this.currentWeatherSound = null;
       this.currentWeatherKey = null;
       this.currentWeatherHowl = null;
       this.currentMusicSound = null;
-      this.currentMusicKey = this.audioEvents?.events?.some(event => event.id === 'music_main_hub') ? 'music_main_hub' : 'music.hub';
+      this.currentMusicKey = 'music.hub';
       this.currentMusicHowl = null;
-      this.currentZoneAmbience = null;
-      this.currentZoneAmbienceHowl = null;
       this.isInitialized = false;
       this.isMuted = false;
       this.activeSounds = [];
       this.maxSimultaneousSounds = 4;
-      this.audioEvents = audioEvents;
-      this.eventChannelMap = {};
-      this.reduceSoundCaps = audioEvents?.settings?.reduceSoundMode?.behavior || null;
-      this.storageKey = audioEvents?.settings?.storageKey || 'williamsworld_audio_settings';
       
       // Load settings from localStorage
       const savedSettings = this.loadSettings();
-      const channelDefaults = this.audioEvents?.channels || {};
       this.volumes = {
         master: savedSettings.master !== undefined ? savedSettings.master : 1.0,
-        music: savedSettings.music !== undefined ? savedSettings.music : (channelDefaults.music?.defaultVolume ?? 0.2),
-        ambience: savedSettings.ambience !== undefined ? savedSettings.ambience : (channelDefaults.ambience?.defaultVolume ?? 0.3),
-        sfx: savedSettings.sfx !== undefined ? savedSettings.sfx : (channelDefaults.sfx?.defaultVolume ?? 0.7),
+        music: savedSettings.music !== undefined ? savedSettings.music : 0.2,
+        ambience: savedSettings.ambience !== undefined ? savedSettings.ambience : 0.3,
+        sfx: savedSettings.sfx !== undefined ? savedSettings.sfx : 0.7,
       };
       this.reduceSoundMode = savedSettings.reduceSoundMode || false;
       
@@ -3254,13 +3045,6 @@
         // Gameplay
         'gameplay.battleHit': ['gameplay/battle-hit'],
       };
-
-      if (this.audioEvents?.events) {
-        this.audioEvents.events.forEach(event => {
-          this.soundMap[event.id] = [event.file];
-          this.eventChannelMap[event.id] = event.channel;
-        });
-      }
     }
     
     // Initialize audio on user interaction (required for mobile)
@@ -3286,7 +3070,7 @@
     // Load settings from localStorage
     loadSettings() {
       try {
-        const saved = localStorage.getItem(this.storageKey) || localStorage.getItem('williamsWorldAudioSettings');
+        const saved = localStorage.getItem('williamsWorldAudioSettings');
         return saved ? JSON.parse(saved) : {};
       } catch {
         return {};
@@ -3302,13 +3086,11 @@
         sfx: this.volumes.sfx,
         reduceSoundMode: this.reduceSoundMode,
       };
-      localStorage.setItem(this.storageKey, JSON.stringify(settings));
+      localStorage.setItem('williamsWorldAudioSettings', JSON.stringify(settings));
     }
     
     // Get file path with extension
     getFilePath(key) {
-      if (key.startsWith('assets/')) return `./${key}`;
-      if (key.endsWith('.mp3')) return `./assets/audio/${key}`;
       return `./assets/audio/${key}.mp3`;
     }
 
@@ -3327,20 +3109,12 @@
 
     getSoundVolume(soundKey, baseVolume = 1.0) {
       let volume = baseVolume;
-      const eventChannel = this.eventChannelMap[soundKey];
-      const channel = eventChannel || (soundKey.startsWith('weather.') ? 'ambience' :
-        soundKey.startsWith('music.') ? 'music' : 'sfx');
-      if (channel === 'sfx') {
+      if (soundKey.startsWith('ui.') || soundKey.startsWith('avatar.') || soundKey.startsWith('gameplay.')) {
         volume *= this.volumes.sfx * this.volumes.master;
-      } else if (channel === 'ambience') {
+      } else if (soundKey.startsWith('weather.')) {
         volume *= this.volumes.ambience * this.volumes.master;
-      } else if (channel === 'music') {
+      } else if (soundKey.startsWith('music.')) {
         volume *= this.volumes.music * this.volumes.master;
-      }
-      if (this.reduceSoundMode && this.reduceSoundCaps) {
-        if (channel === 'music') volume = Math.min(volume, this.reduceSoundCaps.capMusic);
-        if (channel === 'ambience') volume = Math.min(volume, this.reduceSoundCaps.capAmbience);
-        if (channel === 'sfx') volume = Math.min(volume, this.reduceSoundCaps.capSfx);
       }
       return Math.max(0, Math.min(1, volume));
     }
@@ -3355,7 +3129,7 @@
     }
 
     getCurrentMusicKey() {
-      return this.currentMusicKey || (this.audioEvents?.events?.some(event => event.id === 'music_main_hub') ? 'music_main_hub' : 'music.hub');
+      return this.currentMusicKey || 'music.hub';
     }
     
     // Preload a sound
@@ -3437,39 +3211,6 @@
       this.currentWeatherSound = null;
     }
 
-    // Play zone ambience by event id
-    playZoneAmbience(eventId) {
-      if (!eventId || !this.soundMap[eventId]) return;
-      this.currentZoneAmbience = eventId;
-      if (this.isMuted || !this.isInitialized) return;
-
-      const volume = this.getSoundVolume(eventId, 1.0);
-      const file = this.soundMap[eventId][0];
-
-      if (this.currentZoneAmbienceHowl && this.currentZoneAmbience === eventId) {
-        this.currentZoneAmbienceHowl.volume(volume);
-        return;
-      }
-
-      if (this.currentZoneAmbienceHowl) {
-        this.currentZoneAmbienceHowl.stop();
-      }
-
-      const howl = this.getHowl(file, { loop: true });
-      howl.volume(volume);
-      howl.play();
-
-      this.currentZoneAmbienceHowl = howl;
-    }
-
-    stopZoneAmbience() {
-      if (this.currentZoneAmbienceHowl) {
-        this.currentZoneAmbienceHowl.stop();
-        this.currentZoneAmbienceHowl = null;
-      }
-      this.currentZoneAmbience = null;
-    }
-
     // Play background music with loop
     playMusic(musicKey = 'music.hub') {
       if (!this.soundMap[musicKey]) return;
@@ -3513,18 +3254,12 @@
       if (category === 'ambience' && this.currentWeatherHowl) {
         this.currentWeatherHowl.volume(this.getSoundVolume(this.getCurrentWeatherSoundKey(), 1.0));
       }
-      if (category === 'ambience' && this.currentZoneAmbienceHowl) {
-        this.currentZoneAmbienceHowl.volume(this.getSoundVolume(this.currentZoneAmbience, 1.0));
-      }
       if (category === 'music' && this.currentMusicHowl) {
         this.currentMusicHowl.volume(this.getSoundVolume(this.getCurrentMusicKey(), 1.0));
       }
       if (category === 'master') {
         if (this.currentWeatherHowl) {
           this.currentWeatherHowl.volume(this.getSoundVolume(this.getCurrentWeatherSoundKey(), 1.0));
-        }
-        if (this.currentZoneAmbienceHowl) {
-          this.currentZoneAmbienceHowl.volume(this.getSoundVolume(this.currentZoneAmbience, 1.0));
         }
         if (this.currentMusicHowl) {
           this.currentMusicHowl.volume(this.getSoundVolume(this.getCurrentMusicKey(), 1.0));
@@ -3541,9 +3276,6 @@
       if (!this.isMuted) {
         if (this.currentWeatherKey) {
           this.playWeatherAmbience(this.currentWeatherKey);
-        }
-        if (this.currentZoneAmbience) {
-          this.playZoneAmbience(this.currentZoneAmbience);
         }
         if (this.currentMusicKey) {
           this.playMusic(this.getCurrentMusicKey());
@@ -3604,7 +3336,7 @@
   }
   
   // Create global audio manager instance
-  const audioManager = new AudioManager(audioEventsData);
+  const audioManager = new AudioManager();
 
   function load(){
     try{
@@ -3613,16 +3345,12 @@
       const data = JSON.parse(raw);
       // Ensure companions exist
       if (!data.companions) {
-        data.companions = Object.fromEntries(COMPANIONS.map(comp => [
-          comp,
-          { level: characterMap[comp].level, xp: 0 }
-        ]));
+        data.companions = {
+          ember: { level: 3, xp: 0 },
+          sprite: { level: 3, xp: 0 },
+          golem: { level: 3, xp: 0 }
+        };
       }
-      if (!data.selectedParty || data.selectedParty.length !== 2) {
-        data.selectedParty = COMPANIONS.slice(0, 2);
-      }
-      if (!data.currentZone) data.currentZone = "launch-meadow";
-      if (data.maxStreak === undefined) data.maxStreak = data.streak || 0;
       // Ensure hp exists
       if (data.hp === undefined) data.hp = 100;
       // Ensure warChest exists
@@ -3639,18 +3367,16 @@
     }catch{
       return { 
         xp:0, 
-        level: characterMap.william.level, 
+        level:1, 
         streak:0, 
-        maxStreak: 0,
         hp:100,
         warChest: 0,
         days:{},
-        companions: Object.fromEntries(COMPANIONS.map(comp => [
-          comp,
-          { level: characterMap[comp].level, xp: 0 }
-        ])),
-        selectedParty: COMPANIONS.slice(0, 2),
-        currentZone: "launch-meadow",
+        companions: {
+          ember: { level: 3, xp: 0 },
+          sprite: { level: 3, xp: 0 },
+          golem: { level: 3, xp: 0 }
+        },
         morningMission: {
           streak: 0,
           lastCompletionDate: null,
@@ -3664,15 +3390,6 @@
   function toast(msg){
     const el=$("toast"); el.textContent=msg; el.style.display="block";
     clearTimeout(toast._t); toast._t=setTimeout(()=>el.style.display="none", 2500);
-  }
-
-  function showStoredNotice() {
-    const noticeKey = "williamsworld_battle_notice";
-    const notice = localStorage.getItem(noticeKey);
-    if (notice) {
-      localStorage.removeItem(noticeKey);
-      toast(notice);
-    }
   }
   
   // ============================================
@@ -3887,31 +3604,13 @@
   }
   
   // Show companion reward card
-  function showCompanionRewardCard(companion, fromLevel, newLevel) {
+  function showCompanionRewardCard(companion, newLevel) {
     const overlay = $('companionRewardOverlay');
-    const statsBefore = getCharacterStats(companion, fromLevel);
-    const statsAfter = getCharacterStats(companion, newLevel);
-    const updates = getAbilityUpdates(companion, newLevel);
-    const rewardPower = $('rewardCompPower');
-    const rewardStats = $('rewardCompStats');
     $('rewardEmoji').textContent = COMPANION_EMOJIS[companion];
     $('rewardCompName').textContent = COMPANION_NAMES[companion];
-    $('rewardCompFrom').textContent = fromLevel;
     $('rewardCompLevel').textContent = newLevel;
-    $('rewardCompClass').textContent = COMPANION_CLASSES[companion];
     $('rewardCompTitle').textContent = getCompanionTitle(companion, newLevel);
-    const rewardImg = $('rewardCompImg');
-    if (rewardImg) rewardImg.src = ASSETS.companions[companion];
-    if (rewardStats) rewardStats.textContent = formatStatChange(statsBefore, statsAfter);
-    if (rewardPower) {
-      if (updates.length) {
-        rewardPower.innerHTML = `<ul>${updates.map(update => `<li>${update.name}: ${update.changes.join(', ')}</li>`).join('')}</ul>`;
-      } else {
-        rewardPower.textContent = '⚡ New Power Unlocked! ⚡';
-      }
-    }
     overlay.classList.add('show');
-    audioManager.play('companion_level_up_fanfare');
     
     // Particle effects
     for (let i = 0; i < 25; i++) {
@@ -3950,27 +3649,16 @@
       toast(`💀 LEVEL DOWN! Dropped to Level ${state.level}: ${getLevelTitle(state.level)}`);
     }
   }
-  function showLevelUpCelebration(characterId, fromLevel, level) {
-    const character = characterMap[characterId];
-    const statsBefore = getCharacterStats(characterId, fromLevel);
-    const statsAfter = getCharacterStats(characterId, level);
-    const updates = getAbilityUpdates(characterId, level);
+  function showLevelUpCelebration(level) {
     const overlay = $('levelUpOverlay');
+    const levelNum = $('levelUpNumber');
     const levelTitle = $('levelUpTitle');
     const williamImgOverlay = $('williamImgOverlay');
     
-    $('levelUpFrom').textContent = fromLevel;
-    $('levelUpTo').textContent = level;
-    $('levelUpName').textContent = character.displayName;
-    $('levelUpClass').textContent = character.classTitle;
-    $('levelUpStats').textContent = formatStatChange(statsBefore, statsAfter);
-    $('levelUpAbilities').innerHTML = updates.length
-      ? `<ul>${updates.map(update => `<li>${update.name}: ${update.changes.join(', ')}</li>`).join('')}</ul>`
-      : '<div>No new abilities this level.</div>';
+    levelNum.textContent = level;
     levelTitle.textContent = getLevelTitle(level);
     if (williamImgOverlay) williamImgOverlay.src = getWilliamImage(level);
     overlay.classList.add('show');
-    audioManager.play('hero_level_up_fanfare');
     
     // Create particle effects
     for (let i = 0; i < 30; i++) {
@@ -3988,16 +3676,6 @@
     setTimeout(() => {
       overlay.classList.remove('show');
     }, 3000);
-  }
-
-  function showXpRecap(amount) {
-    const overlay = $('xpRecapOverlay');
-    if (!overlay) return;
-    $('xpRecapValue').textContent = `+${amount} XP`;
-    overlay.classList.add('show');
-    setTimeout(() => {
-      overlay.classList.remove('show');
-    }, 2500);
   }
   
   // ============================================
@@ -4281,7 +3959,6 @@
     state.days[TODAY]={ 
       tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), 
       result:"Not graded",
-      leveledUp: false,
       taskCompletions: {} // Track task completion timestamps for anti-spam
     };
     save();
@@ -4289,9 +3966,6 @@
   // Ensure taskCompletions exists for existing days
   if (!state.days[TODAY].taskCompletions) {
     state.days[TODAY].taskCompletions = {};
-  }
-  if (state.days[TODAY].leveledUp === undefined) {
-    state.days[TODAY].leveledUp = false;
   }
 
   // Calculate damage for incomplete tasks in a day
@@ -4334,26 +4008,33 @@
 
   function isPassDay(){
     const day = state.days[TODAY];
-    // PASS criteria: all Night-Before tasks + Trapper Check complete
+    // PASS criteria: all three quest categories must be complete
     // Night quest task IDs
     const nightIds = ["n_trapper","n_clothes","n_lunch","n_shoes"];
+    // Morning quest task IDs
+    const morningIds = ["m_prayer","m_dressed","m_teeth","m_trappercheck"];
+    // Backpack/Trapper quest task IDs
+    const backpackIds = ["t_work","t_notebooks","t_supplies","t_check"];
     
     const nightOk = nightIds.every(id=>day.tasks[id]===true);
-    const trapperCheckOk = day.tasks["m_trappercheck"] === true;
+    const morningOk = morningIds.every(id=>day.tasks[id]===true);
+    const backpackOk = backpackIds.every(id=>day.tasks[id]===true);
     
-    return nightOk && trapperCheckOk;
+    return nightOk && morningOk && backpackOk;
   }
 
   function recalcLevel(){
+    let leveledUp = false;
+    let newLevel = state.level;
     while(state.xp >= xpForLevel(state.level)){
-      const fromLevel = state.level;
       state.xp -= xpForLevel(state.level);
       state.level += 1;
-      state.days[TODAY].leveledUp = true;
-      showLevelUpCelebration('william', fromLevel, state.level);
+      newLevel = state.level;
+      leveledUp = true;
     }
-    if (state.days[TODAY].leveledUp) {
-      toast(`LEVEL UP → ${state.level}: ${getLevelTitle(state.level)}`);
+    if (leveledUp) {
+      showLevelUpCelebration(newLevel);
+      toast(`LEVEL UP → ${newLevel}: ${getLevelTitle(newLevel)}`);
     }
   }
   
@@ -4361,13 +4042,15 @@
   function addCompanionXP(amount, specificComp) {
     const comps = specificComp ? [specificComp] : COMPANIONS;
     comps.forEach(comp => {
+      const prevLevel = state.companions[comp].level;
       state.companions[comp].xp += Math.floor(amount);
-      while (state.companions[comp].xp >= companionXpForLevel(state.companions[comp].level)) {
-        const fromLevel = state.companions[comp].level;
-        state.companions[comp].xp -= companionXpForLevel(state.companions[comp].level);
+      // Companions level up every 100 XP
+      while (state.companions[comp].xp >= COMPANION_XP_PER_LEVEL) {
+        state.companions[comp].xp -= COMPANION_XP_PER_LEVEL;
         state.companions[comp].level += 1;
-        state.days[TODAY].leveledUp = true;
-        showCompanionRewardCard(comp, fromLevel, state.companions[comp].level);
+      }
+      if (state.companions[comp].level > prevLevel) {
+        showCompanionRewardCard(comp, state.companions[comp].level);
       }
     });
   }
@@ -4376,8 +4059,6 @@
     $("todayLabel").textContent = prettyToday();
     $("levelNum").textContent = state.level;
     $("levelTitle").textContent = getLevelTitle(state.level);
-    const williamClassTitle = $("williamClassTitle");
-    if (williamClassTitle) williamClassTitle.textContent = characterMap.william.classTitle;
     $("streakNum").textContent = state.streak;
 
     const need = xpForLevel(state.level);
@@ -4451,12 +4132,7 @@
       
       const compData = state.companions[comp];
       el.querySelector('.companionLevel').textContent = compData.level;
-      const compNeed = companionXpForLevel(compData.level);
-      el.querySelector('.companionXPBar').style.width = Math.max(0, Math.min(100, Math.round((compData.xp / compNeed) * 100))) + '%';
-      const nameEl = $(`${comp}Name`);
-      if (nameEl) nameEl.textContent = COMPANION_NAMES[comp];
-      const classEl = $(`${comp}Class`);
-      if (classEl) classEl.textContent = `${COMPANION_EMOJIS[comp]} ${COMPANION_CLASSES[comp]}`;
+      el.querySelector('.companionXPBar').style.width = (compData.xp % 100) + '%';
       
       // Update companion title
       const titleEl = $(`${comp}Title`);
@@ -4469,20 +4145,20 @@
         el.classList.remove('evolved');
       }
     });
-    document.querySelectorAll('.awardName').forEach(el => {
-      const comp = el.dataset.companion;
-      if (comp && COMPANION_NAMES[comp]) {
-        el.textContent = COMPANION_NAMES[comp];
-      }
-    });
   }
   
-  // Update zone unlocking based on streak milestones
+  // Update zone unlocking based on cumulative PASS days
   function updateZones() {
-    const streakCount = state.maxStreak ?? state.streak;
+    const passCount = Object.values(state.days).filter(d => d.result === 'PASS').length;
     
-    const updateZoneCard = (zone, zoneEl, statusEl, lockIcon) => {
-      const isUnlocked = streakCount >= zone.need;
+    MAP.forEach((zone, idx) => {
+      const zoneEl = $(zone.id.replace('z', 'zone'));
+      if (!zoneEl) return;
+      
+      const isUnlocked = passCount >= zone.need;
+      const statusEl = zoneEl.querySelector('.zoneStatus');
+      const lockIcon = zoneEl.querySelector('.lockIcon');
+      
       if (isUnlocked) {
         zoneEl.classList.remove('locked');
         zoneEl.classList.add('unlocked');
@@ -4502,47 +4178,6 @@
         }
         if (lockIcon) lockIcon.style.display = 'block';
       }
-    };
-    
-    MAP.forEach((zone, idx) => {
-      const zoneEl = $(zone.id.replace('z', 'zone'));
-      if (zoneEl) {
-        updateZoneCard(zone, zoneEl, zoneEl.querySelector('.zoneStatus'), zoneEl.querySelector('.lockIcon'));
-      }
-      const zoneIconEl = $(`zoneIcon${idx + 1}`);
-      if (zoneIconEl) {
-        updateZoneCard(zone, zoneIconEl, zoneIconEl.querySelector('.zoneIconStatus'), null);
-      }
-    });
-  }
-
-  function isZoneUnlocked(zone) {
-    const streakCount = state.maxStreak ?? state.streak;
-    return streakCount >= zone.need;
-  }
-
-  function handleZoneSelection(zone) {
-    if (!isZoneUnlocked(zone)) {
-      toast(`🔒 Locked — unlock at ${zone.need} day streak.`);
-      return;
-    }
-    state.currentZone = zone.slug;
-    if (!state.selectedParty || state.selectedParty.length !== 2) {
-      state.selectedParty = COMPANIONS.slice(0, 2);
-    }
-    save();
-    window.location.href = `battle-system-demo.html?zone=${zone.slug}`;
-  }
-
-  function setupZoneNavigation() {
-    MAP.forEach((zone, idx) => {
-      const zoneEl = $(zone.id.replace('z', 'zone'));
-      const zoneIconEl = $(`zoneIcon${idx + 1}`);
-      [zoneEl, zoneIconEl].forEach(el => {
-        if (!el) return;
-        el.style.cursor = 'pointer';
-        el.addEventListener('click', () => handleZoneSelection(zone));
-      });
     });
   }
   
@@ -4659,7 +4294,7 @@
 
         if(!was && cb.checked){ 
           state.xp += t.xp; 
-          addCompanionXP(Math.floor(t.xp * COMPANION_XP_SHARE));
+          addCompanionXP(t.xp / 3); // Companions get 1/3 of player XP
           state.warChest += Math.floor(t.xp * WAR_CHEST_XP_RATE);
           recalcLevel(); 
           toast(`+${t.xp} XP`); 
@@ -4749,7 +4384,7 @@
           }
           
           state.xp += task.xp;
-          addCompanionXP(Math.floor(task.xp * COMPANION_XP_SHARE));
+          addCompanionXP(task.xp / 3); // Companions get 1/3 of player XP
           state.warChest += Math.floor(task.xp * WAR_CHEST_XP_RATE);
           recalcLevel();
           
@@ -4845,7 +4480,6 @@
       if (!card.dataset.celebrated) {
         card.dataset.celebrated = 'true';
         toast(`🎉 ${questType.toUpperCase()} QUEST COMPLETE!`);
-        audioManager.play('task_complete_stinger');
       }
     } else {
       delete card.dataset.celebrated;
@@ -4854,12 +4488,8 @@
 
   function gradeDay(){
     const pass = isPassDay();
-    const prevMaxStreak = state.maxStreak ?? 0;
     state.days[TODAY].result = pass ? "PASS" : "FAIL";
     state.streak = pass ? (state.streak+1) : 0;
-    if (pass) {
-      state.maxStreak = Math.max(prevMaxStreak, state.streak);
-    }
     if (!pass) {
       const dmg = calcDamage(state.days[TODAY]);
       state.hp = Math.max(0, state.hp - dmg);
@@ -4870,27 +4500,13 @@
     save();
     updateHeader();
     toast(pass ? "🎉 PASS! Streak +1" : `⚠️ FAIL. Streak reset. -${calcDamage(state.days[TODAY])} HP!`);
-    if (pass) {
-      audioManager.play('pass_day_stinger');
-      const newlyUnlocked = MAP.filter(zone => zone.need > prevMaxStreak && zone.need <= state.maxStreak);
-      newlyUnlocked.forEach(zone => {
-        toast(`🎉 ${zone.title} Unlocked!`);
-        audioManager.play('zone_unlock_stinger');
-      });
-    }
-    if (!state.days[TODAY].leveledUp) {
-      const xpEarned = TASKS.reduce((sum, task) => sum + (state.days[TODAY].tasks[task.id] ? task.xp : 0), 0);
-      if (xpEarned > 0) {
-        showXpRecap(xpEarned);
-      }
-    }
     if (!pass) checkLevelDown();
   }
 
   document.querySelectorAll("#ww .nav button").forEach(btn=>{
     btn.addEventListener("click", ()=>{
       initAudioOnInteraction();
-      audioManager.play('ui_click_confirm');
+      audioManager.play('ui.click');
       document.querySelectorAll("#ww .nav button").forEach(b=>b.classList.remove("active"));
       btn.classList.add("active");
       const id = btn.dataset.section;
@@ -4922,13 +4538,8 @@
     resetBtn.setAttribute("aria-label", "Reset today's task completion");
     resetBtn.addEventListener("click", ()=>{
       initAudioOnInteraction();
-      audioManager.play('ui_click_confirm');
-      state.days[TODAY]={
-        tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])),
-        result:"Not graded",
-        leveledUp: false,
-        taskCompletions: {}
-      };
+      audioManager.play('ui.click');
+      state.days[TODAY]={ tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), result:"Not graded" };
       save(); 
       renderTasks(); 
       setupQuestCheckboxes();
@@ -5592,22 +5203,8 @@
         break;
     }
 
-    if (audioManager.isInitialized) {
-      if (weather === 'none') {
-        audioManager.stopWeatherAmbience();
-        audioManager.playZoneAmbience(getZoneAmbienceEvent(state.currentZone));
-      } else {
-        audioManager.stopZoneAmbience();
-        audioManager.playWeatherAmbience(weather);
-      }
-    }
-
     // Save to localStorage
     localStorage.setItem(WEATHER_STORAGE_KEY, weather);
-  }
-
-  function getZoneAmbienceEvent(zoneSlug) {
-    return audioEventsData?.zoneAmbience?.[zoneSlug]?.event || null;
   }
 
   // Toggle weather menu
@@ -5619,7 +5216,7 @@
   document.querySelectorAll('.weatherOption').forEach(option => {
     option.addEventListener('click', () => {
       initAudioOnInteraction();
-      audioManager.play('ui_click_confirm');
+      audioManager.play('ui.click');
       const weather = option.dataset.weather;
       setWeather(weather);
       weatherMenu.classList.remove('show');
@@ -5655,15 +5252,7 @@
       audioManager.init();
       if (audioManager.isInitialized) {
         audioInitialized = true;
-        const unlockEvent = audioEventsData?.autoplayPolicy?.firstGestureUnlock?.recommendedEventToPlay;
-        if (unlockEvent) {
-          audioManager.play(unlockEvent);
-        }
-        if (currentWeather === 'none') {
-          audioManager.playZoneAmbience(getZoneAmbienceEvent(state.currentZone));
-        } else {
-          audioManager.playWeatherAmbience(currentWeather);
-        }
+        audioManager.playWeatherAmbience(currentWeather === 'none' ? 'sunny' : currentWeather);
         audioManager.playMusic(audioManager.getCurrentMusicKey());
         console.log('Audio initialized on user interaction');
       }
@@ -5748,7 +5337,7 @@
     updateVolumeDisplays();
     
     // Play test sound
-    audioManager.play('ui_click_confirm');
+    audioManager.play('ui.click');
   });
   
   // Reduce sound mode checkbox
@@ -6482,8 +6071,6 @@
   renderTasks();
   setupQuestCheckboxes();
   updateHeader();
-  setupZoneNavigation();
-  showStoredNotice();
   
   // ============================================
   // MORNING MISSION TIMER LOOP
