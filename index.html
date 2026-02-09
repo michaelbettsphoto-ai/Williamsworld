@@ -2654,7 +2654,7 @@
       <section class="questZonesSection" id="questZones">
         <div class="questZonesHeader">
           <h2>🗺️ Quest Zones</h2>
-          <div class="small" style="margin-top:8px;">Unlock zones with streaks. Hover, tap, or tab to a zone and press Enter to see the story and villains.</div>
+          <div class="small" style="margin-top:8px;">Unlock zones with streaks. Hover, tap, or use Tab to navigate to a zone and press Enter to see the story and villains.</div>
         </div>
         <div class="questZonesGrid" id="questZonesGrid"></div>
       </section>
@@ -4631,7 +4631,7 @@
 
   function isPassDay(){
     const day = state.days[TODAY];
-    // PASS criteria: Night-Before complete + Trapper Check complete
+    // PASS criteria: Night-Before complete + Trapper Check complete (V1 spec)
     const nightIds = ["n_trapper","n_clothes","n_lunch","n_shoes"];
     const nightOk = nightIds.every(id=>day.tasks[id]===true);
     const trapperCheckOk = day.tasks["m_trappercheck"] === true;
@@ -4776,7 +4776,7 @@
       return;
     }
     questLoreFocusables = Array.from(
-      questLoreCardEl.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+      questLoreCardEl.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex^="-"])')
     ).filter(el => !el.disabled && el.offsetParent !== null);
   }
 
@@ -4976,7 +4976,7 @@
     } catch (error) {
       console.error("Quest zones failed to load", error);
       if (typeof toast === "function") {
-        toast("Quest zones unavailable. Try loading with a local server.");
+        toast("Quest zones are temporarily unavailable. Please refresh the page.");
       }
     }
   }
