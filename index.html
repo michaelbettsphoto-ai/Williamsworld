@@ -2654,7 +2654,7 @@
       <section class="questZonesSection" id="questZones">
         <div class="questZonesHeader">
           <h2>🗺️ Quest Zones</h2>
-          <div class="small" style="margin-top:8px;">Unlock zones with streaks. Hover, tap, or press Enter to see the story and villains.</div>
+          <div class="small" style="margin-top:8px;">Unlock zones with streaks. Hover, tap, or tab to a zone and press Enter to see the story and villains.</div>
         </div>
         <div class="questZonesGrid" id="questZonesGrid"></div>
       </section>
@@ -4771,11 +4771,13 @@
   let questLoreFocusables = [];
 
   function updateQuestLoreFocusables() {
-    if (!questLoreCardEl) return [];
+    if (!questLoreCardEl) {
+      questLoreFocusables = [];
+      return;
+    }
     questLoreFocusables = Array.from(
       questLoreCardEl.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
     ).filter(el => !el.disabled && el.offsetParent !== null);
-    return questLoreFocusables;
   }
 
   function updateQuestLoreStatus(zone) {
@@ -4796,11 +4798,13 @@
       ctaEl.disabled = false;
       ctaEl.textContent = "Enter Battle";
       ctaEl.removeAttribute("aria-disabled");
+      ctaEl.setAttribute("aria-label", "Enter Battle");
     } else {
-      lockEl.textContent = `Locked — unlock at ${zone.unlockDays}-day streak`;
+      lockEl.textContent = `Locked — unlocks at ${zone.unlockDays}-day streak`;
       ctaEl.disabled = true;
       ctaEl.textContent = "Locked";
       ctaEl.setAttribute("aria-disabled", "true");
+      ctaEl.setAttribute("aria-label", `Locked — unlocks at ${zone.unlockDays}-day streak`);
     }
   }
 
