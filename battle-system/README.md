@@ -136,7 +136,7 @@ Quick reference for type matchups:
 ### Loading Character Data
 ```javascript
 // Load a character
-const trapper = await fetch('/battle-system/data/characters/trapper.json')
+const trapper = await fetch('./battle-system/data/characters/trapper.json')
   .then(r => r.json());
 
 // Access character properties
@@ -150,7 +150,7 @@ console.log(trapper.moves[0].name); // "Shield Slam"
 ### Loading Game Constants
 ```javascript
 // Load type chart and constants
-const constants = await fetch('/battle-system/data/game-constants.json')
+const constants = await fetch('./battle-system/data/game-constants.json')
   .then(r => r.json());
 
 // Get type effectiveness

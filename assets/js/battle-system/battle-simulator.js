@@ -15,13 +15,13 @@ class BattleSimulator {
    */
   async loadGameData() {
     // Load game constants
-    const constantsResponse = await fetch('/battle-system/data/game-constants.json');
+    const constantsResponse = await fetch('./battle-system/data/game-constants.json');
     this.gameConstants = await constantsResponse.json();
     
     // Load characters
     const characterIds = ['trapper', 'sparkfin', 'glowmoss'];
     for (const id of characterIds) {
-      const response = await fetch(`/battle-system/data/characters/${id}.json`);
+      const response = await fetch(`./battle-system/data/characters/${id}.json`);
       this.characters[id] = await response.json();
     }
     
