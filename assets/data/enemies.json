@@ -1,0 +1,434 @@
+{
+  "zones": [
+    {
+      "id": "z1",
+      "cardId": "zone1",
+      "assetKey": "z1",
+      "name": "Launch Meadow",
+      "unlockDays": 0,
+      "story": "Welcome to the first training grounds. The meadow looks peaceful… but mischievous critters hide in the grass and test new adventurers. This is where William learns to stay brave, move fast, and protect his friends.",
+      "enemies": [
+        {
+          "name": "Dandelion Dagger",
+          "behavior": "quick slashes + trick blinds",
+          "moves": [
+            { "name": "Puff Slash" },
+            { "name": "Seed Sprint" }
+          ]
+        },
+        {
+          "name": "Mudkip Bandit",
+          "behavior": "muddy debuffs + defense stance",
+          "moves": [
+            { "name": "Mud Toss" },
+            { "name": "Puddle Guard" }
+          ]
+        },
+        {
+          "name": "Pebble Pouncer",
+          "behavior": "pounces harder on slow targets",
+          "moves": [
+            { "name": "Pounce" },
+            { "name": "Stone Skin" }
+          ]
+        },
+        {
+          "name": "Sunblink Moth",
+          "behavior": "light blasts + team dazzle",
+          "moves": [
+            { "name": "Glimmer Beam" },
+            { "name": "Dazzle" }
+          ]
+        },
+        {
+          "name": "Thorny Sneak",
+          "behavior": "roots you, steals health",
+          "moves": [
+            { "name": "Thorn Trap" },
+            { "name": "Sucker Vine" }
+          ]
+        },
+        {
+          "name": "Puddle Hexer",
+          "behavior": "weakens defense + hits buffed heroes harder",
+          "moves": [
+            { "name": "Ink Splash" },
+            { "name": "Gloom Drip" }
+          ]
+        },
+        {
+          "name": "Windwink Imp",
+          "behavior": "fast pokes + enemy speed boost",
+          "moves": [
+            { "name": "Gust Jab" },
+            { "name": "Slipstream" }
+          ]
+        },
+        {
+          "name": "Scorchling",
+          "behavior": "burns + powers up",
+          "moves": [
+            { "name": "Ember Bite" },
+            { "name": "Heat Up" }
+          ]
+        },
+        {
+          "name": "Barkhide Bully",
+          "behavior": "taunts + bashes",
+          "moves": [
+            { "name": "Body Block" },
+            { "name": "Bark Bash" }
+          ]
+        },
+        {
+          "name": "Spark Dustling",
+          "behavior": "shocks + charges big hits",
+          "moves": [
+            { "name": "Static Pop" },
+            { "name": "Charge" }
+          ]
+        },
+        {
+          "name": "Nightleaf Snatcher (Rare)",
+          "behavior": "slows + dodges a hit",
+          "moves": [
+            { "name": "Swipe & Vanish" },
+            { "name": "Shadow Cloak" }
+          ]
+        },
+        {
+          "name": "Slimecap Trickster (Elite)",
+          "behavior": "lowers team ATK + chills",
+          "moves": [
+            { "name": "Spore Mist" },
+            { "name": "Slime Patch" },
+            { "name": "Cap Bounce" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "z2",
+      "cardId": "zone2",
+      "assetKey": "z2",
+      "name": "Homework Hills",
+      "unlockDays": 3,
+      "story": "Homework Hills is where distractions come alive. Notes flutter away, ink spills, and pop quizzes attack without warning. William must stay calm, keep trying, and finish strong—one problem at a time.",
+      "enemies": [
+        {
+          "name": "Eraser Wraith",
+          "behavior": "weakens defense + quick swipe",
+          "moves": [
+            { "name": "Erase Confidence" },
+            { "name": "Smudge Swipe" }
+          ]
+        },
+        {
+          "name": "Paper Cut Pirate",
+          "behavior": "hits harder if you’re debuffed + blinds",
+          "moves": [
+            { "name": "Cutlass Cut" },
+            { "name": "Ruffle Gust" }
+          ]
+        },
+        {
+          "name": "Inkblob Gremlin",
+          "behavior": "guaranteed blind + simple bolt",
+          "moves": [
+            { "name": "Ink Spray" },
+            { "name": "Blob Bolt" }
+          ]
+        },
+        {
+          "name": "Quiz Golemlet",
+          "behavior": "forces action loss + heavy hit",
+          "moves": [
+            { "name": "Pop Quiz" },
+            { "name": "Stone Thump" }
+          ]
+        },
+        {
+          "name": "Deadline Drake (Rare)",
+          "behavior": "burns + slows the team",
+          "moves": [
+            { "name": "Late Fee Flame" },
+            { "name": "Pressure Roar" }
+          ]
+        },
+        {
+          "name": "Scribble Sorcerer",
+          "behavior": "shocks + team guard",
+          "moves": [
+            { "name": "Zap Diagram" },
+            { "name": "Equation Shield" }
+          ]
+        },
+        {
+          "name": "Binder Beast",
+          "behavior": "roots + slam",
+          "moves": [
+            { "name": "Clamp" },
+            { "name": "Ring Slam" }
+          ]
+        },
+        {
+          "name": "Procrastination Poltergeist (Rare)",
+          "behavior": "chance to skip actions + lowers ATK",
+          "moves": [
+            { "name": "Snooze Field" },
+            { "name": "Delay Toxin" }
+          ]
+        },
+        {
+          "name": "Sticky Note Swarm",
+          "behavior": "slows the team",
+          "moves": [
+            { "name": "Cling" },
+            { "name": "Reminder Buzz" }
+          ]
+        },
+        {
+          "name": "Graph Goblin",
+          "behavior": "chills + fast poke",
+          "moves": [
+            { "name": "Slope Slip" },
+            { "name": "Ruler Rap" }
+          ]
+        },
+        {
+          "name": "Red Pen Reaper (Elite)",
+          "behavior": "punishes weak heroes + forces skip",
+          "moves": [
+            { "name": "Correction Strike" },
+            { "name": "Mark Wrong" },
+            { "name": "Final Grade" }
+          ]
+        },
+        {
+          "name": "Homework Hydra (Elite)",
+          "behavior": "team damage + team heal + ATK down",
+          "moves": [
+            { "name": "Assignment Flood" },
+            { "name": "Extra Credit" },
+            { "name": "Overwhelm" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "z3",
+      "cardId": "zone3",
+      "assetKey": "z3",
+      "name": "Backpack Bastion",
+      "unlockDays": 5,
+      "story": "Backpack Bastion is a fortress of gear and order. But sneaky pests break straps, steal supplies, and jam zippers. To win here, William must pack smart, check twice, and defend the team.",
+      "enemies": [
+        {
+          "name": "Strap Snapper",
+          "behavior": "fast hits + reduces defense",
+          "moves": [
+            { "name": "Buckle Bite" },
+            { "name": "Fray" }
+          ]
+        },
+        {
+          "name": "Zipperfang",
+          "behavior": "medium slashes + dodge",
+          "moves": [
+            { "name": "Zip Slash" },
+            { "name": "Unzip Escape" }
+          ]
+        },
+        {
+          "name": "Cargo Crab",
+          "behavior": "guards + clamps",
+          "moves": [
+            { "name": "Crate Guard" },
+            { "name": "Clamp Crush" }
+          ]
+        },
+        {
+          "name": "Pocket Mimic (Rare)",
+          "behavior": "lifesteal + roots",
+          "moves": [
+            { "name": "Snack Snatch" },
+            { "name": "False Bottom" }
+          ]
+        },
+        {
+          "name": "Buckle Brute",
+          "behavior": "medium hits + defense stance",
+          "moves": [
+            { "name": "Buckle Bash" },
+            { "name": "Iron Stance" }
+          ]
+        },
+        {
+          "name": "Lunchbox Lurker",
+          "behavior": "lowers hero ATK + dark bolt",
+          "moves": [
+            { "name": "Stale Cloud" },
+            { "name": "Mold Bolt" }
+          ]
+        },
+        {
+          "name": "Waterbottle Wobbler",
+          "behavior": "heals allies + chills",
+          "moves": [
+            { "name": "Splash Heal" },
+            { "name": "Soak" }
+          ]
+        },
+        {
+          "name": "Pencil Pike",
+          "behavior": "quick jabs + possible blind",
+          "moves": [
+            { "name": "Point Jab" },
+            { "name": "Shavings Storm" }
+          ]
+        },
+        {
+          "name": "Supply Sapper (Rare)",
+          "behavior": "removes buffs + hits buffed targets harder",
+          "moves": [
+            { "name": "Steal Charge" },
+            { "name": "Sneak Strike" }
+          ]
+        },
+        {
+          "name": "Tag Tornado",
+          "behavior": "team damage + roots",
+          "moves": [
+            { "name": "Whirlwind" },
+            { "name": "Receipt Wrap" }
+          ]
+        },
+        {
+          "name": "Locker Lizard (Rare)",
+          "behavior": "team guard + heavy hit",
+          "moves": [
+            { "name": "Door Shield" },
+            { "name": "Tail Slam" }
+          ]
+        },
+        {
+          "name": "Patchwork Punisher (Elite)",
+          "behavior": "high damage + enemy DEF boost + shock chance",
+          "moves": [
+            { "name": "Patch Smash" },
+            { "name": "Reinforce" },
+            { "name": "Break Strap" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "z4",
+      "cardId": "zone4",
+      "assetKey": "z4",
+      "name": "Focus Forest",
+      "unlockDays": 10,
+      "story": "Focus Forest is calm… until it isn’t. Whispering shadows distract you, bright lights confuse you, and ancient guardians test your patience. Here, William learns true focus: slow breath, clear mind, steady effort.",
+      "enemies": [
+        {
+          "name": "Rune Stag",
+          "behavior": "medium damage + team Focus",
+          "moves": [
+            { "name": "Rune Charge" },
+            { "name": "Inspire" }
+          ]
+        },
+        {
+          "name": "Whisper Viper",
+          "behavior": "lowers ATK + fast bite",
+          "moves": [
+            { "name": "Venom Whisper" },
+            { "name": "Quick Bite" }
+          ]
+        },
+        {
+          "name": "Mist Monk",
+          "behavior": "enemy team heal + team guard",
+          "moves": [
+            { "name": "Calm Wave" },
+            { "name": "Mist Veil" }
+          ]
+        },
+        {
+          "name": "Thorn Sentinel (Rare)",
+          "behavior": "guards + reflects minor damage",
+          "moves": [
+            { "name": "Bramble Wall" },
+            { "name": "Thorn Counter" }
+          ]
+        },
+        {
+          "name": "Lumen Owl",
+          "behavior": "medium damage + guaranteed blind",
+          "moves": [
+            { "name": "Lumen Ray" },
+            { "name": "Blinding Flutter" }
+          ]
+        },
+        {
+          "name": "Shadowcap Shaman (Rare)",
+          "behavior": "weakens defense + hits debuffed harder",
+          "moves": [
+            { "name": "Spores of Doubt" },
+            { "name": "Night Bloom" }
+          ]
+        },
+        {
+          "name": "Breeze Banshee",
+          "behavior": "chance to skip actions + medium damage",
+          "moves": [
+            { "name": "Haunting Gust" },
+            { "name": "Slice Wind" }
+          ]
+        },
+        {
+          "name": "Stone Trancebear",
+          "behavior": "slows team + roots",
+          "moves": [
+            { "name": "Trance Roar" },
+            { "name": "Boulder Hug" }
+          ]
+        },
+        {
+          "name": "Sparkroot Warden (Rare)",
+          "behavior": "high damage + shock chance + self heal",
+          "moves": [
+            { "name": "Root Shock" },
+            { "name": "Charge Sap" }
+          ]
+        },
+        {
+          "name": "Moonveil Panther (Rare)",
+          "behavior": "punishes weakest hero + dodge",
+          "moves": [
+            { "name": "Moon Pounce" },
+            { "name": "Veil Step" }
+          ]
+        },
+        {
+          "name": "Crystal Mantis (Elite)",
+          "behavior": "high damage + team chill + guard",
+          "moves": [
+            { "name": "Crystal Slice" },
+            { "name": "Freeze Frame" },
+            { "name": "Mirror Shell" }
+          ]
+        },
+        {
+          "name": "Ancient Grove Guardian (Elite)",
+          "behavior": "team guard + root + big slam",
+          "moves": [
+            { "name": "Sanctuary Bark" },
+            { "name": "Root Judgment" },
+            { "name": "Radiant Slam" }
+          ]
+        }
+      ]
+    }
+  ]
+}

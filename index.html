@@ -1013,6 +1013,261 @@
   #ww .zoneIconItem.locked .zoneIconStatus {
     color: rgba(255,107,138,.9);
   }
+
+  /* Quest Zones Section */
+  #ww .questZonesSection {
+    margin-top: 24px;
+    border: 2px solid var(--golden-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: var(--shadow), 0 0 15px rgba(255,211,110,.2);
+  }
+  #ww .questZonesHeader h2 {
+    margin: 0 0 6px 0;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--gold);
+    font-family: var(--fantasy-font);
+  }
+  #ww .questZonesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  #ww .questZoneCard {
+    border: 3px solid var(--golden-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 18px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 190px;
+    position: relative;
+    overflow: hidden;
+    transition: all .3s ease;
+    cursor: pointer;
+  }
+  #ww .questZoneCard:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow), 0 0 25px rgba(255,211,110,.4);
+  }
+  #ww .questZoneCard.locked {
+    opacity: .6;
+    filter: grayscale(80%);
+  }
+  #ww .questZoneCard.unlocked {
+    border-color: var(--green);
+    box-shadow: 0 0 20px rgba(125,255,180,.3), 0 4px 12px rgba(0,0,0,.3);
+  }
+  #ww .questZoneMedia {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  #ww .questZoneImage {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    border: 2px solid var(--golden-border);
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,.45);
+  }
+  #ww .questZoneImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #ww .questZoneName {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--gold);
+    font-family: var(--fantasy-font);
+  }
+  #ww .questZoneStatus {
+    font-size: 12px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 999px;
+    display: inline-block;
+    margin-top: 6px;
+  }
+  #ww .questZoneStatus.unlocked {
+    background: rgba(125,255,180,.15);
+    border: 2px solid var(--green);
+    color: var(--green);
+  }
+  #ww .questZoneStatus.locked {
+    background: rgba(255,107,138,.15);
+    border: 2px solid rgba(255,107,138,.4);
+    color: rgba(255,107,138,.9);
+  }
+  #ww .questZoneEnemyCount {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: auto;
+  }
+
+  /* Quest Lore Overlay */
+  #ww .questLoreOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,10,25,.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 20px;
+  }
+  #ww .questLoreOverlay.show {
+    display: flex;
+  }
+  #ww .questLoreCard {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 22px;
+    border: 3px solid var(--golden-border);
+    box-shadow: var(--shadow), 0 0 30px rgba(255,211,110,.3);
+    padding: 24px;
+    width: min(960px, 94vw);
+    max-height: 90vh;
+    overflow: auto;
+  }
+  #ww .questLoreHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  #ww .questLoreTitleGroup {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  #ww .questLoreHeader h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--gold);
+    font-family: var(--fantasy-font);
+  }
+  #ww .questLoreStatus {
+    font-size: 12px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 999px;
+    display: inline-block;
+  }
+  #ww .questLoreStatus.unlocked {
+    background: rgba(125,255,180,.15);
+    border: 2px solid var(--green);
+    color: var(--green);
+  }
+  #ww .questLoreStatus.locked {
+    background: rgba(255,107,138,.15);
+    border: 2px solid rgba(255,107,138,.4);
+    color: rgba(255,107,138,.9);
+  }
+  #ww .questLoreClose {
+    border: none;
+    background: rgba(0,0,0,.4);
+    color: var(--text);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  #ww .questLoreBody {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 20px;
+    margin-top: 18px;
+  }
+  #ww .questLoreStory {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  #ww .questLoreEnemiesTitle {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  #ww .questLoreEnemy {
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.1);
+    background: rgba(0,0,0,.25);
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
+  #ww .questLoreEnemyName {
+    font-weight: 900;
+    color: var(--gold);
+  }
+  #ww .questLoreEnemyBehavior {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  #ww .questLoreMoves {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  #ww .questLoreMove {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.2);
+  }
+  #ww .questLoreFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  #ww .questLoreLock {
+    font-size: 12px;
+    color: rgba(255,107,138,.9);
+    font-weight: 800;
+  }
+  #ww .questLoreCta {
+    border: none;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #facc15, #f97316);
+    color: #0b132b;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  #ww .questLoreCta:disabled {
+    cursor: not-allowed;
+    opacity: .6;
+    background: rgba(120,120,120,.6);
+    color: rgba(255,255,255,.7);
+  }
+  @media (max-width: 900px) {
+    #ww .questLoreBody {
+      grid-template-columns: 1fr;
+    }
+  }
   
   #ww .currentQuestHeader {
     border: 2px solid var(--golden-border);
@@ -2267,7 +2522,7 @@
 
           <div class="meter">
             <div class="meterTop">
-              <div><b>XP</b>: <span id="xpNow">0</span> / <span id="xpNext">100</span></div>
+              <div><b>XP</b>: <span id="xpNow">0</span><span id="xpNext" style="display:none">100</span></div>
               <div class="small">Complete all quests to earn rewards!</div>
             </div>
             <div class="bar"><div id="xpBar"></div></div>
@@ -2285,57 +2540,8 @@
 
     <!-- Main Content with Sidebar Layout -->
     <div class="contentWithSidebar">
-      <!-- Sidebar with Quest Tracker and Map -->
+      <!-- Sidebar with Quest Tracker and Quest Zones -->
       <aside class="questSidebar">
-        <!-- Current Quest Header -->
-        <div class="currentQuestHeader">
-          <h2>🎯 Current Quest <span class="tag">DAILY</span></h2>
-          <div class="small" style="margin-top:8px;">Complete all quests to pass the day!</div>
-        </div>
-
-        <!-- Quest Map with Icons -->
-        <div class="questMapSidebar">
-          <h3>🗺️ Quest Map</h3>
-          <div class="zoneIconList">
-            <div class="zoneIconItem unlocked" id="zoneIcon1">
-              <div class="zoneIconSmall">
-                <img id="zone1IconImg" alt="Launch Meadow">
-              </div>
-              <div class="zoneIconInfo">
-                <div class="zoneIconName">Launch Meadow</div>
-                <div class="zoneIconStatus">✓ Unlocked</div>
-              </div>
-            </div>
-            <div class="zoneIconItem locked" id="zoneIcon2">
-              <div class="zoneIconSmall">
-                <img id="zone2IconImg" alt="Homework Hills">
-              </div>
-              <div class="zoneIconInfo">
-                <div class="zoneIconName">Homework Hills</div>
-                <div class="zoneIconStatus">🔒 3 days</div>
-              </div>
-            </div>
-            <div class="zoneIconItem locked" id="zoneIcon3">
-              <div class="zoneIconSmall">
-                <img id="zone3IconImg" alt="Backpack Bastion">
-              </div>
-              <div class="zoneIconInfo">
-                <div class="zoneIconName">Backpack Bastion</div>
-                <div class="zoneIconStatus">🔒 5 days</div>
-              </div>
-            </div>
-            <div class="zoneIconItem locked" id="zoneIcon4">
-              <div class="zoneIconSmall">
-                <img id="zone4IconImg" alt="Focus Forest">
-              </div>
-              <div class="zoneIconInfo">
-                <div class="zoneIconName">Focus Forest</div>
-                <div class="zoneIconStatus">🔒 10 days</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- Quest Cards in Sidebar -->
         <div class="questGrid" id="tracker">
       <!-- Quest 1: Win Tomorrow Tonight -->
@@ -2443,7 +2649,15 @@
           <div class="xpBadge">Total: +50 XP</div>
         </div>
       </div>
-    </div>
+      </div>
+
+      <section class="questZonesSection" id="questZones">
+        <div class="questZonesHeader">
+          <h2>🗺️ Quest Zones</h2>
+          <div class="small" style="margin-top:8px;">Unlock zones with streaks. Hover to see the story and villains.</div>
+        </div>
+        <div class="questZonesGrid" id="questZonesGrid"></div>
+      </section>
     </aside>
 
     <!-- Main Content Area -->
@@ -2590,55 +2804,7 @@
     </div>
 
     <!-- World Map Section -->
-    <div id="map" style="margin-top:24px;">
-      <div class="dashPanel">
-        <h3>🗺️ World Map - Zone Progress</h3>
-        <div style="display:grid; gap:16px; margin-top:16px;">
-          <div class="zone unlocked" id="zone1">
-            <div class="zoneIcon">
-              <img id="zone1Img" alt="Launch Meadow">
-            </div>
-            <div class="zoneInfo">
-              <div class="zoneName">Launch Meadow</div>
-              <div class="zoneStatus unlocked">✓ UNLOCKED!</div>
-            </div>
-          </div>
-          
-          <div class="zone locked" id="zone2">
-            <div class="zoneIcon">
-              <img id="zone2Img" alt="Homework Hills">
-            </div>
-            <div class="zoneInfo">
-              <div class="zoneName">Homework Hills</div>
-              <div class="zoneStatus locked">🔒 Unlocks at 3 days</div>
-            </div>
-            <div class="lockIcon">🔒</div>
-          </div>
-          
-          <div class="zone locked" id="zone3">
-            <div class="zoneIcon">
-              <img id="zone3Img" alt="Backpack Bastion">
-            </div>
-            <div class="zoneInfo">
-              <div class="zoneName">Backpack Bastion</div>
-              <div class="zoneStatus locked">🔒 Unlocks at 5 days</div>
-            </div>
-            <div class="lockIcon">🔒</div>
-          </div>
-          
-          <div class="zone locked" id="zone4">
-            <div class="zoneIcon">
-              <img id="zone4Img" alt="Focus Forest">
-            </div>
-            <div class="zoneInfo">
-              <div class="zoneName">Focus Forest</div>
-              <div class="zoneStatus locked">🔒 Unlocks at 10 days</div>
-            </div>
-            <div class="lockIcon">🔒</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="map" style="margin-top:24px;"></div>
 
     <!-- Weekly Tracker -->
     <div style="margin-top:24px;">
@@ -2704,6 +2870,30 @@
       <h2>💀 LEVEL DOWN! 💀</h2>
       <div class="levelInfo">Dropped to Level <span id="levelDownNumber"></span></div>
       <div class="levelTitle" id="levelDownTitle"></div>
+    </div>
+  </div>
+
+  <!-- Quest Lore Overlay -->
+  <div id="questLoreOverlay" class="questLoreOverlay" aria-hidden="true">
+    <div class="questLoreCard" role="dialog" aria-modal="true" aria-labelledby="questLoreTitle">
+      <div class="questLoreHeader">
+        <div class="questLoreTitleGroup">
+          <h3 id="questLoreTitle"></h3>
+          <span class="questLoreStatus" id="questLoreStatus"></span>
+        </div>
+        <button class="questLoreClose" id="questLoreClose" aria-label="Close quest lore">✕</button>
+      </div>
+      <div class="questLoreBody">
+        <div class="questLoreStory" id="questLoreStory"></div>
+        <div class="questLoreEnemies">
+          <div class="questLoreEnemiesTitle">What you'll face</div>
+          <div id="questLoreEnemiesList"></div>
+        </div>
+      </div>
+      <div class="questLoreFooter">
+        <div class="questLoreLock" id="questLoreLock"></div>
+        <button class="questLoreCta" id="questLoreCta">Enter Battle</button>
+      </div>
     </div>
   </div>
 </div>
@@ -2823,12 +3013,8 @@
     { id:"t_check",    label:"Trapper: Final check", xp:10, quest:"backpack" },
   ];
 
-  const MAP = [
-    { id:"z1", title:"Launch Meadow", need:1 },
-    { id:"z2", title:"Homework Hills", need:3 },
-    { id:"z3", title:"Backpack Bastion", need:5 },
-    { id:"z4", title:"Focus Forest", need:10 },
-  ];
+  const QUEST_ZONES_URL = "./assets/data/enemies.json";
+  let questZonesData = null;
   
   const COMPANIONS = ["ember", "sprite", "golem"];
 
@@ -4146,39 +4332,199 @@
       }
     });
   }
+
+  let activeQuestZoneId = null;
+
+  function updateQuestLoreStatus(zone) {
+    const statusEl = $("questLoreStatus");
+    const lockEl = $("questLoreLock");
+    const ctaEl = $("questLoreCta");
+    if (!statusEl || !lockEl || !ctaEl) return;
+
+    const isUnlocked = state.streak >= zone.unlockDays;
+    statusEl.textContent = isUnlocked
+      ? "Unlocked"
+      : `Unlocks at ${zone.unlockDays} streak day${zone.unlockDays === 1 ? "" : "s"}`;
+    statusEl.classList.toggle("unlocked", isUnlocked);
+    statusEl.classList.toggle("locked", !isUnlocked);
+
+    if (isUnlocked) {
+      lockEl.textContent = "";
+      ctaEl.disabled = false;
+      ctaEl.textContent = "Enter Battle";
+    } else {
+      lockEl.textContent = `Locked — unlock at ${zone.unlockDays}-day streak`;
+      ctaEl.disabled = true;
+      ctaEl.textContent = "Enter Battle (Locked)";
+    }
+  }
+
+  function renderQuestLore(zone) {
+    const titleEl = $("questLoreTitle");
+    const storyEl = $("questLoreStory");
+    const listEl = $("questLoreEnemiesList");
+    if (!titleEl || !storyEl || !listEl) return;
+
+    titleEl.textContent = zone.name;
+    storyEl.textContent = zone.story;
+
+    listEl.innerHTML = "";
+    zone.enemies.forEach(enemy => {
+      const enemyEl = document.createElement("div");
+      enemyEl.className = "questLoreEnemy";
+
+      const nameEl = document.createElement("div");
+      nameEl.className = "questLoreEnemyName";
+      nameEl.textContent = enemy.name;
+      enemyEl.appendChild(nameEl);
+
+      const behaviorEl = document.createElement("div");
+      behaviorEl.className = "questLoreEnemyBehavior";
+      behaviorEl.textContent = enemy.behavior;
+      enemyEl.appendChild(behaviorEl);
+
+      const movesEl = document.createElement("div");
+      movesEl.className = "questLoreMoves";
+      enemy.moves.forEach(move => {
+        const moveEl = document.createElement("span");
+        moveEl.className = "questLoreMove";
+        moveEl.textContent = move.name;
+        movesEl.appendChild(moveEl);
+      });
+      enemyEl.appendChild(movesEl);
+
+      listEl.appendChild(enemyEl);
+    });
+
+    updateQuestLoreStatus(zone);
+  }
+
+  function openQuestLore(zoneId) {
+    if (!questZonesData || !questZonesData.zones) return;
+    const zone = questZonesData.zones.find(item => item.id === zoneId);
+    if (!zone) return;
+
+    activeQuestZoneId = zoneId;
+    renderQuestLore(zone);
+
+    const overlay = $("questLoreOverlay");
+    if (overlay) {
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden", "false");
+    }
+  }
+
+  function closeQuestLore() {
+    const overlay = $("questLoreOverlay");
+    if (overlay) {
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden", "true");
+    }
+    activeQuestZoneId = null;
+  }
+
+  function renderQuestZones() {
+    const grid = $("questZonesGrid");
+    if (!grid || !questZonesData || !questZonesData.zones) return;
+
+    const canHover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+    grid.innerHTML = "";
+
+    questZonesData.zones.forEach(zone => {
+      const card = document.createElement("div");
+      card.className = "questZoneCard";
+      card.id = zone.cardId;
+      card.dataset.zoneId = zone.id;
+      card.setAttribute("role", "button");
+      card.setAttribute("tabindex", "0");
+
+      card.innerHTML = `
+        <div class="questZoneMedia">
+          <div class="questZoneImage"><img alt="${zone.name}"></div>
+          <div>
+            <div class="questZoneName">${zone.name}</div>
+            <div class="questZoneStatus"></div>
+          </div>
+        </div>
+        <div class="questZoneEnemyCount">Enemy count: ${zone.enemies.length}</div>
+      `;
+
+      const imgEl = card.querySelector("img");
+      if (imgEl && ASSETS.zones[zone.assetKey]) {
+        imgEl.src = ASSETS.zones[zone.assetKey];
+      }
+
+      if (canHover) {
+        card.addEventListener("mouseenter", () => openQuestLore(zone.id));
+      }
+      card.addEventListener("click", () => openQuestLore(zone.id));
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openQuestLore(zone.id);
+        }
+      });
+
+      grid.appendChild(card);
+    });
+  }
+
+  async function loadQuestZones() {
+    try {
+      const response = await fetch(QUEST_ZONES_URL);
+      if (!response.ok) throw new Error("Failed to load quest zones data");
+      questZonesData = await response.json();
+      renderQuestZones();
+      updateZones();
+    } catch (error) {
+      console.error("Quest zones failed to load", error);
+    }
+  }
+
+  function setupQuestLoreOverlay() {
+    const closeBtn = $("questLoreClose");
+    const overlay = $("questLoreOverlay");
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", closeQuestLore);
+    }
+    if (overlay) {
+      overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) closeQuestLore();
+      });
+    }
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeQuestLore();
+    });
+  }
   
-  // Update zone unlocking based on cumulative PASS days
+  // Update zone unlocking based on current streak
   function updateZones() {
-    const passCount = Object.values(state.days).filter(d => d.result === 'PASS').length;
-    
-    MAP.forEach((zone, idx) => {
-      const zoneEl = $(zone.id.replace('z', 'zone'));
+    if (!questZonesData || !questZonesData.zones) return;
+
+    questZonesData.zones.forEach(zone => {
+      const zoneEl = $(zone.cardId);
       if (!zoneEl) return;
-      
-      const isUnlocked = passCount >= zone.need;
-      const statusEl = zoneEl.querySelector('.zoneStatus');
-      const lockIcon = zoneEl.querySelector('.lockIcon');
-      
-      if (isUnlocked) {
-        zoneEl.classList.remove('locked');
-        zoneEl.classList.add('unlocked');
-        if (statusEl) {
-          statusEl.classList.remove('locked');
-          statusEl.classList.add('unlocked');
-          statusEl.textContent = '✓ UNLOCKED!';
-        }
-        if (lockIcon) lockIcon.style.display = 'none';
-      } else {
-        zoneEl.classList.add('locked');
-        zoneEl.classList.remove('unlocked');
-        if (statusEl) {
-          statusEl.classList.add('locked');
-          statusEl.classList.remove('unlocked');
-          statusEl.textContent = `🔒 Unlocks at ${zone.need} day${zone.need > 1 ? 's' : ''}`;
-        }
-        if (lockIcon) lockIcon.style.display = 'block';
+
+      const isUnlocked = state.streak >= zone.unlockDays;
+      const statusEl = zoneEl.querySelector(".questZoneStatus");
+
+      zoneEl.classList.toggle("locked", !isUnlocked);
+      zoneEl.classList.toggle("unlocked", isUnlocked);
+
+      if (statusEl) {
+        statusEl.textContent = isUnlocked
+          ? "Unlocked"
+          : `Unlocks at ${zone.unlockDays} streak day${zone.unlockDays === 1 ? "" : "s"}`;
+        statusEl.classList.toggle("locked", !isUnlocked);
+        statusEl.classList.toggle("unlocked", isUnlocked);
       }
     });
+
+    if (activeQuestZoneId) {
+      const activeZone = questZonesData.zones.find(zone => zone.id === activeQuestZoneId);
+      if (activeZone) updateQuestLoreStatus(activeZone);
+    }
   }
   
   // Update streak milestone badges
@@ -6068,6 +6414,8 @@
 
   // INIT
   applyAssets();
+  setupQuestLoreOverlay();
+  loadQuestZones();
   renderTasks();
   setupQuestCheckboxes();
   updateHeader();
