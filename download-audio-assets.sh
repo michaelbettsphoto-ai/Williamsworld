@@ -4,7 +4,8 @@
 
 set -e
 
-AUDIO_DIR="/home/runner/work/Williamsworld/Williamsworld/assets/audio"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+AUDIO_DIR="${AUDIO_DIR:-$SCRIPT_DIR/assets/audio}"
 
 echo "================================================"
 echo "Williams World - Audio Asset Download Script"
@@ -93,7 +94,7 @@ echo "Step 6: Organize and Copy Files"
 echo "------------------------------------------------"
 echo "Copy your audio files to the appropriate directories:"
 echo ""
-echo "UI Sounds (11 files) -> $AUDIO_DIR/ui/"
+echo "UI Sounds (14 files) -> $AUDIO_DIR/ui/"
 echo "  - button-click-1.mp3, button-click-2.mp3, button-click-3.mp3"
 echo "  - hover-tick.mp3"
 echo "  - panel-open.mp3, panel-close.mp3"

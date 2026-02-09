@@ -109,7 +109,7 @@ audio_files = {
 }
 
 def main():
-    base_dir = '/home/runner/work/Williamsworld/Williamsworld/assets/audio'
+    base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'assets', 'audio')
     
     print("Generating placeholder audio files for Williams World...")
     print("=" * 60)
@@ -145,11 +145,10 @@ def main():
                     created_count += 1
                 else:
                     print(f"  ✗ {filename} (conversion failed)")
-            else:
-                # Just create a WAV as placeholder
-                os.rename(wav_path, mp3_path.replace('.mp3', '.wav'))
-                print(f"  ⚠ {filename.replace('.mp3', '.wav')} (placeholder)")
-                created_count += 1
+        else:
+            # Keep WAV placeholder when ffmpeg is unavailable
+            print(f"  ⚠ {filename.replace('.mp3', '.wav')} (placeholder)")
+            created_count += 1
     
     print()
     print("=" * 60)
