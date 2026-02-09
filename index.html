@@ -1859,6 +1859,306 @@
       min-width: 180px;
     }
   }
+  
+  /* ============================================
+     MORNING MISSION STYLES
+     ============================================ */
+  
+  /* Mission Timer */
+  .missionTimer {
+    background: linear-gradient(135deg, var(--glass-strong-bg), rgba(30,20,50,0.4));
+    backdrop-filter: var(--glass-blur);
+    border: 2px solid var(--golden-border);
+    border-radius: var(--r2);
+    padding: 12px 16px;
+    margin: 12px 0;
+    text-align: center;
+    font-family: var(--fantasy-font);
+    animation: glow 2s ease-in-out infinite;
+  }
+  
+  .missionTimer.locked {
+    background: linear-gradient(135deg, rgba(60,60,60,0.3), rgba(40,40,40,0.3));
+    border-color: #666;
+    animation: none;
+  }
+  
+  .missionTimer.active {
+    background: linear-gradient(135deg, rgba(20,120,20,0.3), rgba(10,80,10,0.3));
+    border-color: var(--green);
+  }
+  
+  .missionTimer.active.warning {
+    background: linear-gradient(135deg, rgba(200,140,20,0.3), rgba(150,100,10,0.3));
+    border-color: var(--gold);
+    animation: pulse 1s ease-in-out infinite;
+  }
+  
+  .missionTimer.active.critical {
+    background: linear-gradient(135deg, rgba(200,20,20,0.3), rgba(150,10,10,0.3));
+    border-color: var(--red);
+    animation: pulse 0.5s ease-in-out infinite;
+  }
+  
+  .missionTimer strong {
+    font-size: 1.4em;
+    color: var(--gold);
+  }
+  
+  .missionTimer .deadline {
+    font-size: 0.85em;
+    opacity: 0.8;
+    display: block;
+    margin-top: 4px;
+  }
+  
+  /* Mission Status Banner */
+  .missionStatusBanner {
+    background: linear-gradient(135deg, var(--glass-strong-bg), rgba(30,20,50,0.4));
+    backdrop-filter: var(--glass-blur);
+    border: 2px solid;
+    border-radius: var(--r2);
+    padding: 12px 16px;
+    margin: 12px 0;
+    text-align: center;
+    font-family: var(--fantasy-font);
+    font-size: 1.1em;
+  }
+  
+  .missionStatusBanner.success {
+    background: linear-gradient(135deg, rgba(20,150,20,0.4), rgba(10,100,10,0.4));
+    border-color: var(--green);
+    animation: celebrate 0.6s ease-out;
+  }
+  
+  .missionStatusBanner.failed {
+    background: linear-gradient(135deg, rgba(150,20,20,0.4), rgba(100,10,10,0.4));
+    border-color: var(--red);
+  }
+  
+  .missionStatusBanner .small {
+    font-size: 0.85em;
+    opacity: 0.9;
+    margin-top: 4px;
+    display: block;
+  }
+  
+  /* Bomb Visual */
+  .bombVisual {
+    background: linear-gradient(135deg, rgba(40,30,60,0.5), rgba(30,20,50,0.5));
+    backdrop-filter: var(--glass-blur);
+    border: 2px solid rgba(200,148,42,0.3);
+    border-radius: var(--r2);
+    padding: 16px;
+    margin: 12px 0;
+    text-align: center;
+  }
+  
+  .bombProgress {
+    font-family: var(--fantasy-font);
+    font-size: 1.1em;
+    margin-bottom: 12px;
+    color: var(--gold);
+  }
+  
+  .bombEmoji {
+    font-size: 3em;
+    margin: 8px 0;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  
+  .bombVisual.disarmed .bombEmoji {
+    animation: none;
+  }
+  
+  .bombVisual.exploded .bombEmoji {
+    animation: william-shake 0.3s ease-in-out 3;
+  }
+  
+  .bombDisarmed,
+  .bombExploded {
+    font-size: 1.5em;
+    font-family: var(--fantasy-font);
+    margin: 12px 0;
+  }
+  
+  .bombDisarmed {
+    color: var(--green);
+    animation: celebrate 0.6s ease-out;
+  }
+  
+  .bombExploded {
+    color: var(--red);
+    animation: william-shake 0.3s ease-in-out;
+  }
+  
+  /* Wires Container */
+  .wiresContainer {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  
+  .wire {
+    width: 60px;
+    height: 8px;
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  
+  .wire::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+    border-radius: 4px;
+  }
+  
+  .wire.cut {
+    height: 4px;
+    opacity: 0.3;
+    transform: scaleX(0.5);
+    box-shadow: none;
+  }
+  
+  /* Wire Badges on Tasks */
+  .wireBadge {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    margin-right: 8px;
+    font-size: 0.9em;
+    border: 2px solid rgba(255,255,255,0.3);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  
+  .wireBadge.cut {
+    opacity: 0.4;
+    border-style: dashed;
+    position: relative;
+  }
+  
+  .wireBadge.cut::after {
+    content: '✂️';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 0.7em;
+  }
+  
+  /* Mission Overlays */
+  .missionOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .missionOverlay.show {
+    opacity: 1;
+  }
+  
+  .missionOverlayContent {
+    background: linear-gradient(135deg, var(--panel), rgba(40,30,60,0.95));
+    border: 3px solid var(--golden-border);
+    border-radius: var(--r1);
+    padding: 40px;
+    max-width: 500px;
+    text-align: center;
+    position: relative;
+    animation: celebrate 0.6s ease-out;
+  }
+  
+  .missionOverlay.failed .missionOverlayContent {
+    border-color: var(--red);
+    animation: william-shake 0.4s ease-in-out;
+  }
+  
+  .williamHero,
+  .williamSooty {
+    font-size: 5em;
+    margin-bottom: 20px;
+    animation: william-bounce-rotate 0.8s ease-out;
+  }
+  
+  .missionOverlay h2 {
+    font-family: var(--fantasy-font);
+    font-size: 2.2em;
+    margin: 0 0 20px;
+    color: var(--gold);
+  }
+  
+  .missionOverlay.failed h2 {
+    color: var(--red);
+  }
+  
+  .missionStats {
+    font-size: 1.1em;
+    line-height: 1.8;
+  }
+  
+  .missionStats > div {
+    margin: 8px 0;
+  }
+  
+  /* Confetti Animation */
+  .confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    animation: confettiFall 3s ease-out forwards;
+  }
+  
+  @keyframes confettiFall {
+    0% {
+      top: -20px;
+      opacity: 1;
+      transform: translateY(0) rotate(0deg);
+    }
+    100% {
+      top: 100%;
+      opacity: 0;
+      transform: translateY(100px) rotate(720deg);
+    }
+  }
+  
+  /* Smoke Animation */
+  .smoke {
+    position: absolute;
+    font-size: 2em;
+    animation: smokeFly 2s ease-out forwards;
+    opacity: 0.8;
+  }
+  
+  @keyframes smokeFly {
+    0% {
+      transform: translateY(0) scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(-100px) scale(2);
+      opacity: 0;
+    }
+  }
 </style>
 
 <!-- Weather Effects Container -->
@@ -2532,6 +2832,32 @@
   
   const COMPANIONS = ["ember", "sprite", "golem"];
 
+  // ============================================
+  // MORNING MISSION CONSTANTS
+  // ============================================
+  const MORNING_MISSION = {
+    TIMEZONE: 'America/Chicago',
+    WINDOW_START_HOUR: 6,  // 6:00 AM
+    WINDOW_START_MIN: 0,
+    DEADLINE_HOUR: 8,       // 8:00 AM
+    DEADLINE_MIN: 0,
+    RESET_HOUR: 4,          // 4:00 AM daily reset
+    RESET_MIN: 0,
+    HP_PER_TASK: 5,         // HP reward per task
+    HP_COMPLETION_BONUS: 10, // Bonus for completing all before deadline
+    STREAK_BONUS_HP: 5,      // HP bonus every 3 consecutive successes
+    STREAK_BONUS_INTERVAL: 3,
+    OVERLAY_FADE_DURATION: 500, // Milliseconds for overlay fade out
+    CONFETTI_COUNT: 30,      // Number of confetti particles
+    SMOKE_PUFF_COUNT: 8,     // Number of smoke puffs
+    WIRE_COLORS: {
+      'm_prayer': { color: '#dc2626', label: 'Red', icon: '🍳' },      // Fire/breakfast
+      'm_dressed': { color: '#22c55e', label: 'Green', icon: '👕' },   // Grass/clothes
+      'm_teeth': { color: '#3b82f6', label: 'Blue', icon: '🪥' },      // Water/teeth
+      'm_trappercheck': { color: '#a855f7', label: 'Purple', icon: '🎒' } // Magic/backpack
+    }
+  };
+
   const $ = (id)=>document.getElementById(id);
   const todayKey = ()=>{
     const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
@@ -2539,6 +2865,101 @@
   const prettyToday = ()=>new Date().toLocaleDateString(undefined,{weekday:"short",month:"short",day:"numeric"});
 
   const xpForLevel = (lvl)=> 100 + (lvl-1)*20;
+
+  // ============================================
+  // TIME UTILITY FUNCTIONS (America/Chicago)
+  // ============================================
+  
+  // Get current date/time in America/Chicago timezone
+  function getChicagoTime() {
+    // Use a more reliable timezone conversion approach
+    const utcDate = new Date();
+    const chicagoTimeString = utcDate.toLocaleString('en-US', { 
+      timeZone: MORNING_MISSION.TIMEZONE,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false
+    });
+    
+    // Parse the formatted string (MM/DD/YYYY, HH:mm:ss format)
+    const parts = chicagoTimeString.match(/(\d+)\/(\d+)\/(\d+),\s+(\d+):(\d+):(\d+)/);
+    if (parts) {
+      return new Date(parts[3], parts[1] - 1, parts[2], parts[4], parts[5], parts[6]);
+    }
+    
+    // Fallback to UTC if parsing fails
+    return utcDate;
+  }
+  
+  // Get today's date key in Chicago timezone
+  function getChicagoDateKey() {
+    const d = getChicagoTime();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  }
+  
+  // Check if current time is within morning window (6:00-8:00 AM Chicago)
+  function isInMorningWindow() {
+    const now = getChicagoTime();
+    const hour = now.getHours();
+    const min = now.getMinutes();
+    
+    const afterStart = (hour > MORNING_MISSION.WINDOW_START_HOUR) || 
+                       (hour === MORNING_MISSION.WINDOW_START_HOUR && min >= MORNING_MISSION.WINDOW_START_MIN);
+    const beforeDeadline = (hour < MORNING_MISSION.DEADLINE_HOUR) || 
+                           (hour === MORNING_MISSION.DEADLINE_HOUR && min < MORNING_MISSION.DEADLINE_MIN);
+    
+    return afterStart && beforeDeadline;
+  }
+  
+  // Check if deadline has passed
+  function isMorningDeadlinePassed() {
+    const now = getChicagoTime();
+    const hour = now.getHours();
+    const min = now.getMinutes();
+    
+    return (hour > MORNING_MISSION.DEADLINE_HOUR) || 
+           (hour === MORNING_MISSION.DEADLINE_HOUR && min >= MORNING_MISSION.DEADLINE_MIN);
+  }
+  
+  // Check if before morning window
+  function isBeforeMorningWindow() {
+    const now = getChicagoTime();
+    const hour = now.getHours();
+    const min = now.getMinutes();
+    
+    return (hour < MORNING_MISSION.WINDOW_START_HOUR) || 
+           (hour === MORNING_MISSION.WINDOW_START_HOUR && min < MORNING_MISSION.WINDOW_START_MIN);
+  }
+  
+  // Get time remaining until deadline (in milliseconds)
+  function getTimeUntilDeadline() {
+    const now = getChicagoTime();
+    const deadline = new Date(now);
+    deadline.setHours(MORNING_MISSION.DEADLINE_HOUR, MORNING_MISSION.DEADLINE_MIN, 0, 0);
+    
+    // If deadline already passed today, return 0
+    if (deadline <= now) return 0;
+    
+    return deadline - now;
+  }
+  
+  // Format time remaining as MM:SS
+  function formatTimeRemaining(ms) {
+    if (ms <= 0) return '00:00';
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
+  
+  // Get mission window string for tooltips
+  function getMissionWindowString() {
+    return `Morning Mission runs ${MORNING_MISSION.WINDOW_START_HOUR}:00–${MORNING_MISSION.DEADLINE_HOUR}:00 AM.`;
+  }
 
   // ============================================
   // AUDIO MANAGER - Centralized sound system
@@ -2835,6 +3256,14 @@
       if (data.hp === undefined) data.hp = 100;
       // Ensure warChest exists
       if (data.warChest === undefined) data.warChest = 0;
+      // Ensure morningMission exists
+      if (!data.morningMission) {
+        data.morningMission = {
+          streak: 0,
+          lastCompletionDate: null,
+          dailyState: {} // date -> { status, completedTasks, completionBonus, startTime, endTime }
+        };
+      }
       return data;
     }catch{
       return { 
@@ -2848,6 +3277,11 @@
           ember: { level: 3, xp: 0 },
           sprite: { level: 3, xp: 0 },
           golem: { level: 3, xp: 0 }
+        },
+        morningMission: {
+          streak: 0,
+          lastCompletionDate: null,
+          dailyState: {}
         }
       };
     }
@@ -2858,6 +3292,206 @@
     const el=$("toast"); el.textContent=msg; el.style.display="block";
     clearTimeout(toast._t); toast._t=setTimeout(()=>el.style.display="none", 2500);
   }
+  
+  // ============================================
+  // MORNING MISSION STATE MANAGEMENT
+  // ============================================
+  
+  // Get or create today's morning mission state
+  function getTodayMissionState() {
+    const today = getChicagoDateKey();
+    if (!state.morningMission.dailyState[today]) {
+      state.morningMission.dailyState[today] = {
+        status: 'not_started',  // not_started, in_progress, completed, failed, expired
+        completedTasks: {},      // taskId -> timestamp
+        completionBonus: false,
+        startTime: null,
+        endTime: null
+      };
+    }
+    return state.morningMission.dailyState[today];
+  }
+  
+  // ============================================
+  // GENERAL TASK ANTI-SPAM PROTECTION
+  // ============================================
+  
+  // Track all task completions for the day (not just morning tasks)
+  function getTodayTaskCompletions() {
+    const today = todayKey();
+    const day = state.days[today];
+    if (!day.taskCompletions) {
+      day.taskCompletions = {}; // taskId -> timestamp
+    }
+    return day.taskCompletions;
+  }
+  
+  // Check if ANY task was already completed today (idempotent check)
+  function isTaskCompletedToday(taskId) {
+    const completions = getTodayTaskCompletions();
+    return !!completions[taskId];
+  }
+  
+  // Mark any task as completed for today (returns false if already completed)
+  function markTaskCompletedToday(taskId) {
+    const completions = getTodayTaskCompletions();
+    
+    // Anti-spam: already completed today
+    if (completions[taskId]) {
+      return false;
+    }
+    
+    // Mark as completed
+    completions[taskId] = Date.now();
+    save();
+    return true;
+  }
+  
+  // Check if a specific morning task was completed today
+  function isMorningTaskCompletedToday(taskId) {
+    const missionState = getTodayMissionState();
+    return !!missionState.completedTasks[taskId];
+  }
+  
+  // Mark morning task as completed (returns false if already completed today)
+  function markMorningTaskCompleted(taskId) {
+    const missionState = getTodayMissionState();
+    
+    // Anti-spam: already completed today
+    if (missionState.completedTasks[taskId]) {
+      return false;
+    }
+    
+    // Check time window
+    if (!isInMorningWindow()) {
+      return false;
+    }
+    
+    // Mark as completed
+    missionState.completedTasks[taskId] = Date.now();
+    if (missionState.status === 'not_started') {
+      missionState.status = 'in_progress';
+      missionState.startTime = Date.now();
+    }
+    
+    save();
+    return true;
+  }
+  
+  // Get count of completed morning tasks today
+  function getMorningTasksCompletedCount() {
+    const missionState = getTodayMissionState();
+    return Object.keys(missionState.completedTasks).length;
+  }
+  
+  // Check if all morning tasks are complete
+  function areAllMorningTasksComplete() {
+    const morningTaskIds = TASKS.filter(t => t.quest === 'morning').map(t => t.id);
+    const missionState = getTodayMissionState();
+    return morningTaskIds.every(id => missionState.completedTasks[id]);
+  }
+  
+  // Complete the morning mission (all tasks done before deadline)
+  function completeMorningMission() {
+    const missionState = getTodayMissionState();
+    
+    if (missionState.status === 'completed' || missionState.completionBonus) {
+      return; // Already completed
+    }
+    
+    if (!areAllMorningTasksComplete()) {
+      return; // Not all tasks complete
+    }
+    
+    if (isMorningDeadlinePassed()) {
+      return; // Too late
+    }
+    
+    // Award completion bonus
+    missionState.status = 'completed';
+    missionState.completionBonus = true;
+    missionState.endTime = Date.now();
+    
+    state.hp += MORNING_MISSION.HP_COMPLETION_BONUS;
+    const maxHP = getMaxHP();
+    if (state.hp > maxHP) state.hp = maxHP;
+    
+    // Update streak
+    const today = getChicagoDateKey();
+    const yesterday = getYesterdayDateKey();
+    
+    // Only update streak if this is genuinely a new completion (not same-day re-check)
+    if (state.morningMission.lastCompletionDate === yesterday) {
+      state.morningMission.streak += 1;
+    } else if (state.morningMission.lastCompletionDate !== today) {
+      // First completion or broken streak
+      state.morningMission.streak = 1;
+    }
+    // If lastCompletionDate === today, keep streak unchanged (same-day completion check)
+    
+    state.morningMission.lastCompletionDate = today;
+    
+    // Streak bonus every 3 days
+    if (state.morningMission.streak % MORNING_MISSION.STREAK_BONUS_INTERVAL === 0) {
+      state.hp += MORNING_MISSION.STREAK_BONUS_HP;
+      if (state.hp > maxHP) state.hp = maxHP;
+      toast(`🎉 Mission Complete! +${MORNING_MISSION.HP_COMPLETION_BONUS} HP + Streak +${MORNING_MISSION.STREAK_BONUS_HP} HP!`);
+    } else {
+      toast(`🎉 Morning Mission Complete! +${MORNING_MISSION.HP_COMPLETION_BONUS} HP`);
+    }
+    
+    save();
+    updateMorningMissionUI();
+    showMorningMissionSuccess();
+  }
+  
+  // Fail the morning mission (deadline passed with incomplete tasks)
+  function failMorningMission() {
+    const missionState = getTodayMissionState();
+    
+    if (missionState.status === 'failed' || missionState.status === 'completed') {
+      return; // Already processed
+    }
+    
+    if (areAllMorningTasksComplete()) {
+      return; // Actually completed
+    }
+    
+    missionState.status = 'failed';
+    missionState.endTime = Date.now();
+    
+    // Reset streak
+    state.morningMission.streak = 0;
+    
+    save();
+    updateMorningMissionUI();
+    showMorningMissionFailed();
+  }
+  
+  // Get yesterday's date key
+  function getYesterdayDateKey() {
+    const now = getChicagoTime();
+    const yesterday = new Date(now);
+    yesterday.setDate(yesterday.getDate() - 1);
+    return `${yesterday.getFullYear()}-${String(yesterday.getMonth()+1).padStart(2,"0")}-${String(yesterday.getDate()).padStart(2,"0")}`;
+  }
+  
+  // Check and update morning mission status based on time
+  function checkMorningMissionStatus() {
+    const missionState = getTodayMissionState();
+    
+    if (missionState.status === 'completed' || missionState.status === 'failed') {
+      return; // Already finalized
+    }
+    
+    // Check if all tasks are complete
+    if (areAllMorningTasksComplete() && !isMorningDeadlinePassed()) {
+      completeMorningMission();
+    } else if (isMorningDeadlinePassed() && !areAllMorningTasksComplete()) {
+      failMorningMission();
+    }
+  }
+  
   
   // Show floating XP animation
   function showFloatingXP(amount, x, y) {
@@ -2944,6 +3578,248 @@
       overlay.classList.remove('show');
     }, 3000);
   }
+  
+  // ============================================
+  // MORNING MISSION UI FUNCTIONS
+  // ============================================
+  
+  // Update Morning Mission UI
+  function updateMorningMissionUI() {
+    const questCard = $('questMorning');
+    if (!questCard) return;
+    
+    const missionState = getTodayMissionState();
+    const morningTaskIds = TASKS.filter(t => t.quest === 'morning').map(t => t.id);
+    const completedCount = getMorningTasksCompletedCount();
+    const totalCount = morningTaskIds.length;
+    
+    // Update timer and status banner
+    let timerEl = questCard.querySelector('.missionTimer');
+    let statusBanner = questCard.querySelector('.missionStatusBanner');
+    let bombVisual = questCard.querySelector('.bombVisual');
+    
+    // Create elements if they don't exist
+    if (!timerEl) {
+      timerEl = document.createElement('div');
+      timerEl.className = 'missionTimer';
+      questCard.insertBefore(timerEl, questCard.querySelector('.questChecklist'));
+    }
+    
+    if (!statusBanner) {
+      statusBanner = document.createElement('div');
+      statusBanner.className = 'missionStatusBanner';
+      questCard.insertBefore(statusBanner, questCard.querySelector('.questChecklist'));
+    }
+    
+    if (!bombVisual) {
+      bombVisual = document.createElement('div');
+      bombVisual.className = 'bombVisual';
+      questCard.insertBefore(bombVisual, questCard.querySelector('.questChecklist'));
+    }
+    
+    // Update based on status
+    if (missionState.status === 'completed') {
+      timerEl.style.display = 'none';
+      statusBanner.style.display = 'block';
+      statusBanner.className = 'missionStatusBanner success';
+      statusBanner.textContent = '🎉 Morning Mission Complete!';
+      bombVisual.innerHTML = '<div class="bombDisarmed">💚 DISARMED</div>';
+      bombVisual.className = 'bombVisual disarmed';
+    } else if (missionState.status === 'failed') {
+      timerEl.style.display = 'none';
+      statusBanner.style.display = 'block';
+      statusBanner.className = 'missionStatusBanner failed';
+      const missedTasks = morningTaskIds.filter(id => !missionState.completedTasks[id])
+        .map(id => TASKS.find(t => t.id === id).label.replace('Morning: ', ''))
+        .join(', ');
+      statusBanner.innerHTML = `💥 Morning Mission Failed<br><span class="small">You missed: ${missedTasks}</span>`;
+      bombVisual.innerHTML = '<div class="bombExploded">💥 BOOM!</div>';
+      bombVisual.className = 'bombVisual exploded';
+    } else if (isBeforeMorningWindow()) {
+      timerEl.style.display = 'block';
+      timerEl.className = 'missionTimer locked';
+      timerEl.textContent = '🔒 Opens at 6:00 AM';
+      statusBanner.style.display = 'none';
+      updateBombWires(bombVisual, completedCount, totalCount);
+    } else if (isMorningDeadlinePassed()) {
+      // Deadline passed, check status
+      checkMorningMissionStatus();
+    } else if (isInMorningWindow()) {
+      // Active mission
+      timerEl.style.display = 'block';
+      const remaining = getTimeUntilDeadline();
+      const formatted = formatTimeRemaining(remaining);
+      
+      // Color based on urgency
+      let urgency = 'normal';
+      if (remaining < 2 * 60 * 1000) urgency = 'critical'; // < 2 minutes
+      else if (remaining < 10 * 60 * 1000) urgency = 'warning'; // < 10 minutes
+      
+      timerEl.className = `missionTimer active ${urgency}`;
+      timerEl.innerHTML = `⏱️ Time Left: <strong>${formatted}</strong><br><span class="deadline">Mission ends at ${MORNING_MISSION.DEADLINE_HOUR}:00 AM</span>`;
+      statusBanner.style.display = 'none';
+      updateBombWires(bombVisual, completedCount, totalCount);
+    } else {
+      timerEl.style.display = 'none';
+      statusBanner.style.display = 'none';
+      updateBombWires(bombVisual, completedCount, totalCount);
+    }
+    
+    // Update wire colors on task items
+    morningTaskIds.forEach(taskId => {
+      const checkItem = document.querySelector(`.checkItem[data-task="${taskId}"]`);
+      if (!checkItem) return;
+      
+      const wireColor = MORNING_MISSION.WIRE_COLORS[taskId];
+      if (!wireColor) return;
+      
+      let wireBadge = checkItem.querySelector('.wireBadge');
+      if (!wireBadge) {
+        wireBadge = document.createElement('span');
+        wireBadge.className = 'wireBadge';
+        checkItem.insertBefore(wireBadge, checkItem.querySelector('span'));
+      }
+      
+      wireBadge.textContent = wireColor.icon;
+      wireBadge.style.background = wireColor.color;
+      wireBadge.title = `${wireColor.label} wire`;
+      
+      if (isMorningTaskCompletedToday(taskId)) {
+        wireBadge.classList.add('cut');
+      } else {
+        wireBadge.classList.remove('cut');
+      }
+    });
+  }
+  
+  // Update bomb visual with wires
+  function updateBombWires(bombVisual, completedCount, totalCount) {
+    if (!bombVisual) return;
+    
+    bombVisual.className = 'bombVisual active';
+    bombVisual.innerHTML = '';
+    
+    const morningTaskIds = TASKS.filter(t => t.quest === 'morning').map(t => t.id);
+    const missionState = getTodayMissionState();
+    
+    // Progress indicator
+    const progress = document.createElement('div');
+    progress.className = 'bombProgress';
+    progress.innerHTML = `<strong>Wires Cut: ${completedCount}/${totalCount}</strong>`;
+    bombVisual.appendChild(progress);
+    
+    // Bomb emoji
+    const bomb = document.createElement('div');
+    bomb.className = 'bombEmoji';
+    bomb.textContent = '💣';
+    bombVisual.appendChild(bomb);
+    
+    // Wires
+    const wiresContainer = document.createElement('div');
+    wiresContainer.className = 'wiresContainer';
+    
+    morningTaskIds.forEach(taskId => {
+      const wireInfo = MORNING_MISSION.WIRE_COLORS[taskId];
+      if (!wireInfo) return;
+      
+      const wire = document.createElement('div');
+      wire.className = 'wire';
+      if (missionState.completedTasks[taskId]) {
+        wire.classList.add('cut');
+      }
+      wire.style.background = wireInfo.color;
+      wire.title = `${wireInfo.label} wire - ${TASKS.find(t => t.id === taskId).label.replace('Morning: ', '')}`;
+      
+      wiresContainer.appendChild(wire);
+    });
+    
+    bombVisual.appendChild(wiresContainer);
+  }
+  
+  // Show mission success animation
+  function showMorningMissionSuccess() {
+    const overlay = document.createElement('div');
+    overlay.className = 'missionOverlay success';
+    overlay.innerHTML = `
+      <div class="missionOverlayContent">
+        <div class="williamHero">🦸</div>
+        <h2>Morning Mission Complete!</h2>
+        <div class="missionStats">
+          <div>✅ All tasks complete before deadline</div>
+          <div>💚 +${MORNING_MISSION.HP_COMPLETION_BONUS} HP Bonus</div>
+          <div>🔥 Streak: ${state.morningMission.streak} days</div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    
+    // Confetti effect
+    for (let i = 0; i < MORNING_MISSION.CONFETTI_COUNT; i++) {
+      setTimeout(() => {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+        const colors = ['#ffd36e', '#7dffb4', '#ff9d5c', '#d4a530', '#7c3aed'];
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        overlay.querySelector('.missionOverlayContent').appendChild(confetti);
+      }, i * 20);
+    }
+    
+    setTimeout(() => {
+      overlay.classList.add('show');
+    }, 100);
+    
+    setTimeout(() => {
+      overlay.classList.remove('show');
+      setTimeout(() => overlay.remove(), MORNING_MISSION.OVERLAY_FADE_DURATION);
+    }, 3500);
+  }
+  
+  // Show mission failed animation
+  function showMorningMissionFailed() {
+    const overlay = document.createElement('div');
+    overlay.className = 'missionOverlay failed';
+    
+    const morningTaskIds = TASKS.filter(t => t.quest === 'morning').map(t => t.id);
+    const missionState = getTodayMissionState();
+    const missedTasks = morningTaskIds.filter(id => !missionState.completedTasks[id])
+      .map(id => TASKS.find(t => t.id === id).label.replace('Morning: ', ''));
+    
+    overlay.innerHTML = `
+      <div class="missionOverlayContent">
+        <div class="williamSooty">😅💨</div>
+        <h2>Morning Mission Failed</h2>
+        <div class="missionStats">
+          <div>⏰ Deadline passed at ${MORNING_MISSION.DEADLINE_HOUR}:00 AM</div>
+          <div>📋 You missed: ${missedTasks.join(', ')}</div>
+          <div>🔄 Try again tomorrow!</div>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+    
+    // Smoke puffs
+    for (let i = 0; i < MORNING_MISSION.SMOKE_PUFF_COUNT; i++) {
+      setTimeout(() => {
+        const smoke = document.createElement('div');
+        smoke.className = 'smoke';
+        smoke.textContent = '💨';
+        smoke.style.left = 45 + Math.random() * 10 + '%';
+        smoke.style.animationDelay = Math.random() * 0.3 + 's';
+        overlay.querySelector('.missionOverlayContent').appendChild(smoke);
+      }, i * 100);
+    }
+    
+    setTimeout(() => {
+      overlay.classList.add('show');
+    }, 100);
+    
+    setTimeout(() => {
+      overlay.classList.remove('show');
+      setTimeout(() => overlay.remove(), MORNING_MISSION.OVERLAY_FADE_DURATION);
+    }, 4000);
+  }
 
   function applyAssets(){
     const bannerEl = document.querySelector("#ww [data-banner]");
@@ -2981,8 +3857,16 @@
   const TODAY = todayKey();
   function getMaxHP() { return 100 + (state.streak * HP_PER_STREAK); }
   if(!state.days[TODAY]){
-    state.days[TODAY]={ tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), result:"Not graded" };
+    state.days[TODAY]={ 
+      tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), 
+      result:"Not graded",
+      taskCompletions: {} // Track task completion timestamps for anti-spam
+    };
     save();
+  }
+  // Ensure taskCompletions exists for existing days
+  if (!state.days[TODAY].taskCompletions) {
+    state.days[TODAY].taskCompletions = {};
   }
 
   // Calculate damage for incomplete tasks in a day
@@ -3347,10 +4231,59 @@
       // Add change handler
       checkbox.addEventListener('change', (e) => {
         const wasChecked = day.tasks[task.id] === true;
+        
+        // UNIVERSAL ANTI-SPAM PROTECTION FOR ALL TASKS
+        // Check if already completed today (prevents check/uncheck/check exploit)
+        if (checkbox.checked && isTaskCompletedToday(task.id)) {
+          toast("Already done today ✅");
+          checkbox.checked = true; // Keep checked
+          return;
+        }
+        
+        // MORNING MISSION-SPECIFIC TIME WINDOW CHECK
+        if (task.quest === 'morning' && checkbox.checked && !wasChecked) {
+          if (isBeforeMorningWindow()) {
+            toast(getMissionWindowString());
+            checkbox.checked = false;
+            return;
+          }
+          if (isMorningDeadlinePassed()) {
+            toast("Morning Mission closed. Try again tomorrow.");
+            checkbox.checked = false;
+            return;
+          }
+          if (!isInMorningWindow()) {
+            toast(getMissionWindowString());
+            checkbox.checked = false;
+            return;
+          }
+        }
+        
         day.tasks[task.id] = checkbox.checked;
         
         if (!wasChecked && checkbox.checked) {
-          // Task just completed
+          // Mark task as completed for today (anti-spam)
+          const completedNow = markTaskCompletedToday(task.id);
+          if (!completedNow) {
+            // Should not happen due to check above, but safety check
+            toast("Already done today ✅");
+            return;
+          }
+          
+          // Task just completed - award rewards
+          let hpAwarded = 0;
+          
+          // Morning task HP rewards
+          if (task.quest === 'morning') {
+            const success = markMorningTaskCompleted(task.id);
+            if (success) {
+              hpAwarded = MORNING_MISSION.HP_PER_TASK;
+              state.hp += hpAwarded;
+              const maxHP = getMaxHP();
+              if (state.hp > maxHP) state.hp = maxHP;
+            }
+          }
+          
           state.xp += task.xp;
           addCompanionXP(task.xp / 3); // Companions get 1/3 of player XP
           state.warChest += Math.floor(task.xp * WAR_CHEST_XP_RATE);
@@ -3360,10 +4293,20 @@
           const rect = checkItem.getBoundingClientRect();
           showFloatingXP(task.xp, rect.left + rect.width / 2, rect.top);
           
-          toast(`+${task.xp} XP Earned!`);
+          // Toast with HP if morning task
+          if (hpAwarded > 0) {
+            toast(`+${task.xp} XP + ${hpAwarded} HP! ❤️`);
+            // Check if mission complete
+            checkMorningMissionStatus();
+            updateMorningMissionUI();
+          } else {
+            toast(`+${task.xp} XP Earned!`);
+          }
+          
           checkItem.classList.add('completed');
         } else if (wasChecked && !checkbox.checked) {
-          // Task unchecked
+          // Task unchecked - do NOT remove completion flag (idempotent)
+          // User can uncheck visually, but won't get rewards again
           checkItem.classList.remove('completed');
         }
         
@@ -3379,6 +4322,9 @@
     ['night', 'morning', 'backpack'].forEach(questType => {
       updateQuestProgress(questType);
     });
+    
+    // Initialize Morning Mission UI
+    updateMorningMissionUI();
   }
   
   // Sync quest checkboxes with state (called from renderTasks)
@@ -5019,6 +5965,32 @@
   renderTasks();
   setupQuestCheckboxes();
   updateHeader();
+  
+  // ============================================
+  // MORNING MISSION TIMER LOOP
+  // ============================================
+  
+  // Update timer every second, but only when needed
+  let missionTimerInterval = setInterval(() => {
+    const now = getChicagoTime();
+    const hour = now.getHours();
+    
+    // Only run during relevant hours (5 AM to 9 AM for some buffer)
+    if (hour >= 5 && hour <= 9) {
+      if (isInMorningWindow()) {
+        updateMorningMissionUI();
+        checkMorningMissionStatus();
+      } else if (isMorningDeadlinePassed() && hour < 9) {
+        const missionState = getTodayMissionState();
+        if (missionState.status !== 'completed' && missionState.status !== 'failed') {
+          checkMorningMissionStatus();
+        }
+      }
+    }
+  }, 1000);
+  
+  // Initial status check
+  checkMorningMissionStatus();
 </script>
 
 </body>
