@@ -505,7 +505,7 @@
       <div>
         <div class="eyebrow">Battle System Demo</div>
         <h1>Battle first. Click first.</h1>
-        <p class="subtitle">Kid-first 3v3 arena that uses only in-repo art, cards, and icons.</p>
+        <p class="subtitle">Kid-first 3v3 arena—tap big buttons and watch your squad battle.</p>
       </div>
     </header>
 
@@ -597,6 +597,10 @@
       poison: '/assets/img/zone3.svg',
       shock: '/assets/img/ember.svg'
     };
+
+    const SPELL_BASE_DAMAGE = 18;
+    const MIN_ATTACK_DAMAGE = 10;
+    const SPEED_TO_DAMAGE_RATIO = 2.5;
 
     async function init() {
       try {
@@ -732,13 +736,12 @@
         addStatus(actorEntry.fighter, 'shield');
         message = `${actorEntry.fighter.name} throws up a shield!`;
       } else if (action === 'spell') {
-        const dmg = 18;
-        target.hp = Math.max(0, target.hp - dmg);
+        target.hp = Math.max(0, target.hp - SPELL_BASE_DAMAGE);
         addStatus(target, 'stun');
         addStatus(target, 'shock');
-        message = `${actorEntry.fighter.name} casts a spell for ${dmg} dmg!`;
+        message = `${actorEntry.fighter.name} casts a spell for ${SPELL_BASE_DAMAGE} dmg!`;
       } else {
-        const dmg = Math.max(10, Math.round(actorEntry.fighter.speed / 2.5));
+        const dmg = Math.max(MIN_ATTACK_DAMAGE, Math.round(actorEntry.fighter.speed / SPEED_TO_DAMAGE_RATIO));
         target.hp = Math.max(0, target.hp - dmg);
         message = `${actorEntry.fighter.name} attacks ${target.name} for ${dmg} dmg!`;
       }
