@@ -600,7 +600,7 @@
 
     const SPELL_BASE_DAMAGE = 18;
     const MIN_ATTACK_DAMAGE = 10;
-    const SPEED_TO_DAMAGE_RATIO = 2.5;
+    const SPEED_TO_DAMAGE_RATIO = 2.5; // Demo pacing: faster units hit slightly harder
 
     async function init() {
       try {
@@ -728,8 +728,11 @@
       if (!simulator) return init();
       const actorEntry = turnOrder[activeTurnIndex];
       const targetTeam = actorEntry.side === 'left' ? teams.right : teams.left;
-      const target = targetTeam.find(f => f.hp > 0) || targetTeam[0];
-      if (!target) return;
+      const target = targetTeam.find(f => f.hp > 0);
+      if (!target) {
+        updateCallout('No rivals left to target!');
+        return;
+      }
 
       let message = `${actorEntry.fighter.name} acts!`;
       if (action === 'shield') {
@@ -772,7 +775,7 @@
         trapper: ['shield'],
         sparkfin: ['shock'],
         glowmoss: ['poison']
-      };
+      }; // Demo badges that mirror each hero's theme
       return defaults[id] || ['shield'];
     }
 
