@@ -3311,6 +3311,41 @@
     return state.morningMission.dailyState[today];
   }
   
+  // ============================================
+  // GENERAL TASK ANTI-SPAM PROTECTION
+  // ============================================
+  
+  // Track all task completions for the day (not just morning tasks)
+  function getTodayTaskCompletions() {
+    const today = todayKey();
+    const day = state.days[today];
+    if (!day.taskCompletions) {
+      day.taskCompletions = {}; // taskId -> timestamp
+    }
+    return day.taskCompletions;
+  }
+  
+  // Check if ANY task was already completed today (idempotent check)
+  function isTaskCompletedToday(taskId) {
+    const completions = getTodayTaskCompletions();
+    return !!completions[taskId];
+  }
+  
+  // Mark any task as completed for today (returns false if already completed)
+  function markTaskCompletedToday(taskId) {
+    const completions = getTodayTaskCompletions();
+    
+    // Anti-spam: already completed today
+    if (completions[taskId]) {
+      return false;
+    }
+    
+    // Mark as completed
+    completions[taskId] = Date.now();
+    save();
+    return true;
+  }
+  
   // Check if a specific morning task was completed today
   function isMorningTaskCompletedToday(taskId) {
     const missionState = getTodayMissionState();
@@ -3821,8 +3856,16 @@
   const TODAY = todayKey();
   function getMaxHP() { return 100 + (state.streak * HP_PER_STREAK); }
   if(!state.days[TODAY]){
-    state.days[TODAY]={ tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), result:"Not graded" };
+    state.days[TODAY]={ 
+      tasks:Object.fromEntries(TASKS.map(t=>[t.id,false])), 
+      result:"Not graded",
+      taskCompletions: {} // Track task completion timestamps for anti-spam
+    };
     save();
+  }
+  // Ensure taskCompletions exists for existing days
+  if (!state.days[TODAY].taskCompletions) {
+    state.days[TODAY].taskCompletions = {};
   }
 
   // Calculate damage for incomplete tasks in a day
@@ -4188,40 +4231,45 @@
       checkbox.addEventListener('change', (e) => {
         const wasChecked = day.tasks[task.id] === true;
         
-        // MORNING MISSION ANTI-SPAM LOGIC
-        if (task.quest === 'morning') {
-          // Check if already completed today
-          if (isMorningTaskCompletedToday(task.id) && checkbox.checked) {
-            // Anti-spam: already done today
-            toast("Already done today ✅");
-            checkbox.checked = true; // Keep checked
+        // UNIVERSAL ANTI-SPAM PROTECTION FOR ALL TASKS
+        // Check if already completed today (prevents check/uncheck/check exploit)
+        if (checkbox.checked && isTaskCompletedToday(task.id)) {
+          toast("Already done today ✅");
+          checkbox.checked = true; // Keep checked
+          return;
+        }
+        
+        // MORNING MISSION-SPECIFIC TIME WINDOW CHECK
+        if (task.quest === 'morning' && checkbox.checked && !wasChecked) {
+          if (isBeforeMorningWindow()) {
+            toast(getMissionWindowString());
+            checkbox.checked = false;
             return;
           }
-          
-          // Check time window
-          if (checkbox.checked && !wasChecked) {
-            if (isBeforeMorningWindow()) {
-              toast(getMissionWindowString());
-              checkbox.checked = false;
-              return;
-            }
-            if (isMorningDeadlinePassed()) {
-              toast("Morning Mission closed. Try again tomorrow.");
-              checkbox.checked = false;
-              return;
-            }
-            if (!isInMorningWindow()) {
-              toast(getMissionWindowString());
-              checkbox.checked = false;
-              return;
-            }
+          if (isMorningDeadlinePassed()) {
+            toast("Morning Mission closed. Try again tomorrow.");
+            checkbox.checked = false;
+            return;
+          }
+          if (!isInMorningWindow()) {
+            toast(getMissionWindowString());
+            checkbox.checked = false;
+            return;
           }
         }
         
         day.tasks[task.id] = checkbox.checked;
         
         if (!wasChecked && checkbox.checked) {
-          // Task just completed
+          // Mark task as completed for today (anti-spam)
+          const completedNow = markTaskCompletedToday(task.id);
+          if (!completedNow) {
+            // Should not happen due to check above, but safety check
+            toast("Already done today ✅");
+            return;
+          }
+          
+          // Task just completed - award rewards
           let hpAwarded = 0;
           
           // Morning task HP rewards
@@ -4256,7 +4304,8 @@
           
           checkItem.classList.add('completed');
         } else if (wasChecked && !checkbox.checked) {
-          // Task unchecked
+          // Task unchecked - do NOT remove completion flag (idempotent)
+          // User can uncheck visually, but won't get rewards again
           checkItem.classList.remove('completed');
         }
         
