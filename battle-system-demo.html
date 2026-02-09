@@ -769,7 +769,7 @@
         sparkfin: ['shock'],
         glowmoss: ['poison']
       };
-      return defaults[id] || defaults.trapper;
+      return defaults[id] || ['shield'];
     }
 
     function getPortrait(id) {
@@ -889,8 +889,7 @@
         text += attackType.padEnd(20);
         types.forEach(defType => {
           const eff = chart[attackType][defType];
-          const display = eff.toFixed(1);
-          text += display.padEnd(6);
+          text += eff.toFixed(1).padEnd(6);
         });
         text += '\n';
       });
