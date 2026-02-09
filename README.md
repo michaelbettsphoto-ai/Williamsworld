@@ -25,7 +25,7 @@ An interactive quest tracker and gamification system that helps track daily task
 - **🎯 18+ Keywords**: Standardized effects (Damage, Heal, Shield, Stun, Poison, etc.)
 - **📊 Type Chart**: Strategic elemental matchups with SUPER/RESIST feedback
 - **🌟 Progression**: 3-rank system (Starter → Expert → Legendary)
-- **🎮 Interactive Demo**: Try the battle simulator at `/battle-system-demo.html`
+- **🎮 Interactive Demo**: Try the battle simulator at `./battle-system-demo.html`
 
 ## 🎯 How It Works
 
@@ -69,8 +69,9 @@ That's it! No dependencies or build process needed.
 
 ```
 assets/
-├── ui/          # UI elements (banner, logo, map)
-├── img/         # Game images (companions, zones)
+├── images/      # UI + game images (banner, logo, companions, zones)
+├── css/         # Shared stylesheets
+├── js/          # Shared scripts
 └── icons/       # Icon assets
 
 assets/audio/
@@ -86,11 +87,7 @@ battle-system/   # NEW: Character cards and battle mechanics
 ├── data/
 │   ├── game-constants.json # Roles, types, keywords, type chart
 │   └── characters/         # Character card data (JSON)
-├── logic/
-│   ├── battle-engine.js    # Core battle mechanics
-│   └── battle-simulator.js # Testing utilities
 └── ui/
-    ├── character-cards.css # Complete UI component library
     ├── card-templates.html # Visual component examples
     └── README.md           # UI component documentation
 ```
@@ -152,11 +149,11 @@ python3 generate-placeholder-audio.py
 - Add your own character images in the `assets/` directory
 
 ### Battle System
-- Create new characters using the JSON template in `/battle-system/data/characters/`
+- Create new characters using the JSON template in `./battle-system/data/characters/`
 - Add new element types by updating `game-constants.json`
-- Customize UI components in `/battle-system/ui/character-cards.css`
-- Extend battle mechanics in `/battle-system/logic/battle-engine.js`
-- See `/battle-system/IMPLEMENTATION_GUIDE.md` for detailed instructions
+- Customize UI components in `./assets/css/character-cards.css`
+- Extend battle mechanics in `./assets/js/battle-system/battle-engine.js`
+- See `./battle-system/IMPLEMENTATION_GUIDE.md` for detailed instructions
 
 ## 🖼️ Images & Assets
 

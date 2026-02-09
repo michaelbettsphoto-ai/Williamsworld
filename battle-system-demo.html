@@ -6,6 +6,7 @@
   <title>William's World - Battle System Demo</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js" integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="stylesheet" href="/battle-system/ui/character-cards.css">
+  <link rel="stylesheet" href="./assets/css/character-cards.css">
   <style>
     :root {
       --bg: #0f0a1c;
@@ -27,7 +28,7 @@
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       background:
         linear-gradient(135deg, rgba(16, 9, 31, 0.9), rgba(36, 20, 70, 0.9)),
-        url('/assets/ui/background.jpg') center/cover fixed;
+        url('./assets/images/background.jpg') center/cover fixed;
       color: var(--text);
       min-height: 100vh;
       padding: 24px;
@@ -51,7 +52,7 @@
       width: 72px;
       height: 72px;
       border-radius: 20px;
-      background: url('/assets/ui/williamsworldlogo.png') center/cover;
+      background: url('./assets/images/williamsworldlogo.png') center/cover;
       box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
 
@@ -87,7 +88,7 @@
     .battle-hero {
       background:
         linear-gradient(135deg, rgba(8, 5, 18, 0.7), rgba(34, 18, 58, 0.7)),
-        url('/assets/ui/banner_1600x700.png') center/cover;
+        url('./assets/images/banner_1600x700.png') center/cover;
       position: relative;
       overflow: hidden;
     }
@@ -118,7 +119,7 @@
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.12);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
-      background-image: url('/assets/ui/mapstrip_1600x400.png');
+      background-image: url('./assets/images/mapstrip_1600x400.png');
       background-size: cover;
       flex: 1;
     }
@@ -343,7 +344,7 @@
       transition: width 0.35s ease;
       background-image:
         linear-gradient(90deg, rgba(255,255,255,0.2) 0%, transparent 20%),
-        url('/assets/ui/mapstrip.svg');
+        url('./assets/images/mapstrip.svg');
       background-size: auto 100%;
     }
 
@@ -559,8 +560,8 @@
     </section>
   </div>
 
-  <script src="/battle-system/logic/battle-engine.js"></script>
-  <script src="/battle-system/logic/battle-simulator.js"></script>
+  <script src="./assets/js/battle-system/battle-engine.js"></script>
+  <script src="./assets/js/battle-system/battle-simulator.js"></script>
   <script>
     let simulator = null;
     let gameData = null;
@@ -568,35 +569,35 @@
     let turnOrder = [];
     let activeTurnIndex = 0;
 
-    const DEFAULT_ICON = '/assets/ui/logo.svg';
+    const DEFAULT_ICON = './assets/images/logo.svg';
     const portraitMap = {
-      trapper: '/assets/ui/backpackbastion.png',
-      sparkfin: '/assets/ui/companion_sprite_512.png',
-      glowmoss: '/assets/ui/companion_golem_512.png'
+      trapper: './assets/images/backpackbastion.png',
+      sparkfin: './assets/images/companion_sprite_512.png',
+      glowmoss: './assets/images/companion_golem_512.png'
     };
 
     const roleIconMap = {
-      defender: '/assets/ui/zone_backpack_256.svg',
-      support: '/assets/ui/zone_focus_256.png',
-      scout: '/assets/ui/zone_launch_256.png',
-      controller: '/assets/ui/zone_homework_256.png',
-      summoner: '/assets/ui/banner.svg'
+      defender: './assets/images/zone_backpack_256.svg',
+      support: './assets/images/zone_focus_256.png',
+      scout: './assets/images/zone_launch_256.png',
+      controller: './assets/images/zone_homework_256.png',
+      summoner: './assets/images/banner.svg'
     };
 
     const typeIconMap = {
-      metal: '/assets/img/golem.svg',
-      light: '/assets/ui/logo.svg',
-      water: '/assets/img/sprite.svg',
-      electric: '/assets/img/ember.svg',
-      grass: '/assets/img/zone3.svg',
-      shadow: '/assets/img/zone4.svg'
+      metal: './assets/images/golem.svg',
+      light: './assets/images/logo.svg',
+      water: './assets/images/sprite.svg',
+      electric: './assets/images/ember.svg',
+      grass: './assets/images/zone3.svg',
+      shadow: './assets/images/zone4.svg'
     };
 
     const statusIconMap = {
-      shield: '/assets/ui/zone_backpack_256.svg',
-      stun: '/assets/ui/zone_focus_256.png',
-      poison: '/assets/img/zone3.svg',
-      shock: '/assets/img/ember.svg'
+      shield: './assets/images/zone_backpack_256.svg',
+      stun: './assets/images/zone_focus_256.png',
+      poison: './assets/images/zone3.svg',
+      shock: './assets/images/ember.svg'
     };
 
     const SPELL_BASE_DAMAGE = 18;
@@ -802,11 +803,11 @@
     }
 
     function getPortrait(id) {
-      return portraitMap[id] || '/assets/ui/logo_512.png';
+      return portraitMap[id] || './assets/images/logo_512.png';
     }
 
     function getRoleIcon(role) {
-      return roleIconMap[role] || '/assets/ui/banner.svg';
+      return roleIconMap[role] || './assets/images/banner.svg';
     }
 
     function getTypeIcon(type) {

@@ -7,14 +7,14 @@ This guide provides step-by-step instructions for implementing and extending the
 ### 1. View the Demos
 
 **Character Card Templates:**
-Open `/battle-system/ui/card-templates.html` in your browser to see:
+Open `./battle-system/ui/card-templates.html` in your browser to see:
 - Collection grid cards
 - Full detail cards
 - Battle mini cards
 - All visual components
 
 **Battle System Demo:**
-Open `/battle-system-demo.html` in your browser to:
+Open `./battle-system-demo.html` in your browser to:
 - Run automated battle simulations
 - View character details
 - Check type effectiveness chart
@@ -32,20 +32,24 @@ battle-system/
 │       ├── trapper.json
 │       ├── sparkfin.json
 │       └── glowmoss.json
-├── logic/
-│   ├── battle-engine.js      # Core battle mechanics
-│   └── battle-simulator.js   # Testing and demo utilities
 └── ui/
-    ├── character-cards.css   # Complete UI component library
     ├── card-templates.html   # Visual component examples
     └── README.md             # UI component documentation
+
+assets/
+├── css/
+│   └── character-cards.css   # Complete UI component library
+└── js/
+    └── battle-system/
+        ├── battle-engine.js  # Core battle mechanics
+        └── battle-simulator.js # Testing and demo utilities
 ```
 
 ## Adding New Characters
 
 ### Step 1: Create Character Data File
 
-Create a new JSON file in `/battle-system/data/characters/`:
+Create a new JSON file in `./battle-system/data/characters/`:
 
 ```json
 {
@@ -151,7 +155,7 @@ Load your character in the battle simulator:
 
 ```javascript
 // Add to battle-simulator.js
-const newChar = await fetch('/battle-system/data/characters/your-character.json')
+const newChar = await fetch('./battle-system/data/characters/your-character.json')
   .then(r => r.json());
 
 simulator.characters['your-character'] = newChar;
@@ -165,7 +169,7 @@ simulator.characters['your-character'] = newChar;
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" href="/battle-system/ui/character-cards.css">
+  <link rel="stylesheet" href="./assets/css/character-cards.css">
   <style>
     .battle-screen {
       display: grid;
@@ -240,7 +244,7 @@ simulator.characters['your-character'] = newChar;
     
   </div>
   
-  <script src="/battle-system/logic/battle-engine.js"></script>
+  <script src="./assets/js/battle-system/battle-engine.js"></script>
   <script>
     // Initialize battle
     const engine = new BattleEngine(gameConstants);
@@ -567,11 +571,11 @@ unit.statuses = unit.statuses.filter(status => {
 
 ## Resources
 
-- **Specification**: `/battle-system/SPECIFICATION.md`
-- **Data Models**: `/battle-system/data/`
-- **Battle Logic**: `/battle-system/logic/`
-- **UI Components**: `/battle-system/ui/`
-- **Demo**: `/battle-system-demo.html`
+- **Specification**: `./battle-system/SPECIFICATION.md`
+- **Data Models**: `./battle-system/data/`
+- **Battle Logic**: `./assets/js/battle-system/`
+- **UI Components**: `./assets/css/character-cards.css`
+- **Demo**: `./battle-system-demo.html`
 
 ## Support
 
