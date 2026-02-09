@@ -1,0 +1,197 @@
+{
+  "schemaVersion": "v1",
+  "audioRoot": "assets/audio",
+  "channels": {
+    "music": { "defaultVolume": 0.6, "sliderKey": "musicVolume" },
+    "ambience": { "defaultVolume": 0.6, "sliderKey": "ambienceVolume" },
+    "sfx": { "defaultVolume": 0.8, "sliderKey": "sfxVolume" }
+  },
+  "autoplayPolicy": {
+    "requiresUserGesture": true,
+    "firstGestureUnlock": {
+      "required": true,
+      "recommendedEventToPlay": "ui_click_soft",
+      "uxRequirement": "Do not attempt to start Music/Ambience until user gesture occurs. Show or imply an 'Enable Sound' moment if needed."
+    }
+  },
+  "settings": {
+    "persist": true,
+    "storageKey": "williamsworld_audio_settings",
+    "reduceSoundMode": {
+      "supported": true,
+      "behavior": {
+        "capMusic": 0.35,
+        "capAmbience": 0.35,
+        "capSfx": 0.55
+      }
+    }
+  },
+  "zoneAmbience": {
+    "launch-meadow": { "event": "ambience_launch_meadow" },
+    "homework-hills": { "event": "ambience_homework_hills" },
+    "backpack-bastion": { "event": "ambience_backpack_bastion" },
+    "focus-forest": { "event": "ambience_focus_forest" }
+  },
+  "events": [
+    {
+      "id": "ui_click_soft",
+      "channel": "sfx",
+      "file": "sfx/ui_click_soft.mp3",
+      "loop": false,
+      "priority": 5,
+      "description": "Primary UI click sound (used to unlock audio on first gesture)."
+    },
+    {
+      "id": "ui_click_confirm",
+      "channel": "sfx",
+      "file": "sfx/ui_click_confirm.mp3",
+      "loop": false,
+      "priority": 6,
+      "description": "Confirm / primary button click."
+    },
+    {
+      "id": "task_complete_stinger",
+      "channel": "sfx",
+      "file": "sfx/task_complete_stinger.mp3",
+      "loop": false,
+      "priority": 7,
+      "description": "Plays when a task group completes (Night-Before/Morning/Trapper Ready)."
+    },
+    {
+      "id": "pass_day_stinger",
+      "channel": "sfx",
+      "file": "sfx/pass_day_stinger.mp3",
+      "loop": false,
+      "priority": 8,
+      "description": "Plays when PASS rule is achieved and the day is graded as passed."
+    },
+    {
+      "id": "zone_unlock_stinger",
+      "channel": "sfx",
+      "file": "sfx/zone_unlock_stinger.mp3",
+      "loop": false,
+      "priority": 9,
+      "description": "Plays when a new zone unlocks (3/5/10 day milestones)."
+    },
+    {
+      "id": "hero_level_up_fanfare",
+      "channel": "sfx",
+      "file": "sfx/hero_level_up_fanfare.mp3",
+      "loop": false,
+      "priority": 9,
+      "description": "Plays only when William levels up."
+    },
+    {
+      "id": "companion_level_up_fanfare",
+      "channel": "sfx",
+      "file": "sfx/companion_level_up_fanfare.mp3",
+      "loop": false,
+      "priority": 9,
+      "description": "Plays only when a companion levels up."
+    },
+    {
+      "id": "music_main_hub",
+      "channel": "music",
+      "file": "music/music_main_hub.mp3",
+      "loop": true,
+      "priority": 3,
+      "description": "Default hub background music."
+    },
+    {
+      "id": "music_battle_base",
+      "channel": "music",
+      "file": "music/music_battle_base.mp3",
+      "loop": true,
+      "priority": 3,
+      "description": "Default battle background music (can be used for all zones in v1)."
+    },
+    {
+      "id": "ambience_launch_meadow",
+      "channel": "ambience",
+      "file": "ambience/launch_meadow.mp3",
+      "loop": true,
+      "priority": 2,
+      "description": "Launch Meadow ambience loop (birds/wind/soft nature)."
+    },
+    {
+      "id": "ambience_homework_hills",
+      "channel": "ambience",
+      "file": "ambience/homework_hills.mp3",
+      "loop": true,
+      "priority": 2,
+      "description": "Homework Hills ambience loop (soft classroom/paper rustle vibe)."
+    },
+    {
+      "id": "ambience_backpack_bastion",
+      "channel": "ambience",
+      "file": "ambience/backpack_bastion.mp3",
+      "loop": true,
+      "priority": 2,
+      "description": "Backpack Bastion ambience loop (gear/metal clinks low, subtle)."
+    },
+    {
+      "id": "ambience_focus_forest",
+      "channel": "ambience",
+      "file": "ambience/focus_forest.mp3",
+      "loop": true,
+      "priority": 2,
+      "description": "Focus Forest ambience loop (calm mystical forest)."
+    },
+    {
+      "id": "battle_start_cue",
+      "channel": "sfx",
+      "file": "sfx/battle_start_cue.mp3",
+      "loop": false,
+      "priority": 8,
+      "description": "Plays when entering a battle (after zone validation)."
+    },
+    {
+      "id": "attack_light",
+      "channel": "sfx",
+      "file": "sfx/attack_light.mp3",
+      "loop": false,
+      "priority": 6,
+      "description": "Generic light hit sound."
+    },
+    {
+      "id": "attack_heavy",
+      "channel": "sfx",
+      "file": "sfx/attack_heavy.mp3",
+      "loop": false,
+      "priority": 6,
+      "description": "Generic heavy hit sound."
+    },
+    {
+      "id": "ability_cast_magic",
+      "channel": "sfx",
+      "file": "sfx/ability_cast_magic.mp3",
+      "loop": false,
+      "priority": 6,
+      "description": "Spell / ability cast sound."
+    },
+    {
+      "id": "victory_fanfare",
+      "channel": "sfx",
+      "file": "sfx/victory_fanfare.mp3",
+      "loop": false,
+      "priority": 10,
+      "description": "Victory sound on win modal."
+    },
+    {
+      "id": "defeat_cue",
+      "channel": "sfx",
+      "file": "sfx/defeat_cue.mp3",
+      "loop": false,
+      "priority": 10,
+      "description": "Defeat sound on lose modal."
+    },
+    {
+      "id": "quit_confirm",
+      "channel": "sfx",
+      "file": "sfx/quit_confirm.mp3",
+      "loop": false,
+      "priority": 7,
+      "description": "Plays when user confirms quitting a battle."
+    }
+  ]
+}

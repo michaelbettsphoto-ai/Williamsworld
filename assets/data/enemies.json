@@ -1,0 +1,1501 @@
+{
+  "schemaVersion": "v1",
+  "selectionRules": {
+    "enemiesPerZone": 12,
+    "encounterSize": 3,
+    "encounterComposition": {
+      "commonOrUncommon": 2,
+      "rareOrElite": 1
+    }
+  },
+  "statusEffects": {
+    "burn": { "label": "Burn", "durationTurns": 2, "atkPct": -0.1, "dot": "minor" },
+    "chill": { "label": "Chill", "durationTurns": 2, "spdPct": -0.1 },
+    "shock": { "label": "Shock", "durationTurns": 1, "skipActionChance": 0.25 },
+    "root": { "label": "Root", "durationTurns": 1, "canRetreat": false },
+    "blind": { "label": "Blind", "durationTurns": 1, "accuracyPct": -0.2 },
+    "weaken": { "label": "Weaken", "durationTurns": 2, "defPct": -0.15 },
+    "guard": { "label": "Guard", "durationTurns": 2, "defPct": 0.2 },
+    "focus": { "label": "Focus", "durationTurns": 2, "atkPct": 0.15 }
+  },
+  "zoneTiers": {
+    "launch-meadow": "T1",
+    "homework-hills": "T2",
+    "backpack-bastion": "T3",
+    "focus-forest": "T4"
+  },
+  "tierStatsByRarity": {
+    "T1": {
+      "COMMON": { "hp": 60, "atk": 10, "def": 8, "spd": 10 },
+      "UNCOMMON": { "hp": 70, "atk": 12, "def": 9, "spd": 11 },
+      "RARE": { "hp": 80, "atk": 14, "def": 10, "spd": 12 },
+      "ELITE": { "hp": 95, "atk": 16, "def": 12, "spd": 12 }
+    },
+    "T2": {
+      "COMMON": { "hp": 85, "atk": 14, "def": 11, "spd": 12 },
+      "UNCOMMON": { "hp": 95, "atk": 16, "def": 12, "spd": 13 },
+      "RARE": { "hp": 110, "atk": 18, "def": 13, "spd": 14 },
+      "ELITE": { "hp": 130, "atk": 20, "def": 15, "spd": 14 }
+    },
+    "T3": {
+      "COMMON": { "hp": 120, "atk": 18, "def": 15, "spd": 14 },
+      "UNCOMMON": { "hp": 135, "atk": 20, "def": 16, "spd": 15 },
+      "RARE": { "hp": 155, "atk": 22, "def": 18, "spd": 16 },
+      "ELITE": { "hp": 185, "atk": 24, "def": 20, "spd": 16 }
+    },
+    "T4": {
+      "COMMON": { "hp": 165, "atk": 22, "def": 18, "spd": 16 },
+      "UNCOMMON": { "hp": 185, "atk": 24, "def": 20, "spd": 17 },
+      "RARE": { "hp": 210, "atk": 26, "def": 22, "spd": 18 },
+      "ELITE": { "hp": 250, "atk": 28, "def": 24, "spd": 18 }
+    }
+  },
+  "enemies": [
+    {
+      "id": "dandelion-dagger",
+      "name": "Dandelion Dagger",
+      "zone": "launch-meadow",
+      "role": "SKIRMISHER",
+      "element": "GRASS",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/launch-meadow/dandelion-dagger.png",
+      "moves": [
+        {
+          "id": "puff-slash",
+          "name": "Puff Slash",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "low", "applyStatus": { "status": "blind", "chance": 0.25 } },
+          "description": "Quick slash with a chance to Blind."
+        },
+        {
+          "id": "seed-sprint",
+          "name": "Seed Sprint",
+          "type": "buff",
+          "target": "self",
+          "cooldown": 3,
+          "effect": { "buff": { "stat": "spdPct", "value": 0.15, "durationTurns": 2 } },
+          "description": "Boosts speed for 2 turns."
+        }
+      ]
+    },
+    {
+      "id": "mudkip-bandit",
+      "name": "Mudkip Bandit",
+      "zone": "launch-meadow",
+      "role": "BRUISER",
+      "element": "WATER",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/launch-meadow/mudkip-bandit.png",
+      "moves": [
+        {
+          "id": "mud-toss",
+          "name": "Mud Toss",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "low", "applyStatus": { "status": "weaken", "chance": 0.2 } },
+          "description": "Toss mud; may Weaken defense."
+        },
+        {
+          "id": "puddle-guard",
+          "name": "Puddle Guard",
+          "type": "buff",
+          "target": "self",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "guard", "chance": 1.0 } },
+          "description": "Gains Guard for 2 turns."
+        }
+      ]
+    },
+    {
+      "id": "pebble-pouncer",
+      "name": "Pebble Pouncer",
+      "zone": "launch-meadow",
+      "role": "SKIRMISHER",
+      "element": "ROCK",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/launch-meadow/pebble-pouncer.png",
+      "moves": [
+        {
+          "id": "pounce",
+          "name": "Pounce",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "low", "bonusRule": "bonusIfTargetSlower" },
+          "description": "Hits harder if the target is slower."
+        },
+        {
+          "id": "stone-skin",
+          "name": "Stone Skin",
+          "type": "buff",
+          "target": "self",
+          "cooldown": 4,
+          "effect": { "buff": { "stat": "defPct", "value": 0.2, "durationTurns": 2 } },
+          "description": "Raises DEF for 2 turns."
+        }
+      ]
+    },
+    {
+      "id": "sunblink-moth",
+      "name": "Sunblink Moth",
+      "zone": "launch-meadow",
+      "role": "CASTER",
+      "element": "LIGHT",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/launch-meadow/sunblink-moth.png",
+      "moves": [
+        {
+          "id": "glimmer-beam",
+          "name": "Glimmer Beam",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "low" },
+          "description": "A simple light blast."
+        },
+        {
+          "id": "dazzle",
+          "name": "Dazzle",
+          "type": "control",
+          "target": "heroes",
+          "cooldown": 4,
+          "effect": { "applyStatus": { "status": "blind", "chance": 0.25, "scope": "team" } },
+          "description": "May Blind the whole hero team."
+        }
+      ]
+    },
+    {
+      "id": "thorny-sneak",
+      "name": "Thorny Sneak",
+      "zone": "launch-meadow",
+      "role": "TRICKSTER",
+      "element": "GRASS",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/launch-meadow/thorny-sneak.png",
+      "moves": [
+        {
+          "id": "thorn-trap",
+          "name": "Thorn Trap",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "root", "chance": 1.0 } },
+          "description": "Roots a hero for 1 turn."
+        },
+        {
+          "id": "sucker-vine",
+          "name": "Sucker Vine",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "damage": "medium", "lifestealPct": 0.2 },
+          "description": "Deals damage and heals self for 20% of it."
+        }
+      ]
+    },
+    {
+      "id": "puddle-hexer",
+      "name": "Puddle Hexer",
+      "zone": "launch-meadow",
+      "role": "CASTER",
+      "element": "WATER_SHADOW",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/launch-meadow/puddle-hexer.png",
+      "moves": [
+        {
+          "id": "ink-splash",
+          "name": "Ink Splash",
+          "type": "debuff",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "weaken", "chance": 1.0 } },
+          "description": "Weakens a hero’s defense."
+        },
+        {
+          "id": "gloom-drip",
+          "name": "Gloom Drip",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium", "bonusRule": "bonusVsBuffedTargets" },
+          "description": "Hits harder if the hero is buffed."
+        }
+      ]
+    },
+    {
+      "id": "windwink-imp",
+      "name": "Windwink Imp",
+      "zone": "launch-meadow",
+      "role": "SKIRMISHER",
+      "element": "WIND",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/launch-meadow/windwink-imp.png",
+      "moves": [
+        {
+          "id": "gust-jab",
+          "name": "Gust Jab",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 1,
+          "effect": { "damage": "low" },
+          "description": "Fast jab of wind."
+        },
+        {
+          "id": "slipstream",
+          "name": "Slipstream",
+          "type": "buff",
+          "target": "enemies",
+          "cooldown": 4,
+          "effect": { "buff": { "stat": "spdPct", "value": 0.15, "durationTurns": 2, "scope": "team" } },
+          "description": "Boosts enemy team speed."
+        }
+      ]
+    },
+    {
+      "id": "scorchling",
+      "name": "Scorchling",
+      "zone": "launch-meadow",
+      "role": "BRUISER",
+      "element": "FIRE",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/launch-meadow/scorchling.png",
+      "moves": [
+        {
+          "id": "ember-bite",
+          "name": "Ember Bite",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium", "applyStatus": { "status": "burn", "chance": 0.25 } },
+          "description": "Bites and may Burn."
+        },
+        {
+          "id": "heat-up",
+          "name": "Heat Up",
+          "type": "buff",
+          "target": "self",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "focus", "chance": 1.0 } },
+          "description": "Gains Focus (+ATK)."
+        }
+      ]
+    },
+    {
+      "id": "barkhide-bully",
+      "name": "Barkhide Bully",
+      "zone": "launch-meadow",
+      "role": "TANK",
+      "element": "GRASS_ROCK",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/launch-meadow/barkhide-bully.png",
+      "moves": [
+        {
+          "id": "body-block",
+          "name": "Body Block",
+          "type": "control",
+          "target": "heroes",
+          "cooldown": 4,
+          "effect": { "taunt": { "durationTurns": 1 } },
+          "description": "Forces heroes to target Barkhide for 1 turn."
+        },
+        {
+          "id": "bark-bash",
+          "name": "Bark Bash",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium" },
+          "description": "Solid bash attack."
+        }
+      ]
+    },
+    {
+      "id": "spark-dustling",
+      "name": "Spark Dustling",
+      "zone": "launch-meadow",
+      "role": "CASTER",
+      "element": "ELECTRIC",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/launch-meadow/spark-dustling.png",
+      "moves": [
+        {
+          "id": "static-pop",
+          "name": "Static Pop",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "low", "applyStatus": { "status": "shock", "chance": 0.2 } },
+          "description": "May Shock and interrupt."
+        },
+        {
+          "id": "charge",
+          "name": "Charge",
+          "type": "buff",
+          "target": "self",
+          "cooldown": 3,
+          "effect": { "buff": { "stat": "atkPct", "value": 0.25, "durationTurns": 1 } },
+          "description": "Next hit does extra damage."
+        }
+      ]
+    },
+    {
+      "id": "nightleaf-snatcher",
+      "name": "Nightleaf Snatcher",
+      "zone": "launch-meadow",
+      "role": "TRICKSTER",
+      "element": "SHADOW",
+      "rarity": "RARE",
+      "portrait": "assets/images/enemies/launch-meadow/nightleaf-snatcher.png",
+      "moves": [
+        {
+          "id": "swipe-vanish",
+          "name": "Swipe & Vanish",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium", "debuff": { "stat": "spdPct", "value": -0.1, "durationTurns": 2 } },
+          "description": "Strikes and slows the hero."
+        },
+        {
+          "id": "shadow-cloak",
+          "name": "Shadow Cloak",
+          "type": "buff",
+          "target": "self",
+          "cooldown": 5,
+          "effect": { "buff": { "rule": "dodgeNextHit", "durationTurns": 1 } },
+          "description": "Dodges the next incoming attack."
+        }
+      ]
+    },
+    {
+      "id": "slimecap-trickster",
+      "name": "Slimecap Trickster",
+      "zone": "launch-meadow",
+      "role": "SUPPORT",
+      "element": "GRASS",
+      "rarity": "ELITE",
+      "portrait": "assets/images/enemies/launch-meadow/slimecap-trickster.png",
+      "moves": [
+        {
+          "id": "spore-mist",
+          "name": "Spore Mist",
+          "type": "debuff",
+          "target": "heroes",
+          "cooldown": 4,
+          "effect": { "debuff": { "stat": "atkPct", "value": -0.1, "durationTurns": 2, "scope": "team" } },
+          "description": "Lowers hero team ATK."
+        },
+        {
+          "id": "slime-patch",
+          "name": "Slime Patch",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "chill", "chance": 1.0 } },
+          "description": "Chills a hero."
+        },
+        {
+          "id": "cap-bounce",
+          "name": "Cap Bounce",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium" },
+          "description": "A bouncy slam attack."
+        }
+      ]
+    },
+    {
+      "id": "eraser-wraith",
+      "name": "Eraser Wraith",
+      "zone": "homework-hills",
+      "role": "TRICKSTER",
+      "element": "SHADOW",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/homework-hills/eraser-wraith.png",
+      "moves": [
+        {
+          "id": "erase-confidence",
+          "name": "Erase Confidence",
+          "type": "debuff",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "weaken", "chance": 1.0 } },
+          "description": "Weakens a hero’s defense."
+        },
+        {
+          "id": "smudge-swipe",
+          "name": "Smudge Swipe",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "low" },
+          "description": "A quick swipe attack."
+        }
+      ]
+    },
+    {
+      "id": "paper-cut-pirate",
+      "name": "Paper Cut Pirate",
+      "zone": "homework-hills",
+      "role": "SKIRMISHER",
+      "element": "WIND_METAL",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/homework-hills/paper-cut-pirate.png",
+      "moves": [
+        {
+          "id": "cutlass-cut",
+          "name": "Cutlass Cut",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium", "bonusRule": "bonusVsDebuffedTargets" },
+          "description": "Hits harder if the hero is debuffed."
+        },
+        {
+          "id": "ruffle-gust",
+          "name": "Ruffle Gust",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "blind", "chance": 0.25 } },
+          "description": "May Blind a hero."
+        }
+      ]
+    },
+    {
+      "id": "inkblob-gremlin",
+      "name": "Inkblob Gremlin",
+      "zone": "homework-hills",
+      "role": "CASTER",
+      "element": "SHADOW_WATER",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/homework-hills/inkblob-gremlin.png",
+      "moves": [
+        {
+          "id": "ink-spray",
+          "name": "Ink Spray",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "blind", "chance": 1.0 } },
+          "description": "Blinds a hero for 1 turn."
+        },
+        {
+          "id": "blob-bolt",
+          "name": "Blob Bolt",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "low" },
+          "description": "Simple damage bolt."
+        }
+      ]
+    },
+    {
+      "id": "quiz-golemlet",
+      "name": "Quiz Golemlet",
+      "zone": "homework-hills",
+      "role": "TANK",
+      "element": "ROCK",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/homework-hills/quiz-golemlet.png",
+      "moves": [
+        {
+          "id": "pop-quiz",
+          "name": "Pop Quiz",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 4,
+          "effect": { "control": { "rule": "skipNextAction", "chance": 1.0 } },
+          "description": "Forces a hero to lose their next action."
+        },
+        {
+          "id": "stone-thump",
+          "name": "Stone Thump",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium" },
+          "description": "A heavy hit."
+        }
+      ]
+    },
+    {
+      "id": "deadline-drake",
+      "name": "Deadline Drake",
+      "zone": "homework-hills",
+      "role": "BRUISER",
+      "element": "FIRE",
+      "rarity": "RARE",
+      "portrait": "assets/images/enemies/homework-hills/deadline-drake.png",
+      "moves": [
+        {
+          "id": "late-fee-flame",
+          "name": "Late Fee Flame",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium", "applyStatus": { "status": "burn", "chance": 0.25 } },
+          "description": "May Burn the hero."
+        },
+        {
+          "id": "pressure-roar",
+          "name": "Pressure Roar",
+          "type": "debuff",
+          "target": "heroes",
+          "cooldown": 4,
+          "effect": { "debuff": { "stat": "spdPct", "value": -0.1, "durationTurns": 2, "scope": "team" } },
+          "description": "Slows the hero team."
+        }
+      ]
+    },
+    {
+      "id": "scribble-sorcerer",
+      "name": "Scribble Sorcerer",
+      "zone": "homework-hills",
+      "role": "CASTER",
+      "element": "ELECTRIC",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/homework-hills/scribble-sorcerer.png",
+      "moves": [
+        {
+          "id": "zap-diagram",
+          "name": "Zap Diagram",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium", "applyStatus": { "status": "shock", "chance": 0.2 } },
+          "description": "May Shock a hero."
+        },
+        {
+          "id": "equation-shield",
+          "name": "Equation Shield",
+          "type": "buff",
+          "target": "enemies",
+          "cooldown": 4,
+          "effect": { "applyStatus": { "status": "guard", "chance": 1.0, "scope": "team" } },
+          "description": "Grants Guard to the enemy team."
+        }
+      ]
+    },
+    {
+      "id": "binder-beast",
+      "name": "Binder Beast",
+      "zone": "homework-hills",
+      "role": "TANK",
+      "element": "METAL",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/homework-hills/binder-beast.png",
+      "moves": [
+        {
+          "id": "clamp",
+          "name": "Clamp",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "root", "chance": 1.0 } },
+          "description": "Roots a hero for 1 turn."
+        },
+        {
+          "id": "ring-slam",
+          "name": "Ring Slam",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "low" },
+          "description": "A simple slam."
+        }
+      ]
+    },
+    {
+      "id": "procrastination-poltergeist",
+      "name": "Procrastination Poltergeist",
+      "zone": "homework-hills",
+      "role": "SUPPORT",
+      "element": "SHADOW",
+      "rarity": "RARE",
+      "portrait": "assets/images/enemies/homework-hills/procrastination-poltergeist.png",
+      "moves": [
+        {
+          "id": "snooze-field",
+          "name": "Snooze Field",
+          "type": "control",
+          "target": "heroes",
+          "cooldown": 5,
+          "effect": { "control": { "rule": "skipActionChance", "chance": 0.25, "scope": "team" } },
+          "description": "Each hero may lose their action."
+        },
+        {
+          "id": "delay-toxin",
+          "name": "Delay Toxin",
+          "type": "debuff",
+          "target": "heroes",
+          "cooldown": 4,
+          "effect": { "debuff": { "stat": "atkPct", "value": -0.1, "durationTurns": 2, "scope": "team" } },
+          "description": "Lowers hero team ATK."
+        }
+      ]
+    },
+    {
+      "id": "sticky-note-swarm",
+      "name": "Sticky Note Swarm",
+      "zone": "homework-hills",
+      "role": "SUPPORT",
+      "element": "WIND",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/homework-hills/sticky-note-swarm.png",
+      "moves": [
+        {
+          "id": "cling",
+          "name": "Cling",
+          "type": "debuff",
+          "target": "heroes",
+          "cooldown": 3,
+          "effect": { "debuff": { "stat": "spdPct", "value": -0.1, "durationTurns": 2, "scope": "team" } },
+          "description": "Slows the hero team."
+        },
+        {
+          "id": "reminder-buzz",
+          "name": "Reminder Buzz",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "low" },
+          "description": "Annoying buzz damage."
+        }
+      ]
+    },
+    {
+      "id": "graph-goblin",
+      "name": "Graph Goblin",
+      "zone": "homework-hills",
+      "role": "TRICKSTER",
+      "element": "ELECTRIC",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/homework-hills/graph-goblin.png",
+      "moves": [
+        {
+          "id": "slope-slip",
+          "name": "Slope Slip",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "chill", "chance": 1.0 } },
+          "description": "Chills a hero for 2 turns."
+        },
+        {
+          "id": "ruler-rap",
+          "name": "Ruler Rap",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 1,
+          "effect": { "damage": "low" },
+          "description": "Fast poke attack."
+        }
+      ]
+    },
+    {
+      "id": "red-pen-reaper",
+      "name": "Red Pen Reaper",
+      "zone": "homework-hills",
+      "role": "BRUISER",
+      "element": "METAL_SHADOW",
+      "rarity": "ELITE",
+      "portrait": "assets/images/enemies/homework-hills/red-pen-reaper.png",
+      "moves": [
+        {
+          "id": "correction-strike",
+          "name": "Correction Strike",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "high", "bonusRule": "bonusVsLowestHP" },
+          "description": "Hits the weakest hero harder."
+        },
+        {
+          "id": "mark-wrong",
+          "name": "Mark Wrong",
+          "type": "debuff",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "weaken", "chance": 1.0 } },
+          "description": "Weakens defense."
+        },
+        {
+          "id": "final-grade",
+          "name": "Final Grade",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 5,
+          "effect": { "control": { "rule": "skipNextAction", "chance": 1.0 } },
+          "description": "Forces a hero to lose their next action."
+        }
+      ]
+    },
+    {
+      "id": "homework-hydra",
+      "name": "Homework Hydra",
+      "zone": "homework-hills",
+      "role": "TANK",
+      "element": "WATER",
+      "rarity": "ELITE",
+      "portrait": "assets/images/enemies/homework-hills/homework-hydra.png",
+      "moves": [
+        {
+          "id": "assignment-flood",
+          "name": "Assignment Flood",
+          "type": "damage",
+          "target": "heroes",
+          "cooldown": 2,
+          "effect": { "damage": "medium", "scope": "team" },
+          "description": "Damages the whole hero team."
+        },
+        {
+          "id": "extra-credit",
+          "name": "Extra Credit",
+          "type": "heal",
+          "target": "enemies",
+          "cooldown": 4,
+          "effect": { "heal": "low", "scope": "team" },
+          "description": "Heals the enemy team."
+        },
+        {
+          "id": "overwhelm",
+          "name": "Overwhelm",
+          "type": "debuff",
+          "target": "heroes",
+          "cooldown": 4,
+          "effect": { "debuff": { "stat": "atkPct", "value": -0.1, "durationTurns": 2, "scope": "team" } },
+          "description": "Lowers hero team ATK."
+        }
+      ]
+    },
+    {
+      "id": "strap-snapper",
+      "name": "Strap Snapper",
+      "zone": "backpack-bastion",
+      "role": "BRUISER",
+      "element": "METAL",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/backpack-bastion/strap-snapper.png",
+      "moves": [
+        {
+          "id": "buckle-bite",
+          "name": "Buckle Bite",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 1,
+          "effect": { "damage": "low" },
+          "description": "Fast bite attack."
+        },
+        {
+          "id": "fray",
+          "name": "Fray",
+          "type": "debuff",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "debuff": { "stat": "defPct", "value": -0.1, "durationTurns": 2 } },
+          "description": "Reduces DEF for 2 turns."
+        }
+      ]
+    },
+    {
+      "id": "zipperfang",
+      "name": "Zipperfang",
+      "zone": "backpack-bastion",
+      "role": "SKIRMISHER",
+      "element": "METAL",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/backpack-bastion/zipperfang.png",
+      "moves": [
+        {
+          "id": "zip-slash",
+          "name": "Zip Slash",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium" },
+          "description": "Sharp zipper slash."
+        },
+        {
+          "id": "unzip-escape",
+          "name": "Unzip Escape",
+          "type": "buff",
+          "target": "self",
+          "cooldown": 4,
+          "effect": { "buff": { "rule": "dodgeNextHit", "durationTurns": 1 } },
+          "description": "Dodges the next hit."
+        }
+      ]
+    },
+    {
+      "id": "cargo-crab",
+      "name": "Cargo Crab",
+      "zone": "backpack-bastion",
+      "role": "TANK",
+      "element": "ROCK_WATER",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/backpack-bastion/cargo-crab.png",
+      "moves": [
+        {
+          "id": "crate-guard",
+          "name": "Crate Guard",
+          "type": "buff",
+          "target": "self",
+          "cooldown": 4,
+          "effect": { "applyStatus": { "status": "guard", "chance": 1.0 } },
+          "description": "Gains Guard."
+        },
+        {
+          "id": "clamp-crush",
+          "name": "Clamp Crush",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium" },
+          "description": "Strong clamp hit."
+        }
+      ]
+    },
+    {
+      "id": "pocket-mimic",
+      "name": "Pocket Mimic",
+      "zone": "backpack-bastion",
+      "role": "TRICKSTER",
+      "element": "SHADOW",
+      "rarity": "RARE",
+      "portrait": "assets/images/enemies/backpack-bastion/pocket-mimic.png",
+      "moves": [
+        {
+          "id": "snack-snatch",
+          "name": "Snack Snatch",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "damage": "medium", "lifestealPct": 0.2 },
+          "description": "Damage + heals self."
+        },
+        {
+          "id": "false-bottom",
+          "name": "False Bottom",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "root", "chance": 1.0 } },
+          "description": "Roots a hero."
+        }
+      ]
+    },
+    {
+      "id": "buckle-brute",
+      "name": "Buckle Brute",
+      "zone": "backpack-bastion",
+      "role": "BRUISER",
+      "element": "ROCK_METAL",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/backpack-bastion/buckle-brute.png",
+      "moves": [
+        {
+          "id": "buckle-bash",
+          "name": "Buckle Bash",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium" },
+          "description": "Solid bash."
+        },
+        {
+          "id": "iron-stance",
+          "name": "Iron Stance",
+          "type": "buff",
+          "target": "self",
+          "cooldown": 4,
+          "effect": { "buff": { "stat": "defPct", "value": 0.2, "durationTurns": 2 } },
+          "description": "Raises DEF for 2 turns."
+        }
+      ]
+    },
+    {
+      "id": "lunchbox-lurker",
+      "name": "Lunchbox Lurker",
+      "zone": "backpack-bastion",
+      "role": "CASTER",
+      "element": "SHADOW",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/backpack-bastion/lunchbox-lurker.png",
+      "moves": [
+        {
+          "id": "stale-cloud",
+          "name": "Stale Cloud",
+          "type": "debuff",
+          "target": "heroes",
+          "cooldown": 3,
+          "effect": { "debuff": { "stat": "atkPct", "value": -0.1, "durationTurns": 2, "scope": "team" } },
+          "description": "Lowers hero team ATK."
+        },
+        {
+          "id": "mold-bolt",
+          "name": "Mold Bolt",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium" },
+          "description": "Dark bolt damage."
+        }
+      ]
+    },
+    {
+      "id": "waterbottle-wobbler",
+      "name": "Waterbottle Wobbler",
+      "zone": "backpack-bastion",
+      "role": "SUPPORT",
+      "element": "WATER",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/backpack-bastion/waterbottle-wobbler.png",
+      "moves": [
+        {
+          "id": "splash-heal",
+          "name": "Splash Heal",
+          "type": "heal",
+          "target": "enemies",
+          "cooldown": 3,
+          "effect": { "heal": "low", "rule": "healLowestHPAlly" },
+          "description": "Heals the lowest-HP enemy."
+        },
+        {
+          "id": "soak",
+          "name": "Soak",
+          "type": "debuff",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "chill", "chance": 1.0 } },
+          "description": "Chills a hero."
+        }
+      ]
+    },
+    {
+      "id": "pencil-pike",
+      "name": "Pencil Pike",
+      "zone": "backpack-bastion",
+      "role": "SKIRMISHER",
+      "element": "WIND_METAL",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/backpack-bastion/pencil-pike.png",
+      "moves": [
+        {
+          "id": "point-jab",
+          "name": "Point Jab",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 1,
+          "effect": { "damage": "low" },
+          "description": "Quick jab."
+        },
+        {
+          "id": "shavings-storm",
+          "name": "Shavings Storm",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 4,
+          "effect": { "applyStatus": { "status": "blind", "chance": 0.25 } },
+          "description": "May Blind a hero."
+        }
+      ]
+    },
+    {
+      "id": "supply-sapper",
+      "name": "Supply Sapper",
+      "zone": "backpack-bastion",
+      "role": "TRICKSTER",
+      "element": "SHADOW",
+      "rarity": "RARE",
+      "portrait": "assets/images/enemies/backpack-bastion/supply-sapper.png",
+      "moves": [
+        {
+          "id": "steal-charge",
+          "name": "Steal Charge",
+          "type": "debuff",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "rule": "removeOneBuffFromTarget" },
+          "description": "Removes one hero buff."
+        },
+        {
+          "id": "sneak-strike",
+          "name": "Sneak Strike",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium", "bonusRule": "bonusVsBuffedTargets" },
+          "description": "Hits harder if the hero is buffed."
+        }
+      ]
+    },
+    {
+      "id": "tag-tornado",
+      "name": "Tag Tornado",
+      "zone": "backpack-bastion",
+      "role": "CASTER",
+      "element": "WIND",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/backpack-bastion/tag-tornado.png",
+      "moves": [
+        {
+          "id": "whirlwind",
+          "name": "Whirlwind",
+          "type": "damage",
+          "target": "heroes",
+          "cooldown": 2,
+          "effect": { "damage": "medium", "scope": "team" },
+          "description": "Damages all heroes."
+        },
+        {
+          "id": "receipt-wrap",
+          "name": "Receipt Wrap",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "root", "chance": 1.0 } },
+          "description": "Roots a hero."
+        }
+      ]
+    },
+    {
+      "id": "locker-lizard",
+      "name": "Locker Lizard",
+      "zone": "backpack-bastion",
+      "role": "TANK",
+      "element": "ROCK",
+      "rarity": "RARE",
+      "portrait": "assets/images/enemies/backpack-bastion/locker-lizard.png",
+      "moves": [
+        {
+          "id": "door-shield",
+          "name": "Door Shield",
+          "type": "buff",
+          "target": "enemies",
+          "cooldown": 4,
+          "effect": { "applyStatus": { "status": "guard", "chance": 1.0, "scope": "team", "durationTurns": 1 } },
+          "description": "Grants Guard to enemy team for 1 turn."
+        },
+        {
+          "id": "tail-slam",
+          "name": "Tail Slam",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium" },
+          "description": "Heavy tail hit."
+        }
+      ]
+    },
+    {
+      "id": "patchwork-punisher",
+      "name": "Patchwork Punisher",
+      "zone": "backpack-bastion",
+      "role": "BRUISER",
+      "element": "METAL",
+      "rarity": "ELITE",
+      "portrait": "assets/images/enemies/backpack-bastion/patchwork-punisher.png",
+      "moves": [
+        {
+          "id": "patch-smash",
+          "name": "Patch Smash",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "high" },
+          "description": "Big damage hit."
+        },
+        {
+          "id": "reinforce",
+          "name": "Reinforce",
+          "type": "buff",
+          "target": "enemies",
+          "cooldown": 5,
+          "effect": { "buff": { "stat": "defPct", "value": 0.2, "durationTurns": 2, "scope": "team" } },
+          "description": "Raises enemy team DEF."
+        },
+        {
+          "id": "break-strap",
+          "name": "Break Strap",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 4,
+          "effect": { "applyStatus": { "status": "shock", "chance": 0.2 } },
+          "description": "May Shock a hero."
+        }
+      ]
+    },
+    {
+      "id": "rune-stag",
+      "name": "Rune Stag",
+      "zone": "focus-forest",
+      "role": "BRUISER",
+      "element": "LIGHT",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/focus-forest/rune-stag.png",
+      "moves": [
+        {
+          "id": "rune-charge",
+          "name": "Rune Charge",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium" },
+          "description": "Strong charge attack."
+        },
+        {
+          "id": "inspire",
+          "name": "Inspire",
+          "type": "buff",
+          "target": "enemies",
+          "cooldown": 4,
+          "effect": { "applyStatus": { "status": "focus", "chance": 1.0, "scope": "team" } },
+          "description": "Grants Focus to enemy team."
+        }
+      ]
+    },
+    {
+      "id": "whisper-viper",
+      "name": "Whisper Viper",
+      "zone": "focus-forest",
+      "role": "SKIRMISHER",
+      "element": "SHADOW",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/focus-forest/whisper-viper.png",
+      "moves": [
+        {
+          "id": "venom-whisper",
+          "name": "Venom Whisper",
+          "type": "debuff",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "debuff": { "stat": "atkPct", "value": -0.1, "durationTurns": 2 } },
+          "description": "Reduces hero ATK."
+        },
+        {
+          "id": "quick-bite",
+          "name": "Quick Bite",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 1,
+          "effect": { "damage": "low" },
+          "description": "Fast bite attack."
+        }
+      ]
+    },
+    {
+      "id": "mist-monk",
+      "name": "Mist Monk",
+      "zone": "focus-forest",
+      "role": "SUPPORT",
+      "element": "WATER_LIGHT",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/focus-forest/mist-monk.png",
+      "moves": [
+        {
+          "id": "calm-wave",
+          "name": "Calm Wave",
+          "type": "heal",
+          "target": "enemies",
+          "cooldown": 4,
+          "effect": { "heal": "low", "scope": "team" },
+          "description": "Heals the enemy team."
+        },
+        {
+          "id": "mist-veil",
+          "name": "Mist Veil",
+          "type": "buff",
+          "target": "enemies",
+          "cooldown": 4,
+          "effect": { "applyStatus": { "status": "guard", "chance": 1.0, "scope": "team", "durationTurns": 1 } },
+          "description": "Grants Guard to enemy team for 1 turn."
+        }
+      ]
+    },
+    {
+      "id": "thorn-sentinel",
+      "name": "Thorn Sentinel",
+      "zone": "focus-forest",
+      "role": "TANK",
+      "element": "GRASS_ROCK",
+      "rarity": "RARE",
+      "portrait": "assets/images/enemies/focus-forest/thorn-sentinel.png",
+      "moves": [
+        {
+          "id": "bramble-wall",
+          "name": "Bramble Wall",
+          "type": "buff",
+          "target": "self",
+          "cooldown": 4,
+          "effect": { "applyStatus": { "status": "guard", "chance": 1.0 } },
+          "description": "Gains Guard."
+        },
+        {
+          "id": "thorn-counter",
+          "name": "Thorn Counter",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 0,
+          "effect": { "rule": "passiveReflectMinorDamage" },
+          "description": "Passive: reflects minor damage when hit."
+        }
+      ]
+    },
+    {
+      "id": "lumen-owl",
+      "name": "Lumen Owl",
+      "zone": "focus-forest",
+      "role": "CASTER",
+      "element": "LIGHT_WIND",
+      "rarity": "COMMON",
+      "portrait": "assets/images/enemies/focus-forest/lumen-owl.png",
+      "moves": [
+        {
+          "id": "lumen-ray",
+          "name": "Lumen Ray",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium" },
+          "description": "Light ray damage."
+        },
+        {
+          "id": "blinding-flutter",
+          "name": "Blinding Flutter",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 4,
+          "effect": { "applyStatus": { "status": "blind", "chance": 1.0 } },
+          "description": "Blinds a hero for 1 turn."
+        }
+      ]
+    },
+    {
+      "id": "shadowcap-shaman",
+      "name": "Shadowcap Shaman",
+      "zone": "focus-forest",
+      "role": "CASTER",
+      "element": "SHADOW_GRASS",
+      "rarity": "RARE",
+      "portrait": "assets/images/enemies/focus-forest/shadowcap-shaman.png",
+      "moves": [
+        {
+          "id": "spores-of-doubt",
+          "name": "Spores of Doubt",
+          "type": "debuff",
+          "target": "enemy",
+          "cooldown": 4,
+          "effect": { "applyStatus": { "status": "weaken", "chance": 1.0 } },
+          "description": "Weakens defense."
+        },
+        {
+          "id": "night-bloom",
+          "name": "Night Bloom",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "high", "bonusRule": "bonusVsDebuffedTargets" },
+          "description": "Hits harder if the hero is debuffed."
+        }
+      ]
+    },
+    {
+      "id": "breeze-banshee",
+      "name": "Breeze Banshee",
+      "zone": "focus-forest",
+      "role": "TRICKSTER",
+      "element": "WIND",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/focus-forest/breeze-banshee.png",
+      "moves": [
+        {
+          "id": "haunting-gust",
+          "name": "Haunting Gust",
+          "type": "control",
+          "target": "heroes",
+          "cooldown": 4,
+          "effect": { "control": { "rule": "skipActionChance", "chance": 0.25, "scope": "team" } },
+          "description": "Each hero may lose their action."
+        },
+        {
+          "id": "slice-wind",
+          "name": "Slice Wind",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "medium" },
+          "description": "Wind blade damage."
+        }
+      ]
+    },
+    {
+      "id": "stone-trancebear",
+      "name": "Stone Trancebear",
+      "zone": "focus-forest",
+      "role": "TANK",
+      "element": "ROCK",
+      "rarity": "UNCOMMON",
+      "portrait": "assets/images/enemies/focus-forest/stone-trancebear.png",
+      "moves": [
+        {
+          "id": "trance-roar",
+          "name": "Trance Roar",
+          "type": "debuff",
+          "target": "heroes",
+          "cooldown": 4,
+          "effect": { "debuff": { "stat": "spdPct", "value": -0.1, "durationTurns": 2, "scope": "team" } },
+          "description": "Slows the hero team."
+        },
+        {
+          "id": "boulder-hug",
+          "name": "Boulder Hug",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "root", "chance": 1.0 } },
+          "description": "Roots a hero for 1 turn."
+        }
+      ]
+    },
+    {
+      "id": "sparkroot-warden",
+      "name": "Sparkroot Warden",
+      "zone": "focus-forest",
+      "role": "BRUISER",
+      "element": "ELECTRIC_GRASS",
+      "rarity": "RARE",
+      "portrait": "assets/images/enemies/focus-forest/sparkroot-warden.png",
+      "moves": [
+        {
+          "id": "root-shock",
+          "name": "Root Shock",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "high", "applyStatus": { "status": "shock", "chance": 0.2 } },
+          "description": "Strong hit; may Shock."
+        },
+        {
+          "id": "charge-sap",
+          "name": "Charge Sap",
+          "type": "heal",
+          "target": "self",
+          "cooldown": 4,
+          "effect": { "heal": "low" },
+          "description": "Small self heal."
+        }
+      ]
+    },
+    {
+      "id": "moonveil-panther",
+      "name": "Moonveil Panther",
+      "zone": "focus-forest",
+      "role": "SKIRMISHER",
+      "element": "SHADOW",
+      "rarity": "RARE",
+      "portrait": "assets/images/enemies/focus-forest/moonveil-panther.png",
+      "moves": [
+        {
+          "id": "moon-pounce",
+          "name": "Moon Pounce",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "high", "bonusRule": "bonusVsLowestHP" },
+          "description": "Hits weakest hero harder."
+        },
+        {
+          "id": "veil-step",
+          "name": "Veil Step",
+          "type": "buff",
+          "target": "self",
+          "cooldown": 4,
+          "effect": { "buff": { "rule": "dodgeNextHit", "durationTurns": 1 } },
+          "description": "Dodges the next hit."
+        }
+      ]
+    },
+    {
+      "id": "crystal-mantis",
+      "name": "Crystal Mantis",
+      "zone": "focus-forest",
+      "role": "CASTER",
+      "element": "ICE_METAL",
+      "rarity": "ELITE",
+      "portrait": "assets/images/enemies/focus-forest/crystal-mantis.png",
+      "moves": [
+        {
+          "id": "crystal-slice",
+          "name": "Crystal Slice",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "high" },
+          "description": "Sharp crystal slash."
+        },
+        {
+          "id": "freeze-frame",
+          "name": "Freeze Frame",
+          "type": "control",
+          "target": "heroes",
+          "cooldown": 5,
+          "effect": { "applyStatus": { "status": "chill", "chance": 1.0, "scope": "team" } },
+          "description": "Chills all heroes."
+        },
+        {
+          "id": "mirror-shell",
+          "name": "Mirror Shell",
+          "type": "buff",
+          "target": "self",
+          "cooldown": 5,
+          "effect": { "applyStatus": { "status": "guard", "chance": 1.0 } },
+          "description": "Gains Guard."
+        }
+      ]
+    },
+    {
+      "id": "ancient-grove-guardian",
+      "name": "Ancient Grove Guardian",
+      "zone": "focus-forest",
+      "role": "TANK",
+      "element": "GRASS_LIGHT",
+      "rarity": "ELITE",
+      "portrait": "assets/images/enemies/focus-forest/ancient-grove-guardian.png",
+      "moves": [
+        {
+          "id": "sanctuary-bark",
+          "name": "Sanctuary Bark",
+          "type": "buff",
+          "target": "enemies",
+          "cooldown": 4,
+          "effect": { "applyStatus": { "status": "guard", "chance": 1.0, "scope": "team", "durationTurns": 1 } },
+          "description": "Grants Guard to enemy team for 1 turn."
+        },
+        {
+          "id": "root-judgment",
+          "name": "Root Judgment",
+          "type": "control",
+          "target": "enemy",
+          "cooldown": 3,
+          "effect": { "applyStatus": { "status": "root", "chance": 1.0 } },
+          "description": "Roots a hero."
+        },
+        {
+          "id": "radiant-slam",
+          "name": "Radiant Slam",
+          "type": "damage",
+          "target": "enemy",
+          "cooldown": 2,
+          "effect": { "damage": "high" },
+          "description": "Big radiant hit."
+        }
+      ]
+    }
+  ]
+}
