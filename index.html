@@ -3033,7 +3033,6 @@
         // Weather sounds
         'weather.sunny': ['weather/sunny-ambient'],
         'weather.cloudy': ['weather/cloudy-ambient'],
-        'weather.clouds': ['weather/cloudy-ambient'],
         'weather.rain': ['weather/rain-ambient'],
         'weather.storm': ['weather/storm-ambient'],
         'weather.snow': ['weather/snow-ambient'],
@@ -3119,6 +3118,19 @@
       }
       return Math.max(0, Math.min(1, volume));
     }
+
+    getWeatherSoundKey(weatherType) {
+      const normalized = weatherType === 'clouds' ? 'cloudy' : weatherType;
+      return normalized || 'sunny';
+    }
+
+    getCurrentWeatherSoundKey() {
+      return `weather.${this.getWeatherSoundKey(this.currentWeatherKey)}`;
+    }
+
+    getCurrentMusicKey() {
+      return this.currentMusicKey || 'music.hub';
+    }
     
     // Preload a sound
     preloadSound(soundKey) {
@@ -3164,9 +3176,10 @@
     
     // Play weather ambient sound with crossfade
     playWeatherAmbience(weatherType) {
-      const soundKey = `weather.${weatherType}`;
+      const normalized = this.getWeatherSoundKey(weatherType);
+      const soundKey = `weather.${normalized}`;
       if (!this.soundMap[soundKey]) return;
-      this.currentWeatherKey = weatherType;
+      this.currentWeatherKey = normalized;
       if (this.isMuted || !this.isInitialized) return;
       
       const volume = this.getSoundVolume(soundKey, 1.0);
@@ -3239,17 +3252,17 @@
       
       // Update any playing sounds in that category
       if (category === 'ambience' && this.currentWeatherHowl) {
-        this.currentWeatherHowl.volume(this.getSoundVolume('weather.' + (this.currentWeatherKey || 'sunny'), 1.0));
+        this.currentWeatherHowl.volume(this.getSoundVolume(this.getCurrentWeatherSoundKey(), 1.0));
       }
       if (category === 'music' && this.currentMusicHowl) {
-        this.currentMusicHowl.volume(this.getSoundVolume(this.currentMusicKey || 'music.hub', 1.0));
+        this.currentMusicHowl.volume(this.getSoundVolume(this.getCurrentMusicKey(), 1.0));
       }
       if (category === 'master') {
         if (this.currentWeatherHowl) {
-          this.currentWeatherHowl.volume(this.getSoundVolume('weather.' + (this.currentWeatherKey || 'sunny'), 1.0));
+          this.currentWeatherHowl.volume(this.getSoundVolume(this.getCurrentWeatherSoundKey(), 1.0));
         }
         if (this.currentMusicHowl) {
-          this.currentMusicHowl.volume(this.getSoundVolume(this.currentMusicKey || 'music.hub', 1.0));
+          this.currentMusicHowl.volume(this.getSoundVolume(this.getCurrentMusicKey(), 1.0));
         }
       }
     }
@@ -3265,7 +3278,7 @@
           this.playWeatherAmbience(this.currentWeatherKey);
         }
         if (this.currentMusicKey) {
-          this.playMusic(this.currentMusicKey);
+          this.playMusic(this.getCurrentMusicKey());
         }
       }
       console.log(this.isMuted ? '🔇 Audio muted' : '🔊 Audio unmuted');
@@ -5240,7 +5253,7 @@
       if (audioManager.isInitialized) {
         audioInitialized = true;
         audioManager.playWeatherAmbience(currentWeather === 'none' ? 'sunny' : currentWeather);
-        audioManager.playMusic(audioManager.currentMusicKey || 'music.hub');
+        audioManager.playMusic(audioManager.getCurrentMusicKey());
         console.log('Audio initialized on user interaction');
       }
     }
