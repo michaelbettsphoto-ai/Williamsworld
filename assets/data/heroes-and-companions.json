@@ -1,0 +1,238 @@
+{
+  "progressionRulesVersion": "v2",
+  "xpRules": {
+    "dailyMaxHeroXp": 150,
+    "heroXpThresholds": { "1": 400, "2": 450, "3": 500, "4": 550, "5": 600 },
+    "companionXpShareOfHero": 0.5,
+    "companionXpThresholds": { "1": 500, "2": 575, "3": 650, "4": 725, "5": 800 },
+    "statGrowthPerLevel": { "hpPct": 0.1, "atkPct": 0.06, "defPct": 0.06, "spdPct": 0.03 }
+  },
+  "statusEffects": {
+    "burn": "Burn: -10% ATK for 2 turns + minor damage",
+    "chill": "Chill: -10% SPD for 2 turns",
+    "shock": "Shock: 25% chance to lose action this turn",
+    "root": "Root: cannot swap/retreat for 1 turn",
+    "blind": "Blind: -20% accuracy for 1 turn",
+    "weaken": "Weaken: -15% DEF for 2 turns",
+    "guard": "Guard: +20% DEF for 2 turns",
+    "focus": "Focus: +15% ATK for 2 turns"
+  },
+  "characters": [
+    {
+      "id": "william",
+      "displayName": "William",
+      "classTitle": "Hero",
+      "element": "NEUTRAL",
+      "level": 1,
+      "xpCurrent": 0,
+      "stats": { "hp": 120, "atk": 14, "def": 12, "spd": 12 },
+      "abilities": [
+        {
+          "abilityId": "william_tiger_strike",
+          "name": "Tiger Strike",
+          "type": "damage",
+          "element": "NEUTRAL",
+          "cooldown": 1,
+          "target": "enemy",
+          "unlockLevel": 1,
+          "rank": 1,
+          "scalesWith": "atk",
+          "description": "A fast strike that always hits."
+        },
+        {
+          "abilityId": "william_team_call",
+          "name": "Team Call",
+          "type": "buff",
+          "element": "NEUTRAL",
+          "cooldown": 4,
+          "target": "team",
+          "unlockLevel": 1,
+          "rank": 1,
+          "scalesWith": "level",
+          "description": "William rallies the team: Focus (+15% ATK) for 2 turns."
+        },
+        {
+          "abilityId": "william_brave_guard",
+          "name": "Brave Guard",
+          "type": "shield",
+          "element": "NEUTRAL",
+          "cooldown": 3,
+          "target": "ally",
+          "unlockLevel": 3,
+          "rank": 1,
+          "scalesWith": "level",
+          "description": "Protect an ally with a shield for 2 turns."
+        }
+      ],
+      "abilityUpgrades": [
+        { "atLevel": 2, "abilityId": "william_tiger_strike", "changes": ["Damage +10%"] },
+        { "atLevel": 3, "abilityId": "william_team_call", "changes": ["Duration becomes 3 turns"] },
+        { "atLevel": 4, "abilityId": "william_tiger_strike", "changes": ["Damage +10% (stacking)"] },
+        { "atLevel": 5, "abilityId": "william_team_call", "changes": ["Also grants +10% DEF for 2 turns"] },
+        { "atLevel": 5, "abilityId": "william_brave_guard", "changes": ["Also shields the lowest-HP ally"] }
+      ]
+    },
+    {
+      "id": "ember",
+      "displayName": "Ember",
+      "classTitle": "Fire Tiger",
+      "element": "FIRE",
+      "level": 1,
+      "xpCurrent": 0,
+      "stats": { "hp": 110, "atk": 16, "def": 10, "spd": 12 },
+      "abilities": [
+        {
+          "abilityId": "ember_ember_bite",
+          "name": "Ember Bite",
+          "type": "damage",
+          "element": "FIRE",
+          "cooldown": 2,
+          "target": "enemy",
+          "unlockLevel": 1,
+          "rank": 1,
+          "scalesWith": "atk",
+          "description": "A fiery bite that may Burn (25%)."
+        },
+        {
+          "abilityId": "ember_heat_up",
+          "name": "Heat Up",
+          "type": "buff",
+          "element": "FIRE",
+          "cooldown": 4,
+          "target": "self",
+          "unlockLevel": 1,
+          "rank": 1,
+          "scalesWith": "level",
+          "description": "Ember gains Focus (+15% ATK) for 2 turns."
+        },
+        {
+          "abilityId": "ember_flame_dash",
+          "name": "Flame Dash",
+          "type": "damage",
+          "element": "FIRE",
+          "cooldown": 3,
+          "target": "enemy",
+          "unlockLevel": 3,
+          "rank": 1,
+          "scalesWith": "atk",
+          "description": "Dash through the enemy for medium damage; may Shock (20%)."
+        }
+      ],
+      "abilityUpgrades": [
+        { "atLevel": 2, "abilityId": "ember_ember_bite", "changes": ["Burn chance 35%"] },
+        { "atLevel": 3, "abilityId": "ember_heat_up", "changes": ["Also grants +10% SPD for 2 turns"] },
+        { "atLevel": 4, "abilityId": "ember_ember_bite", "changes": ["Burn chance 45%"] },
+        { "atLevel": 5, "abilityId": "ember_flame_dash", "changes": ["Cooldown -1"] },
+        { "atLevel": 5, "abilityId": "ember_heat_up", "changes": ["Duration becomes 3 turns"] }
+      ]
+    },
+    {
+      "id": "sprite",
+      "displayName": "Sprite",
+      "classTitle": "Light Fairy",
+      "element": "LIGHT",
+      "level": 1,
+      "xpCurrent": 0,
+      "stats": { "hp": 95, "atk": 10, "def": 10, "spd": 15 },
+      "abilities": [
+        {
+          "abilityId": "sprite_glow_heal",
+          "name": "Glow Heal",
+          "type": "heal",
+          "element": "LIGHT",
+          "cooldown": 3,
+          "target": "ally",
+          "unlockLevel": 1,
+          "rank": 1,
+          "scalesWith": "level",
+          "description": "Heal one ally (scales with level)."
+        },
+        {
+          "abilityId": "sprite_sparkle_shield",
+          "name": "Sparkle Shield",
+          "type": "shield",
+          "element": "LIGHT",
+          "cooldown": 4,
+          "target": "ally",
+          "unlockLevel": 1,
+          "rank": 1,
+          "scalesWith": "level",
+          "description": "Shield one ally for 2 turns."
+        },
+        {
+          "abilityId": "sprite_dazzle",
+          "name": "Dazzle",
+          "type": "control",
+          "element": "LIGHT",
+          "cooldown": 5,
+          "target": "enemies",
+          "unlockLevel": 3,
+          "rank": 1,
+          "scalesWith": "level",
+          "description": "Attempt to Blind all enemies (25%) for 1 turn."
+        }
+      ],
+      "abilityUpgrades": [
+        { "atLevel": 2, "abilityId": "sprite_glow_heal", "changes": ["Healing +10%"] },
+        { "atLevel": 3, "abilityId": "sprite_sparkle_shield", "changes": ["Also removes 1 debuff (cleanse)"] },
+        { "atLevel": 4, "abilityId": "sprite_glow_heal", "changes": ["Healing +10% (stacking)"] },
+        { "atLevel": 5, "abilityId": "sprite_dazzle", "changes": ["Blind chance 35%"] },
+        { "atLevel": 5, "abilityId": "sprite_sparkle_shield", "changes": ["Also grants +10% DEF while active"] }
+      ]
+    },
+    {
+      "id": "golem",
+      "displayName": "Golem",
+      "classTitle": "Stone Guardian",
+      "element": "ROCK",
+      "level": 1,
+      "xpCurrent": 0,
+      "stats": { "hp": 140, "atk": 12, "def": 16, "spd": 8 },
+      "abilities": [
+        {
+          "abilityId": "golem_stone_slam",
+          "name": "Stone Slam",
+          "type": "damage",
+          "element": "ROCK",
+          "cooldown": 2,
+          "target": "enemy",
+          "unlockLevel": 1,
+          "rank": 1,
+          "scalesWith": "atk",
+          "description": "A heavy slam that may Chill (20%)."
+        },
+        {
+          "abilityId": "golem_guard_stance",
+          "name": "Guard Stance",
+          "type": "buff",
+          "element": "ROCK",
+          "cooldown": 4,
+          "target": "team",
+          "unlockLevel": 1,
+          "rank": 1,
+          "scalesWith": "level",
+          "description": "Grant Guard (+20% DEF) to the team for 1 turn; Golem keeps it for 2 turns."
+        },
+        {
+          "abilityId": "golem_taunt_boulder",
+          "name": "Taunt Boulder",
+          "type": "control",
+          "element": "ROCK",
+          "cooldown": 5,
+          "target": "enemies",
+          "unlockLevel": 3,
+          "rank": 1,
+          "scalesWith": "level",
+          "description": "Enemies must target Golem for 1 turn."
+        }
+      ],
+      "abilityUpgrades": [
+        { "atLevel": 2, "abilityId": "golem_stone_slam", "changes": ["Chill chance 30%"] },
+        { "atLevel": 3, "abilityId": "golem_guard_stance", "changes": ["Golem Guard duration +1 turn"] },
+        { "atLevel": 4, "abilityId": "golem_stone_slam", "changes": ["Chill chance 40%"] },
+        { "atLevel": 5, "abilityId": "golem_taunt_boulder", "changes": ["Taunt lasts 2 turns"] },
+        { "atLevel": 5, "abilityId": "golem_guard_stance", "changes": ["Also grants a small HP shield to team"] }
+      ]
+    }
+  ]
+}
