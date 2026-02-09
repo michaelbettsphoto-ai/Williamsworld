@@ -567,6 +567,7 @@
     let turnOrder = [];
     let activeTurnIndex = 0;
 
+    const DEFAULT_ICON = '/assets/ui/logo.svg';
     const portraitMap = {
       trapper: '/assets/ui/backpackbastion.png',
       sparkfin: '/assets/ui/companion_sprite_512.png',
@@ -714,7 +715,7 @@
       const statuses = fighter.statuses.length ? fighter.statuses : getDefaultStatuses(fighter.id);
       return statuses.map(status => `
         <span class="status-icon" title="${status}">
-          <img src="${statusIconMap[status] || '/assets/ui/mapstrip.svg'}" alt="${status} icon">
+          <img src="${statusIconMap[status] || DEFAULT_ICON}" alt="${status} icon">
         </span>
       `).join('');
     }
@@ -781,7 +782,7 @@
     }
 
     function getTypeIcon(type) {
-      return typeIconMap[type] || '/assets/ui/mapstrip.svg';
+      return typeIconMap[type] || DEFAULT_ICON;
     }
 
     function formatRole(role) {
@@ -908,21 +909,21 @@
         const char = gameData.characters[id];
         const card = document.createElement('div');
         card.className = 'card-collection';
-        card.style.setProperty('--role-color-1', `var(--role-${char.role_primary})`);
-        card.style.setProperty('--role-color-2', `var(--role-${char.role_primary}-light)`);
+        card.style.setProperty('--role-color-1', `var(--role-${char.role_primary}, var(--role-defender))`);
+        card.style.setProperty('--role-color-2', `var(--role-${char.role_primary}-light, var(--role-defender-light))`);
         card.innerHTML = `
           <div class="card-collection-portrait">
             <img src="${getPortrait(id)}" alt="${char.name}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
           </div>
           <div class="card-collection-name">${char.name}</div>
           <div class="card-collection-badges">
-            <div class="card-role-badge" style="--role-color-1: var(--role-${char.role_primary}); --role-color-2: var(--role-${char.role_primary}-light);">
+            <div class="card-role-badge" style="--role-color-1: var(--role-${char.role_primary}, var(--role-defender)); --role-color-2: var(--role-${char.role_primary}-light, var(--role-defender-light));">
               <img src="${getRoleIcon(char.role_primary)}" alt="${char.role_primary}" style="width:16px;height:16px;object-fit:contain;">
             </div>
           </div>
           <div class="card-type-icons">
             ${char.types.map(type => `
-              <div class="card-type-icon" style="--type-color-1: var(--type-${type}); --type-color-2: var(--type-${type}-light);">
+              <div class="card-type-icon" style="--type-color-1: var(--type-${type}, var(--type-metal)); --type-color-2: var(--type-${type}-light, var(--type-metal-light));">
                 <img src="${getTypeIcon(type)}" alt="${type}" style="width:18px;height:18px;object-fit:contain;">
               </div>
             `).join('')}
