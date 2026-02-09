@@ -263,7 +263,7 @@ All components include responsive breakpoints:
 
 ### In HTML Files
 ```html
-<link rel="stylesheet" href="/battle-system/ui/character-cards.css">
+<link rel="stylesheet" href="./assets/css/character-cards.css">
 ```
 
 ### In JavaScript

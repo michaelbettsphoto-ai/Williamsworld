@@ -11,7 +11,7 @@ This document summarizes the complete implementation of the William's World Char
 ## What Was Delivered
 
 ### 1. Comprehensive Specification (18KB)
-- **File:** `/battle-system/SPECIFICATION.md`
+- **File:** `./battle-system/SPECIFICATION.md`
 - **Content:**
   - Complete design principles and requirements
   - Data model definitions (TypeScript interfaces)
@@ -22,7 +22,7 @@ This document summarizes the complete implementation of the William's World Char
   - Designer deliverables checklist
 
 ### 2. Data Models & Game Constants
-- **File:** `/battle-system/data/game-constants.json`
+- **File:** `./battle-system/data/game-constants.json`
 - **Content:**
   - 6 role definitions (Striker, Defender, Support, Controller, Summoner, Scout)
   - 10 element types with colors and icons
@@ -45,7 +45,7 @@ Each character includes:
 - 3-rank progression path
 
 ### 4. Battle Engine (13KB)
-- **File:** `/battle-system/logic/battle-engine.js`
+- **File:** `./assets/js/battle-system/battle-engine.js`
 - **Features:**
   - Turn-based 3v3 combat
   - Damage calculation with type effectiveness
@@ -57,7 +57,7 @@ Each character includes:
   - Win condition checking
 
 ### 5. Battle Simulator (9KB)
-- **File:** `/battle-system/logic/battle-simulator.js`
+- **File:** `./assets/js/battle-system/battle-simulator.js`
 - **Features:**
   - Automated battle simulation
   - Simple AI for testing
@@ -67,7 +67,7 @@ Each character includes:
   - Battle log output
 
 ### 6. UI Component Library (14KB CSS)
-- **File:** `/battle-system/ui/character-cards.css`
+- **File:** `./assets/css/character-cards.css`
 - **Components:**
   - Collection grid cards (200px wide)
   - Full detail cards front (400px wide)
@@ -80,13 +80,13 @@ Each character includes:
   - Keyword chips
 
 ### 7. Interactive Demos
-- **Battle Demo:** `/battle-system-demo.html`
+- **Battle Demo:** `./battle-system-demo.html`
   - Run automated battles
   - View character details
   - Check type effectiveness
   - Interactive UI
   
-- **UI Templates:** `/battle-system/ui/card-templates.html`
+- **UI Templates:** `./battle-system/ui/card-templates.html`
   - Visual examples of all card types
   - Clickable components
   - Live demonstrations
@@ -208,7 +208,7 @@ const result = simulator.runFullBattle(10);
 
 ### Creating UI Components
 ```html
-<link rel="stylesheet" href="/battle-system/ui/character-cards.css">
+<link rel="stylesheet" href="./assets/css/character-cards.css">
 <div class="card-collection">
   <!-- Character card content -->
 </div>
