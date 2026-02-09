@@ -1,17 +1,20 @@
 # Gameplay Sound Effects
 
-This directory contains sound effects for mini-games and gameplay mechanics.
+Gameplay sound files live in `assets/audio/gameplay/`.
 
 ## Purpose
-This directory is reserved for future mini-game specific sound effects like:
+This directory includes the battle demo impact sound plus future mini-game specific effects like:
 - Chess/Checkers piece movements
 - Tetris block drops and line clears
 - Snake food collection
 - 2048 tile merges
 - Other gameplay-specific audio
 
+## Current Files
+- `battle-hit.mp3` - Battle demo impact placeholder
+
 ## Technical Specs
-- Format: OGG primary
+- Format: MP3 primary
 - Volume: Normalized with UI sounds
 - Duration: Short, feedback-oriented
 - Style: Fun, clear, matches game action

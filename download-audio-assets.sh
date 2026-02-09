@@ -4,7 +4,8 @@
 
 set -e
 
-AUDIO_DIR="/home/runner/work/Williamsworld/Williamsworld/audio"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+AUDIO_DIR="${AUDIO_DIR:-$SCRIPT_DIR/assets/audio}"
 
 echo "================================================"
 echo "Williams World - Audio Asset Download Script"
@@ -79,51 +80,54 @@ read -p "Press Enter when you have downloaded the music..."
 echo ""
 echo "Step 5: Convert Audio Files"
 echo "------------------------------------------------"
-echo "All audio files need to be in OGG format."
+echo "All audio files need to be in MP3 format."
 echo ""
 echo "If you have files in WAV, MP3, or other formats, convert them using:"
-echo "  - ffmpeg: ffmpeg -i input.wav output.ogg"
-echo "  - Audacity: File > Export > Export as OGG Vorbis"
+echo "  - ffmpeg: ffmpeg -i input.wav output.mp3"
+echo "  - Audacity: File > Export > Export as MP3"
 echo "  - Online converter: https://cloudconvert.com/audio-converter"
 echo ""
-read -p "Press Enter when all files are converted to OGG format..."
+read -p "Press Enter when all files are converted to MP3 format..."
 
 echo ""
 echo "Step 6: Organize and Copy Files"
 echo "------------------------------------------------"
 echo "Copy your audio files to the appropriate directories:"
 echo ""
-echo "UI Sounds (11 files) -> $AUDIO_DIR/ui/"
-echo "  - button-click-1.ogg, button-click-2.ogg, button-click-3.ogg"
-echo "  - hover-tick.ogg"
-echo "  - panel-open.ogg, panel-close.ogg"
-echo "  - toggle-on.ogg, toggle-off.ogg"
-echo "  - tab-change.ogg"
-echo "  - success-1.ogg, success-2.ogg, success-3.ogg"
-echo "  - error-soft.ogg"
-echo "  - notification-ping.ogg"
+echo "UI Sounds (14 files) -> $AUDIO_DIR/ui/"
+echo "  - button-click-1.mp3, button-click-2.mp3, button-click-3.mp3"
+echo "  - hover-tick.mp3"
+echo "  - panel-open.mp3, panel-close.mp3"
+echo "  - toggle-on.mp3, toggle-off.mp3"
+echo "  - tab-change.mp3"
+echo "  - success-1.mp3, success-2.mp3, success-3.mp3"
+echo "  - error-soft.mp3"
+echo "  - notification-ping.mp3"
 echo ""
 echo "Avatar Sounds (20 files) -> $AUDIO_DIR/avatar/"
-echo "  - idle-1.ogg, idle-2.ogg, idle-3.ogg"
-echo "  - william-tap.ogg"
-echo "  - confetti-sneeze.ogg, banana-slip.ogg, bubble-burp.ogg"
-echo "  - pie-trap.ogg, rubber-chicken.ogg, hero-landing.ogg"
-echo "  - endless-scarf.ogg, frog-crown.ogg, chipmunk-voice.ogg"
-echo "  - marshmallow-volley.ogg, hair-tornado.ogg, tiger-shuffle.ogg"
-echo "  - lego-step.ogg, goose-chase.ogg, treasure-socks.ogg"
-echo "  - william-on-break.ogg"
+echo "  - idle-1.mp3, idle-2.mp3, idle-3.mp3"
+echo "  - william-tap.mp3"
+echo "  - confetti-sneeze.mp3, banana-slip.mp3, bubble-burp.mp3"
+echo "  - pie-trap.mp3, rubber-chicken.mp3, hero-landing.mp3"
+echo "  - endless-scarf.mp3, frog-crown.mp3, chipmunk-voice.mp3"
+echo "  - marshmallow-volley.mp3, hair-tornado.mp3, tiger-shuffle.mp3"
+echo "  - lego-step.mp3, goose-chase.mp3, treasure-socks.mp3"
+echo "  - william-on-break.mp3"
 echo ""
 echo "Weather Ambient (5 files) -> $AUDIO_DIR/weather/"
-echo "  - sunny-ambient.ogg (birds + breeze)"
-echo "  - cloudy-ambient.ogg (wind + rustle)"
-echo "  - rain-ambient.ogg (light rain)"
-echo "  - storm-ambient.ogg (rain + thunder)"
-echo "  - snow-ambient.ogg (soft wind)"
+echo "  - sunny-ambient.mp3 (birds + breeze)"
+echo "  - cloudy-ambient.mp3 (wind + rustle)"
+echo "  - rain-ambient.mp3 (light rain)"
+echo "  - storm-ambient.mp3 (rain + thunder)"
+echo "  - snow-ambient.mp3 (soft wind)"
 echo ""
 echo "Background Music (3 files) -> $AUDIO_DIR/music/"
-echo "  - hub-loop.ogg"
-echo "  - forest-loop.ogg"
-echo "  - dungeon-loop.ogg"
+echo "  - hub-loop.mp3"
+echo "  - forest-loop.mp3"
+echo "  - dungeon-loop.mp3"
+echo ""
+echo "Gameplay SFX (1 file) -> $AUDIO_DIR/gameplay/"
+echo "  - battle-hit.mp3"
 echo ""
 read -p "Press Enter when you have organized all files..."
 
@@ -138,26 +142,32 @@ MISSING=0
 
 # UI Files
 echo "UI Sounds:"
-for file in button-click-1.ogg button-click-2.ogg button-click-3.ogg hover-tick.ogg panel-open.ogg panel-close.ogg toggle-on.ogg toggle-off.ogg tab-change.ogg success-1.ogg success-2.ogg success-3.ogg error-soft.ogg notification-ping.ogg; do
+for file in button-click-1.mp3 button-click-2.mp3 button-click-3.mp3 hover-tick.mp3 panel-open.mp3 panel-close.mp3 toggle-on.mp3 toggle-off.mp3 tab-change.mp3 success-1.mp3 success-2.mp3 success-3.mp3 error-soft.mp3 notification-ping.mp3; do
     check_file "$AUDIO_DIR/ui/$file" || ((MISSING++))
 done
 
 echo ""
 echo "Avatar Sounds:"
-for file in idle-1.ogg idle-2.ogg idle-3.ogg william-tap.ogg confetti-sneeze.ogg banana-slip.ogg bubble-burp.ogg pie-trap.ogg rubber-chicken.ogg hero-landing.ogg endless-scarf.ogg frog-crown.ogg chipmunk-voice.ogg marshmallow-volley.ogg hair-tornado.ogg tiger-shuffle.ogg lego-step.ogg goose-chase.ogg treasure-socks.ogg william-on-break.ogg; do
+for file in idle-1.mp3 idle-2.mp3 idle-3.mp3 william-tap.mp3 confetti-sneeze.mp3 banana-slip.mp3 bubble-burp.mp3 pie-trap.mp3 rubber-chicken.mp3 hero-landing.mp3 endless-scarf.mp3 frog-crown.mp3 chipmunk-voice.mp3 marshmallow-volley.mp3 hair-tornado.mp3 tiger-shuffle.mp3 lego-step.mp3 goose-chase.mp3 treasure-socks.mp3 william-on-break.mp3; do
     check_file "$AUDIO_DIR/avatar/$file" || ((MISSING++))
 done
 
 echo ""
 echo "Weather Ambient:"
-for file in sunny-ambient.ogg cloudy-ambient.ogg rain-ambient.ogg storm-ambient.ogg snow-ambient.ogg; do
+for file in sunny-ambient.mp3 cloudy-ambient.mp3 rain-ambient.mp3 storm-ambient.mp3 snow-ambient.mp3; do
     check_file "$AUDIO_DIR/weather/$file" || ((MISSING++))
 done
 
 echo ""
 echo "Background Music:"
-for file in hub-loop.ogg forest-loop.ogg dungeon-loop.ogg; do
+for file in hub-loop.mp3 forest-loop.mp3 dungeon-loop.mp3; do
     check_file "$AUDIO_DIR/music/$file" || ((MISSING++))
+done
+
+echo ""
+echo "Gameplay SFX:"
+for file in battle-hit.mp3; do
+    check_file "$AUDIO_DIR/gameplay/$file" || ((MISSING++))
 done
 
 echo ""

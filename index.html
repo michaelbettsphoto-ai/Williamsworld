@@ -2188,7 +2188,7 @@
 </div>
 
 <!-- Audio Toggle Button -->
-<div id="audioToggle" title="Audio Settings">🔊</div>
+<div id="audioToggle" title="Enable Sound / Audio Settings">🔊</div>
 
 <!-- Audio Settings Panel -->
 <div id="audioSettings">
@@ -2968,7 +2968,11 @@
     constructor() {
       this.sounds = {};
       this.currentWeatherSound = null;
+      this.currentWeatherKey = null;
+      this.currentWeatherHowl = null;
       this.currentMusicSound = null;
+      this.currentMusicKey = 'music.hub';
+      this.currentMusicHowl = null;
       this.isInitialized = false;
       this.isMuted = false;
       this.activeSounds = [];
@@ -3035,14 +3039,24 @@
         
         // Music
         'music.hub': ['music/hub-loop'],
+        'music.forest': ['music/forest-loop'],
+        'music.dungeon': ['music/dungeon-loop'],
+
+        // Gameplay
+        'gameplay.battleHit': ['gameplay/battle-hit'],
       };
     }
     
     // Initialize audio on user interaction (required for mobile)
     init() {
       if (this.isInitialized) return;
+      if (!window.Howl || !window.Howler) {
+        console.warn('Howler.js not loaded; audio disabled.');
+        return;
+      }
       this.isInitialized = true;
       console.log('AudioManager initialized');
+      Howler.mute(this.isMuted);
       
       // Preload core UI sounds
       this.preloadSound('ui.click');
@@ -3077,9 +3091,45 @@
     
     // Get file path with extension
     getFilePath(key) {
-      // Try OGG first (preferred), then WAV as fallback
-      // This supports both production OGG files and development WAV placeholders
-      return `audio/${key}.ogg`;  // Howler.js will handle format detection
+      return `./assets/audio/${key}.mp3`;
+    }
+
+    getHowl(file, options = {}) {
+      if (!this.sounds[file]) {
+        this.sounds[file] = new Howl({
+          src: [this.getFilePath(file)],
+          preload: options.preload !== undefined ? options.preload : true,
+          loop: options.loop || false,
+        });
+      } else if (options.loop !== undefined) {
+        this.sounds[file].loop(options.loop);
+      }
+      return this.sounds[file];
+    }
+
+    getSoundVolume(soundKey, baseVolume = 1.0) {
+      let volume = baseVolume;
+      if (soundKey.startsWith('ui.') || soundKey.startsWith('avatar.') || soundKey.startsWith('gameplay.')) {
+        volume *= this.volumes.sfx * this.volumes.master;
+      } else if (soundKey.startsWith('weather.')) {
+        volume *= this.volumes.ambience * this.volumes.master;
+      } else if (soundKey.startsWith('music.')) {
+        volume *= this.volumes.music * this.volumes.master;
+      }
+      return Math.max(0, Math.min(1, volume));
+    }
+
+    getWeatherSoundKey(weatherType) {
+      const normalized = weatherType === 'clouds' ? 'cloudy' : weatherType;
+      return normalized || 'sunny';
+    }
+
+    getCurrentWeatherSoundKey() {
+      return `weather.${this.getWeatherSoundKey(this.currentWeatherKey)}`;
+    }
+
+    getCurrentMusicKey() {
+      return this.currentMusicKey || 'music.hub';
     }
     
     // Preload a sound
@@ -3088,13 +3138,7 @@
       
       const files = this.soundMap[soundKey];
       files.forEach(file => {
-        if (!this.sounds[file]) {
-          // Placeholder: In production, would load actual Howler sound
-          this.sounds[file] = {
-            file: this.getFilePath(file),
-            loaded: false,
-          };
-        }
+        this.getHowl(file, { preload: true });
       });
     }
     
@@ -3111,21 +3155,17 @@
       
       // Pick random variation
       const file = files[Math.floor(Math.random() * files.length)];
-      
+
       // Determine volume based on category
       let volume = options.volume !== undefined ? options.volume : 1.0;
-      if (soundKey.startsWith('ui.')) {
-        volume *= this.volumes.sfx * this.volumes.master;
-      } else if (soundKey.startsWith('avatar.')) {
-        volume *= this.volumes.sfx * this.volumes.master;
-        if (this.reduceSoundMode && soundKey === 'avatar.idle') {
-          return; // Skip idle sounds in reduce mode
-        }
+      if (soundKey.startsWith('avatar.') && this.reduceSoundMode && soundKey === 'avatar.idle') {
+        return; // Skip idle sounds in reduce mode
       }
-      
-      // In production, would actually play the sound using Howler.js
-      // For now, just log it
-      console.log(`🔊 Playing: ${soundKey} (${file}) at volume ${volume.toFixed(2)}`);
+
+      volume = this.getSoundVolume(soundKey, volume);
+      const howl = this.getHowl(file);
+      const playId = howl.play();
+      howl.volume(volume, playId);
       
       // Track active sound
       this.activeSounds.push({ key: soundKey, time: Date.now() });
@@ -3134,27 +3174,75 @@
       }
     }
     
-    // Play weather ambient sound with crossfade
+    // Play weather ambient sound
     playWeatherAmbience(weatherType) {
+      const normalized = this.getWeatherSoundKey(weatherType);
+      const soundKey = `weather.${normalized}`;
+      if (!this.soundMap[soundKey]) return;
+      this.currentWeatherKey = normalized;
       if (this.isMuted || !this.isInitialized) return;
       
-      const soundKey = `weather.${weatherType}`;
-      if (!this.soundMap[soundKey]) return;
-      
-      const volume = this.volumes.ambience * this.volumes.master;
-      
-      // In production, would crossfade using Howler
-      console.log(`🌤️ Weather ambience: ${soundKey} at volume ${volume.toFixed(2)}`);
-      
+      const volume = this.getSoundVolume(soundKey, 1.0);
+      const file = this.soundMap[soundKey][0];
+
+      if (this.currentWeatherHowl && this.currentWeatherSound === soundKey) {
+        this.currentWeatherHowl.volume(volume);
+        return;
+      }
+
+      if (this.currentWeatherHowl) {
+        this.currentWeatherHowl.stop();
+      }
+
+      const howl = this.getHowl(file, { loop: true });
+      howl.volume(volume);
+      howl.play();
+
       this.currentWeatherSound = soundKey;
+      this.currentWeatherHowl = howl;
     }
     
     // Stop weather ambience
     stopWeatherAmbience() {
-      if (this.currentWeatherSound) {
-        console.log(`🌤️ Stopping weather ambience: ${this.currentWeatherSound}`);
-        this.currentWeatherSound = null;
+      if (this.currentWeatherHowl) {
+        this.currentWeatherHowl.stop();
+        this.currentWeatherHowl = null;
       }
+      this.currentWeatherSound = null;
+    }
+
+    // Play background music with loop
+    playMusic(musicKey = 'music.hub') {
+      if (!this.soundMap[musicKey]) return;
+      this.currentMusicKey = musicKey;
+      if (this.isMuted || !this.isInitialized) return;
+
+      const volume = this.getSoundVolume(musicKey, 1.0);
+      const file = this.soundMap[musicKey][0];
+
+      if (this.currentMusicHowl && this.currentMusicSound === musicKey) {
+        this.currentMusicHowl.volume(volume);
+        return;
+      }
+
+      if (this.currentMusicHowl) {
+        this.currentMusicHowl.stop();
+      }
+
+      const howl = this.getHowl(file, { loop: true });
+      howl.volume(volume);
+      howl.play();
+
+      this.currentMusicSound = musicKey;
+      this.currentMusicHowl = howl;
+    }
+
+    stopMusic() {
+      if (this.currentMusicHowl) {
+        this.currentMusicHowl.stop();
+        this.currentMusicHowl = null;
+      }
+      this.currentMusicSound = null;
     }
     
     // Set volume for a category
@@ -3163,26 +3251,37 @@
       this.saveSettings();
       
       // Update any playing sounds in that category
-      if (category === 'ambience' && this.currentWeatherSound) {
-        // Update weather sound volume
-        console.log(`🔊 Updating ambience volume: ${value.toFixed(2)}`);
+      if (category === 'ambience' && this.currentWeatherHowl) {
+        this.currentWeatherHowl.volume(this.getSoundVolume(this.getCurrentWeatherSoundKey(), 1.0));
       }
-      if (category === 'music' && this.currentMusicSound) {
-        // Update music volume
-        console.log(`🎵 Updating music volume: ${value.toFixed(2)}`);
+      if (category === 'music' && this.currentMusicHowl) {
+        this.currentMusicHowl.volume(this.getSoundVolume(this.getCurrentMusicKey(), 1.0));
+      }
+      if (category === 'master') {
+        if (this.currentWeatherHowl) {
+          this.currentWeatherHowl.volume(this.getSoundVolume(this.getCurrentWeatherSoundKey(), 1.0));
+        }
+        if (this.currentMusicHowl) {
+          this.currentMusicHowl.volume(this.getSoundVolume(this.getCurrentMusicKey(), 1.0));
+        }
       }
     }
     
     // Toggle mute
     toggleMute() {
       this.isMuted = !this.isMuted;
-      if (this.isMuted) {
-        // Stop all sounds
-        this.stopWeatherAmbience();
-        console.log('🔇 Audio muted');
-      } else {
-        console.log('🔊 Audio unmuted');
+      if (window.Howler) {
+        Howler.mute(this.isMuted);
       }
+      if (!this.isMuted) {
+        if (this.currentWeatherKey) {
+          this.playWeatherAmbience(this.currentWeatherKey);
+        }
+        if (this.currentMusicKey) {
+          this.playMusic(this.getCurrentMusicKey());
+        }
+      }
+      console.log(this.isMuted ? '🔇 Audio muted' : '🔊 Audio unmuted');
       return this.isMuted;
     }
     
@@ -5150,9 +5249,13 @@
   let audioInitialized = false;
   function initAudioOnInteraction() {
     if (!audioInitialized) {
-      audioInitialized = true;
       audioManager.init();
-      console.log('Audio initialized on user interaction');
+      if (audioManager.isInitialized) {
+        audioInitialized = true;
+        audioManager.playWeatherAmbience(currentWeather === 'none' ? 'sunny' : currentWeather);
+        audioManager.playMusic(audioManager.getCurrentMusicKey());
+        console.log('Audio initialized on user interaction');
+      }
     }
   }
   
@@ -5255,6 +5358,9 @@
   
   // Load audio settings on init
   loadAudioSettingsUI();
+  if (!audioInitialized) {
+    toast('Tap anywhere to enable sound');
+  }
   
   // Connect weather changes to audio
   const originalSetWeather = setWeather;

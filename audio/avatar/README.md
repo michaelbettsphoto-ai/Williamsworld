@@ -1,37 +1,37 @@
 # William Avatar Sound Effects
 
-This directory contains all sound effects for William's idle emotes and Easter egg interactions.
+Avatar sound files live in `assets/audio/avatar/` for William's idle emotes and Easter egg interactions.
 
 ## Sound Files
 
 ### Core Avatar Sounds
-- `idle-1.ogg` - Gentle idle emote sound
-- `idle-2.ogg` - Idle variation
-- `idle-3.ogg` - Idle variation
-- `william-tap.ogg` - Consistent tap sound for clicking William
+- `idle-1.mp3` - Gentle idle emote sound
+- `idle-2.mp3` - Idle variation
+- `idle-3.mp3` - Idle variation
+- `william-tap.mp3` - Consistent tap sound for clicking William
 
 ### Easter Egg Sounds (Fun interactions!)
-- `confetti-sneeze.ogg` - Confetti Sneezus
-- `banana-slip.ogg` - Banana Slip of Destiny
-- `bubble-burp.ogg` - Bubble Burp +1
-- `pie-trap.ogg` - Pie Trap Triggered
-- `rubber-chicken.ogg` - Rubber Chicken Summon
-- `hero-landing.ogg` - Hero Landing (Micro Edition)
-- `endless-scarf.ogg` - Endless Scarf Loot
-- `frog-crown.ogg` - Frog Crown Miscast
-- `chipmunk-voice.ogg` - Potion of Chipmunk Voice
-- `marshmallow-volley.ogg` - Marshmallow Volley
-- `hair-tornado.ogg` - Hair Tornado
-- `tiger-shuffle.ogg` - Tiger Shuffle dance
-- `lego-step.ogg` - LEGO Step Reaction
-- `goose-chase.ogg` - Goose Chase Encounter
-- `treasure-socks.ogg` - Treasure Chest of SOCKS
+- `confetti-sneeze.mp3` - Confetti Sneezus
+- `banana-slip.mp3` - Banana Slip of Destiny
+- `bubble-burp.mp3` - Bubble Burp +1
+- `pie-trap.mp3` - Pie Trap Triggered
+- `rubber-chicken.mp3` - Rubber Chicken Summon
+- `hero-landing.mp3` - Hero Landing (Micro Edition)
+- `endless-scarf.mp3` - Endless Scarf Loot
+- `frog-crown.mp3` - Frog Crown Miscast
+- `chipmunk-voice.mp3` - Potion of Chipmunk Voice
+- `marshmallow-volley.mp3` - Marshmallow Volley
+- `hair-tornado.mp3` - Hair Tornado
+- `tiger-shuffle.mp3` - Tiger Shuffle dance
+- `lego-step.mp3` - LEGO Step Reaction
+- `goose-chase.mp3` - Goose Chase Encounter
+- `treasure-socks.mp3` - Treasure Chest of SOCKS
 
 ### Special Sounds
-- `william-on-break.ogg` - Spam prevention message
+- `william-on-break.mp3` - Spam prevention message
 
 ## Technical Specs
-- Format: OGG primary
+- Format: MP3 primary
 - Idle sounds: 0.3-1.0s, quiet (volume ~0.4)
 - Easter egg sounds: 0.5-1.5s, moderate volume (0.6-0.7)
 - Rate limiting: 1 Easter egg per 1.5 seconds

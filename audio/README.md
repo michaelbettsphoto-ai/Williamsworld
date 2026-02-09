@@ -1,10 +1,10 @@
 # Williams World Audio Assets
 
-This directory contains all audio assets for Williams World.
+Audio assets live in `assets/audio/` for Williams World. This folder documents the structure and sourcing guidance.
 
 ## Current Status
 
-**Placeholder files are currently in place** - These are simple WAV beep files generated for testing the audio system infrastructure. They allow developers to verify the audio system works before adding actual sounds.
+**Placeholder files are currently in place** - Generated MP3 tone files live in `assets/audio/` so the audio system can be tested before adding real sounds.
 
 ## Getting Real Audio Assets
 
@@ -30,77 +30,80 @@ To add actual CC0 (Public Domain) audio assets, follow these steps:
 
 ### File Format Requirements
 
-- **Format**: OGG Vorbis (primary) or WAV (will be converted)
+- **Format**: MP3 (primary) or WAV (will be converted)
 - **Sample Rate**: 44.1 kHz
 - **Channels**: Mono or Stereo
-- **Bit Rate**: 128 kbps for OGG
+- **Bit Rate**: 128 kbps for MP3
 - **Quality**: Clean, normalized, no clipping
 
 ### Directory Structure
 
 ```
-audio/
+assets/audio/
 ├── ui/              # UI sound effects (14 files)
-│   ├── button-click-1.ogg
-│   ├── button-click-2.ogg
-│   ├── button-click-3.ogg
-│   ├── hover-tick.ogg
-│   ├── panel-open.ogg
-│   ├── panel-close.ogg
-│   ├── toggle-on.ogg
-│   ├── toggle-off.ogg
-│   ├── tab-change.ogg
-│   ├── success-1.ogg
-│   ├── success-2.ogg
-│   ├── success-3.ogg
-│   ├── error-soft.ogg
-│   └── notification-ping.ogg
+│   ├── button-click-1.mp3
+│   ├── button-click-2.mp3
+│   ├── button-click-3.mp3
+│   ├── hover-tick.mp3
+│   ├── panel-open.mp3
+│   ├── panel-close.mp3
+│   ├── toggle-on.mp3
+│   ├── toggle-off.mp3
+│   ├── tab-change.mp3
+│   ├── success-1.mp3
+│   ├── success-2.mp3
+│   ├── success-3.mp3
+│   ├── error-soft.mp3
+│   └── notification-ping.mp3
 │
 ├── avatar/          # William avatar sounds (20 files)
-│   ├── idle-1.ogg, idle-2.ogg, idle-3.ogg
-│   ├── william-tap.ogg
-│   ├── confetti-sneeze.ogg
-│   ├── banana-slip.ogg
-│   ├── bubble-burp.ogg
-│   ├── pie-trap.ogg
-│   ├── rubber-chicken.ogg
-│   ├── hero-landing.ogg
-│   ├── endless-scarf.ogg
-│   ├── frog-crown.ogg
-│   ├── chipmunk-voice.ogg
-│   ├── marshmallow-volley.ogg
-│   ├── hair-tornado.ogg
-│   ├── tiger-shuffle.ogg
-│   ├── lego-step.ogg
-│   ├── goose-chase.ogg
-│   ├── treasure-socks.ogg
-│   └── william-on-break.ogg
+│   ├── idle-1.mp3, idle-2.mp3, idle-3.mp3
+│   ├── william-tap.mp3
+│   ├── confetti-sneeze.mp3
+│   ├── banana-slip.mp3
+│   ├── bubble-burp.mp3
+│   ├── pie-trap.mp3
+│   ├── rubber-chicken.mp3
+│   ├── hero-landing.mp3
+│   ├── endless-scarf.mp3
+│   ├── frog-crown.mp3
+│   ├── chipmunk-voice.mp3
+│   ├── marshmallow-volley.mp3
+│   ├── hair-tornado.mp3
+│   ├── tiger-shuffle.mp3
+│   ├── lego-step.mp3
+│   ├── goose-chase.mp3
+│   ├── treasure-socks.mp3
+│   └── william-on-break.mp3
 │
 ├── weather/         # Weather ambient loops (5 files)
-│   ├── sunny-ambient.ogg
-│   ├── cloudy-ambient.ogg
-│   ├── rain-ambient.ogg
-│   ├── storm-ambient.ogg
-│   └── snow-ambient.ogg
+│   ├── sunny-ambient.mp3
+│   ├── cloudy-ambient.mp3
+│   ├── rain-ambient.mp3
+│   ├── storm-ambient.mp3
+│   └── snow-ambient.mp3
 │
 └── music/           # Background music (3 files)
-    ├── hub-loop.ogg
-    ├── forest-loop.ogg
-    └── dungeon-loop.ogg
+    ├── hub-loop.mp3
+    ├── forest-loop.mp3
+    └── dungeon-loop.mp3
+
+assets/audio/gameplay/
+    └── battle-hit.mp3
 ```
 
 ### Replacing Placeholder Files
 
 1. Download actual sounds from CC0 sources
-2. Convert to OGG format if needed:
+2. Convert to MP3 format if needed:
    ```bash
-   ffmpeg -i input.wav -c:a libvorbis -q:a 4 output.ogg
+   ffmpeg -i input.wav -c:a libmp3lame -q:a 4 output.mp3
    ```
 3. Replace the placeholder files with the same filenames
 4. Update `../ASSET_ATTRIBUTION.md` with proper attribution
 5. Test in browser with `../audio-test.html`
 
-### Converting WAV to OGG
+### Converting WAV to MP3
 
 If you have WAV files, convert them all at once:
 
@@ -110,14 +113,14 @@ If you have WAV files, convert them all at once:
 # macOS: brew install ffmpeg
 # Windows: Download from ffmpeg.org
 
-# Convert all WAV files to OGG
-for dir in ui avatar weather music; do
-  for wav in audio/$dir/*.wav; do
+# Convert all WAV files to MP3
+for dir in ui avatar weather music gameplay; do
+  for wav in assets/audio/$dir/*.wav; do
     if [ -f "$wav" ]; then
-      ogg="${wav%.wav}.ogg"
-      ffmpeg -i "$wav" -c:a libvorbis -q:a 4 "$ogg" -y
+      mp3="${wav%.wav}.mp3"
+      ffmpeg -i "$wav" -c:a libmp3lame -q:a 4 "$mp3" -y
       rm "$wav"
-      echo "Converted: $ogg"
+      echo "Converted: $mp3"
     fi
   done
 done
@@ -125,7 +128,7 @@ done
 
 ### Sound Specifications
 
-See `sound-manifest.json` for detailed specifications including:
+See `assets/audio/sound-manifest.json` for detailed specifications including:
 - Expected duration
 - Volume levels
 - Loop requirements
@@ -173,13 +176,13 @@ After adding real audio files:
 **No sound playing?**
 - Check browser console for errors
 - Ensure files are properly named
-- Verify OGG format (not WAV)
+- Verify MP3 format (not WAV)
 - Check file permissions
 
 **Volume too loud/quiet?**
 - Adjust in `../index.html` AudioManager volumes
 - Re-normalize audio files
-- Update `sound-manifest.json`
+- Update `assets/audio/sound-manifest.json`
 
 **Loops not seamless?**
 - Use Audacity to create perfect loop points
@@ -190,11 +193,11 @@ After adding real audio files:
 
 ## Current Placeholder Files
 
-The current WAV files are simple sine wave beeps at different frequencies:
-- **UI sounds**: 400-1500 Hz, 0.03-0.4s duration
-- **Avatar sounds**: 200-1200 Hz, 0.5-2.0s duration
-- **Weather**: 150-300 Hz, 3.0s duration
-- **Music**: 330-440 Hz, 4.0s duration
+The current MP3 files are simple sine wave tones at different frequencies:
+- **UI sounds**: short UI beeps (0.05-0.4s)
+- **Avatar sounds**: mid-length emote tones (0.4-1.5s)
+- **Weather**: ambient loops (~1.5s)
+- **Music**: loopable tones (~2s)
 
 These serve only as development placeholders to test the audio system infrastructure.
 

@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Williams World - Audio Test Page</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js" integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
     :root {
       --bg: #1a0e2e;
@@ -223,7 +224,7 @@
       </div>
       <button id="muteBtn">🔊 Toggle Mute</button>
     </div>
-    <div class="status" id="status">✅ Audio system ready (console logging mode)</div>
+    <div class="status" id="status">🔊 Tap a sound card to play (first tap unlocks audio)</div>
   </div>
   
   <div class="section">
@@ -244,6 +245,11 @@
   <div class="section">
     <h2>🎵 Background Music</h2>
     <div class="sound-grid" id="musicSounds"></div>
+  </div>
+
+  <div class="section">
+    <h2>⚔️ Gameplay SFX</h2>
+    <div class="sound-grid" id="gameplaySounds"></div>
   </div>
   
   <div class="section">
@@ -286,11 +292,59 @@
       { key: 'music.hub', name: 'Hub Loop', info: 'Town hub music (looping)', files: 1 },
       { key: 'music.forest', name: 'Forest Loop', info: 'Forest path music (looping)', files: 1 },
       { key: 'music.dungeon', name: 'Dungeon Loop', info: 'Dungeon corridor music (looping)', files: 1 },
+    ],
+    gameplay: [
+      { key: 'gameplay.battleHit', name: 'Battle Hit', info: 'Battle action impact SFX', files: 1 },
     ]
   };
-  
+
+  const soundMap = {
+    'ui.click': ['ui/button-click-1', 'ui/button-click-2', 'ui/button-click-3'],
+    'ui.hover': ['ui/hover-tick'],
+    'ui.panelOpen': ['ui/panel-open'],
+    'ui.panelClose': ['ui/panel-close'],
+    'ui.toggleOn': ['ui/toggle-on'],
+    'ui.toggleOff': ['ui/toggle-off'],
+    'ui.tabChange': ['ui/tab-change'],
+    'ui.success': ['ui/success-1', 'ui/success-2', 'ui/success-3'],
+    'ui.error': ['ui/error-soft'],
+    'ui.notification': ['ui/notification-ping'],
+    'avatar.idle': ['avatar/idle-1', 'avatar/idle-2', 'avatar/idle-3'],
+    'avatar.tap': ['avatar/william-tap'],
+    'avatar.easterEgg': [
+      'avatar/confetti-sneeze',
+      'avatar/banana-slip',
+      'avatar/bubble-burp',
+      'avatar/pie-trap',
+      'avatar/rubber-chicken',
+      'avatar/hero-landing',
+      'avatar/endless-scarf',
+      'avatar/frog-crown',
+      'avatar/chipmunk-voice',
+      'avatar/marshmallow-volley',
+      'avatar/hair-tornado',
+      'avatar/tiger-shuffle',
+      'avatar/lego-step',
+      'avatar/goose-chase',
+      'avatar/treasure-socks'
+    ],
+    'avatar.onBreak': ['avatar/william-on-break'],
+    'weather.sunny': ['weather/sunny-ambient'],
+    'weather.cloudy': ['weather/cloudy-ambient'],
+    'weather.rain': ['weather/rain-ambient'],
+    'weather.storm': ['weather/storm-ambient'],
+    'weather.snow': ['weather/snow-ambient'],
+    'music.hub': ['music/hub-loop'],
+    'music.forest': ['music/forest-loop'],
+    'music.dungeon': ['music/dungeon-loop'],
+    'gameplay.battleHit': ['gameplay/battle-hit']
+  };
+
   let volumes = { music: 0.2, ambience: 0.3, sfx: 0.7 };
   let isMuted = false;
+  let audioReady = false;
+  const soundInstances = {};
+  const loopingSounds = { weather: null, music: null };
   
   function logSound(message) {
     const log = document.getElementById('soundLog');
@@ -304,19 +358,72 @@
       log.removeChild(log.lastChild);
     }
   }
+
+  function initAudio() {
+    if (audioReady) return;
+    if (!window.Howl || !window.Howler) {
+      logSound('❌ Howler.js not loaded.');
+      return;
+    }
+    audioReady = true;
+    Howler.mute(isMuted);
+    document.getElementById('status').textContent = '✅ Audio ready - click cards to play';
+  }
+
+  function getFilePath(key) {
+    return `./assets/audio/${key}.mp3`;
+  }
+
+  function getHowl(file, loop = false) {
+    if (!soundInstances[file]) {
+      soundInstances[file] = new Howl({
+        src: [getFilePath(file)],
+        loop,
+      });
+    } else if (loop) {
+      soundInstances[file].loop(true);
+    }
+    return soundInstances[file];
+  }
   
   function playSound(key, category) {
     if (isMuted) {
       logSound(`🔇 Muted: ${key}`);
       return;
     }
+
+    initAudio();
+    if (!audioReady) return;
     
     let volume = volumes.sfx;
     if (key.startsWith('weather.')) volume = volumes.ambience;
     if (key.startsWith('music.')) volume = volumes.music;
     
+    const files = soundMap[key] || [];
+    if (!files.length) {
+      logSound(`⚠️ Missing sound mapping: ${key}`);
+      return;
+    }
+
+    const file = files[Math.floor(Math.random() * files.length)];
+    const isLoop = key.startsWith('weather.') || key.startsWith('music.');
+
+    if (isLoop) {
+      const group = key.startsWith('weather.') ? 'weather' : 'music';
+      if (loopingSounds[group]) {
+        loopingSounds[group].stop();
+      }
+      const howl = getHowl(file, true);
+      howl.volume(volume);
+      howl.play();
+      loopingSounds[group] = howl;
+    } else {
+      const howl = getHowl(file, false);
+      howl.volume(volume);
+      howl.play();
+    }
+
     logSound(`🔊 Playing: ${key} (volume: ${(volume * 100).toFixed(0)}%)`);
-    console.log(`🔊 Playing: ${key} at volume ${volume.toFixed(2)}`);
   }
   
   function createSoundCard(sound, category) {
@@ -377,8 +484,11 @@
     
     muteBtn.addEventListener('click', () => {
       isMuted = !isMuted;
+      if (window.Howler) {
+        Howler.mute(isMuted);
+      }
       muteBtn.textContent = isMuted ? '🔇 Toggle Mute' : '🔊 Toggle Mute';
-      document.getElementById('status').textContent = isMuted ? '🔇 Audio muted' : '✅ Audio system ready (console logging mode)';
+      document.getElementById('status').textContent = isMuted ? '🔇 Audio muted' : '✅ Audio ready - click cards to play';
       logSound(isMuted ? '🔇 Audio muted' : '🔊 Audio unmuted');
     });
     

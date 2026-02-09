@@ -38,16 +38,16 @@ Since direct downloading from external sources is not possible in this environme
 1. **download-audio-assets.sh** (6.5KB)
    - Interactive guided process
    - Step-by-step instructions
-   - File verification (checks all 42 files)
+   - File verification (checks all 43 files)
    - Color-coded status output
    - Missing file detection
 
 2. **generate-placeholder-audio.py** (6KB)
-   - Creates 42 test audio files
+   - Creates 43 test audio files
    - Simple sine wave beeps
    - Different frequencies per sound type
    - Allows testing before adding real sounds
-   - Supports WAV with ffmpeg auto-conversion to OGG
+   - Supports WAV with ffmpeg auto-conversion to MP3
 
 ### 🔧 Configuration Updates
 
@@ -68,9 +68,9 @@ All sources pre-vetted and confirmed as Creative Commons Zero (Public Domain):
 
 ### 1. Kenney Digital Audio ⭐ RECOMMENDED
 - **URL**: https://kenney.nl/assets/digital-audio
-- **Best for**: All UI sounds (14 of 42 files)
+- **Best for**: All UI sounds (14 of 43 files)
 - **License**: CC0
-- **Format**: OGG + WAV included
+- **Format**: MP3 + WAV included
 - **Quality**: Professional, normalized, ready to use
 - **Why**: Covers most UI needs in one download
 
@@ -78,33 +78,33 @@ All sources pre-vetted and confirmed as Creative Commons Zero (Public Domain):
 - **URL**: https://bleeoop.itch.io/ui-clicks
 - **Best for**: Additional UI variety
 - **License**: CC0
-- **Format**: OGG + WAV
+- **Format**: MP3 + WAV
 - **Price**: Name your own price ($0 OK)
 
 ### 3. Freesound.org
 - **URL**: https://freesound.org/ (filter to CC0)
 - **Best for**: Weather ambience, avatar sounds
 - **License**: CC0 when filtered
-- **Format**: Various (convert to OGG)
+- **Format**: Various (convert to MP3)
 - **Quality**: Community-sourced, variable
 
 ### 4. OpenGameArt.org
 - **URL**: https://opengameart.org/ (filter to CC0)
 - **Best for**: Background music loops
 - **License**: CC0 when filtered
-- **Format**: Various (convert to OGG)
+- **Format**: Various (convert to MP3)
 
 ### 5. Pixabay
 - **URL**: https://pixabay.com/sound-effects/
 - **Best for**: Additional effects
 - **License**: Pixabay License (free commercial)
-- **Format**: MP3 (convert to OGG)
+- **Format**: MP3 (convert to MP3)
 
 ---
 
 ## File Requirements Summary
 
-**Total Files Needed**: 42
+**Total Files Needed**: 43
 
 | Category | Files | Best Source |
 |----------|-------|-------------|
@@ -119,7 +119,7 @@ All sources pre-vetted and confirmed as Creative Commons Zero (Public Domain):
 
 ### For Project Maintainer (5 minutes)
 
-1. **Download Kenney Pack** (gets 14/42 files):
+1. **Download Kenney Pack** (gets 14/43 files):
    ```bash
    # Visit: https://kenney.nl/assets/digital-audio
    # Click "Download" button
@@ -128,14 +128,14 @@ All sources pre-vetted and confirmed as Creative Commons Zero (Public Domain):
 
 2. **Copy UI Sounds**:
    ```bash
-   # From Kenney pack, copy these to audio/ui/:
-   click1.ogg → button-click-1.ogg
-   click2.ogg → button-click-2.ogg
-   click3.ogg → button-click-3.ogg
-   confirmation_001.ogg → success-1.ogg
-   confirmation_002.ogg → success-2.ogg
-   confirmation_003.ogg → success-3.ogg
-   error_006.ogg → error-soft.ogg
+   # From Kenney pack, copy these to assets/audio/ui/:
+   click1.mp3 → button-click-1.mp3
+   click2.mp3 → button-click-2.mp3
+   click3.mp3 → button-click-3.mp3
+   confirmation_001.mp3 → success-1.mp3
+   confirmation_002.mp3 → success-2.mp3
+   confirmation_003.mp3 → success-3.mp3
+   error_006.mp3 → error-soft.mp3
    # ... (see QUICKSTART_AUDIO.md for complete list)
    ```
 
@@ -158,30 +158,30 @@ All sources pre-vetted and confirmed as Creative Commons Zero (Public Domain):
 ## File Format Specifications
 
 ### Required Format
-- **Primary**: OGG Vorbis
+- **Primary**: MP3
 - **Fallback**: WAV (will auto-detect)
 - **Sample Rate**: 44.1 kHz
 - **Channels**: Mono or Stereo
-- **Bit Rate**: 128 kbps for OGG
+- **Bit Rate**: 128 kbps for MP3
 
 ### Conversion Commands
 
 **Single file**:
 ```bash
-ffmpeg -i input.wav -c:a libvorbis -q:a 4 output.ogg
+ffmpeg -i input.wav -c:a libmp3lame -q:a 4 output.mp3
 ```
 
 **Batch convert**:
 ```bash
-for f in audio/*/*.wav; do
-  ffmpeg -i "$f" -c:a libvorbis -q:a 4 "${f%.wav}.ogg" -y
+for f in assets/audio/*/*.wav; do
+  ffmpeg -i "$f" -c:a libmp3lame -q:a 4 "${f%.wav}.mp3" -y
   rm "$f"
 done
 ```
 
 **Using Audacity** (GUI):
 1. File > Open > Select audio file
-2. File > Export > Export as OGG Vorbis
+2. File > Export > Export as MP3
 3. Set Quality: 5
 
 ---
@@ -191,7 +191,7 @@ done
 ### Automated Verification
 ```bash
 ./download-audio-assets.sh
-# Runs through all steps and checks for 42 files
+# Runs through all steps and checks for 43 files
 ```
 
 ### Manual Testing
@@ -245,11 +245,11 @@ Even for CC0, we track sources in `ASSET_ATTRIBUTION.md`:
 
 ### 🟡 In Progress
 - Actual CC0 audio files needed
-- Currently using WAV placeholders for testing
+- Currently using MP3 tone placeholders for testing
 
 ### 📝 Next Steps for Maintainer
 1. Download from verified sources
-2. Convert to OGG if needed
+2. Convert to MP3 if needed
 3. Replace placeholders
 4. Update ASSET_ATTRIBUTION.md
 5. Test and commit
@@ -264,12 +264,13 @@ Williamsworld/
 ├── AUDIO_SOURCING_GUIDE.md     ← Comprehensive guide
 ├── download-audio-assets.sh    ← Interactive helper
 ├── generate-placeholder-audio.py ← Create test files
-├── audio/
-│   ├── README.md               ← Directory guide
+├── audio/README.md             ← Directory guide
+├── assets/audio/
 │   ├── ui/                     ← 14 files (Kenney has all)
 │   ├── avatar/                 ← 20 files (Freesound CC0)
 │   ├── weather/                ← 5 files (Freesound CC0)
-│   └── music/                  ← 3 files (OpenGameArt CC0)
+│   ├── music/                  ← 3 files (OpenGameArt CC0)
+│   └── gameplay/               ← 1 file (battle SFX)
 ├── audio-test.html             ← Test playback
 └── ASSET_ATTRIBUTION.md        ← License tracking
 ```
@@ -279,7 +280,7 @@ Williamsworld/
 ## Benefits of This Solution
 
 ### 🎯 Complete Coverage
-- Covers all 42 required audio files
+- Covers all 43 required audio files
 - Verified CC0 sources only
 - Kid-safe content
 
@@ -319,14 +320,14 @@ python3 generate-placeholder-audio.py
 
 ### Converting New Audio
 ```bash
-ffmpeg -i newfile.wav -c:a libvorbis -q:a 4 newfile.ogg
+ffmpeg -i newfile.wav -c:a libmp3lame -q:a 4 newfile.mp3
 ```
 
 ---
 
 ## Success Metrics
 
-✅ All 42 files mapped to sources  
+✅ All 43 files mapped to sources  
 ✅ 5 verified CC0 sources documented  
 ✅ Helper scripts created and tested  
 ✅ Placeholder system working  
@@ -345,7 +346,7 @@ While I cannot directly download external files in this environment, I've create
 4. Test the audio system
 5. Maintain license compliance
 
-The audio system is **production-ready** and waiting for the 42 CC0 audio files to be added using the provided tools and documentation.
+The audio system is **production-ready** and waiting for the 43 CC0 audio files to be added using the provided tools and documentation.
 
 **Start with**: `QUICKSTART_AUDIO.md` → Download Kenney pack → Test → Done!
 

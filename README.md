@@ -74,7 +74,7 @@ assets/
 ├── js/          # Shared scripts
 └── icons/       # Icon assets
 
-audio/
+assets/audio/
 ├── ui/          # UI sound effects (clicks, toggles, success/error)
 ├── avatar/      # William avatar sounds (idle, Easter eggs)
 ├── weather/     # Weather ambient loops (rain, storm, snow, etc.)
@@ -135,10 +135,10 @@ python3 generate-placeholder-audio.py
 
 ### Adding Audio Files
 1. Download from CC0 sources (see guides above)
-2. Convert to OGG format if needed: `ffmpeg -i input.wav -c:a libvorbis -q:a 4 output.ogg`
-3. Place files in the appropriate `/audio/` subdirectory
+2. Convert to MP3 format if needed: `ffmpeg -i input.wav -c:a libmp3lame -q:a 4 output.mp3`
+3. Place files in the appropriate `/assets/audio/` subdirectory
 4. Files should be normalized, trimmed, and kid-safe
-5. See `/audio/sound-manifest.json` for complete sound mapping
+5. See `/assets/audio/sound-manifest.json` for complete sound mapping
 
 ## 🎨 Customization
 

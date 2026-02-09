@@ -15,8 +15,8 @@ Or follow the manual instructions below.
 
 ## Audio Requirements Summary
 
-- **Total Files Needed**: 39 audio files
-- **Format**: OGG Vorbis (primary)
+- **Total Files Needed**: 43 audio files
+- **Format**: MP3 (primary)
 - **License**: CC0 (Public Domain) preferred
 - **Quality**: Kid-friendly, normalized volume, no silence padding
 
@@ -30,25 +30,25 @@ Or follow the manual instructions below.
 - **Official**: https://kenney.nl/assets/digital-audio
 - **Mirror**: https://gamesounds.xyz/?dir=Kenney%27s%20Sound%20Pack/Digital%20Audio
 - **License**: CC0 (Public Domain)
-- **Format**: OGG + WAV included
+- **Format**: MP3 + WAV included
 
 ### Files to Use from Kenney Pack
 
 #### UI Sounds (from Digital Audio pack):
-- `click1.ogg` → `ui/button-click-1.ogg`
-- `click2.ogg` → `ui/button-click-2.ogg`
-- `click3.ogg` → `ui/button-click-3.ogg`
-- `select_001.ogg` → `ui/hover-tick.ogg`
-- `confirmation_001.ogg` → `ui/success-1.ogg`
-- `confirmation_002.ogg` → `ui/success-2.ogg`
-- `confirmation_003.ogg` → `ui/success-3.ogg`
-- `error_006.ogg` → `ui/error-soft.ogg`
-- `toggle_001.ogg` → `ui/toggle-on.ogg`
-- `toggle_002.ogg` → `ui/toggle-off.ogg`
-- `switch_001.ogg` → `ui/tab-change.ogg`
-- `powerUp_001.ogg` → `ui/panel-open.ogg`
-- `powerDown_001.ogg` → `ui/panel-close.ogg`
-- `ping_001.ogg` → `ui/notification-ping.ogg`
+- `click1.mp3` → `ui/button-click-1.mp3`
+- `click2.mp3` → `ui/button-click-2.mp3`
+- `click3.mp3` → `ui/button-click-3.mp3`
+- `select_001.mp3` → `ui/hover-tick.mp3`
+- `confirmation_001.mp3` → `ui/success-1.mp3`
+- `confirmation_002.mp3` → `ui/success-2.mp3`
+- `confirmation_003.mp3` → `ui/success-3.mp3`
+- `error_006.mp3` → `ui/error-soft.mp3`
+- `toggle_001.mp3` → `ui/toggle-on.mp3`
+- `toggle_002.mp3` → `ui/toggle-off.mp3`
+- `switch_001.mp3` → `ui/tab-change.mp3`
+- `powerUp_001.mp3` → `ui/panel-open.mp3`
+- `powerDown_001.mp3` → `ui/panel-close.mp3`
+- `ping_001.mp3` → `ui/notification-ping.mp3`
 
 ---
 
@@ -60,7 +60,7 @@ Or follow the manual instructions below.
 - **URL**: https://bleeoop.itch.io/ui-clicks
 - **Price**: Name your own price ($0 is fine)
 - **License**: CC0 (Public Domain)
-- **Format**: OGG + WAV included
+- **Format**: MP3 + WAV included
 
 ### What's Included
 - 35+ UI click and button sounds
@@ -84,42 +84,42 @@ Or follow the manual instructions below.
 #### Weather Ambience:
 - **Sunny**: Search "birds chirping morning" + "gentle breeze"
   - Example: [Light Forest Birds](https://freesound.org/search/?q=light+birds+chirping&f=license:%22Creative+Commons+0%22)
-  - Combine with soft wind for `sunny-ambient.ogg`
+  - Combine with soft wind for `sunny-ambient.mp3`
 
 - **Cloudy**: Search "wind gentle" + "leaves rustle"
   - Example: [Soft Wind](https://freesound.org/search/?q=soft+wind&f=license:%22Creative+Commons+0%22)
-  - Use for `cloudy-ambient.ogg`
+  - Use for `cloudy-ambient.mp3`
 
 - **Rain**: Search "light rain loop"
   - Example: [Rain Loop](https://freesound.org/search/?q=rain+loop&f=license:%22Creative+Commons+0%22)
-  - Use for `rain-ambient.ogg`
+  - Use for `rain-ambient.mp3`
 
 - **Storm**: Search "rain thunder storm"
   - Example: [Thunder Storm](https://freesound.org/search/?q=thunder+storm&f=license:%22Creative+Commons+0%22)
-  - Use for `storm-ambient.ogg`
+  - Use for `storm-ambient.mp3`
 
 - **Snow**: Search "wind winter soft"
   - Example: [Winter Wind](https://freesound.org/search/?q=winter+wind+soft&f=license:%22Creative+Commons+0%22)
-  - Use for `snow-ambient.ogg`
+  - Use for `snow-ambient.mp3`
 
 #### Avatar Sounds (Fun Effects):
-- **Tap**: Search "tap soft" - for `william-tap.ogg`
-- **Idle**: Search "cute chirp", "small pop", "tiny beep" - for `idle-*.ogg`
-- **Sneeze**: Search "cartoon sneeze" - for `confetti-sneeze.ogg`
-- **Slip**: Search "slip cartoon" or "slide whistle" - for `banana-slip.ogg`
-- **Burp**: Search "cartoon burp" - for `bubble-burp.ogg`
-- **Boing**: Search "spring boing" - for `pie-trap.ogg`
-- **Squeak**: Search "rubber squeak" - for `rubber-chicken.ogg`
-- **Whoosh**: Search "whoosh short" - for `hero-landing.ogg`
-- **Flutter**: Search "cloth flutter" - for `endless-scarf.ogg`
-- **Ribbit**: Search "frog ribbit" - for `frog-crown.ogg`
-- **Glug**: Search "potion drink" - for `chipmunk-voice.ogg`
-- **Poof**: Search "soft poof" - for `marshmallow-volley.ogg`
-- **Wind spin**: Search "wind up toy" - for `hair-tornado.ogg`
-- **Drum**: Search "short drum hit" - for `tiger-shuffle.ogg`
-- **Click**: Search "plastic click" - for `lego-step.ogg`
-- **Honk**: Search "goose honk cute" - for `goose-chase.ogg`
-- **Chest open**: Search "chest open" - for `treasure-socks.ogg`
+- **Tap**: Search "tap soft" - for `william-tap.mp3`
+- **Idle**: Search "cute chirp", "small pop", "tiny beep" - for `idle-*.mp3`
+- **Sneeze**: Search "cartoon sneeze" - for `confetti-sneeze.mp3`
+- **Slip**: Search "slip cartoon" or "slide whistle" - for `banana-slip.mp3`
+- **Burp**: Search "cartoon burp" - for `bubble-burp.mp3`
+- **Boing**: Search "spring boing" - for `pie-trap.mp3`
+- **Squeak**: Search "rubber squeak" - for `rubber-chicken.mp3`
+- **Whoosh**: Search "whoosh short" - for `hero-landing.mp3`
+- **Flutter**: Search "cloth flutter" - for `endless-scarf.mp3`
+- **Ribbit**: Search "frog ribbit" - for `frog-crown.mp3`
+- **Glug**: Search "potion drink" - for `chipmunk-voice.mp3`
+- **Poof**: Search "soft poof" - for `marshmallow-volley.mp3`
+- **Wind spin**: Search "wind up toy" - for `hair-tornado.mp3`
+- **Drum**: Search "short drum hit" - for `tiger-shuffle.mp3`
+- **Click**: Search "plastic click" - for `lego-step.mp3`
+- **Honk**: Search "goose honk cute" - for `goose-chase.mp3`
+- **Chest open**: Search "chest open" - for `treasure-socks.mp3`
 
 ---
 
@@ -138,15 +138,15 @@ Or follow the manual instructions below.
 #### Background Music:
 - **Hub/Town**: Search "town theme", "village music", "peaceful loop"
   - Example: [Town Music](https://opengameart.org/art-search-advanced?keys=town+music&field_art_type_tid%5B%5D=12&field_art_licenses_tid%5B%5D=4)
-  - Use for `hub-loop.ogg`
+  - Use for `hub-loop.mp3`
 
 - **Forest**: Search "forest music", "nature theme", "woodland"
   - Example: [Forest Theme](https://opengameart.org/art-search-advanced?keys=forest&field_art_type_tid%5B%5D=12&field_art_licenses_tid%5B%5D=4)
-  - Use for `forest-loop.ogg`
+  - Use for `forest-loop.mp3`
 
 - **Dungeon**: Search "dungeon theme", "cave music", "dark ambient"
   - Example: [Dungeon Music](https://opengameart.org/art-search-advanced?keys=dungeon&field_art_type_tid%5B%5D=12&field_art_licenses_tid%5B%5D=4)
-  - Use for `dungeon-loop.ogg`
+  - Use for `dungeon-loop.mp3`
 
 ---
 
@@ -157,7 +157,7 @@ Or follow the manual instructions below.
 ### Download
 - **URL**: https://pixabay.com/sound-effects/
 - **License**: Pixabay License (free for commercial use, no attribution)
-- **Format**: MP3 (convert to OGG)
+- **Format**: MP3 (convert to MP3)
 
 ### Search Terms
 - "button click"
@@ -170,21 +170,21 @@ Or follow the manual instructions below.
 
 ## File Conversion
 
-If you download files in WAV or MP3 format, convert to OGG:
+If you download files in WAV or MP3 format, convert to MP3:
 
 ### Using ffmpeg (Command Line)
 ```bash
-ffmpeg -i input.wav -c:a libvorbis -q:a 4 output.ogg
+ffmpeg -i input.wav -c:a libmp3lame -q:a 4 output.mp3
 ```
 
 ### Using Audacity (GUI)
 1. File > Open > Select your audio file
-2. File > Export > Export as OGG Vorbis
+2. File > Export > Export as MP3
 3. Set Quality: 5 (good balance of size/quality)
 
 ### Online Converters
 - **CloudConvert**: https://cloudconvert.com/audio-converter
-- **Online-Convert**: https://audio.online-convert.com/convert-to-ogg
+- **Online-Convert**: https://audio.online-convert.com/convert-to-mp3
 
 ---
 
@@ -193,7 +193,7 @@ ffmpeg -i input.wav -c:a libvorbis -q:a 4 output.ogg
 ### Normalize Volume
 Ensure consistent loudness across all files:
 ```bash
-ffmpeg-normalize input.ogg -o output.ogg -c:a libvorbis -ext ogg
+ffmpeg-normalize input.mp3 -o output.mp3 -c:a libmp3lame -ext mp3
 ```
 
 Or in Audacity:
@@ -204,7 +204,7 @@ Or in Audacity:
 ### Trim Silence
 Remove silence at start/end:
 ```bash
-ffmpeg -i input.ogg -af silenceremove=start_periods=1:start_silence=0.1:start_threshold=-50dB output.ogg
+ffmpeg -i input.mp3 -af silenceremove=start_periods=1:start_silence=0.1:start_threshold=-50dB output.mp3
 ```
 
 Or in Audacity:
@@ -217,7 +217,7 @@ For ambient and music files:
 1. Import into Audacity
 2. Trim to exact loop point
 3. Use Effect > Crossfade Loop for smooth transitions
-4. Export as OGG
+4. Export as MP3
 
 ---
 
@@ -226,53 +226,55 @@ For ambient and music files:
 After downloading and converting, organize files like this:
 
 ```
-audio/
+assets/audio/
 ├── ui/
-│   ├── button-click-1.ogg
-│   ├── button-click-2.ogg
-│   ├── button-click-3.ogg
-│   ├── hover-tick.ogg
-│   ├── panel-open.ogg
-│   ├── panel-close.ogg
-│   ├── toggle-on.ogg
-│   ├── toggle-off.ogg
-│   ├── tab-change.ogg
-│   ├── success-1.ogg
-│   ├── success-2.ogg
-│   ├── success-3.ogg
-│   ├── error-soft.ogg
-│   └── notification-ping.ogg
+│   ├── button-click-1.mp3
+│   ├── button-click-2.mp3
+│   ├── button-click-3.mp3
+│   ├── hover-tick.mp3
+│   ├── panel-open.mp3
+│   ├── panel-close.mp3
+│   ├── toggle-on.mp3
+│   ├── toggle-off.mp3
+│   ├── tab-change.mp3
+│   ├── success-1.mp3
+│   ├── success-2.mp3
+│   ├── success-3.mp3
+│   ├── error-soft.mp3
+│   └── notification-ping.mp3
 ├── avatar/
-│   ├── idle-1.ogg
-│   ├── idle-2.ogg
-│   ├── idle-3.ogg
-│   ├── william-tap.ogg
-│   ├── confetti-sneeze.ogg
-│   ├── banana-slip.ogg
-│   ├── bubble-burp.ogg
-│   ├── pie-trap.ogg
-│   ├── rubber-chicken.ogg
-│   ├── hero-landing.ogg
-│   ├── endless-scarf.ogg
-│   ├── frog-crown.ogg
-│   ├── chipmunk-voice.ogg
-│   ├── marshmallow-volley.ogg
-│   ├── hair-tornado.ogg
-│   ├── tiger-shuffle.ogg
-│   ├── lego-step.ogg
-│   ├── goose-chase.ogg
-│   ├── treasure-socks.ogg
-│   └── william-on-break.ogg
+│   ├── idle-1.mp3
+│   ├── idle-2.mp3
+│   ├── idle-3.mp3
+│   ├── william-tap.mp3
+│   ├── confetti-sneeze.mp3
+│   ├── banana-slip.mp3
+│   ├── bubble-burp.mp3
+│   ├── pie-trap.mp3
+│   ├── rubber-chicken.mp3
+│   ├── hero-landing.mp3
+│   ├── endless-scarf.mp3
+│   ├── frog-crown.mp3
+│   ├── chipmunk-voice.mp3
+│   ├── marshmallow-volley.mp3
+│   ├── hair-tornado.mp3
+│   ├── tiger-shuffle.mp3
+│   ├── lego-step.mp3
+│   ├── goose-chase.mp3
+│   ├── treasure-socks.mp3
+│   └── william-on-break.mp3
 ├── weather/
-│   ├── sunny-ambient.ogg
-│   ├── cloudy-ambient.ogg
-│   ├── rain-ambient.ogg
-│   ├── storm-ambient.ogg
-│   └── snow-ambient.ogg
-└── music/
-    ├── hub-loop.ogg
-    ├── forest-loop.ogg
-    └── dungeon-loop.ogg
+│   ├── sunny-ambient.mp3
+│   ├── cloudy-ambient.mp3
+│   ├── rain-ambient.mp3
+│   ├── storm-ambient.mp3
+│   └── snow-ambient.mp3
+├── music/
+│   ├── hub-loop.mp3
+│   ├── forest-loop.mp3
+│   └── dungeon-loop.mp3
+└── gameplay/
+    └── battle-hit.mp3
 ```
 
 ---
@@ -288,12 +290,12 @@ After adding files, update `ASSET_ATTRIBUTION.md` with:
 
 Example:
 ```markdown
-- **File**: `audio/ui/button-click-1.ogg`
+- **File**: `assets/audio/ui/button-click-1.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
-- **Original Filename**: click1.ogg
+- **Original Filename**: click1.mp3
 - **Notes**: No modifications needed
 ```
 
@@ -327,12 +329,12 @@ After adding all files:
 
 ### Issue: Audio not playing
 - Check browser console for errors
-- Ensure files are in OGG format
+- Ensure files are in MP3 format
 - Verify file paths match manifest
 
 ### Issue: Volume too loud/quiet
 - Re-normalize audio files
-- Adjust in `sound-manifest.json`
+- Adjust in `assets/audio/sound-manifest.json`
 
 ### Issue: Loops not seamless
 - Re-edit in Audacity with crossfade
@@ -346,7 +348,8 @@ After adding all files:
 - ✓ Avatar Sounds: 20 files
 - ✓ Weather Ambient: 5 files
 - ✓ Background Music: 3 files
-- **Total: 42 files**
+- ✓ Gameplay SFX: 1 file
+- **Total: 43 files**
 
 ---
 
