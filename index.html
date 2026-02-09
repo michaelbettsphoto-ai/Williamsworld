@@ -2654,7 +2654,7 @@
       <section class="questZonesSection" id="questZones">
         <div class="questZonesHeader">
           <h2>🗺️ Quest Zones</h2>
-          <div class="small" style="margin-top:8px;">Unlock zones with streaks. Hover to see the story and villains.</div>
+          <div class="small" style="margin-top:8px;">Unlock zones with streaks. Hover or tap to see the story and villains.</div>
         </div>
         <div class="questZonesGrid" id="questZonesGrid"></div>
       </section>
@@ -2892,11 +2892,448 @@
       </div>
       <div class="questLoreFooter">
         <div class="questLoreLock" id="questLoreLock"></div>
-        <button class="questLoreCta" id="questLoreCta">Enter Battle</button>
+        <button class="questLoreCta" id="questLoreCta" type="button">Enter Battle</button>
       </div>
     </div>
   </div>
 </div>
+
+<script id="questZonesData" type="application/json">
+{
+  "zones": [
+    {
+      "id": "z1",
+      "cardId": "zone1",
+      "assetKey": "z1",
+      "name": "Launch Meadow",
+      "unlockDays": 0,
+      "story": "Welcome to the first training grounds. The meadow looks peaceful… but mischievous critters hide in the grass and test new adventurers. This is where William learns to stay brave, move fast, and protect his friends.",
+      "enemies": [
+        {
+          "name": "Dandelion Dagger",
+          "behavior": "quick slashes + trick blinds",
+          "moves": [
+            { "name": "Puff Slash" },
+            { "name": "Seed Sprint" }
+          ]
+        },
+        {
+          "name": "Mudkip Bandit",
+          "behavior": "muddy debuffs + defense stance",
+          "moves": [
+            { "name": "Mud Toss" },
+            { "name": "Puddle Guard" }
+          ]
+        },
+        {
+          "name": "Pebble Pouncer",
+          "behavior": "pounces harder on slow targets",
+          "moves": [
+            { "name": "Pounce" },
+            { "name": "Stone Skin" }
+          ]
+        },
+        {
+          "name": "Sunblink Moth",
+          "behavior": "light blasts + team dazzle",
+          "moves": [
+            { "name": "Glimmer Beam" },
+            { "name": "Dazzle" }
+          ]
+        },
+        {
+          "name": "Thorny Sneak",
+          "behavior": "roots you, steals health",
+          "moves": [
+            { "name": "Thorn Trap" },
+            { "name": "Sucker Vine" }
+          ]
+        },
+        {
+          "name": "Puddle Hexer",
+          "behavior": "weakens defense + hits buffed heroes harder",
+          "moves": [
+            { "name": "Ink Splash" },
+            { "name": "Gloom Drip" }
+          ]
+        },
+        {
+          "name": "Windwink Imp",
+          "behavior": "fast pokes + enemy speed boost",
+          "moves": [
+            { "name": "Gust Jab" },
+            { "name": "Slipstream" }
+          ]
+        },
+        {
+          "name": "Scorchling",
+          "behavior": "burns + powers up",
+          "moves": [
+            { "name": "Ember Bite" },
+            { "name": "Heat Up" }
+          ]
+        },
+        {
+          "name": "Barkhide Bully",
+          "behavior": "taunts + bashes",
+          "moves": [
+            { "name": "Body Block" },
+            { "name": "Bark Bash" }
+          ]
+        },
+        {
+          "name": "Spark Dustling",
+          "behavior": "shocks + charges big hits",
+          "moves": [
+            { "name": "Static Pop" },
+            { "name": "Charge" }
+          ]
+        },
+        {
+          "name": "Nightleaf Snatcher (Rare)",
+          "behavior": "slows + dodges a hit",
+          "moves": [
+            { "name": "Swipe & Vanish" },
+            { "name": "Shadow Cloak" }
+          ]
+        },
+        {
+          "name": "Slimecap Trickster (Elite)",
+          "behavior": "lowers team ATK + chills",
+          "moves": [
+            { "name": "Spore Mist" },
+            { "name": "Slime Patch" },
+            { "name": "Cap Bounce" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "z2",
+      "cardId": "zone2",
+      "assetKey": "z2",
+      "name": "Homework Hills",
+      "unlockDays": 3,
+      "story": "Homework Hills is where distractions come alive. Notes flutter away, ink spills, and pop quizzes attack without warning. William must stay calm, keep trying, and finish strong—one problem at a time.",
+      "enemies": [
+        {
+          "name": "Eraser Wraith",
+          "behavior": "weakens defense + quick swipe",
+          "moves": [
+            { "name": "Erase Confidence" },
+            { "name": "Smudge Swipe" }
+          ]
+        },
+        {
+          "name": "Paper Cut Pirate",
+          "behavior": "hits harder if you’re debuffed + blinds",
+          "moves": [
+            { "name": "Cutlass Cut" },
+            { "name": "Ruffle Gust" }
+          ]
+        },
+        {
+          "name": "Inkblob Gremlin",
+          "behavior": "guaranteed blind + simple bolt",
+          "moves": [
+            { "name": "Ink Spray" },
+            { "name": "Blob Bolt" }
+          ]
+        },
+        {
+          "name": "Quiz Golemlet",
+          "behavior": "forces action loss + heavy hit",
+          "moves": [
+            { "name": "Pop Quiz" },
+            { "name": "Stone Thump" }
+          ]
+        },
+        {
+          "name": "Deadline Drake (Rare)",
+          "behavior": "burns + slows the team",
+          "moves": [
+            { "name": "Late Fee Flame" },
+            { "name": "Pressure Roar" }
+          ]
+        },
+        {
+          "name": "Scribble Sorcerer",
+          "behavior": "shocks + team guard",
+          "moves": [
+            { "name": "Zap Diagram" },
+            { "name": "Equation Shield" }
+          ]
+        },
+        {
+          "name": "Binder Beast",
+          "behavior": "roots + slam",
+          "moves": [
+            { "name": "Clamp" },
+            { "name": "Ring Slam" }
+          ]
+        },
+        {
+          "name": "Procrastination Poltergeist (Rare)",
+          "behavior": "chance to skip actions + lowers ATK",
+          "moves": [
+            { "name": "Snooze Field" },
+            { "name": "Delay Toxin" }
+          ]
+        },
+        {
+          "name": "Sticky Note Swarm",
+          "behavior": "slows the team",
+          "moves": [
+            { "name": "Cling" },
+            { "name": "Reminder Buzz" }
+          ]
+        },
+        {
+          "name": "Graph Goblin",
+          "behavior": "chills + fast poke",
+          "moves": [
+            { "name": "Slope Slip" },
+            { "name": "Ruler Rap" }
+          ]
+        },
+        {
+          "name": "Red Pen Reaper (Elite)",
+          "behavior": "punishes weak heroes + forces skip",
+          "moves": [
+            { "name": "Correction Strike" },
+            { "name": "Mark Wrong" },
+            { "name": "Final Grade" }
+          ]
+        },
+        {
+          "name": "Homework Hydra (Elite)",
+          "behavior": "team damage + team heal + ATK down",
+          "moves": [
+            { "name": "Assignment Flood" },
+            { "name": "Extra Credit" },
+            { "name": "Overwhelm" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "z3",
+      "cardId": "zone3",
+      "assetKey": "z3",
+      "name": "Backpack Bastion",
+      "unlockDays": 5,
+      "story": "Backpack Bastion is a fortress of gear and order. But sneaky pests break straps, steal supplies, and jam zippers. To win here, William must pack smart, check twice, and defend the team.",
+      "enemies": [
+        {
+          "name": "Strap Snapper",
+          "behavior": "fast hits + reduces defense",
+          "moves": [
+            { "name": "Buckle Bite" },
+            { "name": "Fray" }
+          ]
+        },
+        {
+          "name": "Zipperfang",
+          "behavior": "medium slashes + dodge",
+          "moves": [
+            { "name": "Zip Slash" },
+            { "name": "Unzip Escape" }
+          ]
+        },
+        {
+          "name": "Cargo Crab",
+          "behavior": "guards + clamps",
+          "moves": [
+            { "name": "Crate Guard" },
+            { "name": "Clamp Crush" }
+          ]
+        },
+        {
+          "name": "Pocket Mimic (Rare)",
+          "behavior": "lifesteal + roots",
+          "moves": [
+            { "name": "Snack Snatch" },
+            { "name": "False Bottom" }
+          ]
+        },
+        {
+          "name": "Buckle Brute",
+          "behavior": "medium hits + defense stance",
+          "moves": [
+            { "name": "Buckle Bash" },
+            { "name": "Iron Stance" }
+          ]
+        },
+        {
+          "name": "Lunchbox Lurker",
+          "behavior": "lowers hero ATK + dark bolt",
+          "moves": [
+            { "name": "Stale Cloud" },
+            { "name": "Mold Bolt" }
+          ]
+        },
+        {
+          "name": "Waterbottle Wobbler",
+          "behavior": "heals allies + chills",
+          "moves": [
+            { "name": "Splash Heal" },
+            { "name": "Soak" }
+          ]
+        },
+        {
+          "name": "Pencil Pike",
+          "behavior": "quick jabs + possible blind",
+          "moves": [
+            { "name": "Point Jab" },
+            { "name": "Shavings Storm" }
+          ]
+        },
+        {
+          "name": "Supply Sapper (Rare)",
+          "behavior": "removes buffs + hits buffed targets harder",
+          "moves": [
+            { "name": "Steal Charge" },
+            { "name": "Sneak Strike" }
+          ]
+        },
+        {
+          "name": "Tag Tornado",
+          "behavior": "team damage + roots",
+          "moves": [
+            { "name": "Whirlwind" },
+            { "name": "Receipt Wrap" }
+          ]
+        },
+        {
+          "name": "Locker Lizard (Rare)",
+          "behavior": "team guard + heavy hit",
+          "moves": [
+            { "name": "Door Shield" },
+            { "name": "Tail Slam" }
+          ]
+        },
+        {
+          "name": "Patchwork Punisher (Elite)",
+          "behavior": "high damage + enemy DEF boost + shock chance",
+          "moves": [
+            { "name": "Patch Smash" },
+            { "name": "Reinforce" },
+            { "name": "Break Strap" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "z4",
+      "cardId": "zone4",
+      "assetKey": "z4",
+      "name": "Focus Forest",
+      "unlockDays": 10,
+      "story": "Focus Forest is calm… until it isn’t. Whispering shadows distract you, bright lights confuse you, and ancient guardians test your patience. Here, William learns true focus: slow breath, clear mind, steady effort.",
+      "enemies": [
+        {
+          "name": "Rune Stag",
+          "behavior": "medium damage + team Focus",
+          "moves": [
+            { "name": "Rune Charge" },
+            { "name": "Inspire" }
+          ]
+        },
+        {
+          "name": "Whisper Viper",
+          "behavior": "lowers ATK + fast bite",
+          "moves": [
+            { "name": "Venom Whisper" },
+            { "name": "Quick Bite" }
+          ]
+        },
+        {
+          "name": "Mist Monk",
+          "behavior": "enemy team heal + team guard",
+          "moves": [
+            { "name": "Calm Wave" },
+            { "name": "Mist Veil" }
+          ]
+        },
+        {
+          "name": "Thorn Sentinel (Rare)",
+          "behavior": "guards + reflects minor damage",
+          "moves": [
+            { "name": "Bramble Wall" },
+            { "name": "Thorn Counter" }
+          ]
+        },
+        {
+          "name": "Lumen Owl",
+          "behavior": "medium damage + guaranteed blind",
+          "moves": [
+            { "name": "Lumen Ray" },
+            { "name": "Blinding Flutter" }
+          ]
+        },
+        {
+          "name": "Shadowcap Shaman (Rare)",
+          "behavior": "weakens defense + hits debuffed harder",
+          "moves": [
+            { "name": "Spores of Doubt" },
+            { "name": "Night Bloom" }
+          ]
+        },
+        {
+          "name": "Breeze Banshee",
+          "behavior": "chance to skip actions + medium damage",
+          "moves": [
+            { "name": "Haunting Gust" },
+            { "name": "Slice Wind" }
+          ]
+        },
+        {
+          "name": "Stone Trancebear",
+          "behavior": "slows team + roots",
+          "moves": [
+            { "name": "Trance Roar" },
+            { "name": "Boulder Hug" }
+          ]
+        },
+        {
+          "name": "Sparkroot Warden (Rare)",
+          "behavior": "high damage + shock chance + self heal",
+          "moves": [
+            { "name": "Root Shock" },
+            { "name": "Charge Sap" }
+          ]
+        },
+        {
+          "name": "Moonveil Panther (Rare)",
+          "behavior": "punishes weakest hero + dodge",
+          "moves": [
+            { "name": "Moon Pounce" },
+            { "name": "Veil Step" }
+          ]
+        },
+        {
+          "name": "Crystal Mantis (Elite)",
+          "behavior": "high damage + team chill + guard",
+          "moves": [
+            { "name": "Crystal Slice" },
+            { "name": "Freeze Frame" },
+            { "name": "Mirror Shell" }
+          ]
+        },
+        {
+          "name": "Ancient Grove Guardian (Elite)",
+          "behavior": "team guard + root + big slam",
+          "moves": [
+            { "name": "Sanctuary Bark" },
+            { "name": "Root Judgment" },
+            { "name": "Radiant Slam" }
+          ]
+        }
+      ]
+    }
+  ]
+}
+</script>
 
 <!-- Howler.js Audio Library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js" integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -4334,6 +4771,19 @@
   }
 
   let activeQuestZoneId = null;
+  let questLoreOpenMode = null;
+  let questLoreHoverTarget = null;
+  let questLoreLastFocused = null;
+  let questLoreCardEl = null;
+  let questLoreFocusables = [];
+
+  function updateQuestLoreFocusables() {
+    if (!questLoreCardEl) return [];
+    questLoreFocusables = Array.from(
+      questLoreCardEl.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+    ).filter(el => !el.disabled);
+    return questLoreFocusables;
+  }
 
   function updateQuestLoreStatus(zone) {
     const statusEl = $("questLoreStatus");
@@ -4344,7 +4794,7 @@
     const isUnlocked = state.streak >= zone.unlockDays;
     statusEl.textContent = isUnlocked
       ? "Unlocked"
-      : `Unlocks at ${zone.unlockDays} streak day${zone.unlockDays === 1 ? "" : "s"}`;
+      : `Unlocks at ${zone.unlockDays}-day streak`;
     statusEl.classList.toggle("unlocked", isUnlocked);
     statusEl.classList.toggle("locked", !isUnlocked);
 
@@ -4352,10 +4802,12 @@
       lockEl.textContent = "";
       ctaEl.disabled = false;
       ctaEl.textContent = "Enter Battle";
+      ctaEl.removeAttribute("aria-disabled");
     } else {
       lockEl.textContent = `Locked — unlock at ${zone.unlockDays}-day streak`;
       ctaEl.disabled = true;
-      ctaEl.textContent = "Enter Battle (Locked)";
+      ctaEl.textContent = "Locked";
+      ctaEl.setAttribute("aria-disabled", "true");
     }
   }
 
@@ -4399,18 +4851,26 @@
     updateQuestLoreStatus(zone);
   }
 
-  function openQuestLore(zoneId) {
+  function openQuestLore(zoneId, openMode = "click", sourceEl = null) {
     if (!questZonesData || !questZonesData.zones) return;
     const zone = questZonesData.zones.find(item => item.id === zoneId);
     if (!zone) return;
 
     activeQuestZoneId = zoneId;
+    questLoreOpenMode = openMode;
+    questLoreHoverTarget = sourceEl;
     renderQuestLore(zone);
 
     const overlay = $("questLoreOverlay");
     if (overlay) {
       overlay.classList.add("show");
       overlay.setAttribute("aria-hidden", "false");
+    }
+
+    questLoreLastFocused = document.activeElement;
+    updateQuestLoreFocusables();
+    if (questLoreFocusables.length > 0) {
+      questLoreFocusables[0].focus();
     }
   }
 
@@ -4421,6 +4881,12 @@
       overlay.setAttribute("aria-hidden", "true");
     }
     activeQuestZoneId = null;
+    questLoreOpenMode = null;
+    questLoreHoverTarget = null;
+    if (questLoreLastFocused && document.contains(questLoreLastFocused)) {
+      questLoreLastFocused.focus();
+    }
+    questLoreLastFocused = null;
   }
 
   function renderQuestZones() {
@@ -4438,30 +4904,45 @@
       card.setAttribute("role", "button");
       card.setAttribute("tabindex", "0");
 
-      card.innerHTML = `
-        <div class="questZoneMedia">
-          <div class="questZoneImage"><img alt="${zone.name}"></div>
-          <div>
-            <div class="questZoneName">${zone.name}</div>
-            <div class="questZoneStatus"></div>
-          </div>
-        </div>
-        <div class="questZoneEnemyCount">Enemy count: ${zone.enemies.length}</div>
-      `;
+      const media = document.createElement("div");
+      media.className = "questZoneMedia";
 
-      const imgEl = card.querySelector("img");
-      if (imgEl && ASSETS.zones[zone.assetKey]) {
+      const imageWrapper = document.createElement("div");
+      imageWrapper.className = "questZoneImage";
+      const imgEl = document.createElement("img");
+      imgEl.alt = zone.name;
+      if (ASSETS.zones[zone.assetKey]) {
         imgEl.src = ASSETS.zones[zone.assetKey];
       }
+      imageWrapper.appendChild(imgEl);
+
+      const textWrapper = document.createElement("div");
+      const nameEl = document.createElement("div");
+      nameEl.className = "questZoneName";
+      nameEl.textContent = zone.name;
+      const statusEl = document.createElement("div");
+      statusEl.className = "questZoneStatus";
+      textWrapper.appendChild(nameEl);
+      textWrapper.appendChild(statusEl);
+
+      media.appendChild(imageWrapper);
+      media.appendChild(textWrapper);
+
+      const enemyCountEl = document.createElement("div");
+      enemyCountEl.className = "questZoneEnemyCount";
+      enemyCountEl.textContent = `Enemy count: ${zone.enemies.length}`;
+
+      card.appendChild(media);
+      card.appendChild(enemyCountEl);
 
       if (canHover) {
-        card.addEventListener("mouseenter", () => openQuestLore(zone.id));
+        card.addEventListener("mouseenter", () => openQuestLore(zone.id, "hover", card));
       }
-      card.addEventListener("click", () => openQuestLore(zone.id));
+      card.addEventListener("click", () => openQuestLore(zone.id, "click", card));
       card.addEventListener("keydown", (event) => {
         if (event.key === "Enter" || event.key === " ") {
           event.preventDefault();
-          openQuestLore(zone.id);
+          openQuestLore(zone.id, "click", card);
         }
       });
 
@@ -4469,7 +4950,26 @@
     });
   }
 
+  function getInlineQuestZonesData() {
+    const inlineData = document.getElementById("questZonesData");
+    if (!inlineData) return null;
+    try {
+      return JSON.parse(inlineData.textContent);
+    } catch (error) {
+      console.error("Quest zones inline data failed to parse", error);
+      return null;
+    }
+  }
+
   async function loadQuestZones() {
+    const inlineData = getInlineQuestZonesData();
+    if (inlineData) {
+      questZonesData = inlineData;
+      renderQuestZones();
+      updateZones();
+      return;
+    }
+
     try {
       const response = await fetch(QUEST_ZONES_URL);
       if (!response.ok) throw new Error("Failed to load quest zones data");
@@ -4478,24 +4978,81 @@
       updateZones();
     } catch (error) {
       console.error("Quest zones failed to load", error);
+      if (typeof toast === "function") {
+        toast("Quest zones unavailable. Try loading with a local server.");
+      }
     }
+  }
+
+  function handleQuestLoreKeydown(event) {
+    const overlay = $("questLoreOverlay");
+    if (!overlay || !overlay.classList.contains("show")) return;
+
+    if (event.key === "Escape") {
+      closeQuestLore();
+      return;
+    }
+
+    if (event.key !== "Tab") return;
+    updateQuestLoreFocusables();
+    if (questLoreFocusables.length === 0) return;
+
+    const first = questLoreFocusables[0];
+    const last = questLoreFocusables[questLoreFocusables.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  function isPointInRect(x, y, rect) {
+    return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+  }
+
+  function handleQuestLoreHoverMove(event) {
+    if (questLoreOpenMode !== "hover") return;
+    if (!questLoreHoverTarget || !questLoreCardEl) return;
+
+    const zoneRect = questLoreHoverTarget.getBoundingClientRect();
+    const loreRect = questLoreCardEl.getBoundingClientRect();
+    const isInsideZone = isPointInRect(event.clientX, event.clientY, zoneRect);
+    const isInsideLore = isPointInRect(event.clientX, event.clientY, loreRect);
+
+    if (!isInsideZone && !isInsideLore) {
+      closeQuestLore();
+    }
+  }
+
+  function handleQuestLoreCtaClick() {
+    if (!activeQuestZoneId || !questZonesData) return;
+    const zone = questZonesData.zones.find(item => item.id === activeQuestZoneId);
+    if (!zone) return;
+    if (state.streak < zone.unlockDays) return;
+    window.location.href = `./battle-system-demo.html?zone=${encodeURIComponent(zone.id)}`;
   }
 
   function setupQuestLoreOverlay() {
     const closeBtn = $("questLoreClose");
     const overlay = $("questLoreOverlay");
+    const ctaBtn = $("questLoreCta");
+    questLoreCardEl = overlay ? overlay.querySelector(".questLoreCard") : null;
 
     if (closeBtn) {
       closeBtn.addEventListener("click", closeQuestLore);
+    }
+    if (ctaBtn) {
+      ctaBtn.addEventListener("click", handleQuestLoreCtaClick);
     }
     if (overlay) {
       overlay.addEventListener("click", (event) => {
         if (event.target === overlay) closeQuestLore();
       });
     }
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") closeQuestLore();
-    });
+    document.addEventListener("keydown", handleQuestLoreKeydown);
+    document.addEventListener("mousemove", handleQuestLoreHoverMove);
   }
   
   // Update zone unlocking based on current streak
@@ -4515,7 +5072,7 @@
       if (statusEl) {
         statusEl.textContent = isUnlocked
           ? "Unlocked"
-          : `Unlocks at ${zone.unlockDays} streak day${zone.unlockDays === 1 ? "" : "s"}`;
+          : `Unlocks at ${zone.unlockDays}-day streak`;
         statusEl.classList.toggle("locked", !isUnlocked);
         statusEl.classList.toggle("unlocked", isUnlocked);
       }
