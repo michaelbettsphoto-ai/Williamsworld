@@ -18,8 +18,7 @@
 - XP gains also add companion XP (`addCompanionXP`) and war chest gold (`WAR_CHEST_XP_RATE`).
 
 ## PASS / Streak Logic (Current Implementation)
-- `isPassDay()` currently requires **night + morning + backpack** task sets to be complete.
-  - Note: The hidden Daily Checklist copy says PASS requires Night-Before + Trapper Check only, but the logic currently checks all three quest categories.
+- `isPassDay()` requires **Night-Before tasks complete** plus **Morning: Backpack check** (`m_trappercheck`).
 - `gradeDay()` sets `state.days[TODAY].result` to PASS/FAIL and increments or resets `state.streak`.
 - `midnightCheck()` auto-FAILs ungraded past days and resets streak to 0.
 

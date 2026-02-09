@@ -2654,7 +2654,7 @@
       <section class="questZonesSection" id="questZones">
         <div class="questZonesHeader">
           <h2>🗺️ Quest Zones</h2>
-          <div class="small" style="margin-top:8px;">Unlock zones with streaks. Hover or tap to see the story and villains.</div>
+          <div class="small" style="margin-top:8px;">Unlock zones with streaks. Hover, tap, or press Enter to see the story and villains.</div>
         </div>
         <div class="questZonesGrid" id="questZonesGrid"></div>
       </section>
@@ -4631,19 +4631,12 @@
 
   function isPassDay(){
     const day = state.days[TODAY];
-    // PASS criteria: all three quest categories must be complete
-    // Night quest task IDs
+    // PASS criteria: Night-Before complete + Trapper Check complete
     const nightIds = ["n_trapper","n_clothes","n_lunch","n_shoes"];
-    // Morning quest task IDs
-    const morningIds = ["m_prayer","m_dressed","m_teeth","m_trappercheck"];
-    // Backpack/Trapper quest task IDs
-    const backpackIds = ["t_work","t_notebooks","t_supplies","t_check"];
-    
     const nightOk = nightIds.every(id=>day.tasks[id]===true);
-    const morningOk = morningIds.every(id=>day.tasks[id]===true);
-    const backpackOk = backpackIds.every(id=>day.tasks[id]===true);
+    const trapperCheckOk = day.tasks["m_trappercheck"] === true;
     
-    return nightOk && morningOk && backpackOk;
+    return nightOk && trapperCheckOk;
   }
 
   function recalcLevel(){
@@ -4781,7 +4774,7 @@
     if (!questLoreCardEl) return [];
     questLoreFocusables = Array.from(
       questLoreCardEl.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
-    ).filter(el => !el.disabled);
+    ).filter(el => !el.disabled && el.offsetParent !== null);
     return questLoreFocusables;
   }
 
