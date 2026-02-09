@@ -536,7 +536,7 @@
           <button class="btn-spell" onclick="performAction('spell')">Cast Spell</button>
           <button class="btn-auto" onclick="runBattleDemo()">Auto Battle</button>
         </div>
-        <div class="callout" id="arenaCallout">Loading squads…</div>
+        <div class="callout" id="arenaCallout">Loading squads...</div>
       </div>
     </section>
 
@@ -764,10 +764,12 @@
     }
 
     function getDefaultStatuses(id) {
-      if (id === 'trapper') return ['shield'];
-      if (id === 'sparkfin') return ['shock'];
-      if (id === 'glowmoss') return ['poison'];
-      return ['shield'];
+      const defaults = {
+        trapper: ['shield'],
+        sparkfin: ['shock'],
+        glowmoss: ['poison']
+      };
+      return defaults[id] || defaults.trapper;
     }
 
     function getPortrait(id) {
@@ -802,17 +804,17 @@
         await init();
       }
 
-      log('Starting battle simulation...\\n');
+      log('Starting battle simulation...\n');
 
       try {
         const result = simulator.runFullBattle();
-        let battleText = '='.repeat(48) + '\\n';
-        battleText += 'BATTLE SIMULATION\\n';
-        battleText += '='.repeat(48) + '\\n\\n';
-        battleText += result.battleLog.map(log => log.message).join('\\n');
-        battleText += '\\n\\n' + '='.repeat(48);
-        battleText += '\\nFinal Result: ' + result.winner.toUpperCase() + ' WINS!';
-        battleText += '\\n' + '='.repeat(48);
+        let battleText = '='.repeat(48) + '\n';
+        battleText += 'BATTLE SIMULATION\n';
+        battleText += '='.repeat(48) + '\n\n';
+        battleText += result.battleLog.map(log => log.message).join('\n');
+        battleText += '\n\n' + '='.repeat(48);
+        battleText += '\nFinal Result: ' + result.winner.toUpperCase() + ' WINS!';
+        battleText += '\n' + '='.repeat(48);
         log(battleText);
       } catch (error) {
         log('Error running battle: ' + error.message);
@@ -831,34 +833,34 @@
         return;
       }
 
-      let text = '═'.repeat(60) + '\\n';
-      text += `${char.name} — ${char.title}\\n`;
-      text += '═'.repeat(60) + '\\n\\n';
-      text += `Role: ${char.role_primary}${char.role_secondary ? ' / ' + char.role_secondary : ''}\\n`;
-      text += `Types: ${char.types.join(', ')}\\n`;
-      text += `Rarity: ${char.rarity} | Rank: ${char.rank}\\n\\n`;
+      let text = '═'.repeat(60) + '\n';
+      text += `${char.name} — ${char.title}\n`;
+      text += '═'.repeat(60) + '\n\n';
+      text += `Role: ${char.role_primary}${char.role_secondary ? ' / ' + char.role_secondary : ''}\n`;
+      text += `Types: ${char.types.join(', ')}\n`;
+      text += `Rarity: ${char.rarity} | Rank: ${char.rank}\n\n`;
 
-      text += 'STATS:\\n';
-      text += `  HP: ${char.stats.hp}\\n`;
-      text += `  Power: ${char.stats.power}\\n`;
-      text += `  Defense: ${char.stats.defense}\\n`;
-      text += `  Magic Resist: ${char.stats.magicResist}\\n`;
-      text += `  Speed: ${char.stats.speed}\\n\\n`;
+      text += 'STATS:\n';
+      text += `  HP: ${char.stats.hp}\n`;
+      text += `  Power: ${char.stats.power}\n`;
+      text += `  Defense: ${char.stats.defense}\n`;
+      text += `  Magic Resist: ${char.stats.magicResist}\n`;
+      text += `  Speed: ${char.stats.speed}\n\n`;
 
-      text += `PASSIVE: ${char.passive.name}\\n`;
-      text += `  ${char.passive.description}\\n\\n`;
+      text += `PASSIVE: ${char.passive.name}\n`;
+      text += `  ${char.passive.description}\n\n`;
 
-      text += 'MOVES:\\n';
+      text += 'MOVES:\n';
       char.moves.forEach((move, i) => {
-        text += `  ${i + 1}. ${move.name} (${move.type}) [Cooldown: ${move.cooldown}]\\n`;
-        text += `     Target: ${move.target}\\n`;
-        text += `     Keywords: ${move.keywords.join(', ')}\\n`;
-        text += `     ${move.description}\\n\\n`;
+        text += `  ${i + 1}. ${move.name} (${move.type}) [Cooldown: ${move.cooldown}]\n`;
+        text += `     Target: ${move.target}\n`;
+        text += `     Keywords: ${move.keywords.join(', ')}\n`;
+        text += `     ${move.description}\n\n`;
       });
 
-      text += `SYNERGIES: ${char.synergy_tags.join(', ')}\\n\\n`;
-      text += `EXPLORATION PERK: ${char.exploration_perk.name}\\n`;
-      text += `  ${char.exploration_perk.description}\\n`;
+      text += `SYNERGIES: ${char.synergy_tags.join(', ')}\n\n`;
+      text += `EXPLORATION PERK: ${char.exploration_perk.name}\n`;
+      text += `  ${char.exploration_perk.description}\n`;
 
       log(text);
     }
@@ -872,16 +874,16 @@
       const chart = simulator.gameConstants.type_chart;
       const types = Object.keys(chart);
 
-      let text = '═'.repeat(80) + '\\n';
-      text += 'TYPE EFFECTIVENESS CHART\\n';
-      text += '═'.repeat(80) + '\\n\\n';
-      text += 'Legend: 2.0 = Super Effective | 1.0 = Neutral | 0.5 = Not Very Effective\\n\\n';
+      let text = '═'.repeat(80) + '\n';
+      text += 'TYPE EFFECTIVENESS CHART\n';
+      text += '═'.repeat(80) + '\n\n';
+      text += 'Legend: 2.0 = Super Effective | 1.0 = Neutral | 0.5 = Not Very Effective\n\n';
 
       text += 'Attacker ↓ vs Defender →'.padEnd(20);
       types.forEach(t => {
         text += t.substring(0, 4).padEnd(6);
       });
-      text += '\\n' + '─'.repeat(80) + '\\n';
+      text += '\n' + '─'.repeat(80) + '\n';
 
       types.forEach(attackType => {
         text += attackType.padEnd(20);
@@ -890,10 +892,10 @@
           const display = eff.toFixed(1);
           text += display.padEnd(6);
         });
-        text += '\\n';
+        text += '\n';
       });
 
-      text += '\\n' + '═'.repeat(80);
+      text += '\n' + '═'.repeat(80);
       log(text);
     }
 
