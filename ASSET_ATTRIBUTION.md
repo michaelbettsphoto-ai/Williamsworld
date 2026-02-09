@@ -9,26 +9,29 @@ This file tracks all audio assets used in Williams World, including their source
 - Avoid NC (Non-Commercial) licenses
 - Avoid unclear licensing or ripped game audio
 
+## Current Placeholder Status
+The repository currently ships generated MP3 tone placeholders in `assets/audio/` to ensure the UI has audible feedback. Replace these with licensed assets and keep the attribution entries below up to date.
+
 ## Audio Assets
 
 ### UI Sound Effects
 
 #### Button Clicks
-- **File**: `audio/ui/button-click-1.ogg`
+- **File**: `assets/audio/ui/button-click-1.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Primary button click sound
 
-- **File**: `audio/ui/button-click-2.ogg`
+- **File**: `assets/audio/ui/button-click-2.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Secondary button click sound (lighter)
 
-- **File**: `audio/ui/button-click-3.ogg`
+- **File**: `assets/audio/ui/button-click-3.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
@@ -36,7 +39,7 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Button click variation
 
 #### Hover/Focus
-- **File**: `audio/ui/hover-tick.ogg`
+- **File**: `assets/audio/ui/hover-tick.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
@@ -44,14 +47,14 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Subtle hover/focus sound
 
 #### Panel/Modal
-- **File**: `audio/ui/panel-open.ogg`
+- **File**: `assets/audio/ui/panel-open.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Whoosh + sparkle for opening panels
 
-- **File**: `audio/ui/panel-close.ogg`
+- **File**: `assets/audio/ui/panel-close.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
@@ -59,14 +62,14 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Reverse whoosh for closing panels
 
 #### Toggle
-- **File**: `audio/ui/toggle-on.ogg`
+- **File**: `assets/audio/ui/toggle-on.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Toggle switch on sound
 
-- **File**: `audio/ui/toggle-off.ogg`
+- **File**: `assets/audio/ui/toggle-off.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
@@ -74,7 +77,7 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Toggle switch off sound
 
 #### Tab Change
-- **File**: `audio/ui/tab-change.ogg`
+- **File**: `assets/audio/ui/tab-change.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
@@ -82,21 +85,21 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Small confirmation tick
 
 #### Success/Completion
-- **File**: `audio/ui/success-1.ogg`
+- **File**: `assets/audio/ui/success-1.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Level-up/coin sparkle sound
 
-- **File**: `audio/ui/success-2.ogg`
+- **File**: `assets/audio/ui/success-2.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Success sound variation
 
-- **File**: `audio/ui/success-3.ogg`
+- **File**: `assets/audio/ui/success-3.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
@@ -104,7 +107,7 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Success sound variation
 
 #### Error/Blocked
-- **File**: `audio/ui/error-soft.ogg`
+- **File**: `assets/audio/ui/error-soft.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
@@ -112,7 +115,7 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Soft 'boop' for errors (no harsh buzzer)
 
 #### Notification
-- **File**: `audio/ui/notification-ping.ogg`
+- **File**: `assets/audio/ui/notification-ping.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
@@ -122,21 +125,21 @@ This file tracks all audio assets used in Williams World, including their source
 ### William Avatar Sound Effects
 
 #### Idle Emotes (Quiet, 0.3-1.0s)
-- **File**: `audio/avatar/idle-1.ogg`
+- **File**: `assets/audio/avatar/idle-1.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Gentle idle sound
 
-- **File**: `audio/avatar/idle-2.ogg`
+- **File**: `assets/audio/avatar/idle-2.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Gentle idle sound variation
 
-- **File**: `audio/avatar/idle-3.ogg`
+- **File**: `assets/audio/avatar/idle-3.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
@@ -144,7 +147,7 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Gentle idle sound variation
 
 #### William Tap Sound
-- **File**: `audio/avatar/william-tap.ogg`
+- **File**: `assets/audio/avatar/william-tap.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
@@ -152,105 +155,105 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Consistent tap sound for clicking William
 
 #### Easter Egg Sounds
-- **File**: `audio/avatar/confetti-sneeze.ogg`
+- **File**: `assets/audio/avatar/confetti-sneeze.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Confetti Sneezus - sneeze + confetti pop + sparkle
 
-- **File**: `audio/avatar/banana-slip.ogg`
+- **File**: `assets/audio/avatar/banana-slip.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Banana Slip of Destiny - cartoon slip + whoop + thud
 
-- **File**: `audio/avatar/bubble-burp.ogg`
+- **File**: `assets/audio/avatar/bubble-burp.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Bubble Burp +1 - bubble pop + micro burp
 
-- **File**: `audio/avatar/pie-trap.ogg`
+- **File**: `assets/audio/avatar/pie-trap.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Pie Trap Triggered - boing + splat + giggle
 
-- **File**: `audio/avatar/rubber-chicken.ogg`
+- **File**: `assets/audio/avatar/rubber-chicken.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Rubber Chicken Summon - squeak + sparkle
 
-- **File**: `audio/avatar/hero-landing.ogg`
+- **File**: `assets/audio/avatar/hero-landing.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Hero Landing - whoosh + puff + victory ping
 
-- **File**: `audio/avatar/endless-scarf.ogg`
+- **File**: `assets/audio/avatar/endless-scarf.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Endless Scarf Loot - cloth flutter + twinkle
 
-- **File**: `audio/avatar/frog-crown.ogg`
+- **File**: `assets/audio/avatar/frog-crown.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Frog Crown Miscast - ribbit + plink + fizz
 
-- **File**: `audio/avatar/chipmunk-voice.ogg`
+- **File**: `assets/audio/avatar/chipmunk-voice.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Potion of Chipmunk Voice - glug + squeaky voice
 
-- **File**: `audio/avatar/marshmallow-volley.ogg`
+- **File**: `assets/audio/avatar/marshmallow-volley.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Marshmallow Volley - poof hits + subtle crowd
 
-- **File**: `audio/avatar/hair-tornado.ogg`
+- **File**: `assets/audio/avatar/hair-tornado.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Hair Tornado - wind-up + spin + boop
 
-- **File**: `audio/avatar/tiger-shuffle.ogg`
+- **File**: `assets/audio/avatar/tiger-shuffle.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Tiger Shuffle dance - drum tap + shuffle + cheer
 
-- **File**: `audio/avatar/lego-step.ogg`
+- **File**: `assets/audio/avatar/lego-step.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: LEGO Step - plastic click + gentle ouch
 
-- **File**: `audio/avatar/goose-chase.ogg`
+- **File**: `assets/audio/avatar/goose-chase.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
 - **URL**: https://kenney.nl/assets/digital-audio
 - **Notes**: Goose Chase - cute honk + footsteps + whoosh
 
-- **File**: `audio/avatar/treasure-socks.ogg`
+- **File**: `assets/audio/avatar/treasure-socks.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
@@ -258,7 +261,7 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Treasure Chest of SOCKS - chest open + rustle + jingle
 
 #### William On Break
-- **File**: `audio/avatar/william-on-break.ogg`
+- **File**: `assets/audio/avatar/william-on-break.mp3`
 - **Source**: Kenney Digital Audio
 - **Author**: Kenney
 - **License**: CC0 (Public Domain)
@@ -268,7 +271,7 @@ This file tracks all audio assets used in Williams World, including their source
 ### Weather Ambient Audio
 
 #### Sunny
-- **File**: `audio/weather/sunny-ambient.ogg`
+- **File**: `assets/audio/weather/sunny-ambient.mp3`
 - **Source**: Freesound (CC0)
 - **Author**: TBD
 - **License**: CC0 (Public Domain)
@@ -276,7 +279,7 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Light birds + soft breeze (very subtle), loopable
 
 #### Cloudy
-- **File**: `audio/weather/cloudy-ambient.ogg`
+- **File**: `assets/audio/weather/cloudy-ambient.mp3`
 - **Source**: Freesound (CC0)
 - **Author**: TBD
 - **License**: CC0 (Public Domain)
@@ -284,7 +287,7 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Gentle wind + distant rustle (no rain), loopable
 
 #### Rain
-- **File**: `audio/weather/rain-ambient.ogg`
+- **File**: `assets/audio/weather/rain-ambient.mp3`
 - **Source**: Freesound (CC0)
 - **Author**: TBD
 - **License**: CC0 (Public Domain)
@@ -292,7 +295,7 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Light rain loop + occasional soft drip, loopable
 
 #### Storm
-- **File**: `audio/weather/storm-ambient.ogg`
+- **File**: `assets/audio/weather/storm-ambient.mp3`
 - **Source**: Freesound (CC0)
 - **Author**: TBD
 - **License**: CC0 (Public Domain)
@@ -300,7 +303,7 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Rain + wind + very occasional low thunder (rare, quiet), loopable
 
 #### Snow
-- **File**: `audio/weather/snow-ambient.ogg`
+- **File**: `assets/audio/weather/snow-ambient.mp3`
 - **Source**: Freesound (CC0)
 - **Author**: TBD
 - **License**: CC0 (Public Domain)
@@ -310,7 +313,7 @@ This file tracks all audio assets used in Williams World, including their source
 ### Background Music
 
 #### Hub Music
-- **File**: `audio/music/hub-loop.ogg`
+- **File**: `assets/audio/music/hub-loop.mp3`
 - **Source**: OpenGameArt (CC0)
 - **Author**: TBD
 - **License**: CC0 (Public Domain)
@@ -318,7 +321,7 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Light loopable "town hub" music (low-intensity)
 
 #### Forest Music
-- **File**: `audio/music/forest-loop.ogg`
+- **File**: `assets/audio/music/forest-loop.mp3`
 - **Source**: OpenGameArt (CC0)
 - **Author**: TBD
 - **License**: CC0 (Public Domain)
@@ -326,17 +329,26 @@ This file tracks all audio assets used in Williams World, including their source
 - **Notes**: Light loopable "forest path" music (low-intensity)
 
 #### Dungeon Music
-- **File**: `audio/music/dungeon-loop.ogg`
+- **File**: `assets/audio/music/dungeon-loop.mp3`
 - **Source**: OpenGameArt (CC0)
 - **Author**: TBD
 - **License**: CC0 (Public Domain)
 - **URL**: https://opengameart.org/
 - **Notes**: Light loopable "dungeon corridor" music (low-intensity)
 
+### Gameplay Sound Effects
+
+#### Battle Hit
+- **File**: `assets/audio/gameplay/battle-hit.mp3`
+- **Source**: Generated placeholder tone
+- **Author**: Williams World
+- **License**: CC0 (Public Domain)
+- **Notes**: Battle action impact placeholder, replace with licensed SFX
+
 ## Notes on Implementation
 - All audio files are normalized for consistent volume levels
 - Files are trimmed to remove silence at start/end
-- Primary format is OGG for web; MP3 fallbacks available if needed
+- Primary format is MP3 for web; optional OGG/WAV fallbacks available if needed
 - All sounds are kid-safe and suitable for commercial use
 - Credits page will be added if any CC-BY assets are used
 

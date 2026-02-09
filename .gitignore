@@ -1,10 +1,9 @@
 *.backup.png
 
 # Audio placeholder files (WAV)
-# These are temporary placeholders - replace with OGG files
-audio/*/*.wav
+# These are temporary placeholders - replace with MP3 files
+assets/audio/*/*.wav
 
-# Audio working files (keep only final OGG)
-audio/*/*.mp3
-audio/*/*.flac
-audio/*/*.aiff
+# Audio working files (keep only final MP3)
+assets/audio/*/*.flac
+assets/audio/*/*.aiff

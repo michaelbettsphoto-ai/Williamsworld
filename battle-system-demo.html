@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>William's World - Battle System Demo</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js" integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="stylesheet" href="/battle-system/ui/character-cards.css">
   <style>
     :root {
@@ -602,6 +603,25 @@
     const MIN_ATTACK_DAMAGE = 10;
     const SPEED_TO_DAMAGE_RATIO = 2.5; // Demo pacing: faster units hit slightly harder
 
+    let battleAudioReady = false;
+    let battleSfx = null;
+
+    function initBattleAudio() {
+      if (battleAudioReady || !window.Howl || !window.Howler) return;
+      battleAudioReady = true;
+      battleSfx = new Howl({
+        src: ['./assets/audio/gameplay/battle-hit.mp3'],
+        volume: 0.7,
+      });
+    }
+
+    function playBattleSfx() {
+      initBattleAudio();
+      if (battleSfx) {
+        battleSfx.play();
+      }
+    }
+
     async function init() {
       try {
         simulator = new BattleSimulator();
@@ -725,6 +745,7 @@
     }
 
     function performAction(action) {
+      playBattleSfx();
       if (!simulator) return init();
       const actorEntry = turnOrder[activeTurnIndex];
       const targetTeam = actorEntry.side === 'left' ? teams.right : teams.left;
@@ -760,6 +781,7 @@
     }
 
     function resetArena() {
+      playBattleSfx();
       setupArena();
       updateCallout('Teams refreshed. Take the first move!');
     }
@@ -806,6 +828,7 @@
     }
 
     async function runBattleDemo() {
+      playBattleSfx();
       if (!simulator) {
         log('Loading battle system...');
         await init();

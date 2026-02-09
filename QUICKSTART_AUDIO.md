@@ -12,25 +12,25 @@ Extract ZIP file
 ### 2. Find These Files in the Pack
 
 **From Kenney Digital Audio pack, grab:**
-- `click1.ogg` → rename to `button-click-1.ogg`
-- `click2.ogg` → rename to `button-click-2.ogg`
-- `click3.ogg` → rename to `button-click-3.ogg`
-- `confirmation_001.ogg` → rename to `success-1.ogg`
-- `confirmation_002.ogg` → rename to `success-2.ogg`
-- `confirmation_003.ogg` → rename to `success-3.ogg`
-- `error_006.ogg` → rename to `error-soft.ogg`
-- `select_001.ogg` → rename to `hover-tick.ogg`
-- `toggle_001.ogg` → rename to `toggle-on.ogg`
-- `toggle_002.ogg` → rename to `toggle-off.ogg`
-- `switch_001.ogg` → rename to `tab-change.ogg`
-- `powerUp_001.ogg` → rename to `panel-open.ogg`
-- `powerDown_001.ogg` → rename to `panel-close.ogg`
-- `ping_001.ogg` → rename to `notification-ping.ogg`
+- `click1.mp3` → rename to `button-click-1.mp3`
+- `click2.mp3` → rename to `button-click-2.mp3`
+- `click3.mp3` → rename to `button-click-3.mp3`
+- `confirmation_001.mp3` → rename to `success-1.mp3`
+- `confirmation_002.mp3` → rename to `success-2.mp3`
+- `confirmation_003.mp3` → rename to `success-3.mp3`
+- `error_006.mp3` → rename to `error-soft.mp3`
+- `select_001.mp3` → rename to `hover-tick.mp3`
+- `toggle_001.mp3` → rename to `toggle-on.mp3`
+- `toggle_002.mp3` → rename to `toggle-off.mp3`
+- `switch_001.mp3` → rename to `tab-change.mp3`
+- `powerUp_001.mp3` → rename to `panel-open.mp3`
+- `powerDown_001.mp3` → rename to `panel-close.mp3`
+- `ping_001.mp3` → rename to `notification-ping.mp3`
 
 ### 3. Copy to Project
 ```bash
 # Copy to UI folder
-cp *.ogg /path/to/Williamsworld/audio/ui/
+cp *.mp3 /path/to/Williamsworld/assets/audio/ui/
 ```
 
 ### 4. Test
@@ -63,53 +63,56 @@ python3 -m http.server 8080
 
 ## File Format Conversion
 
-**Have WAV or MP3?** Convert to OGG:
+**Have WAV or MP3?** Convert to MP3:
 ```bash
-ffmpeg -i input.wav -c:a libvorbis -q:a 4 output.ogg
+ffmpeg -i input.wav -c:a libmp3lame -q:a 4 output.mp3
 ```
 
 **Batch convert all:**
 ```bash
-for f in audio/*/*.wav; do
-  ffmpeg -i "$f" -c:a libvorbis -q:a 4 "${f%.wav}.ogg" -y && rm "$f"
+for f in assets/audio/*/*.wav; do
+  ffmpeg -i "$f" -c:a libmp3lame -q:a 4 "${f%.wav}.mp3" -y && rm "$f"
 done
 ```
 
 ---
 
-## Complete File List (42 files total)
+## Complete File List (43 files total)
 
 ### UI (14 files) ✓ Kenney has all of these
-- button-click-1.ogg, button-click-2.ogg, button-click-3.ogg
-- hover-tick.ogg
-- panel-open.ogg, panel-close.ogg
-- toggle-on.ogg, toggle-off.ogg
-- tab-change.ogg
-- success-1.ogg, success-2.ogg, success-3.ogg
-- error-soft.ogg
-- notification-ping.ogg
+- button-click-1.mp3, button-click-2.mp3, button-click-3.mp3
+- hover-tick.mp3
+- panel-open.mp3, panel-close.mp3
+- toggle-on.mp3, toggle-off.mp3
+- tab-change.mp3
+- success-1.mp3, success-2.mp3, success-3.mp3
+- error-soft.mp3
+- notification-ping.mp3
 
 ### Avatar (20 files) - Search Freesound CC0
-- idle-1.ogg, idle-2.ogg, idle-3.ogg
-- william-tap.ogg
-- confetti-sneeze.ogg, banana-slip.ogg, bubble-burp.ogg
-- pie-trap.ogg, rubber-chicken.ogg, hero-landing.ogg
-- endless-scarf.ogg, frog-crown.ogg, chipmunk-voice.ogg
-- marshmallow-volley.ogg, hair-tornado.ogg, tiger-shuffle.ogg
-- lego-step.ogg, goose-chase.ogg, treasure-socks.ogg
-- william-on-break.ogg
+- idle-1.mp3, idle-2.mp3, idle-3.mp3
+- william-tap.mp3
+- confetti-sneeze.mp3, banana-slip.mp3, bubble-burp.mp3
+- pie-trap.mp3, rubber-chicken.mp3, hero-landing.mp3
+- endless-scarf.mp3, frog-crown.mp3, chipmunk-voice.mp3
+- marshmallow-volley.mp3, hair-tornado.mp3, tiger-shuffle.mp3
+- lego-step.mp3, goose-chase.mp3, treasure-socks.mp3
+- william-on-break.mp3
 
 ### Weather (5 files) - Search Freesound CC0
-- sunny-ambient.ogg (birds + breeze)
-- cloudy-ambient.ogg (wind)
-- rain-ambient.ogg (rain loop)
-- storm-ambient.ogg (thunder)
-- snow-ambient.ogg (soft wind)
+- sunny-ambient.mp3 (birds + breeze)
+- cloudy-ambient.mp3 (wind)
+- rain-ambient.mp3 (rain loop)
+- storm-ambient.mp3 (thunder)
+- snow-ambient.mp3 (soft wind)
 
 ### Music (3 files) - Search OpenGameArt CC0
-- hub-loop.ogg
-- forest-loop.ogg
-- dungeon-loop.ogg
+- hub-loop.mp3
+- forest-loop.mp3
+- dungeon-loop.mp3
+
+### Gameplay (1 file) - Battle SFX
+- battle-hit.mp3
 
 ---
 
@@ -147,10 +150,10 @@ python3 generate-placeholder-audio.py
 1. ✅ Test in `audio-test.html`
 2. ✅ Test in main app `index.html`
 3. ✅ Update `ASSET_ATTRIBUTION.md` with sources
-4. ✅ Commit OGG files to repository
+4. ✅ Commit MP3 files to repository
 
 ---
 
-**That's it!** The audio system is ready to go once you add the files. Start with Kenney Digital Audio pack - it has 14 of the 42 files you need, and they're all perfect for UI sounds.
+**That's it!** The audio system is ready to go once you add the files. Start with Kenney Digital Audio pack - it has 14 of the 43 files you need, and they're all perfect for UI sounds.
 
 🎮 Happy sound hunting!

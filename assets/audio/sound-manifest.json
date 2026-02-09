@@ -7,77 +7,103 @@
       "defaultVolume": 0.7,
       "sounds": {
         "buttonClickPrimary": {
-          "files": ["ui/button-click-1.ogg", "ui/button-click-2.ogg", "ui/button-click-3.ogg"],
+          "files": [
+            "ui/button-click-1.mp3",
+            "ui/button-click-2.mp3",
+            "ui/button-click-3.mp3"
+          ],
           "volume": 0.7,
           "loop": false,
           "duration": "0.05-0.15s",
           "notes": "Primary button clicks with 3 variations to avoid fatigue"
         },
         "buttonClickSecondary": {
-          "files": ["ui/button-click-2.ogg"],
+          "files": [
+            "ui/button-click-2.mp3"
+          ],
           "volume": 0.5,
           "loop": false,
           "duration": "0.05-0.12s",
           "notes": "Softer secondary button sound"
         },
         "hover": {
-          "files": ["ui/hover-tick.ogg"],
+          "files": [
+            "ui/hover-tick.mp3"
+          ],
           "volume": 0.3,
           "loop": false,
           "duration": "0.03-0.08s",
           "notes": "Very subtle hover sound, optional on mobile"
         },
         "panelOpen": {
-          "files": ["ui/panel-open.ogg"],
+          "files": [
+            "ui/panel-open.mp3"
+          ],
           "volume": 0.6,
           "loop": false,
           "duration": "0.15-0.35s",
           "notes": "Whoosh + sparkle for opening panels"
         },
         "panelClose": {
-          "files": ["ui/panel-close.ogg"],
+          "files": [
+            "ui/panel-close.mp3"
+          ],
           "volume": 0.6,
           "loop": false,
           "duration": "0.15-0.35s",
           "notes": "Reverse whoosh for closing panels"
         },
         "toggleOn": {
-          "files": ["ui/toggle-on.ogg"],
+          "files": [
+            "ui/toggle-on.mp3"
+          ],
           "volume": 0.6,
           "loop": false,
           "duration": "0.1-0.2s",
           "notes": "Toggle switch on sound"
         },
         "toggleOff": {
-          "files": ["ui/toggle-off.ogg"],
+          "files": [
+            "ui/toggle-off.mp3"
+          ],
           "volume": 0.6,
           "loop": false,
           "duration": "0.1-0.2s",
           "notes": "Toggle switch off sound"
         },
         "tabChange": {
-          "files": ["ui/tab-change.ogg"],
+          "files": [
+            "ui/tab-change.mp3"
+          ],
           "volume": 0.5,
           "loop": false,
           "duration": "0.05-0.1s",
           "notes": "Small confirmation for tab changes"
         },
         "success": {
-          "files": ["ui/success-1.ogg", "ui/success-2.ogg", "ui/success-3.ogg"],
+          "files": [
+            "ui/success-1.mp3",
+            "ui/success-2.mp3",
+            "ui/success-3.mp3"
+          ],
           "volume": 0.75,
           "loop": false,
           "duration": "0.2-0.6s",
           "notes": "Level-up/coin sparkle with 3 variations"
         },
         "error": {
-          "files": ["ui/error-soft.ogg"],
+          "files": [
+            "ui/error-soft.mp3"
+          ],
           "volume": 0.6,
           "loop": false,
           "duration": "0.2-0.4s",
           "notes": "Soft boop for errors, no harsh buzzer"
         },
         "notification": {
-          "files": ["ui/notification-ping.ogg"],
+          "files": [
+            "ui/notification-ping.mp3"
+          ],
           "volume": 0.65,
           "loop": false,
           "duration": "0.1-0.3s",
@@ -90,126 +116,164 @@
       "defaultVolume": 0.6,
       "sounds": {
         "idle": {
-          "files": ["avatar/idle-1.ogg", "avatar/idle-2.ogg", "avatar/idle-3.ogg"],
+          "files": [
+            "avatar/idle-1.mp3",
+            "avatar/idle-2.mp3",
+            "avatar/idle-3.mp3"
+          ],
           "volume": 0.4,
           "loop": false,
           "duration": "0.3-1.0s",
           "notes": "Quiet idle emote sounds, plays every 10 seconds"
         },
         "williamTap": {
-          "files": ["avatar/william-tap.ogg"],
+          "files": [
+            "avatar/william-tap.mp3"
+          ],
           "volume": 0.6,
           "loop": false,
           "duration": "0.05-0.1s",
           "notes": "Consistent tap sound when clicking William"
         },
         "confettiSneeze": {
-          "files": ["avatar/confetti-sneeze.ogg"],
+          "files": [
+            "avatar/confetti-sneeze.mp3"
+          ],
           "volume": 0.65,
           "loop": false,
           "duration": "0.8-1.2s",
           "notes": "Confetti Sneezus Easter egg"
         },
         "bananaSlip": {
-          "files": ["avatar/banana-slip.ogg"],
+          "files": [
+            "avatar/banana-slip.mp3"
+          ],
           "volume": 0.65,
           "loop": false,
           "duration": "0.8-1.2s",
           "notes": "Banana Slip of Destiny Easter egg"
         },
         "bubbleBurp": {
-          "files": ["avatar/bubble-burp.ogg"],
+          "files": [
+            "avatar/bubble-burp.mp3"
+          ],
           "volume": 0.6,
           "loop": false,
           "duration": "0.5-0.8s",
           "notes": "Bubble Burp +1 Easter egg"
         },
         "pieTrap": {
-          "files": ["avatar/pie-trap.ogg"],
+          "files": [
+            "avatar/pie-trap.mp3"
+          ],
           "volume": 0.65,
           "loop": false,
           "duration": "0.8-1.0s",
           "notes": "Pie Trap Triggered Easter egg"
         },
         "rubberChicken": {
-          "files": ["avatar/rubber-chicken.ogg"],
+          "files": [
+            "avatar/rubber-chicken.mp3"
+          ],
           "volume": 0.65,
           "loop": false,
           "duration": "0.5-0.8s",
           "notes": "Rubber Chicken Summon Easter egg"
         },
         "heroLanding": {
-          "files": ["avatar/hero-landing.ogg"],
+          "files": [
+            "avatar/hero-landing.mp3"
+          ],
           "volume": 0.7,
           "loop": false,
           "duration": "0.6-1.0s",
           "notes": "Hero Landing (Micro Edition) Easter egg"
         },
         "endlessScarf": {
-          "files": ["avatar/endless-scarf.ogg"],
+          "files": [
+            "avatar/endless-scarf.mp3"
+          ],
           "volume": 0.6,
           "loop": false,
           "duration": "0.5-0.8s",
           "notes": "Endless Scarf Loot Easter egg"
         },
         "frogCrown": {
-          "files": ["avatar/frog-crown.ogg"],
+          "files": [
+            "avatar/frog-crown.mp3"
+          ],
           "volume": 0.65,
           "loop": false,
           "duration": "0.7-1.0s",
           "notes": "Frog Crown Miscast Easter egg"
         },
         "chipmunkVoice": {
-          "files": ["avatar/chipmunk-voice.ogg"],
+          "files": [
+            "avatar/chipmunk-voice.mp3"
+          ],
           "volume": 0.65,
           "loop": false,
           "duration": "0.6-0.9s",
           "notes": "Potion of Chipmunk Voice Easter egg"
         },
         "marshmallowVolley": {
-          "files": ["avatar/marshmallow-volley.ogg"],
+          "files": [
+            "avatar/marshmallow-volley.mp3"
+          ],
           "volume": 0.6,
           "loop": false,
           "duration": "0.6-1.0s",
           "notes": "Marshmallow Volley Easter egg"
         },
         "hairTornado": {
-          "files": ["avatar/hair-tornado.ogg"],
+          "files": [
+            "avatar/hair-tornado.mp3"
+          ],
           "volume": 0.65,
           "loop": false,
           "duration": "0.8-1.2s",
           "notes": "Hair Tornado Easter egg"
         },
         "tigerShuffle": {
-          "files": ["avatar/tiger-shuffle.ogg"],
+          "files": [
+            "avatar/tiger-shuffle.mp3"
+          ],
           "volume": 0.7,
           "loop": false,
           "duration": "0.8-1.2s",
           "notes": "Tiger Shuffle dance emote Easter egg"
         },
         "legoStep": {
-          "files": ["avatar/lego-step.ogg"],
+          "files": [
+            "avatar/lego-step.mp3"
+          ],
           "volume": 0.65,
           "loop": false,
           "duration": "0.4-0.7s",
           "notes": "LEGO Step Reaction Easter egg"
         },
         "gooseChase": {
-          "files": ["avatar/goose-chase.ogg"],
+          "files": [
+            "avatar/goose-chase.mp3"
+          ],
           "volume": 0.65,
           "loop": false,
           "duration": "1.0-1.5s",
           "notes": "Goose Chase Encounter Easter egg"
         },
         "treasureSocks": {
-          "files": ["avatar/treasure-socks.ogg"],
+          "files": [
+            "avatar/treasure-socks.mp3"
+          ],
           "volume": 0.65,
           "loop": false,
           "duration": "0.8-1.2s",
           "notes": "Treasure Chest of SOCKS Easter egg"
         },
         "williamOnBreak": {
-          "files": ["avatar/william-on-break.ogg"],
+          "files": [
+            "avatar/william-on-break.mp3"
+          ],
           "volume": 0.7,
           "loop": false,
           "duration": "1.5-2.5s",
@@ -222,35 +286,45 @@
       "defaultVolume": 0.3,
       "sounds": {
         "sunny": {
-          "files": ["weather/sunny-ambient.ogg"],
+          "files": [
+            "weather/sunny-ambient.mp3"
+          ],
           "volume": 0.25,
           "loop": true,
           "duration": "loopable",
           "notes": "Light birds + soft breeze, very subtle, -18 to -24 LUFS"
         },
         "cloudy": {
-          "files": ["weather/cloudy-ambient.ogg"],
+          "files": [
+            "weather/cloudy-ambient.mp3"
+          ],
           "volume": 0.3,
           "loop": true,
           "duration": "loopable",
           "notes": "Gentle wind + distant rustle, no rain, -18 to -24 LUFS"
         },
         "rain": {
-          "files": ["weather/rain-ambient.ogg"],
+          "files": [
+            "weather/rain-ambient.mp3"
+          ],
           "volume": 0.35,
           "loop": true,
           "duration": "loopable",
           "notes": "Light rain loop + occasional soft drip, -18 to -24 LUFS"
         },
         "storm": {
-          "files": ["weather/storm-ambient.ogg"],
+          "files": [
+            "weather/storm-ambient.mp3"
+          ],
           "volume": 0.4,
           "loop": true,
           "duration": "loopable",
           "notes": "Rain + wind + very occasional low thunder, -18 to -24 LUFS"
         },
         "snow": {
-          "files": ["weather/snow-ambient.ogg"],
+          "files": [
+            "weather/snow-ambient.mp3"
+          ],
           "volume": 0.3,
           "loop": true,
           "duration": "loopable",
@@ -263,21 +337,27 @@
       "defaultVolume": 0.2,
       "sounds": {
         "hubLoop": {
-          "files": ["music/hub-loop.ogg"],
+          "files": [
+            "music/hub-loop.mp3"
+          ],
           "volume": 0.2,
           "loop": true,
           "duration": "loopable",
           "notes": "Light town hub music, low-intensity"
         },
         "forestLoop": {
-          "files": ["music/forest-loop.ogg"],
+          "files": [
+            "music/forest-loop.mp3"
+          ],
           "volume": 0.2,
           "loop": true,
           "duration": "loopable",
           "notes": "Light forest path music, low-intensity"
         },
         "dungeonLoop": {
-          "files": ["music/dungeon-loop.ogg"],
+          "files": [
+            "music/dungeon-loop.mp3"
+          ],
           "volume": 0.2,
           "loop": true,
           "duration": "loopable",
@@ -288,21 +368,31 @@
     "gameplay": {
       "description": "Mini-game sound effects",
       "defaultVolume": 0.7,
-      "sounds": {}
+      "sounds": {
+        "battleHit": {
+          "files": [
+            "gameplay/battle-hit.mp3"
+          ],
+          "volume": 0.7,
+          "loop": false,
+          "duration": "0.3-0.5s",
+          "notes": "Battle action impact sound"
+        }
+      }
     }
   },
   "technical": {
-    "primaryFormat": "ogg",
-    "fallbackFormat": "mp3",
+    "primaryFormat": "mp3",
+    "fallbackFormat": "ogg",
     "maxSimultaneousSounds": 4,
     "preloadSounds": [
-      "ui/button-click-1.ogg",
-      "ui/button-click-2.ogg",
-      "ui/button-click-3.ogg",
-      "ui/panel-open.ogg",
-      "ui/panel-close.ogg",
-      "ui/toggle-on.ogg",
-      "ui/toggle-off.ogg"
+      "ui/button-click-1.mp3",
+      "ui/button-click-2.mp3",
+      "ui/button-click-3.mp3",
+      "ui/panel-open.mp3",
+      "ui/panel-close.mp3",
+      "ui/toggle-on.mp3",
+      "ui/toggle-off.mp3"
     ],
     "crossfadeDuration": 1000,
     "weatherTransitionDuration": 1200,
