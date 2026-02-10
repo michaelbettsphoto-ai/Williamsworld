@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>William's World - Battle System Demo</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js" integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <link rel="stylesheet" href="./battle-system/ui/character-cards.css">
   <link rel="stylesheet" href="./assets/css/character-cards.css">
   <style>
     :root {
@@ -504,11 +503,14 @@
   <div class="container">
     <header class="hero-header">
       <div class="hero-logo" aria-hidden="true"></div>
-      <div>
+      <div style="flex: 1;">
         <div class="eyebrow">Battle System Demo</div>
         <h1>Battle first. Click first.</h1>
         <p class="subtitle">Kid-first 3v3 arena—tap big buttons and watch your squad battle.</p>
       </div>
+      <a href="./index.html" class="btn-auto" style="text-decoration: none; padding: 12px 20px; border-radius: 12px; background: linear-gradient(135deg, rgba(255,211,110,0.2), rgba(255,211,110,0.1)); border: 1px solid rgba(255,211,110,0.4); color: var(--gold); font-weight: 600; transition: all 0.3s; display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+        <span style="font-size: 1.2em;">←</span> Back to Home
+      </a>
     </header>
 
     <section class="demo-section battle-hero">
