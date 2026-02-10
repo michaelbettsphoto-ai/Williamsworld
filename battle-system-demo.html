@@ -81,6 +81,28 @@
       color: var(--gold);
     }
 
+    .btn-back {
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255,211,110,0.2), rgba(255,211,110,0.1));
+      border: 1px solid rgba(255,211,110,0.4);
+      color: var(--gold);
+      font-weight: 600;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .btn-back:hover {
+      background: linear-gradient(135deg, rgba(255,211,110,0.3), rgba(255,211,110,0.2));
+      border-color: rgba(255,211,110,0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255,211,110,0.3);
+    }
+
     .subtitle {
       color: var(--muted);
       font-size: 1.05em;
@@ -519,7 +541,7 @@
         <h1>Battle first. Click first.</h1>
         <p class="subtitle">Kid-first 3v3 arena—tap big buttons and watch your squad battle.</p>
       </div>
-      <a href="./index.html" class="btn-auto" style="text-decoration: none; padding: 12px 20px; border-radius: 12px; background: linear-gradient(135deg, rgba(255,211,110,0.2), rgba(255,211,110,0.1)); border: 1px solid rgba(255,211,110,0.4); color: var(--gold); font-weight: 600; transition: all 0.3s; display: flex; align-items: center; gap: 8px; white-space: nowrap;">
+      <a href="./index.html" class="btn-back">
         <span style="font-size: 1.2em;">←</span> Back to Home
       </a>
     </header>
