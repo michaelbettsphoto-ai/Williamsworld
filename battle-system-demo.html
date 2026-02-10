@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>William's World - Battle</title>
+  <title>William's World - Backpack Bastion Battle</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
@@ -90,9 +90,6 @@
       border-radius: 0 0 var(--radius-lg) var(--radius-lg);
     }
 
-    .top-bar.glass-panel {
-      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-    }
 
     .zone-badge {
       display: flex;
@@ -227,20 +224,6 @@
       align-items: center;
       gap: 4px;
       color: var(--muted);
-    }
-
-    .vs-token {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.35);
-      display: grid;
-      place-items: center;
-      background: rgba(0,0,0,0.35);
-      font-weight: 700;
-      color: var(--gold);
-      letter-spacing: 2px;
-      font-size: 0.85em;
     }
 
     .stage-subtitle {
@@ -1190,7 +1173,7 @@
     let isDevMode = false;
     let audioEnabled = true;
 
-    const HERO_DATA_PATH = './assets/data/heroes-and-companions.json';
+    const PROGRESSION_DATA_PATH = './assets/data/heroes-and-companions.json';
     const PARTY_IDS = ['william', 'ember', 'sprite'];
     const ABILITY_IDS = ['william', 'ember', 'sprite', 'golem'];
     const ENEMY_IDS = ['trapper', 'sparkfin', 'glowmoss'];
@@ -1222,6 +1205,8 @@
 
     const DAMAGE_BASE = 14;
     const HEAL_BASE = 10;
+    const MIN_DAMAGE = 8;
+    const HEAL_PER_LEVEL = 2;
 
     let battleAudioReady = false;
     let battleSfx = null;
@@ -1249,8 +1234,10 @@
     }
 
     async function loadProgressionData() {
-      const response = await fetch(HERO_DATA_PATH, { cache: 'no-store' });
-      if (!response.ok) throw new Error(`Failed to load ${HERO_DATA_PATH}`);
+      const response = await fetch(PROGRESSION_DATA_PATH, { cache: 'no-store' });
+      if (!response.ok) {
+        throw new Error(`Failed to load ${PROGRESSION_DATA_PATH}: ${response.status} ${response.statusText}`);
+      }
       return response.json();
     }
 
@@ -1260,6 +1247,9 @@
         simulator = new BattleSimulator();
         await simulator.loadGameData();
         progressionData = await loadProgressionData();
+        if (!Array.isArray(progressionData?.characters)) {
+          throw new Error('Progression data missing characters list.');
+        }
         heroMap = Object.fromEntries(progressionData.characters.map(char => [char.id, char]));
         setupArena();
         renderAbilities();
@@ -1366,7 +1356,7 @@
           ${portraitMarkup({ fighter, isEnemy })}
           <div>
             <div class="card-title">${fighter.name}</div>
-            <div class="card-meta">${isEnemy ? fighter.title : fighter.title}</div>
+            <div class="card-meta">${fighter.title}</div>
             ${isEnemy ? `
               <div class="rarity-badge">${fighter.rarity}</div>
               <div class="element-badge">
@@ -1387,7 +1377,7 @@
 
     function portraitMarkup({ fighter, isEnemy }) {
       const src = getPortrait(fighter.id);
-      const initials = fighter.name.split(' ').map(word => word[0]).slice(0, 2).join('');
+      const initials = getInitials(fighter.name);
       const elementIcon = getElementIcon(fighter.element);
       const fallbackIcon = isEnemy ? ZONE_ICON : elementIcon;
       const fallbackClass = src ? '' : ' is-fallback';
@@ -1407,7 +1397,7 @@
       if (frame) {
         frame.classList.add('is-fallback');
       }
-      img.remove();
+      img.style.display = 'none';
     }
 
     function getPortrait(id) {
@@ -1435,6 +1425,17 @@
       list.innerHTML = battleLog.map(entry => `<li>${entry}</li>`).join('');
     }
 
+    function getInitials(name) {
+      if (!name) return '';
+      return name
+        .split(' ')
+        .map(word => word.trim())
+        .filter(word => word.length > 0)
+        .map(word => word[0])
+        .slice(0, 2)
+        .join('');
+    }
+
     function renderAbilities() {
       const abilityRow = document.getElementById('abilityRow');
       if (!abilityRow) return;
@@ -1445,12 +1446,16 @@
         const group = document.createElement('div');
         group.className = 'ability-group';
         const buttons = hero.abilities.map(ability => {
-          const isLocked = hero.level < ability.unlockLevel;
+          const heroLevelValue = Number(hero.level);
+          const unlockLevelValue = Number(ability.unlockLevel);
+          const heroLevel = Number.isFinite(heroLevelValue) ? heroLevelValue : 1;
+          const unlockLevel = Number.isFinite(unlockLevelValue) ? unlockLevelValue : 1;
+          const isLocked = heroLevel < unlockLevel;
           return `
-            <button class="ability-button${isLocked ? ' locked' : ''}" ${isLocked ? 'disabled' : ''} data-hero="${hero.id}" data-ability="${ability.abilityId}" title="${ability.description}${isLocked ? ` (Unlocks at L${ability.unlockLevel})` : ''}">
+            <button class="ability-button${isLocked ? ' locked' : ''}" ${isLocked ? 'disabled' : ''} data-hero="${hero.id}" data-ability="${ability.abilityId}" title="${ability.description}${isLocked ? ` (Unlocks at L${unlockLevel})` : ''}">
               <span class="ability-name">${ability.name}</span>
               <span class="cooldown-badge">CD ${ability.cooldown}</span>
-              ${isLocked ? `<span class="locked-tag">Locked L${ability.unlockLevel}</span>` : ''}
+              ${isLocked ? `<span class="locked-tag">Locked L${unlockLevel}</span>` : ''}
             </button>
           `;
         }).join('');
@@ -1481,16 +1486,21 @@
       if (ability.type === 'damage' || ability.type === 'control') {
         const target = teams.right.find(f => f.hp > 0) || teams.right[0];
         if (target) {
-          const dmg = Math.max(8, DAMAGE_BASE + Math.round(hero.stats.atk / 2));
+          const heroAttack = hero.stats?.atk ?? 0;
+          const dmg = Math.max(MIN_DAMAGE, DAMAGE_BASE + Math.round(heroAttack / 2));
           target.hp = Math.max(0, target.hp - dmg);
           message = `${hero.displayName} uses ${ability.name} on ${target.name} (-${dmg}).`;
         }
       } else if (ability.type === 'heal' || ability.type === 'shield' || ability.type === 'buff') {
         const target = teams.left.find(f => f.hp < f.maxHp) || teams.left[0];
         if (target) {
-          const heal = Math.min(target.maxHp - target.hp, HEAL_BASE + hero.level * 2);
-          target.hp = Math.min(target.maxHp, target.hp + heal);
-          message = `${hero.displayName} uses ${ability.name} to support ${target.name}.`;
+          const maxHp = typeof target.maxHp === 'number' ? target.maxHp : 0;
+          const currentHp = typeof target.hp === 'number' ? target.hp : 0;
+          if (maxHp > 0) {
+            const heal = Math.min(maxHp - currentHp, HEAL_BASE + hero.level * HEAL_PER_LEVEL);
+            target.hp = Math.min(maxHp, currentHp + heal);
+            message = `${hero.displayName} uses ${ability.name} to support ${target.name}.`;
+          }
         }
       }
 
