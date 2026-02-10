@@ -8,12 +8,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js" integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="stylesheet" href="./css/battle.css">
   <link rel="stylesheet" href="./assets/css/character-cards.css">
   <style>
     :root {
       --bg: #0f0a1c;
-      --panel: rgba(18, 11, 32, 0.82);
-      --panel-strong: rgba(25, 14, 45, 0.9);
+      --panel: rgba(18, 11, 32, 0.7);
+      --panel-strong: rgba(25, 14, 45, 0.75);
       --text: #fff5e6;
       --muted: rgba(255, 245, 230, 0.7);
       --gold: #ffd36e;
@@ -31,11 +32,28 @@
     body {
       font-family: var(--font);
       background:
-        linear-gradient(135deg, rgba(16, 9, 31, 0.9), rgba(36, 20, 70, 0.9)),
-        url('./assets/images/background.jpg') center/cover fixed;
+        linear-gradient(135deg, rgba(16, 9, 31, 0.5), rgba(36, 20, 70, 0.5)),
+        var(--zone-bg-url, url('./assets/images/background.jpg')) center/cover fixed;
       color: var(--text);
       min-height: 100vh;
       padding: 24px;
+    }
+
+    /* Zone-specific backgrounds */
+    body.zone-launch-meadow {
+      --zone-bg-url: url('./assets/images/zone_launch_256.png');
+    }
+
+    body.zone-homework-hills {
+      --zone-bg-url: url('./assets/images/zone_homework_256.png');
+    }
+
+    body.zone-backpack-bastion {
+      --zone-bg-url: url('./assets/images/backpackbastion.png');
+    }
+
+    body.zone-focus-forest {
+      --zone-bg-url: url('./assets/images/zone_focus_256.png');
     }
 
     .container {
@@ -119,8 +137,7 @@
 
     .battle-hero {
       background:
-        linear-gradient(135deg, rgba(8, 5, 18, 0.7), rgba(34, 18, 58, 0.7)),
-        url('./assets/images/banner_1600x700.png') center/cover;
+        linear-gradient(135deg, rgba(8, 5, 18, 0.3), rgba(34, 18, 58, 0.3));
       position: relative;
       overflow: hidden;
     }
@@ -129,7 +146,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at center, rgba(255, 211, 110, 0.16), transparent 50%);
+      background: radial-gradient(ellipse at center, rgba(255, 211, 110, 0.08), transparent 50%);
       pointer-events: none;
     }
 
@@ -147,12 +164,10 @@
       align-items: center;
       gap: 8px;
       padding: 10px 14px;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.6);
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.12);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
-      background-image: url('./assets/images/mapstrip_1600x400.png');
-      background-size: cover;
       flex: 1;
     }
 
@@ -537,9 +552,9 @@
     <header class="hero-header">
       <div class="hero-logo" aria-hidden="true"></div>
       <div style="flex: 1;">
-        <div class="eyebrow">Battle System Demo</div>
-        <h1>Battle first. Click first.</h1>
-        <p class="subtitle">Kid-first 3v3 arena—tap big buttons and watch your squad battle.</p>
+        <div class="eyebrow">Williams World Battle System</div>
+        <h1 id="battle-zone-title">Join William's Adventure</h1>
+        <p class="subtitle">Experience tactical 3v3 battles with William and his companions</p>
       </div>
       <a href="./index.html" class="btn-back">
         <span style="font-size: 1.2em;">←</span> Back to Home
@@ -568,7 +583,7 @@
 
       <div class="action-bar">
         <div class="big-buttons">
-          <button class="btn-attack" onclick="performAction('strike')">Attack!</button>
+          <button class="btn-attack" onclick="performAction('attack')">Attack!</button>
           <button class="btn-shield" onclick="performAction('shield')">Shield</button>
           <button class="btn-spell" onclick="performAction('spell')">Cast Spell</button>
           <button class="btn-auto" onclick="runBattleDemo()">Auto Battle</button>
@@ -581,10 +596,11 @@
       <h2>Quick Demos</h2>
       <div class="button-group">
         <button class="btn-auto" onclick="runBattleDemo()">⚔️ Run Battle Simulation</button>
-        <button class="btn-attack" onclick="showCharacter('trapper')">🛡️ Trapper</button>
-        <button class="btn-shield" onclick="showCharacter('sparkfin')">⚡ Sparkfin</button>
-        <button class="btn-spell" onclick="showCharacter('glowmoss')">🍄 Glowmoss</button>
-        <button class="btn-auto" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);" onclick="showTypeChart()">📊 Type Chart</button>
+        <button class="btn-attack" onclick="showCharacter('william')">🗡️ William</button>
+        <button class="btn-shield" onclick="showCharacter('ember')">🔥 Ember</button>
+        <button class="btn-spell" onclick="showCharacter('sprite')">✨ Sprite</button>
+        <button class="btn-auto" style="background:linear-gradient(135deg,#10b981,#059669);" onclick="showCharacter('golem')">🗿 Golem</button>
+        <button class="btn-auto" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);" onclick="showAbilityUpgrades()" aria-label="View ability upgrade system">📈 Ability Upgrades</button>
       </div>
       <div id="output" class="output scrollbar-custom"></div>
     </section>
@@ -595,412 +611,412 @@
     </section>
   </div>
 
-  <script src="./assets/js/battle-system/battle-engine.js"></script>
-  <script src="./assets/js/battle-system/battle-simulator.js"></script>
+  <script src="./js/battle.js"></script>
   <script>
-    let simulator = null;
-    let gameData = null;
-    let teams = { left: [], right: [] };
-    let turnOrder = [];
-    let activeTurnIndex = 0;
+    // Williams World Battle System Integration
+    
+    // Configuration constants
+    const DEFAULT_HERO_XP_REQUIRED = 600;
+    const DEFAULT_COMPANION_XP_REQUIRED = 800;
+    const HERO_CHARACTER_ID = 'william';
+    
+    let battle = null;
+    let uiState = {
+      outputElement: null,
+      calloutElement: null,
+      turnStripElement: null,
+      teamLeftElement: null,
+      teamRightElement: null
+    };
 
+    // Apply zone-specific background class on page load
+    function applyZoneBackground() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const zone = urlParams.get('zone');
+      
+      if (zone) {
+        document.body.classList.add(`zone-${zone}`);
+        
+        // Update the title with zone name
+        const zoneNames = {
+          'launch-meadow': 'Battle in Launch Meadow',
+          'homework-hills': 'Battle in Homework Hills',
+          'backpack-bastion': 'Battle in Backpack Bastion',
+          'focus-forest': 'Battle in Focus Forest'
+        };
+        
+        const titleElement = document.getElementById('battle-zone-title');
+        if (titleElement && zoneNames[zone]) {
+          titleElement.textContent = zoneNames[zone];
+        }
+      }
+    }
+    
+    // Call immediately to set background before page renders
+    applyZoneBackground();
+
+    // Icon mappings
     const DEFAULT_ICON = './assets/images/logo.svg';
     const portraitMap = {
-      trapper: './assets/images/trapper-portrait.png',
-      sparkfin: './assets/images/sparkfin-portrait.png',
-      glowmoss: './assets/images/glowmoss-portrait.png'
+      william: './assets/images/william-portrait.png',
+      ember: './assets/images/ember-portrait.png',
+      sprite: './assets/images/sprite-portrait.png',
+      golem: './assets/images/golem-portrait.png'
     };
 
-    const roleIconMap = {
-      defender: './assets/images/zone_backpack_256.svg',
-      support: './assets/images/zone_focus_256.png',
-      scout: './assets/images/zone_launch_256.png',
-      controller: './assets/images/zone_homework_256.png',
-      summoner: './assets/images/banner.svg'
-    };
-
-    const typeIconMap = {
-      metal: './assets/images/golem.svg',
-      light: './assets/images/logo.svg',
-      water: './assets/images/sprite.svg',
-      electric: './assets/images/ember.svg',
-      grass: './assets/images/zone3.svg',
-      shadow: './assets/images/zone4.svg'
+    const elementIconMap = {
+      NEUTRAL: './assets/images/logo.svg',
+      FIRE: './assets/images/ember.svg',
+      WATER: './assets/images/sprite.svg',
+      LIGHT: './assets/images/logo.svg',
+      ROCK: './assets/images/golem.svg',
+      GRASS: './assets/images/zone3.svg',
+      SHADOW: './assets/images/zone4.svg'
     };
 
     const statusIconMap = {
-      shield: './assets/images/zone_backpack_256.svg',
-      stun: './assets/images/zone_focus_256.png',
-      poison: './assets/images/zone3.svg',
-      shock: './assets/images/ember.svg'
+      guard: './assets/images/zone_backpack_256.svg',
+      focus: './assets/images/zone_focus_256.png',
+      shock: './assets/images/ember.svg',
+      burn: './assets/images/zone3.svg',
+      chill: './assets/images/sprite.svg',
+      weaken: './assets/images/zone4.svg'
     };
 
-    const SPELL_BASE_DAMAGE = 18;
-    const MIN_ATTACK_DAMAGE = 10;
-    const SPEED_TO_DAMAGE_RATIO = 2.5; // Demo pacing: faster units hit slightly harder
-
-    let battleAudioReady = false;
-    let battleSfx = null;
-
-    function initBattleAudio() {
-      if (battleAudioReady || !window.Howl || !window.Howler) return;
-      battleAudioReady = true;
-      battleSfx = new Howl({
-        src: ['./assets/audio/gameplay/battle-hit.mp3'],
-        volume: 0.7,
-      });
-    }
-
-    function playBattleSfx() {
-      initBattleAudio();
-      if (battleSfx) {
-        battleSfx.play();
-      }
-    }
-
+    /**
+     * Initialize the battle system
+     */
     async function init() {
       try {
-        simulator = new BattleSimulator();
-        await simulator.loadGameData();
-        gameData = {
-          constants: simulator.gameConstants,
-          characters: simulator.characters
-        };
+        // Cache UI elements
+        uiState.outputElement = document.getElementById('output');
+        uiState.calloutElement = document.getElementById('arenaCallout');
+        uiState.turnStripElement = document.getElementById('turnStrip');
+        uiState.teamLeftElement = document.getElementById('team-left');
+        uiState.teamRightElement = document.getElementById('team-right');
 
+        // Create battle instance
+        battle = new WilliamsBattle();
+        await battle.init();
+
+        // Setup initial arena
         setupArena();
         displayCharacterCards();
-        log('Battle system loaded successfully! ✓');
+        
+        updateCallout('Williams World Battle System loaded! Tap a button to start.');
+        log('✅ Battle system ready!');
       } catch (error) {
-        log('Error loading battle system: ' + error.message, 'error');
+        log('❌ Error loading battle system: ' + error.message);
         console.error(error);
       }
     }
 
+    /**
+     * Setup the battle arena
+     */
     function setupArena() {
-      const ids = ['trapper', 'sparkfin', 'glowmoss'];
-      teams.left = ids.map((id, idx) => createFighter(id, 'Allies', `L${idx + 1}`));
-      teams.right = ids.map((id, idx) => createFighter(id, 'Rivals', `R${idx + 1}`));
-      buildTurnOrder();
+      battle.setupBattle();
       renderTeams();
       renderTurnStrip();
-      updateCallout('Tap a big button to see the team act.');
+      updateCallout('Battle ready! Choose your action.');
     }
 
-    function createFighter(id, teamName, slot) {
-      const base = simulator.characters[id];
-      return {
-        id,
-        slot,
-        teamName,
-        name: base.name,
-        hp: base.stats.hp,
-        maxHp: base.stats.hp,
-        role: base.role_primary,
-        roleSecondary: base.role_secondary,
-        types: base.types,
-        speed: base.stats.speed,
-        statuses: []
-      };
-    }
-
-    function buildTurnOrder() {
-      turnOrder = [
-        ...teams.left.map(f => ({ side: 'left', fighter: f })),
-        ...teams.right.map(f => ({ side: 'right', fighter: f }))
-      ].sort((a, b) => b.fighter.speed - a.fighter.speed);
-      activeTurnIndex = 0;
-    }
-
-    function renderTurnStrip() {
-      const strip = document.getElementById('turnStrip');
-      strip.innerHTML = '';
-      turnOrder.forEach((entry, idx) => {
-        const icon = document.createElement('div');
-        icon.className = 'turn-icon' + (idx === activeTurnIndex ? ' active' : '') + (entry.fighter.hp <= 0 ? ' downed' : '');
-        icon.title = `${entry.fighter.name} • ${entry.fighter.teamName}`;
-        icon.innerHTML = `
-          <img src="${getPortrait(entry.fighter.id)}" alt="${entry.fighter.name}">
-          <span class="turn-label"></span>
-        `;
-        strip.appendChild(icon);
-      });
-    }
-
+    /**
+     * Render both teams
+     */
     function renderTeams() {
-      renderTeam('left');
-      renderTeam('right');
+      renderTeam('party', uiState.teamLeftElement);
+      renderTeam('enemy', uiState.teamRightElement);
     }
 
-    function renderTeam(side) {
-      const stack = document.getElementById(`team-${side}`);
-      stack.innerHTML = '';
-      teams[side].forEach(fighter => {
+    /**
+     * Render a single team
+     */
+    function renderTeam(teamType, container) {
+      if (!container) return;
+      
+      container.innerHTML = '';
+      const fighters = teamType === 'party' ? battle.party : battle.enemies;
+
+      fighters.forEach(fighter => {
         const hpPercent = Math.max(0, Math.round((fighter.hp / fighter.maxHp) * 100));
         const card = document.createElement('div');
         card.className = 'battle-card';
         card.setAttribute('data-id', fighter.id);
+        
+        const elementIcons = fighter.element ? 
+          `<span class="type-chip">
+            <img src="${elementIconMap[fighter.element] || DEFAULT_ICON}" alt="${fighter.element}">
+            ${fighter.element}
+          </span>` : '';
+
         card.innerHTML = `
           <div class="card-top">
-            <div class="portrait"><img src="${getPortrait(fighter.id)}" alt="${fighter.name} portrait"></div>
+            <div class="portrait">
+              <img src="${getPortrait(fighter)}" alt="${fighter.name} portrait">
+            </div>
             <div class="card-title">
               <div class="card-name">${fighter.name}</div>
               <div class="role-chip">
-                <img src="${getRoleIcon(fighter.role)}" alt="${fighter.role} icon">
-                ${formatRole(fighter.role)}
+                <img src="${DEFAULT_ICON}" alt="Level ${fighter.level}">
+                Lv ${fighter.level}
               </div>
             </div>
           </div>
           <div class="type-row">
-            ${fighter.types.map(type => `
-              <span class="type-chip">
-                <img src="${getTypeIcon(type)}" alt="${type} icon">
-                ${type}
-              </span>
-            `).join('')}
+            ${elementIcons}
+            ${fighter.rarity ? `<span class="type-chip">${fighter.rarity}</span>` : ''}
           </div>
           <div class="hp-bar">
             <div class="hp-fill" style="width:${hpPercent}%;">
-              <span>${fighter.hp} HP</span>
+              <span>${fighter.hp}/${fighter.maxHp} HP</span>
             </div>
           </div>
           <div class="status-row">
             ${renderStatuses(fighter)}
           </div>
         `;
-        stack.appendChild(card);
+        container.appendChild(card);
       });
     }
 
+    /**
+     * Render status effects
+     */
     function renderStatuses(fighter) {
-      const statuses = fighter.statuses.length ? fighter.statuses : getDefaultStatuses(fighter.id);
-      return statuses.map(status => `
+      if (!fighter.statuses || fighter.statuses.length === 0) {
+        return '';
+      }
+
+      return fighter.statuses.map(status => `
         <span class="status-icon" title="${status}">
           <img src="${statusIconMap[status] || DEFAULT_ICON}" alt="${status} icon">
         </span>
       `).join('');
     }
 
+    /**
+     * Render turn order strip
+     */
+    function renderTurnStrip() {
+      if (!uiState.turnStripElement) return;
+      
+      uiState.turnStripElement.innerHTML = '';
+      
+      battle.turnOrder.forEach((entry, idx) => {
+        const icon = document.createElement('div');
+        const isActive = idx === battle.activeTurnIndex;
+        const isDowned = entry.battler.hp <= 0;
+        
+        icon.className = 'turn-icon' + 
+          (isActive ? ' active' : '') + 
+          (isDowned ? ' downed' : '');
+        icon.title = `${entry.battler.name} • ${entry.side}`;
+        icon.innerHTML = `
+          <img src="${getPortrait(entry.battler)}" alt="${entry.battler.name}">
+          <span class="turn-label"></span>
+        `;
+        uiState.turnStripElement.appendChild(icon);
+      });
+    }
+
+    /**
+     * Perform an action in battle
+     */
     function performAction(action) {
-      playBattleSfx();
-      if (!simulator) return init();
-      const actorEntry = turnOrder[activeTurnIndex];
-      const targetTeam = actorEntry.side === 'left' ? teams.right : teams.left;
-      const target = targetTeam.find(f => f.hp > 0);
-      if (!target) {
-        updateCallout('No rivals left to target!');
+      if (!battle || !battle.initialized) {
+        updateCallout('Battle system not initialized!');
         return;
       }
 
-      let message = `${actorEntry.fighter.name} acts!`;
-      if (action === 'shield') {
-        addStatus(actorEntry.fighter, 'shield');
-        message = `${actorEntry.fighter.name} throws up a shield!`;
-      } else if (action === 'spell') {
-        target.hp = Math.max(0, target.hp - SPELL_BASE_DAMAGE);
-        addStatus(target, 'stun');
-        addStatus(target, 'shock');
-        message = `${actorEntry.fighter.name} casts a spell for ${SPELL_BASE_DAMAGE} dmg!`;
-      } else {
-        const dmg = Math.max(MIN_ATTACK_DAMAGE, Math.round(actorEntry.fighter.speed / SPEED_TO_DAMAGE_RATIO));
-        target.hp = Math.max(0, target.hp - dmg);
-        message = `${actorEntry.fighter.name} attacks ${target.name} for ${dmg} dmg!`;
-      }
-
+      battle.executeTurn(action);
       renderTeams();
-      advanceTurn();
-      updateCallout(message);
-    }
-
-    function advanceTurn() {
-      activeTurnIndex = (activeTurnIndex + 1) % turnOrder.length;
       renderTurnStrip();
+      
+      // Show latest battle log
+      if (battle.battleLog.length > 0) {
+        const latest = battle.battleLog[battle.battleLog.length - 1];
+        updateCallout(latest);
+      }
     }
 
+    /**
+     * Reset the arena
+     */
     function resetArena() {
-      playBattleSfx();
+      if (!battle) return;
+      
+      battle.playAudio('ui_click_confirm');
       setupArena();
-      updateCallout('Teams refreshed. Take the first move!');
+      updateCallout('Arena reset! New battle starting...');
+      log('Battle reset');
     }
 
-    function addStatus(fighter, status) {
-      if (!fighter.statuses.includes(status)) {
-        fighter.statuses.push(status);
-      }
-    }
-
-    function getDefaultStatuses(id) {
-      const defaults = {
-        trapper: ['shield'],
-        sparkfin: ['shock'],
-        glowmoss: ['poison']
-      }; // Demo badges that mirror each hero's theme
-      return defaults[id] || ['shield'];
-    }
-
-    function getPortrait(id) {
-      return portraitMap[id] || './assets/images/logo_512.png';
-    }
-
-    function getRoleIcon(role) {
-      return roleIconMap[role] || './assets/images/banner.svg';
-    }
-
-    function getTypeIcon(type) {
-      return typeIconMap[type] || DEFAULT_ICON;
-    }
-
-    function formatRole(role) {
-      return role ? role.charAt(0).toUpperCase() + role.slice(1) : 'Role';
-    }
-
-    function updateCallout(text) {
-      const el = document.getElementById('arenaCallout');
-      el.textContent = text;
-    }
-
-    function log(message) {
-      const output = document.getElementById('output');
-      output.textContent = message;
-    }
-
+    /**
+     * Run auto battle simulation
+     */
     async function runBattleDemo() {
-      playBattleSfx();
-      if (!simulator) {
-        log('Loading battle system...');
+      if (!battle || !battle.initialized) {
         await init();
       }
 
-      log('Starting battle simulation...\n');
+      log('Starting auto battle simulation...\n');
+      updateCallout('Auto battle running...');
 
-      try {
-        const result = simulator.runFullBattle();
-        let battleText = '='.repeat(48) + '\n';
-        battleText += 'BATTLE SIMULATION\n';
-        battleText += '='.repeat(48) + '\n\n';
-        battleText += result.battleLog.map(log => log.message).join('\n');
-        battleText += '\n\n' + '='.repeat(48);
-        battleText += '\nFinal Result: ' + result.winner.toUpperCase() + ' WINS!';
-        battleText += '\n' + '='.repeat(48);
-        log(battleText);
-      } catch (error) {
-        log('Error running battle: ' + error.message);
-        console.error(error);
-      }
+      const logs = await battle.runAutoBattle();
+      
+      renderTeams();
+      renderTurnStrip();
+      
+      let output = '='.repeat(60) + '\n';
+      output += 'WILLIAMS WORLD - BATTLE LOG\n';
+      output += '='.repeat(60) + '\n\n';
+      output += logs.join('\n');
+      output += '\n\n' + '='.repeat(60);
+      
+      log(output);
     }
 
-    async function showCharacter(id) {
-      if (!simulator) {
-        await init();
-      }
-
-      const char = simulator.characters[id];
-      if (!char) {
-        log('Character not found: ' + id);
-        return;
-      }
-
-      let text = '═'.repeat(60) + '\n';
-      text += `${char.name} — ${char.title}\n`;
-      text += '═'.repeat(60) + '\n\n';
-      text += `Role: ${char.role_primary}${char.role_secondary ? ' / ' + char.role_secondary : ''}\n`;
-      text += `Types: ${char.types.join(', ')}\n`;
-      text += `Rarity: ${char.rarity} | Rank: ${char.rank}\n\n`;
-
-      text += 'STATS:\n';
-      text += `  HP: ${char.stats.hp}\n`;
-      text += `  Power: ${char.stats.power}\n`;
-      text += `  Defense: ${char.stats.defense}\n`;
-      text += `  Magic Resist: ${char.stats.magicResist}\n`;
-      text += `  Speed: ${char.stats.speed}\n\n`;
-
-      text += `PASSIVE: ${char.passive.name}\n`;
-      text += `  ${char.passive.description}\n\n`;
-
-      text += 'MOVES:\n';
-      char.moves.forEach((move, i) => {
-        text += `  ${i + 1}. ${move.name} (${move.type}) [Cooldown: ${move.cooldown}]\n`;
-        text += `     Target: ${move.target}\n`;
-        text += `     Keywords: ${move.keywords.join(', ')}\n`;
-        text += `     ${move.description}\n\n`;
-      });
-
-      text += `SYNERGIES: ${char.synergy_tags.join(', ')}\n\n`;
-      text += `EXPLORATION PERK: ${char.exploration_perk.name}\n`;
-      text += `  ${char.exploration_perk.description}\n`;
-
-      log(text);
-    }
-
-    async function showTypeChart() {
-      if (!simulator) {
-        await init();
-      }
-
-      simulator.displayTypeChart();
-      const chart = simulator.gameConstants.type_chart;
-      const types = Object.keys(chart);
-
-      let text = '═'.repeat(80) + '\n';
-      text += 'TYPE EFFECTIVENESS CHART\n';
-      text += '═'.repeat(80) + '\n\n';
-      text += 'Legend: 2.0 = Super Effective | 1.0 = Neutral | 0.5 = Not Very Effective\n\n';
-
-      text += 'Attacker ↓ vs Defender →'.padEnd(20);
-      types.forEach(t => {
-        text += t.substring(0, 4).padEnd(6);
-      });
-      text += '\n' + '─'.repeat(80) + '\n';
-
-      types.forEach(attackType => {
-        text += attackType.padEnd(20);
-        types.forEach(defType => {
-          const eff = chart[attackType][defType];
-          text += eff.toFixed(1).padEnd(6);
-        });
-        text += '\n';
-      });
-
-      text += '\n' + '═'.repeat(80);
-      log(text);
-    }
-
+    /**
+     * Display character cards
+     */
     function displayCharacterCards() {
-      if (!gameData) return;
+      if (!battle || !battle.heroesData) return;
+      
       const grid = document.getElementById('characterGrid');
+      if (!grid) return;
+      
       grid.innerHTML = '';
-      const charIds = ['trapper', 'sparkfin', 'glowmoss'];
+      const characters = battle.heroesData.characters;
 
-      charIds.forEach(id => {
-        const char = gameData.characters[id];
+      characters.forEach(char => {
         const card = document.createElement('div');
         card.className = 'card-collection';
-        card.style.setProperty('--role-color-1', `var(--role-${char.role_primary}, var(--role-defender))`);
-        card.style.setProperty('--role-color-2', `var(--role-${char.role_primary}-light, var(--role-defender-light))`);
         card.innerHTML = `
           <div class="card-collection-portrait">
-            <img src="${getPortrait(id)}" alt="${char.name}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
+            <img src="${portraitMap[char.id] || DEFAULT_ICON}" alt="${char.displayName}" 
+                 style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
           </div>
-          <div class="card-collection-name">${char.name}</div>
+          <div class="card-collection-name">${char.displayName}</div>
           <div class="card-collection-badges">
-            <div class="card-role-badge" style="--role-color-1: var(--role-${char.role_primary}, var(--role-defender)); --role-color-2: var(--role-${char.role_primary}-light, var(--role-defender-light));">
-              <img src="${getRoleIcon(char.role_primary)}" alt="${char.role_primary}" style="width:16px;height:16px;object-fit:contain;">
+            <div class="card-role-badge">
+              <img src="${elementIconMap[char.element] || DEFAULT_ICON}" alt="${char.element}" 
+                   style="width:16px;height:16px;object-fit:contain;">
             </div>
           </div>
-          <div class="card-type-icons">
-            ${char.types.map(type => `
-              <div class="card-type-icon" style="--type-color-1: var(--type-${type}, var(--type-metal)); --type-color-2: var(--type-${type}-light, var(--type-metal-light));">
-                <img src="${getTypeIcon(type)}" alt="${type}" style="width:18px;height:18px;object-fit:contain;">
-              </div>
-            `).join('')}
-          </div>
-          <div class="card-rarity">${char.rarity}</div>
+          <div class="card-rarity">${char.classTitle}</div>
         `;
         grid.appendChild(card);
       });
     }
 
-    // Initialize on load
-    init();
+    /**
+     * Show character details
+     */
+    async function showCharacter(id) {
+      if (!battle || !battle.heroesData) {
+        await init();
+      }
+
+      const char = battle.heroesData.characters.find(c => c.id === id);
+      if (!char) {
+        log('Character not found: ' + id);
+        return;
+      }
+
+      let text = '═'.repeat(70) + '\n';
+      text += `${char.displayName} — ${char.classTitle}\n`;
+      text += '═'.repeat(70) + '\n\n';
+      text += `Element: ${char.element} | Level: ${char.level}\n`;
+      text += `XP: ${char.xpCurrent} / ${getXpRequired(char)}\n\n`;
+
+      text += 'STATS:\n';
+      text += `  HP: ${char.stats.hp}\n`;
+      text += `  ATK: ${char.stats.atk}\n`;
+      text += `  DEF: ${char.stats.def}\n`;
+      text += `  SPD: ${char.stats.spd}\n\n`;
+
+      text += 'ABILITIES:\n';
+      char.abilities.forEach((ability, i) => {
+        text += `  ${i + 1}. ${ability.name} (${ability.type})\n`;
+        text += `     Cooldown: ${ability.cooldown} | Target: ${ability.target}\n`;
+        text += `     ${ability.description}\n\n`;
+      });
+
+      log(text);
+    }
+
+    /**
+     * Show ability upgrades
+     */
+    async function showAbilityUpgrades() {
+      if (!battle || !battle.heroesData) {
+        await init();
+      }
+
+      let text = '═'.repeat(70) + '\n';
+      text += 'ABILITY UPGRADE SYSTEM\n';
+      text += '═'.repeat(70) + '\n\n';
+
+      battle.heroesData.characters.forEach(char => {
+        if (char.abilityUpgrades && char.abilityUpgrades.length > 0) {
+          text += `\n${char.displayName} Upgrades:\n`;
+          char.abilityUpgrades.forEach(upgrade => {
+            text += `  Level ${upgrade.atLevel}: ${upgrade.abilityId}\n`;
+            upgrade.changes.forEach(change => {
+              text += `    • ${change}\n`;
+            });
+          });
+          text += '\n';
+        }
+      });
+
+      log(text);
+    }
+
+    /**
+     * Get XP required for next level
+     */
+    function getXpRequired(char) {
+      const xpRules = battle.heroesData.xpRules;
+      if (char.id === HERO_CHARACTER_ID) {
+        return xpRules.heroXpThresholds[char.level] || DEFAULT_HERO_XP_REQUIRED;
+      } else {
+        return xpRules.companionXpThresholds[char.level] || DEFAULT_COMPANION_XP_REQUIRED;
+      }
+    }
+
+    /**
+     * Get portrait for battler
+     */
+    function getPortrait(battler) {
+      if (battler.portrait && battler.portrait !== './assets/images/logo_512.png') {
+        return battler.portrait;
+      }
+      return portraitMap[battler.id] || DEFAULT_ICON;
+    }
+
+    /**
+     * Update callout message
+     */
+    function updateCallout(text) {
+      if (uiState.calloutElement) {
+        uiState.calloutElement.textContent = text;
+      }
+    }
+
+    /**
+     * Log to output panel
+     */
+    function log(message) {
+      if (uiState.outputElement) {
+        uiState.outputElement.textContent = message;
+      }
+      console.log(message);
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
 </html>
