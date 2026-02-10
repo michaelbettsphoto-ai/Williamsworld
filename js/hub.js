@@ -3259,7 +3259,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Initialize audio on first user interaction
   let audioInitialized = false;
-  let audioUnlocked = localStorage.getItem('williamsworld_audio_unlocked') === 'true';
+  let audioUnlocked = false;
+  try {
+    audioUnlocked = localStorage.getItem('williamsworld_audio_unlocked') === 'true';
+  } catch (e) {
+    console.warn('localStorage not available:', e);
+  }
   
   function initAudioOnInteraction() {
     if (!audioInitialized) {
@@ -3267,7 +3272,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (audioManager.isInitialized) {
         audioInitialized = true;
         audioUnlocked = true;
-        localStorage.setItem('williamsworld_audio_unlocked', 'true');
+        try {
+          localStorage.setItem('williamsworld_audio_unlocked', 'true');
+        } catch (e) {
+          console.warn('localStorage not available:', e);
+        }
         
         const unlockEvent = audioEventsData?.autoplayPolicy?.firstGestureUnlock?.recommendedEventToPlay;
         if (unlockEvent) {
@@ -3286,28 +3295,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Try autoplay on load if audio was previously unlocked
   async function tryAutoplayOnLoad() {
-    if (audioUnlocked && !audioManager.isMuted) {
+    // Check if audio was unlocked and manager is ready (already initialized with settings loaded)
+    if (audioUnlocked) {
       try {
         audioManager.init();
-        if (audioManager.isInitialized) {
+        if (audioManager.isInitialized && !audioManager.isMuted) {
           audioInitialized = true;
           
-          // Try to play hub music
-          const musicKey = audioManager.getCurrentMusicKey();
-          const file = audioManager.soundMap[musicKey]?.[0];
-          if (file) {
-            const howl = audioManager.getHowl(file, { loop: true });
-            const volume = audioManager.getSoundVolume(musicKey, 1.0);
-            howl.volume(volume);
-            
-            const playPromise = howl.play();
-            if (playPromise && typeof playPromise.catch === 'function') {
-              await playPromise;
-              audioManager.currentMusicSound = musicKey;
-              audioManager.currentMusicHowl = howl;
-              console.log('Hub music autoplay succeeded');
-            }
-          }
+          // Use the playMusic method to avoid code duplication
+          audioManager.playMusic(audioManager.getCurrentMusicKey());
+          console.log('Hub music autoplay succeeded');
         }
       } catch (error) {
         // Autoplay blocked - will wait for user gesture
@@ -3420,12 +3417,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Load audio settings on init
   loadAudioSettingsUI();
   
-  // Show prompt after attempting autoplay if still not initialized
+  // Delay for autoplay check to complete before showing prompt
+  const AUTOPLAY_CHECK_DELAY_MS = 500;
   setTimeout(() => {
     if (!audioInitialized) {
       toast('Tap anywhere to enable sound');
     }
-  }, 500);
+  }, AUTOPLAY_CHECK_DELAY_MS);
   
   // Connect weather changes to audio
   const originalSetWeather = setWeather;
