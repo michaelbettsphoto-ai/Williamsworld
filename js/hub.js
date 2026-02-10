@@ -381,7 +381,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       this.currentWeatherKey = null;
       this.currentWeatherHowl = null;
       this.currentMusicSound = null;
-      this.currentMusicKey = this.audioEvents?.events?.some(event => event.id === 'music_main_hub') ? 'music_main_hub' : 'music.hub';
       this.currentMusicHowl = null;
       this.currentZoneAmbience = null;
       this.currentZoneAmbienceHowl = null;
@@ -390,6 +389,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       this.activeSounds = [];
       this.maxSimultaneousSounds = 4;
       this.audioEvents = audioEvents;
+      this.currentMusicKey = audioEvents?.events?.some(event => event.id === 'music_main_hub') ? 'music_main_hub' : 'music.hub';
       this.eventChannelMap = {};
       this.reduceSoundCaps = audioEvents?.settings?.reduceSoundMode?.behavior || null;
       this.storageKey = audioEvents?.settings?.storageKey || 'williamsworld_audio_settings';
