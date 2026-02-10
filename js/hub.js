@@ -1088,31 +1088,57 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   
   
-  // Show floating XP animation
+  // Rule 5: Null-safe floating XP animation
   function showFloatingXP(amount, x, y) {
+    if (!document.body) {
+      console.warn('[FAIL-SOFT] document.body not available for floating XP');
+      return;
+    }
     const el = document.createElement('div');
     el.className = 'floatingXP';
     el.textContent = `+${amount} XP`;
     el.style.left = x + 'px';
     el.style.top = y + 'px';
     document.body.appendChild(el);
-    setTimeout(() => el.remove(), 1500);
+    setTimeout(() => {
+      if (el.parentNode) {
+        el.remove();
+      }
+    }, 1500);
   }
   
-  // Show companion reward card
+  // Rule 5: Null-safe companion reward card
   function showCompanionRewardCard(companion, fromLevel, newLevel) {
     const overlay = $('companionRewardOverlay');
+    if (!overlay) {
+      console.warn('[FAIL-SOFT] Companion reward overlay not found');
+      return;
+    }
+    
     const statsBefore = getCharacterStats(companion, fromLevel);
     const statsAfter = getCharacterStats(companion, newLevel);
     const updates = getAbilityUpdates(companion, newLevel);
     const rewardPower = $('rewardCompPower');
     const rewardStats = $('rewardCompStats');
-    $('rewardEmoji').textContent = COMPANION_EMOJIS[companion];
-    $('rewardCompName').textContent = COMPANION_NAMES[companion];
-    $('rewardCompFrom').textContent = fromLevel;
-    $('rewardCompLevel').textContent = newLevel;
-    $('rewardCompClass').textContent = COMPANION_CLASSES[companion];
-    $('rewardCompTitle').textContent = getCompanionTitle(companion, newLevel);
+    
+    const rewardEmoji = $('rewardEmoji');
+    if (rewardEmoji) rewardEmoji.textContent = COMPANION_EMOJIS[companion];
+    
+    const rewardCompName = $('rewardCompName');
+    if (rewardCompName) rewardCompName.textContent = COMPANION_NAMES[companion];
+    
+    const rewardCompFrom = $('rewardCompFrom');
+    if (rewardCompFrom) rewardCompFrom.textContent = fromLevel;
+    
+    const rewardCompLevel = $('rewardCompLevel');
+    if (rewardCompLevel) rewardCompLevel.textContent = newLevel;
+    
+    const rewardCompClass = $('rewardCompClass');
+    if (rewardCompClass) rewardCompClass.textContent = COMPANION_CLASSES[companion];
+    
+    const rewardCompTitle = $('rewardCompTitle');
+    if (rewardCompTitle) rewardCompTitle.textContent = getCompanionTitle(companion, newLevel);
+    
     const rewardImg = $('rewardCompImg');
     if (rewardImg) rewardImg.src = ASSETS.companions[companion];
     if (rewardStats) rewardStats.textContent = formatStatChange(statsBefore, statsAfter);
