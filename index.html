@@ -1068,6 +1068,9 @@
     transition: opacity .2s ease;
     pointer-events: none;
   }
+  #ww .questZoneCard:not(.locked) .questZoneLockOverlay {
+    display: none;
+  }
   #ww .questZoneLockOverlay .lockIcon {
     font-size: 26px;
   }
@@ -5103,23 +5106,16 @@
       zoneEl.classList.toggle("locked", !isUnlocked);
       zoneEl.classList.toggle("unlocked", isUnlocked);
 
+      const unlockText = `Unlocks at ${zone.unlockDays}-day streak`;
       if (statusEl) {
-        statusEl.textContent = isUnlocked
-          ? "Unlocked"
-          : `Unlocks at ${zone.unlockDays}-day streak`;
+        statusEl.textContent = isUnlocked ? "Unlocked" : unlockText;
         statusEl.classList.toggle("locked", !isUnlocked);
         statusEl.classList.toggle("unlocked", isUnlocked);
       }
 
-      const lockOverlay = zoneEl.querySelector(".questZoneLockOverlay");
       const lockText = zoneEl.querySelector(".questZoneLockText");
       if (lockText) {
-        lockText.textContent = isUnlocked ? "" : `Unlocks at ${zone.unlockDays}-day streak`;
-      }
-      if (lockOverlay) {
-        lockOverlay.hidden = isUnlocked;
-        lockOverlay.style.display = isUnlocked ? "none" : "flex";
-        lockOverlay.setAttribute("aria-hidden", isUnlocked ? "true" : "false");
+        lockText.textContent = isUnlocked ? "" : unlockText;
       }
     });
 
