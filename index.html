@@ -1068,9 +1068,6 @@
     transition: opacity .2s ease;
     pointer-events: none;
   }
-  #ww .questZoneCard:not(.locked) .questZoneLockOverlay {
-    display: none;
-  }
   #ww .questZoneLockOverlay .lockIcon {
     font-size: 26px;
   }
@@ -4876,6 +4873,20 @@
     updateQuestLoreStatus(zone);
   }
 
+  function buildQuestZoneLockOverlay(unlockText) {
+    const lockOverlay = document.createElement("div");
+    lockOverlay.className = "questZoneLockOverlay";
+    const lockIcon = document.createElement("div");
+    lockIcon.className = "lockIcon";
+    lockIcon.textContent = "🔒";
+    const lockText = document.createElement("div");
+    lockText.className = "questZoneLockText";
+    lockText.textContent = unlockText || "Locked";
+    lockOverlay.appendChild(lockIcon);
+    lockOverlay.appendChild(lockText);
+    return lockOverlay;
+  }
+
   function openQuestLore(zoneId, openMode = "click", sourceEl = null) {
     if (!questZonesData || !questZonesData.zones) return;
     const zone = questZonesData.zones.find(item => item.id === zoneId);
@@ -4957,20 +4968,12 @@
       enemyCountEl.className = "questZoneEnemyCount";
       enemyCountEl.textContent = `Enemy count: ${zone.enemies.length}`;
 
-      const lockOverlay = document.createElement("div");
-      lockOverlay.className = "questZoneLockOverlay";
-      const lockIcon = document.createElement("div");
-      lockIcon.className = "lockIcon";
-      lockIcon.textContent = "🔒";
-      const lockText = document.createElement("div");
-      lockText.className = "questZoneLockText";
-      lockText.textContent = "Locked";
-      lockOverlay.appendChild(lockIcon);
-      lockOverlay.appendChild(lockText);
-
       card.appendChild(media);
       card.appendChild(enemyCountEl);
-      card.appendChild(lockOverlay);
+      const isUnlocked = state.streak >= zone.unlockDays;
+      if (!isUnlocked) {
+        card.appendChild(buildQuestZoneLockOverlay(`Unlocks at ${zone.unlockDays}-day streak`));
+      }
 
       if (canHover) {
         card.addEventListener("mouseenter", () => openQuestLore(zone.id, "hover", card));
@@ -5113,9 +5116,19 @@
         statusEl.classList.toggle("unlocked", isUnlocked);
       }
 
-      const lockText = zoneEl.querySelector(".questZoneLockText");
-      if (lockText) {
-        lockText.textContent = isUnlocked ? "" : unlockText;
+      let lockOverlay = zoneEl.querySelector(".questZoneLockOverlay");
+      if (isUnlocked && lockOverlay) {
+        lockOverlay.remove();
+        lockOverlay = null;
+      }
+      if (!isUnlocked) {
+        if (!lockOverlay) {
+          lockOverlay = buildQuestZoneLockOverlay(unlockText);
+          zoneEl.appendChild(lockOverlay);
+        } else {
+          const lockText = lockOverlay.querySelector(".questZoneLockText");
+          if (lockText) lockText.textContent = unlockText;
+        }
       }
     });
 
