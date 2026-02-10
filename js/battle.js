@@ -5,6 +5,10 @@
  */
 
 class WilliamsBattle {
+  // Battle configuration constants
+  static MAX_AUTO_BATTLE_TURNS = 100;
+  static AUTO_BATTLE_TURN_DELAY_MS = 500;
+  
   constructor() {
     this.heroesData = null;
     this.enemiesData = null;
@@ -236,8 +240,8 @@ class WilliamsBattle {
   selectEnemies() {
     const enemyPool = this.enemiesData.enemies.filter(e => e.zone === this.currentZone);
     
-    if (enemyPool.length === 0) {
-      throw new Error(`No enemies found for zone: ${this.currentZone}`);
+    if (enemyPool.length < 3) {
+      throw new Error(`Insufficient enemies for zone: ${this.currentZone} (need at least 3, found ${enemyPool.length})`);
     }
 
     // Separate by rarity
@@ -247,6 +251,14 @@ class WilliamsBattle {
     const rareElite = enemyPool.filter(e => 
       e.rarity === 'RARE' || e.rarity === 'ELITE'
     );
+
+    // Ensure we have enough enemies of each type
+    if (commonUncommon.length < 2 && rareElite.length === 0) {
+      // Fallback: select any 3 enemies if rarity distribution is insufficient
+      const selected = this.shuffleArray(enemyPool).slice(0, 3);
+      const tier = this.enemiesData.zoneTiers[this.currentZone];
+      return selected.map(enemy => this.createEnemyBattler(enemy, tier));
+    }
 
     // Select 2 common/uncommon
     const selected1 = this.shuffleArray(commonUncommon).slice(0, 2);
@@ -461,9 +473,8 @@ class WilliamsBattle {
     this.setupBattle();
     
     let turns = 0;
-    const maxTurns = 100; // Safety limit
 
-    while (turns < maxTurns) {
+    while (turns < WilliamsBattle.MAX_AUTO_BATTLE_TURNS) {
       const partyAlive = this.party.some(p => p.hp > 0);
       const enemiesAlive = this.enemies.some(e => e.hp > 0);
 
@@ -476,7 +487,7 @@ class WilliamsBattle {
       turns++;
       
       // Add small delay for visual effect
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, WilliamsBattle.AUTO_BATTLE_TURN_DELAY_MS));
     }
 
     return this.battleLog;

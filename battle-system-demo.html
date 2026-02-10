@@ -586,7 +586,7 @@
         <button class="btn-shield" onclick="showCharacter('ember')">🔥 Ember</button>
         <button class="btn-spell" onclick="showCharacter('sprite')">✨ Sprite</button>
         <button class="btn-auto" style="background:linear-gradient(135deg,#10b981,#059669);" onclick="showCharacter('golem')">🗿 Golem</button>
-        <button class="btn-auto" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);" onclick="showAbilityUpgrades()">📈 Ability Upgrades</button>
+        <button class="btn-auto" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);" onclick="showAbilityUpgrades()" aria-label="View ability upgrade system">📈 Ability Upgrades</button>
       </div>
       <div id="output" class="output scrollbar-custom"></div>
     </section>
@@ -600,6 +600,12 @@
   <script src="./js/battle.js"></script>
   <script>
     // Williams World Battle System Integration
+    
+    // Configuration constants
+    const DEFAULT_HERO_XP_REQUIRED = 600;
+    const DEFAULT_COMPANION_XP_REQUIRED = 800;
+    const HERO_CHARACTER_ID = 'william';
+    
     let battle = null;
     let uiState = {
       outputElement: null,
@@ -933,10 +939,10 @@
      */
     function getXpRequired(char) {
       const xpRules = battle.heroesData.xpRules;
-      if (char.id === 'william') {
-        return xpRules.heroXpThresholds[char.level] || 600;
+      if (char.id === HERO_CHARACTER_ID) {
+        return xpRules.heroXpThresholds[char.level] || DEFAULT_HERO_XP_REQUIRED;
       } else {
-        return xpRules.companionXpThresholds[char.level] || 800;
+        return xpRules.companionXpThresholds[char.level] || DEFAULT_COMPANION_XP_REQUIRED;
       }
     }
 
