@@ -44,13 +44,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!progressionData) {
       console.error("[CRITICAL] Missing progression data. Homepage cannot initialize.");
       // Rule 6: Show user-friendly message instead of crashing
-      document.body.innerHTML = `
-        <div style="padding:40px;text-align:center;font-family:sans-serif;">
+      const errorContainer = document.createElement('div');
+      errorContainer.style.cssText = 'padding:40px;text-align:center;font-family:sans-serif;background:#1a0e2e;color:#fff5e6;min-height:100vh;display:flex;align-items:center;justify-content:center;';
+      errorContainer.innerHTML = `
+        <div style="max-width:500px;">
           <h2>⚠️ Loading Error</h2>
           <p>Could not load game data. Please refresh the page.</p>
-          <button onclick="location.reload()">Refresh</button>
+          <button onclick="location.reload()" style="margin-top:20px;padding:10px 20px;cursor:pointer;background:#ffd36e;border:none;border-radius:8px;font-size:16px;">Refresh</button>
         </div>
       `;
+      document.body.appendChild(errorContainer);
       return;
     }
   const characterMap = Object.fromEntries(progressionData.characters.map(char => [char.id, char]));
