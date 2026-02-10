@@ -1054,6 +1054,31 @@
     transition: all .3s ease;
     cursor: pointer;
   }
+  #ww .questZoneLockOverlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(10, 10, 20, 0.6);
+    border-radius: 18px;
+    opacity: 0;
+    transition: opacity .2s ease;
+    pointer-events: none;
+  }
+  #ww .questZoneLockOverlay .lockIcon {
+    font-size: 26px;
+  }
+  #ww .questZoneLockOverlay .questZoneLockText {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--text);
+  }
+  #ww .questZoneCard.locked .questZoneLockOverlay {
+    opacity: 1;
+  }
   #ww .questZoneCard:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow), 0 0 25px rgba(255,211,110,.4);
@@ -4929,8 +4954,20 @@
       enemyCountEl.className = "questZoneEnemyCount";
       enemyCountEl.textContent = `Enemy count: ${zone.enemies.length}`;
 
+      const lockOverlay = document.createElement("div");
+      lockOverlay.className = "questZoneLockOverlay";
+      const lockIcon = document.createElement("div");
+      lockIcon.className = "lockIcon";
+      lockIcon.textContent = "🔒";
+      const lockText = document.createElement("div");
+      lockText.className = "questZoneLockText";
+      lockText.textContent = "Locked";
+      lockOverlay.appendChild(lockIcon);
+      lockOverlay.appendChild(lockText);
+
       card.appendChild(media);
       card.appendChild(enemyCountEl);
+      card.appendChild(lockOverlay);
 
       if (canHover) {
         card.addEventListener("mouseenter", () => openQuestLore(zone.id, "hover", card));
@@ -4959,21 +4996,21 @@
   }
 
   async function loadQuestZones() {
-    const inlineData = getInlineQuestZonesData();
-    if (inlineData) {
-      questZonesData = inlineData;
-      renderQuestZones();
-      updateZones();
-      return;
-    }
-
     try {
       const response = await fetch(QUEST_ZONES_URL);
       if (!response.ok) throw new Error("Failed to load quest zones data");
       questZonesData = await response.json();
       renderQuestZones();
       updateZones();
+      return;
     } catch (error) {
+      const inlineData = getInlineQuestZonesData();
+      if (inlineData) {
+        questZonesData = inlineData;
+        renderQuestZones();
+        updateZones();
+        return;
+      }
       console.error("Quest zones failed to load", error);
       if (typeof toast === "function") {
         toast("Quest zones are temporarily unavailable. Please refresh the page or contact support if it keeps happening.");
@@ -5072,6 +5109,17 @@
           : `Unlocks at ${zone.unlockDays}-day streak`;
         statusEl.classList.toggle("locked", !isUnlocked);
         statusEl.classList.toggle("unlocked", isUnlocked);
+      }
+
+      const lockOverlay = zoneEl.querySelector(".questZoneLockOverlay");
+      const lockText = zoneEl.querySelector(".questZoneLockText");
+      if (lockText) {
+        lockText.textContent = isUnlocked ? "" : `Unlocks at ${zone.unlockDays}-day streak`;
+      }
+      if (lockOverlay) {
+        lockOverlay.hidden = isUnlocked;
+        lockOverlay.style.display = isUnlocked ? "none" : "flex";
+        lockOverlay.setAttribute("aria-hidden", isUnlocked ? "true" : "false");
       }
     });
 
