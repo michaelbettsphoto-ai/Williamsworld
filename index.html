@@ -4881,10 +4881,14 @@
     lockIcon.textContent = "🔒";
     const lockText = document.createElement("div");
     lockText.className = "questZoneLockText";
-    lockText.textContent = unlockText || "Locked";
+    lockText.textContent = unlockText;
     lockOverlay.appendChild(lockIcon);
     lockOverlay.appendChild(lockText);
     return lockOverlay;
+  }
+
+  function getUnlockText(unlockDays) {
+    return `Unlocks at ${unlockDays}-day streak`;
   }
 
   function openQuestLore(zoneId, openMode = "click", sourceEl = null) {
@@ -4972,7 +4976,7 @@
       card.appendChild(enemyCountEl);
       const isUnlocked = state.streak >= zone.unlockDays;
       if (!isUnlocked) {
-        card.appendChild(buildQuestZoneLockOverlay(`Unlocks at ${zone.unlockDays}-day streak`));
+        card.appendChild(buildQuestZoneLockOverlay(getUnlockText(zone.unlockDays)));
       }
 
       if (canHover) {
@@ -5001,22 +5005,26 @@
     }
   }
 
+  function applyQuestZonesData(data) {
+    questZonesData = data;
+    renderQuestZones();
+    updateZones();
+  }
+
+  function loadInlineQuestZones() {
+    const inlineData = getInlineQuestZonesData();
+    if (!inlineData) return false;
+    applyQuestZonesData(inlineData);
+    return true;
+  }
+
   async function loadQuestZones() {
+    if (loadInlineQuestZones()) return;
     try {
       const response = await fetch(QUEST_ZONES_URL);
       if (!response.ok) throw new Error("Failed to load quest zones data");
-      questZonesData = await response.json();
-      renderQuestZones();
-      updateZones();
-      return;
+      applyQuestZonesData(await response.json());
     } catch (error) {
-      const inlineData = getInlineQuestZonesData();
-      if (inlineData) {
-        questZonesData = inlineData;
-        renderQuestZones();
-        updateZones();
-        return;
-      }
       console.error("Quest zones failed to load", error);
       if (typeof toast === "function") {
         toast("Quest zones are temporarily unavailable. Please refresh the page or contact support if it keeps happening.");
@@ -5109,7 +5117,7 @@
       zoneEl.classList.toggle("locked", !isUnlocked);
       zoneEl.classList.toggle("unlocked", isUnlocked);
 
-      const unlockText = `Unlocks at ${zone.unlockDays}-day streak`;
+      const unlockText = getUnlockText(zone.unlockDays);
       if (statusEl) {
         statusEl.textContent = isUnlocked ? "Unlocked" : unlockText;
         statusEl.classList.toggle("locked", !isUnlocked);
@@ -5119,7 +5127,6 @@
       let lockOverlay = zoneEl.querySelector(".questZoneLockOverlay");
       if (isUnlocked && lockOverlay) {
         lockOverlay.remove();
-        lockOverlay = null;
       }
       if (!isUnlocked) {
         if (!lockOverlay) {
