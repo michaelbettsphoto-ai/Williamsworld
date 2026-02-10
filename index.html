@@ -1048,6 +1048,286 @@
   #ww .zoneIconItem.locked .zoneIconStatus {
     color: rgba(255,107,138,.9);
   }
+
+  /* Quest Zones Section */
+  #ww .questZonesSection {
+    margin-top: 24px;
+    border: 2px solid var(--golden-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: var(--shadow), 0 0 15px rgba(255,211,110,.2);
+  }
+  #ww .questZonesHeader h2 {
+    margin: 0 0 6px 0;
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--gold);
+    font-family: var(--fantasy-font);
+  }
+  #ww .questZonesGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+  }
+  #ww .questZoneCard {
+    border: 3px solid var(--golden-border);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 18px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 190px;
+    position: relative;
+    overflow: hidden;
+    transition: all .3s ease;
+    cursor: pointer;
+  }
+  #ww .questZoneLockOverlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(10, 10, 20, 0.6);
+    border-radius: 18px;
+    opacity: 0;
+    transition: opacity .2s ease;
+    pointer-events: none;
+  }
+  #ww .questZoneLockOverlay .lockIcon {
+    font-size: 26px;
+  }
+  #ww .questZoneLockOverlay .questZoneLockText {
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--text);
+  }
+  #ww .questZoneCard.locked .questZoneLockOverlay {
+    opacity: 1;
+  }
+  #ww .questZoneCard:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow), 0 0 25px rgba(255,211,110,.4);
+  }
+  #ww .questZoneCard.locked {
+    opacity: .6;
+    filter: grayscale(80%);
+  }
+  #ww .questZoneCard.unlocked {
+    border-color: var(--green);
+    box-shadow: 0 0 20px rgba(125,255,180,.3), 0 4px 12px rgba(0,0,0,.3);
+  }
+  #ww .questZoneMedia {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  #ww .questZoneImage {
+    width: 64px;
+    height: 64px;
+    border-radius: 14px;
+    border: 2px solid var(--golden-border);
+    overflow: hidden;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0,0,0,.45);
+  }
+  #ww .questZoneImage img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  #ww .questZoneName {
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--gold);
+    font-family: var(--fantasy-font);
+  }
+  #ww .questZoneStatus {
+    font-size: 12px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 999px;
+    display: inline-block;
+    margin-top: 6px;
+  }
+  #ww .questZoneStatus.unlocked {
+    background: rgba(125,255,180,.15);
+    border: 2px solid var(--green);
+    color: var(--green);
+  }
+  #ww .questZoneStatus.locked {
+    background: rgba(255,107,138,.15);
+    border: 2px solid rgba(255,107,138,.4);
+    color: rgba(255,107,138,.9);
+  }
+  #ww .questZoneEnemyCount {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: auto;
+  }
+
+  /* Quest Lore Overlay */
+  #ww .questLoreOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,10,25,.7);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+    padding: 20px;
+  }
+  #ww .questLoreOverlay.show {
+    display: flex;
+  }
+  #ww .questLoreCard {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 22px;
+    border: 3px solid var(--golden-border);
+    box-shadow: var(--shadow), 0 0 30px rgba(255,211,110,.3);
+    padding: 24px;
+    width: min(960px, 94vw);
+    max-height: 90vh;
+    overflow: auto;
+  }
+  #ww .questLoreHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  #ww .questLoreTitleGroup {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  #ww .questLoreHeader h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--gold);
+    font-family: var(--fantasy-font);
+  }
+  #ww .questLoreStatus {
+    font-size: 12px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 999px;
+    display: inline-block;
+  }
+  #ww .questLoreStatus.unlocked {
+    background: rgba(125,255,180,.15);
+    border: 2px solid var(--green);
+    color: var(--green);
+  }
+  #ww .questLoreStatus.locked {
+    background: rgba(255,107,138,.15);
+    border: 2px solid rgba(255,107,138,.4);
+    color: rgba(255,107,138,.9);
+  }
+  #ww .questLoreClose {
+    border: none;
+    background: rgba(0,0,0,.4);
+    color: var(--text);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  #ww .questLoreBody {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 20px;
+    margin-top: 18px;
+  }
+  #ww .questLoreStory {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  #ww .questLoreEnemiesTitle {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  #ww .questLoreEnemy {
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.1);
+    background: rgba(0,0,0,.25);
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
+  #ww .questLoreEnemyName {
+    font-weight: 900;
+    color: var(--gold);
+  }
+  #ww .questLoreEnemyBehavior {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  #ww .questLoreMoves {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  #ww .questLoreMove {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.2);
+  }
+  #ww .questLoreFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  #ww .questLoreLock {
+    font-size: 12px;
+    color: rgba(255,107,138,.9);
+    font-weight: 800;
+  }
+  #ww .questLoreCta {
+    border: none;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background: linear-gradient(135deg, #facc15, #f97316);
+    color: #0b132b;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  #ww .questLoreCta:disabled {
+    cursor: not-allowed;
+    opacity: .6;
+    background: rgba(120,120,120,.6);
+    color: rgba(255,255,255,.7);
+  }
+  @media (max-width: 900px) {
+    #ww .questLoreBody {
+      grid-template-columns: 1fr;
+    }
+  }
   
   #ww .currentQuestHeader {
     border: 2px solid var(--golden-border);
@@ -2377,57 +2657,8 @@
 
     <!-- Main Content with Sidebar Layout -->
     <div class="contentWithSidebar">
-      <!-- Sidebar with Quest Tracker and Map -->
+      <!-- Sidebar with Quest Tracker and Quest Zones -->
       <aside class="questSidebar">
-        <!-- Current Quest Header -->
-        <div class="currentQuestHeader">
-          <h2>🎯 Current Quest <span class="tag">DAILY</span></h2>
-          <div class="small" style="margin-top:8px;">Complete all quests to pass the day!</div>
-        </div>
-
-        <!-- Quest Map with Icons -->
-        <div class="questMapSidebar">
-          <h3>🗺️ Quest Map</h3>
-          <div class="zoneIconList">
-            <div class="zoneIconItem unlocked" id="zoneIcon1">
-              <div class="zoneIconSmall">
-                <img id="zone1IconImg" alt="Launch Meadow">
-              </div>
-              <div class="zoneIconInfo">
-                <div class="zoneIconName">Launch Meadow</div>
-                <div class="zoneIconStatus">✓ Unlocked</div>
-              </div>
-            </div>
-            <div class="zoneIconItem locked" id="zoneIcon2">
-              <div class="zoneIconSmall">
-                <img id="zone2IconImg" alt="Homework Hills">
-              </div>
-              <div class="zoneIconInfo">
-                <div class="zoneIconName">Homework Hills</div>
-                <div class="zoneIconStatus">🔒 3 days</div>
-              </div>
-            </div>
-            <div class="zoneIconItem locked" id="zoneIcon3">
-              <div class="zoneIconSmall">
-                <img id="zone3IconImg" alt="Backpack Bastion">
-              </div>
-              <div class="zoneIconInfo">
-                <div class="zoneIconName">Backpack Bastion</div>
-                <div class="zoneIconStatus">🔒 5 days</div>
-              </div>
-            </div>
-            <div class="zoneIconItem locked" id="zoneIcon4">
-              <div class="zoneIconSmall">
-                <img id="zone4IconImg" alt="Focus Forest">
-              </div>
-              <div class="zoneIconInfo">
-                <div class="zoneIconName">Focus Forest</div>
-                <div class="zoneIconStatus">🔒 10 days</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
         <!-- Quest Cards in Sidebar -->
         <div class="questGrid" id="tracker">
       <!-- Quest 1: Win Tomorrow Tonight -->
@@ -2535,7 +2766,15 @@
           <div class="xpBadge">Total: +50 XP</div>
         </div>
       </div>
-    </div>
+      </div>
+
+      <section class="questZonesSection" id="questZones">
+        <div class="questZonesHeader">
+          <h2>🗺️ Quest Zones</h2>
+          <div class="small" style="margin-top:8px;">Unlock zones with streaks. Hover, tap, or use Tab + Enter to view details.</div>
+        </div>
+        <div class="questZonesGrid" id="questZonesGrid"></div>
+      </section>
     </aside>
 
     <!-- Main Content Area -->
@@ -2682,55 +2921,7 @@
     </div>
 
     <!-- World Map Section -->
-    <div id="map" style="margin-top:24px;">
-      <div class="dashPanel">
-        <h3>🗺️ World Map - Zone Progress</h3>
-        <div style="display:grid; gap:16px; margin-top:16px;">
-          <div class="zone unlocked" id="zone1">
-            <div class="zoneIcon">
-              <img id="zone1Img" alt="Launch Meadow">
-            </div>
-            <div class="zoneInfo">
-              <div class="zoneName">Launch Meadow</div>
-              <div class="zoneStatus unlocked">✓ UNLOCKED!</div>
-            </div>
-          </div>
-          
-          <div class="zone locked" id="zone2">
-            <div class="zoneIcon">
-              <img id="zone2Img" alt="Homework Hills">
-            </div>
-            <div class="zoneInfo">
-              <div class="zoneName">Homework Hills</div>
-              <div class="zoneStatus locked">🔒 Unlocks at 3 days</div>
-            </div>
-            <div class="lockIcon">🔒</div>
-          </div>
-          
-          <div class="zone locked" id="zone3">
-            <div class="zoneIcon">
-              <img id="zone3Img" alt="Backpack Bastion">
-            </div>
-            <div class="zoneInfo">
-              <div class="zoneName">Backpack Bastion</div>
-              <div class="zoneStatus locked">🔒 Unlocks at 5 days</div>
-            </div>
-            <div class="lockIcon">🔒</div>
-          </div>
-          
-          <div class="zone locked" id="zone4">
-            <div class="zoneIcon">
-              <img id="zone4Img" alt="Focus Forest">
-            </div>
-            <div class="zoneInfo">
-              <div class="zoneName">Focus Forest</div>
-              <div class="zoneStatus locked">🔒 Unlocks at 10 days</div>
-            </div>
-            <div class="lockIcon">🔒</div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <div id="map" style="margin-top:24px;"></div>
 
     <!-- Weekly Tracker -->
     <div style="margin-top:24px;">
@@ -2815,7 +3006,468 @@
       <div class="levelTitle" id="levelDownTitle"></div>
     </div>
   </div>
+
+  <!-- Quest Lore Overlay -->
+  <div id="questLoreOverlay" class="questLoreOverlay" aria-hidden="true">
+    <div class="questLoreCard" role="dialog" aria-modal="true" aria-labelledby="questLoreTitle">
+      <div class="questLoreHeader">
+        <div class="questLoreTitleGroup">
+          <h3 id="questLoreTitle"></h3>
+          <span class="questLoreStatus" id="questLoreStatus"></span>
+        </div>
+        <button class="questLoreClose" id="questLoreClose" aria-label="Close quest lore">✕</button>
+      </div>
+      <div class="questLoreBody">
+        <div class="questLoreStory" id="questLoreStory"></div>
+        <div class="questLoreEnemies">
+          <div class="questLoreEnemiesTitle">What you'll face</div>
+          <div id="questLoreEnemiesList"></div>
+        </div>
+      </div>
+      <div class="questLoreFooter">
+        <div class="questLoreLock" id="questLoreLock"></div>
+        <button class="questLoreCta" id="questLoreCta" type="button">Enter Battle</button>
+      </div>
+    </div>
+  </div>
 </div>
+
+<script id="questZonesData" type="application/json">
+{
+  "zones": [
+    {
+      "id": "z1",
+      "cardId": "zone1",
+      "assetKey": "z1",
+      "name": "Launch Meadow",
+      "unlockDays": 0,
+      "story": "Welcome to the first training grounds. The meadow looks peaceful… but mischievous critters hide in the grass and test new adventurers. This is where William learns to stay brave, move fast, and protect his friends.",
+      "enemies": [
+        {
+          "name": "Dandelion Dagger",
+          "behavior": "quick slashes + trick blinds",
+          "moves": [
+            { "name": "Puff Slash" },
+            { "name": "Seed Sprint" }
+          ]
+        },
+        {
+          "name": "Mudkip Bandit",
+          "behavior": "muddy debuffs + defense stance",
+          "moves": [
+            { "name": "Mud Toss" },
+            { "name": "Puddle Guard" }
+          ]
+        },
+        {
+          "name": "Pebble Pouncer",
+          "behavior": "pounces harder on slow targets",
+          "moves": [
+            { "name": "Pounce" },
+            { "name": "Stone Skin" }
+          ]
+        },
+        {
+          "name": "Sunblink Moth",
+          "behavior": "light blasts + team dazzle",
+          "moves": [
+            { "name": "Glimmer Beam" },
+            { "name": "Dazzle" }
+          ]
+        },
+        {
+          "name": "Thorny Sneak",
+          "behavior": "roots you, steals health",
+          "moves": [
+            { "name": "Thorn Trap" },
+            { "name": "Sucker Vine" }
+          ]
+        },
+        {
+          "name": "Puddle Hexer",
+          "behavior": "weakens defense + hits buffed heroes harder",
+          "moves": [
+            { "name": "Ink Splash" },
+            { "name": "Gloom Drip" }
+          ]
+        },
+        {
+          "name": "Windwink Imp",
+          "behavior": "fast pokes + enemy speed boost",
+          "moves": [
+            { "name": "Gust Jab" },
+            { "name": "Slipstream" }
+          ]
+        },
+        {
+          "name": "Scorchling",
+          "behavior": "burns + powers up",
+          "moves": [
+            { "name": "Ember Bite" },
+            { "name": "Heat Up" }
+          ]
+        },
+        {
+          "name": "Barkhide Bully",
+          "behavior": "taunts + bashes",
+          "moves": [
+            { "name": "Body Block" },
+            { "name": "Bark Bash" }
+          ]
+        },
+        {
+          "name": "Spark Dustling",
+          "behavior": "shocks + charges big hits",
+          "moves": [
+            { "name": "Static Pop" },
+            { "name": "Charge" }
+          ]
+        },
+        {
+          "name": "Nightleaf Snatcher (Rare)",
+          "behavior": "slows + dodges a hit",
+          "moves": [
+            { "name": "Swipe & Vanish" },
+            { "name": "Shadow Cloak" }
+          ]
+        },
+        {
+          "name": "Slimecap Trickster (Elite)",
+          "behavior": "lowers team ATK + chills",
+          "moves": [
+            { "name": "Spore Mist" },
+            { "name": "Slime Patch" },
+            { "name": "Cap Bounce" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "z2",
+      "cardId": "zone2",
+      "assetKey": "z2",
+      "name": "Homework Hills",
+      "unlockDays": 3,
+      "story": "Homework Hills is where distractions come alive. Notes flutter away, ink spills, and pop quizzes attack without warning. William must stay calm, keep trying, and finish strong—one problem at a time.",
+      "enemies": [
+        {
+          "name": "Eraser Wraith",
+          "behavior": "weakens defense + quick swipe",
+          "moves": [
+            { "name": "Erase Confidence" },
+            { "name": "Smudge Swipe" }
+          ]
+        },
+        {
+          "name": "Paper Cut Pirate",
+          "behavior": "hits harder if you’re debuffed + blinds",
+          "moves": [
+            { "name": "Cutlass Cut" },
+            { "name": "Ruffle Gust" }
+          ]
+        },
+        {
+          "name": "Inkblob Gremlin",
+          "behavior": "guaranteed blind + simple bolt",
+          "moves": [
+            { "name": "Ink Spray" },
+            { "name": "Blob Bolt" }
+          ]
+        },
+        {
+          "name": "Quiz Golemlet",
+          "behavior": "forces action loss + heavy hit",
+          "moves": [
+            { "name": "Pop Quiz" },
+            { "name": "Stone Thump" }
+          ]
+        },
+        {
+          "name": "Deadline Drake (Rare)",
+          "behavior": "burns + slows the team",
+          "moves": [
+            { "name": "Late Fee Flame" },
+            { "name": "Pressure Roar" }
+          ]
+        },
+        {
+          "name": "Scribble Sorcerer",
+          "behavior": "shocks + team guard",
+          "moves": [
+            { "name": "Zap Diagram" },
+            { "name": "Equation Shield" }
+          ]
+        },
+        {
+          "name": "Binder Beast",
+          "behavior": "roots + slam",
+          "moves": [
+            { "name": "Clamp" },
+            { "name": "Ring Slam" }
+          ]
+        },
+        {
+          "name": "Procrastination Poltergeist (Rare)",
+          "behavior": "chance to skip actions + lowers ATK",
+          "moves": [
+            { "name": "Snooze Field" },
+            { "name": "Delay Toxin" }
+          ]
+        },
+        {
+          "name": "Sticky Note Swarm",
+          "behavior": "slows the team",
+          "moves": [
+            { "name": "Cling" },
+            { "name": "Reminder Buzz" }
+          ]
+        },
+        {
+          "name": "Graph Goblin",
+          "behavior": "chills + fast poke",
+          "moves": [
+            { "name": "Slope Slip" },
+            { "name": "Ruler Rap" }
+          ]
+        },
+        {
+          "name": "Red Pen Reaper (Elite)",
+          "behavior": "punishes weak heroes + forces skip",
+          "moves": [
+            { "name": "Correction Strike" },
+            { "name": "Mark Wrong" },
+            { "name": "Final Grade" }
+          ]
+        },
+        {
+          "name": "Homework Hydra (Elite)",
+          "behavior": "team damage + team heal + ATK down",
+          "moves": [
+            { "name": "Assignment Flood" },
+            { "name": "Extra Credit" },
+            { "name": "Overwhelm" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "z3",
+      "cardId": "zone3",
+      "assetKey": "z3",
+      "name": "Backpack Bastion",
+      "unlockDays": 5,
+      "story": "Backpack Bastion is a fortress of gear and order. But sneaky pests break straps, steal supplies, and jam zippers. To win here, William must pack smart, check twice, and defend the team.",
+      "enemies": [
+        {
+          "name": "Strap Snapper",
+          "behavior": "fast hits + reduces defense",
+          "moves": [
+            { "name": "Buckle Bite" },
+            { "name": "Fray" }
+          ]
+        },
+        {
+          "name": "Zipperfang",
+          "behavior": "medium slashes + dodge",
+          "moves": [
+            { "name": "Zip Slash" },
+            { "name": "Unzip Escape" }
+          ]
+        },
+        {
+          "name": "Cargo Crab",
+          "behavior": "guards + clamps",
+          "moves": [
+            { "name": "Crate Guard" },
+            { "name": "Clamp Crush" }
+          ]
+        },
+        {
+          "name": "Pocket Mimic (Rare)",
+          "behavior": "lifesteal + roots",
+          "moves": [
+            { "name": "Snack Snatch" },
+            { "name": "False Bottom" }
+          ]
+        },
+        {
+          "name": "Buckle Brute",
+          "behavior": "medium hits + defense stance",
+          "moves": [
+            { "name": "Buckle Bash" },
+            { "name": "Iron Stance" }
+          ]
+        },
+        {
+          "name": "Lunchbox Lurker",
+          "behavior": "lowers hero ATK + dark bolt",
+          "moves": [
+            { "name": "Stale Cloud" },
+            { "name": "Mold Bolt" }
+          ]
+        },
+        {
+          "name": "Waterbottle Wobbler",
+          "behavior": "heals allies + chills",
+          "moves": [
+            { "name": "Splash Heal" },
+            { "name": "Soak" }
+          ]
+        },
+        {
+          "name": "Pencil Pike",
+          "behavior": "quick jabs + possible blind",
+          "moves": [
+            { "name": "Point Jab" },
+            { "name": "Shavings Storm" }
+          ]
+        },
+        {
+          "name": "Supply Sapper (Rare)",
+          "behavior": "removes buffs + hits buffed targets harder",
+          "moves": [
+            { "name": "Steal Charge" },
+            { "name": "Sneak Strike" }
+          ]
+        },
+        {
+          "name": "Tag Tornado",
+          "behavior": "team damage + roots",
+          "moves": [
+            { "name": "Whirlwind" },
+            { "name": "Receipt Wrap" }
+          ]
+        },
+        {
+          "name": "Locker Lizard (Rare)",
+          "behavior": "team guard + heavy hit",
+          "moves": [
+            { "name": "Door Shield" },
+            { "name": "Tail Slam" }
+          ]
+        },
+        {
+          "name": "Patchwork Punisher (Elite)",
+          "behavior": "high damage + enemy DEF boost + shock chance",
+          "moves": [
+            { "name": "Patch Smash" },
+            { "name": "Reinforce" },
+            { "name": "Break Strap" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "z4",
+      "cardId": "zone4",
+      "assetKey": "z4",
+      "name": "Focus Forest",
+      "unlockDays": 10,
+      "story": "Focus Forest is calm… until it isn’t. Whispering shadows distract you, bright lights confuse you, and ancient guardians test your patience. Here, William learns true focus: slow breath, clear mind, steady effort.",
+      "enemies": [
+        {
+          "name": "Rune Stag",
+          "behavior": "medium damage + team Focus",
+          "moves": [
+            { "name": "Rune Charge" },
+            { "name": "Inspire" }
+          ]
+        },
+        {
+          "name": "Whisper Viper",
+          "behavior": "lowers ATK + fast bite",
+          "moves": [
+            { "name": "Venom Whisper" },
+            { "name": "Quick Bite" }
+          ]
+        },
+        {
+          "name": "Mist Monk",
+          "behavior": "enemy team heal + team guard",
+          "moves": [
+            { "name": "Calm Wave" },
+            { "name": "Mist Veil" }
+          ]
+        },
+        {
+          "name": "Thorn Sentinel (Rare)",
+          "behavior": "guards + reflects minor damage",
+          "moves": [
+            { "name": "Bramble Wall" },
+            { "name": "Thorn Counter" }
+          ]
+        },
+        {
+          "name": "Lumen Owl",
+          "behavior": "medium damage + guaranteed blind",
+          "moves": [
+            { "name": "Lumen Ray" },
+            { "name": "Blinding Flutter" }
+          ]
+        },
+        {
+          "name": "Shadowcap Shaman (Rare)",
+          "behavior": "weakens defense + hits debuffed harder",
+          "moves": [
+            { "name": "Spores of Doubt" },
+            { "name": "Night Bloom" }
+          ]
+        },
+        {
+          "name": "Breeze Banshee",
+          "behavior": "chance to skip actions + medium damage",
+          "moves": [
+            { "name": "Haunting Gust" },
+            { "name": "Slice Wind" }
+          ]
+        },
+        {
+          "name": "Stone Trancebear",
+          "behavior": "slows team + roots",
+          "moves": [
+            { "name": "Trance Roar" },
+            { "name": "Boulder Hug" }
+          ]
+        },
+        {
+          "name": "Sparkroot Warden (Rare)",
+          "behavior": "high damage + shock chance + self heal",
+          "moves": [
+            { "name": "Root Shock" },
+            { "name": "Charge Sap" }
+          ]
+        },
+        {
+          "name": "Moonveil Panther (Rare)",
+          "behavior": "punishes weakest hero + dodge",
+          "moves": [
+            { "name": "Moon Pounce" },
+            { "name": "Veil Step" }
+          ]
+        },
+        {
+          "name": "Crystal Mantis (Elite)",
+          "behavior": "high damage + team chill + guard",
+          "moves": [
+            { "name": "Crystal Slice" },
+            { "name": "Freeze Frame" },
+            { "name": "Mirror Shell" }
+          ]
+        },
+        {
+          "name": "Ancient Grove Guardian (Elite)",
+          "behavior": "team guard + root + big slam",
+          "moves": [
+            { "name": "Sanctuary Bark" },
+            { "name": "Root Judgment" },
+            { "name": "Radiant Slam" }
+          ]
+        }
+      ]
+    }
+  ]
+}
+</script>
 
 <!-- Howler.js Audio Library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js" integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -2876,7 +3528,7 @@
     zones: {
       z1: "./assets/images/zone_launch_256.png",
       z2: "./assets/images/zone_homework_256.png",
-      z3: "./assets/images/backpackbastion.png",
+      z3: "./assets/images/zone_backpack_256.svg",
       z4: "./assets/images/zone_focus_256.png",
     }
   };
@@ -4476,6 +5128,321 @@
       }
     });
   }
+
+  let activeQuestZoneId = null;
+  let questLoreOpenMode = null;
+  let questLoreHoverTarget = null;
+  let questLoreLastFocused = null;
+  let questLoreCardEl = null;
+  let questLoreFocusables = [];
+
+  function updateQuestLoreFocusables() {
+    if (!questLoreCardEl) {
+      questLoreFocusables = [];
+      return;
+    }
+    questLoreFocusables = Array.from(
+      questLoreCardEl.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex^="-"])')
+    ).filter(el => !el.disabled && (el.offsetParent !== null || el.getClientRects().length > 0));
+  }
+
+  function updateQuestLoreStatus(zone) {
+    const statusEl = $("questLoreStatus");
+    const lockEl = $("questLoreLock");
+    const ctaEl = $("questLoreCta");
+    if (!statusEl || !lockEl || !ctaEl) return;
+
+    const isUnlocked = state.streak >= zone.unlockDays;
+    statusEl.textContent = isUnlocked
+      ? "Unlocked"
+      : `Unlocks at ${zone.unlockDays}-day streak`;
+    statusEl.classList.toggle("unlocked", isUnlocked);
+    statusEl.classList.toggle("locked", !isUnlocked);
+
+    if (isUnlocked) {
+      lockEl.textContent = "";
+      ctaEl.disabled = false;
+      ctaEl.textContent = "Enter Battle";
+      ctaEl.removeAttribute("aria-disabled");
+      ctaEl.setAttribute("aria-label", "Enter Battle");
+    } else {
+      lockEl.textContent = `Locked — unlocks at ${zone.unlockDays}-day streak`;
+      ctaEl.disabled = true;
+      ctaEl.textContent = "Locked";
+      ctaEl.setAttribute("aria-disabled", "true");
+      ctaEl.setAttribute("aria-label", `Locked — unlocks at ${zone.unlockDays}-day streak`);
+    }
+  }
+
+  function renderQuestLore(zone) {
+    const titleEl = $("questLoreTitle");
+    const storyEl = $("questLoreStory");
+    const listEl = $("questLoreEnemiesList");
+    if (!titleEl || !storyEl || !listEl) return;
+
+    titleEl.textContent = zone.name;
+    storyEl.textContent = zone.story;
+
+    listEl.innerHTML = "";
+    zone.enemies.forEach(enemy => {
+      const enemyEl = document.createElement("div");
+      enemyEl.className = "questLoreEnemy";
+
+      const nameEl = document.createElement("div");
+      nameEl.className = "questLoreEnemyName";
+      nameEl.textContent = enemy.name;
+      enemyEl.appendChild(nameEl);
+
+      const behaviorEl = document.createElement("div");
+      behaviorEl.className = "questLoreEnemyBehavior";
+      behaviorEl.textContent = enemy.behavior;
+      enemyEl.appendChild(behaviorEl);
+
+      const movesEl = document.createElement("div");
+      movesEl.className = "questLoreMoves";
+      enemy.moves.forEach(move => {
+        const moveEl = document.createElement("span");
+        moveEl.className = "questLoreMove";
+        moveEl.textContent = move.name;
+        movesEl.appendChild(moveEl);
+      });
+      enemyEl.appendChild(movesEl);
+
+      listEl.appendChild(enemyEl);
+    });
+
+    updateQuestLoreStatus(zone);
+  }
+
+  function buildQuestZoneLockOverlay(unlockText) {
+    const lockOverlay = document.createElement("div");
+    lockOverlay.className = "questZoneLockOverlay";
+    const lockIcon = document.createElement("div");
+    lockIcon.className = "lockIcon";
+    lockIcon.textContent = "🔒";
+    const lockText = document.createElement("div");
+    lockText.className = "questZoneLockText";
+    lockText.textContent = unlockText;
+    lockOverlay.appendChild(lockIcon);
+    lockOverlay.appendChild(lockText);
+    return lockOverlay;
+  }
+
+  function getUnlockText(unlockDays) {
+    return `Unlocks at ${unlockDays}-day streak`;
+  }
+
+  function openQuestLore(zoneId, openMode = "click", sourceEl = null) {
+    if (!questZonesData || !questZonesData.zones) return;
+    const zone = questZonesData.zones.find(item => item.id === zoneId);
+    if (!zone) return;
+
+    activeQuestZoneId = zoneId;
+    questLoreOpenMode = openMode;
+    questLoreHoverTarget = sourceEl;
+    renderQuestLore(zone);
+
+    const overlay = $("questLoreOverlay");
+    if (overlay) {
+      overlay.classList.add("show");
+      overlay.setAttribute("aria-hidden", "false");
+    }
+
+    questLoreLastFocused = document.activeElement;
+    updateQuestLoreFocusables();
+    if (questLoreFocusables.length > 0) {
+      questLoreFocusables[0].focus();
+    }
+  }
+
+  function closeQuestLore() {
+    const overlay = $("questLoreOverlay");
+    if (overlay) {
+      overlay.classList.remove("show");
+      overlay.setAttribute("aria-hidden", "true");
+    }
+    activeQuestZoneId = null;
+    questLoreOpenMode = null;
+    questLoreHoverTarget = null;
+    if (questLoreLastFocused && document.contains(questLoreLastFocused)) {
+      questLoreLastFocused.focus();
+    }
+    questLoreLastFocused = null;
+  }
+
+  function renderQuestZones() {
+    const grid = $("questZonesGrid");
+    if (!grid || !questZonesData || !questZonesData.zones) return;
+
+    const canHover = window.matchMedia && window.matchMedia("(hover: hover)").matches;
+    grid.innerHTML = "";
+
+    questZonesData.zones.forEach(zone => {
+      const card = document.createElement("div");
+      card.className = "questZoneCard";
+      card.id = zone.cardId;
+      card.dataset.zoneId = zone.id;
+      card.setAttribute("role", "button");
+      card.setAttribute("tabindex", "0");
+
+      const media = document.createElement("div");
+      media.className = "questZoneMedia";
+
+      const imageWrapper = document.createElement("div");
+      imageWrapper.className = "questZoneImage";
+      const imgEl = document.createElement("img");
+      imgEl.alt = zone.name;
+      if (ASSETS.zones[zone.assetKey]) {
+        imgEl.src = ASSETS.zones[zone.assetKey];
+      }
+      imageWrapper.appendChild(imgEl);
+
+      const textWrapper = document.createElement("div");
+      const nameEl = document.createElement("div");
+      nameEl.className = "questZoneName";
+      nameEl.textContent = zone.name;
+      const statusEl = document.createElement("div");
+      statusEl.className = "questZoneStatus";
+      textWrapper.appendChild(nameEl);
+      textWrapper.appendChild(statusEl);
+
+      media.appendChild(imageWrapper);
+      media.appendChild(textWrapper);
+
+      const enemyCountEl = document.createElement("div");
+      enemyCountEl.className = "questZoneEnemyCount";
+      enemyCountEl.textContent = `Enemy count: ${zone.enemies.length}`;
+
+      card.appendChild(media);
+      card.appendChild(enemyCountEl);
+      const isUnlocked = state.streak >= zone.unlockDays;
+      if (!isUnlocked) {
+        card.appendChild(buildQuestZoneLockOverlay(getUnlockText(zone.unlockDays)));
+      }
+
+      if (canHover) {
+        card.addEventListener("mouseenter", () => openQuestLore(zone.id, "hover", card));
+      }
+      card.addEventListener("click", () => openQuestLore(zone.id, "click", card));
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openQuestLore(zone.id, "click", card);
+        }
+      });
+
+      grid.appendChild(card);
+    });
+  }
+
+  function getInlineQuestZonesData() {
+    const inlineData = document.getElementById("questZonesData");
+    if (!inlineData) return null;
+    try {
+      return JSON.parse(inlineData.textContent);
+    } catch (error) {
+      console.error("Quest zones inline data failed to parse", error);
+      return null;
+    }
+  }
+
+  function applyQuestZonesData(data) {
+    questZonesData = data;
+    renderQuestZones();
+    updateZones();
+  }
+
+  function loadInlineQuestZones() {
+    const inlineData = getInlineQuestZonesData();
+    if (!inlineData) return false;
+    applyQuestZonesData(inlineData);
+    return true;
+  }
+
+  async function loadQuestZones() {
+    if (loadInlineQuestZones()) return;
+    try {
+      const response = await fetch(QUEST_ZONES_URL);
+      if (!response.ok) throw new Error("Failed to load quest zones data");
+      applyQuestZonesData(await response.json());
+    } catch (error) {
+      console.error("Quest zones failed to load", error);
+      if (typeof toast === "function") {
+        toast("Quest zones are temporarily unavailable. Please refresh the page or contact support if it keeps happening.");
+      }
+    }
+  }
+
+  function handleQuestLoreKeydown(event) {
+    const overlay = $("questLoreOverlay");
+    if (!overlay || !overlay.classList.contains("show")) return;
+
+    if (event.key === "Escape") {
+      closeQuestLore();
+      return;
+    }
+
+    if (event.key !== "Tab") return;
+    updateQuestLoreFocusables();
+    if (questLoreFocusables.length === 0) return;
+
+    const first = questLoreFocusables[0];
+    const last = questLoreFocusables[questLoreFocusables.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  function isPointInRect(x, y, rect) {
+    return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+  }
+
+  function handleQuestLoreHoverMove(event) {
+    if (questLoreOpenMode !== "hover") return;
+    if (!questLoreHoverTarget || !questLoreCardEl) return;
+
+    const zoneRect = questLoreHoverTarget.getBoundingClientRect();
+    const loreRect = questLoreCardEl.getBoundingClientRect();
+    const isInsideZone = isPointInRect(event.clientX, event.clientY, zoneRect);
+    const isInsideLore = isPointInRect(event.clientX, event.clientY, loreRect);
+
+    if (!isInsideZone && !isInsideLore) {
+      closeQuestLore();
+    }
+  }
+
+  function handleQuestLoreCtaClick() {
+    if (!activeQuestZoneId || !questZonesData) return;
+    const zone = questZonesData.zones.find(item => item.id === activeQuestZoneId);
+    if (!zone) return;
+    if (state.streak < zone.unlockDays) return;
+    window.location.href = `./battle-system-demo.html?zone=${encodeURIComponent(zone.id)}`;
+  }
+
+  function setupQuestLoreOverlay() {
+    const closeBtn = $("questLoreClose");
+    const overlay = $("questLoreOverlay");
+    const ctaBtn = $("questLoreCta");
+    questLoreCardEl = overlay ? overlay.querySelector(".questLoreCard") : null;
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", closeQuestLore);
+    }
+    if (ctaBtn) {
+      ctaBtn.addEventListener("click", handleQuestLoreCtaClick);
+    }
+    if (overlay) {
+      overlay.addEventListener("click", (event) => {
+        if (event.target === overlay) closeQuestLore();
+      });
+    }
+    document.addEventListener("keydown", handleQuestLoreKeydown);
+    document.addEventListener("mousemove", handleQuestLoreHoverMove);
+  }
   
   // Update zone unlocking based on streak milestones
   function updateZones() {
@@ -4500,7 +5467,6 @@
           statusEl.classList.remove('unlocked');
           statusEl.textContent = `🔒 Unlocks at ${zone.need} day${zone.need > 1 ? 's' : ''}`;
         }
-        if (lockIcon) lockIcon.style.display = 'block';
       }
     };
     
@@ -4544,6 +5510,11 @@
         el.addEventListener('click', () => handleZoneSelection(zone));
       });
     });
+
+    if (activeQuestZoneId) {
+      const activeZone = questZonesData.zones.find(zone => zone.id === activeQuestZoneId);
+      if (activeZone) updateQuestLoreStatus(activeZone);
+    }
   }
   
   // Update streak milestone badges
@@ -6479,6 +7450,8 @@
 
   // INIT
   applyAssets();
+  setupQuestLoreOverlay();
+  loadQuestZones();
   renderTasks();
   setupQuestCheckboxes();
   updateHeader();
