@@ -92,7 +92,7 @@
     {
       "id": "music_main_hub",
       "channel": "music",
-      "file": "music/music_main_hub.mp3",
+      "file": "music/freepik-guardian-of-the-grove.mp3",
       "loop": true,
       "priority": 3,
       "description": "Default hub background music."

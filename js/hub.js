@@ -599,6 +599,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       volume = this.getSoundVolume(soundKey, volume);
       const howl = this.getHowl(file);
       const playId = howl.play();
+      if (playId && typeof playId.catch === 'function') {
+        playId.catch(() => {}); // Suppress autoplay errors
+      }
       howl.volume(volume, playId);
       
       // Track active sound
@@ -630,7 +633,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const howl = this.getHowl(file, { loop: true });
       howl.volume(volume);
-      howl.play();
+      const playPromise = howl.play();
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => {}); // Suppress autoplay errors
+      }
 
       this.currentWeatherSound = soundKey;
       this.currentWeatherHowl = howl;
@@ -665,7 +671,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const howl = this.getHowl(file, { loop: true });
       howl.volume(volume);
-      howl.play();
+      const playPromise = howl.play();
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => {}); // Suppress autoplay errors
+      }
 
       this.currentZoneAmbienceHowl = howl;
     }
@@ -698,7 +707,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const howl = this.getHowl(file, { loop: true });
       howl.volume(volume);
-      howl.play();
+      const playPromise = howl.play();
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => {}); // Suppress autoplay errors
+      }
 
       this.currentMusicSound = musicKey;
       this.currentMusicHowl = howl;
@@ -3247,11 +3259,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Initialize audio on first user interaction
   let audioInitialized = false;
+  let audioUnlocked = localStorage.getItem('williamsworld_audio_unlocked') === 'true';
+  
   function initAudioOnInteraction() {
     if (!audioInitialized) {
       audioManager.init();
       if (audioManager.isInitialized) {
         audioInitialized = true;
+        audioUnlocked = true;
+        localStorage.setItem('williamsworld_audio_unlocked', 'true');
+        
         const unlockEvent = audioEventsData?.autoplayPolicy?.firstGestureUnlock?.recommendedEventToPlay;
         if (unlockEvent) {
           audioManager.play(unlockEvent);
@@ -3267,9 +3284,45 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
   
+  // Try autoplay on load if audio was previously unlocked
+  async function tryAutoplayOnLoad() {
+    if (audioUnlocked && !audioManager.isMuted) {
+      try {
+        audioManager.init();
+        if (audioManager.isInitialized) {
+          audioInitialized = true;
+          
+          // Try to play hub music
+          const musicKey = audioManager.getCurrentMusicKey();
+          const file = audioManager.soundMap[musicKey]?.[0];
+          if (file) {
+            const howl = audioManager.getHowl(file, { loop: true });
+            const volume = audioManager.getSoundVolume(musicKey, 1.0);
+            howl.volume(volume);
+            
+            const playPromise = howl.play();
+            if (playPromise && typeof playPromise.catch === 'function') {
+              await playPromise;
+              audioManager.currentMusicSound = musicKey;
+              audioManager.currentMusicHowl = howl;
+              console.log('Hub music autoplay succeeded');
+            }
+          }
+        }
+      } catch (error) {
+        // Autoplay blocked - will wait for user gesture
+        console.log('Autoplay blocked, waiting for user gesture');
+        audioInitialized = false;
+      }
+    }
+  }
+  
   // Initialize on any user interaction (required for mobile)
   document.addEventListener('click', initAudioOnInteraction, { once: true });
   document.addEventListener('touchstart', initAudioOnInteraction, { once: true });
+  
+  // Try autoplay after page loads
+  tryAutoplayOnLoad();
   
   // Update volume display values
   function updateVolumeDisplays() {
@@ -3366,9 +3419,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Load audio settings on init
   loadAudioSettingsUI();
-  if (!audioInitialized) {
-    toast('Tap anywhere to enable sound');
-  }
+  
+  // Show prompt after attempting autoplay if still not initialized
+  setTimeout(() => {
+    if (!audioInitialized) {
+      toast('Tap anywhere to enable sound');
+    }
+  }, 500);
   
   // Connect weather changes to audio
   const originalSetWeather = setWeather;
