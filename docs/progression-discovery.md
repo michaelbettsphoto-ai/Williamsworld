@@ -1,33 +1,32 @@
-# Progression Discovery (XP, PASS, Streaks)
+# Progression Discovery (XP/PASS/Streak/Unlocks)
 
-## Files & Functions
-- **index.html**
-  - `TASKS` array defines all tasks and XP amounts (night, morning, backpack).
-  - `renderTasks()` + `setupQuestCheckboxes()` award XP and update task state on completion.
-  - `xpForLevel()` + `recalcLevel()` handle XP thresholds and level-up.
-  - `isPassDay()` determines PASS/FAIL.
-  - `gradeDay()` updates PASS/FAIL, streak, and HP after grading.
-  - `midnightCheck()` auto-fails ungraded past days and resets streak.
-  - `updateZones()` uses `state.streak` to unlock quest zones.
+## Files + functions
+- **XP awarding (tasks):** `/home/runner/work/Williamsworld/Williamsworld/index.html`
+  - `renderTasks()` and `setupQuestCheckboxes()` handle task completion → `state.xp += task.xp`
+  - `TASKS` array defines the per-task XP values
+  - `recalcLevel()` consumes XP thresholds via `xpForLevel()`
+- **PASS rule:** `/home/runner/work/Williamsworld/Williamsworld/index.html`
+  - `isPassDay()` evaluates the PASS rule
+  - `gradeDay()` calls `isPassDay()` and sets `state.days[TODAY].result`
+- **Streak storage + updates:** `/home/runner/work/Williamsworld/Williamsworld/index.html`
+  - `state.streak` stored in localStorage under `KEY = "williams_world_embed_state_v1"`
+  - `gradeDay()` increments or resets `state.streak`
+  - `midnightCheck()` can reset streak for ungraded days
+- **Zone unlock checks:** `/home/runner/work/Williamsworld/Williamsworld/index.html`
+  - `updateZones()` evaluates unlocks and updates UI
+  - Zone thresholds defined in `MAP`
 
-## XP Awards (Current Implementation)
-- Night-Before Checklist totals **+50 XP** (`n_trapper`, `n_clothes`, `n_lunch`, `n_shoes`).
-- Morning Checklist totals **+50 XP** (`m_prayer`, `m_dressed`, `m_teeth`, `m_trappercheck`).
-- Trapper Ready Mission totals **+50 XP** (`t_work`, `t_notebooks`, `t_supplies`, `t_check`).
-- Daily max XP = **150** via task completion.
-- XP gains also add companion XP (`addCompanionXP`) and war chest gold (`WAR_CHEST_XP_RATE`).
+## Storage keys + schema
+- **Main state:** `localStorage["williams_world_embed_state_v1"]`
+  - Stores `xp`, `level`, `streak`, `hp`, `warChest`, `days`, `companions`, `morningMission`, and derived unlock-related data.
+- **Audio settings:** `localStorage["williamsWorldAudioSettings"]` (legacy) and `localStorage["williamsworld_audio_settings"]` (new)
 
-## PASS / Streak Logic (Current Implementation)
-- `isPassDay()` requires **Night-Before tasks complete** plus **Morning: Backpack check** (`m_trappercheck`).
-- `gradeDay()` sets `state.days[TODAY].result` to PASS/FAIL and increments or resets `state.streak`.
-- `midnightCheck()` auto-FAILs ungraded past days and resets streak to 0.
+## Trigger flow (high-level)
+1. Task checkbox checked → XP awarded in `renderTasks()` / `setupQuestCheckboxes()`.
+2. XP awarded → `recalcLevel()` checks `xpForLevel()` thresholds and triggers level-up visuals.
+3. Grade button → `gradeDay()` → `isPassDay()` determines PASS/FAIL → updates `state.streak`.
+4. `updateZones()` uses streak/PASS-related state to mark zones locked/unlocked.
 
-## LocalStorage Keys
-- `williams_world_embed_state_v1` (main state: days, xp, level, streak, hp, companions, warChest, morningMission).
-- `williamsWorldAudioSettings` (audio settings).
-- `williamsWorldWeather` (weather selection).
-
-## Flow Summary
-- On init, the app loads `williams_world_embed_state_v1` from localStorage or seeds defaults.
-- Checking tasks updates `state.days[TODAY].tasks`, awards XP, and calls `recalcLevel()` + `updateHeader()`.
-- Grading sets PASS/FAIL, updates streak + HP, then refreshes UI and zone unlocks.
+## Hub ↔ Battle dependencies
+- Hub writes progression state to `localStorage` (key above).
+- Battle page will read the same key for zone unlock validation and party selection.
