@@ -13,8 +13,8 @@
   <style>
     :root {
       --bg: #0f0a1c;
-      --panel: rgba(18, 11, 32, 0.82);
-      --panel-strong: rgba(25, 14, 45, 0.9);
+      --panel: rgba(18, 11, 32, 0.7);
+      --panel-strong: rgba(25, 14, 45, 0.75);
       --text: #fff5e6;
       --muted: rgba(255, 245, 230, 0.7);
       --gold: #ffd36e;
@@ -32,11 +32,28 @@
     body {
       font-family: var(--font);
       background:
-        linear-gradient(135deg, rgba(16, 9, 31, 0.9), rgba(36, 20, 70, 0.9)),
-        url('./assets/images/background.jpg') center/cover fixed;
+        linear-gradient(135deg, rgba(16, 9, 31, 0.5), rgba(36, 20, 70, 0.5)),
+        var(--zone-bg-url, url('./assets/images/background.jpg')) center/cover fixed;
       color: var(--text);
       min-height: 100vh;
       padding: 24px;
+    }
+
+    /* Zone-specific backgrounds */
+    body.zone-launch-meadow {
+      --zone-bg-url: url('./assets/images/zone_launch_256.png');
+    }
+
+    body.zone-homework-hills {
+      --zone-bg-url: url('./assets/images/zone_homework_256.png');
+    }
+
+    body.zone-backpack-bastion {
+      --zone-bg-url: url('./assets/images/backpackbastion.png');
+    }
+
+    body.zone-focus-forest {
+      --zone-bg-url: url('./assets/images/zone_focus_256.png');
     }
 
     .container {
@@ -120,8 +137,7 @@
 
     .battle-hero {
       background:
-        linear-gradient(135deg, rgba(8, 5, 18, 0.7), rgba(34, 18, 58, 0.7)),
-        url('./assets/images/banner_1600x700.png') center/cover;
+        linear-gradient(135deg, rgba(8, 5, 18, 0.3), rgba(34, 18, 58, 0.3));
       position: relative;
       overflow: hidden;
     }
@@ -130,7 +146,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at center, rgba(255, 211, 110, 0.16), transparent 50%);
+      background: radial-gradient(ellipse at center, rgba(255, 211, 110, 0.08), transparent 50%);
       pointer-events: none;
     }
 
@@ -148,12 +164,10 @@
       align-items: center;
       gap: 8px;
       padding: 10px 14px;
-      background: rgba(0,0,0,0.45);
+      background: rgba(0,0,0,0.6);
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,0.12);
       box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08);
-      background-image: url('./assets/images/mapstrip_1600x400.png');
-      background-size: cover;
       flex: 1;
     }
 
@@ -539,7 +553,7 @@
       <div class="hero-logo" aria-hidden="true"></div>
       <div style="flex: 1;">
         <div class="eyebrow">Williams World Battle System</div>
-        <h1>Join William's Adventure</h1>
+        <h1 id="battle-zone-title">Join William's Adventure</h1>
         <p class="subtitle">Experience tactical 3v3 battles with William and his companions</p>
       </div>
       <a href="./index.html" class="btn-back">
@@ -614,6 +628,32 @@
       teamLeftElement: null,
       teamRightElement: null
     };
+
+    // Apply zone-specific background class on page load
+    function applyZoneBackground() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const zone = urlParams.get('zone');
+      
+      if (zone) {
+        document.body.classList.add(`zone-${zone}`);
+        
+        // Update the title with zone name
+        const zoneNames = {
+          'launch-meadow': 'Battle in Launch Meadow',
+          'homework-hills': 'Battle in Homework Hills',
+          'backpack-bastion': 'Battle in Backpack Bastion',
+          'focus-forest': 'Battle in Focus Forest'
+        };
+        
+        const titleElement = document.getElementById('battle-zone-title');
+        if (titleElement && zoneNames[zone]) {
+          titleElement.textContent = zoneNames[zone];
+        }
+      }
+    }
+    
+    // Call immediately to set background before page renders
+    applyZoneBackground();
 
     // Icon mappings
     const DEFAULT_ICON = './assets/images/logo.svg';
