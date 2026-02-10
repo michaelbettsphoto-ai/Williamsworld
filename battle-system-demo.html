@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>William's World - Battle System Demo</title>
+  <title>William's World - Battle</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
@@ -15,27 +15,574 @@
       --panel: rgba(18, 11, 32, 0.82);
       --panel-strong: rgba(25, 14, 45, 0.9);
       --text: #fff5e6;
-      --muted: rgba(255, 245, 230, 0.7);
+      --muted: rgba(255, 245, 230, 0.72);
       --gold: #ffd36e;
       --green: #7dffb4;
       --blue: #60a5fa;
       --red: #dc2626;
       --card-border: rgba(255, 255, 255, 0.16);
-      --glass: rgba(255, 255, 255, 0.06);
+      --glass-bg: rgba(20, 10, 35, 0.22);
+      --glass-strong-bg: rgba(20, 10, 35, 0.3);
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --glass-blur: blur(12px);
       --font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial;
       --fantasy-font: 'Cinzel', 'MedievalSharp', serif;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-sm: 10px;
+      --shadow-soft: 0 16px 40px rgba(0,0,0,0.35);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html, body {
+      height: 100%;
+    }
+
     body {
       font-family: var(--font);
-      background:
-        linear-gradient(135deg, rgba(16, 9, 31, 0.9), rgba(36, 20, 70, 0.9)),
-        url('./assets/images/background.jpg') center/cover fixed;
+      background: url('./assets/images/backpackbastion.png') center/cover no-repeat fixed;
       color: var(--text);
-      min-height: 100vh;
-      padding: 24px;
+      min-height: 100svh;
+      padding: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(8, 5, 18, 0.15) 0%, rgba(8, 5, 18, 0.55) 55%, rgba(8, 5, 18, 0.85) 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .battle-screen {
+      position: relative;
+      z-index: 1;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      padding: 90px 32px 32px;
+    }
+
+    .glass-panel {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      backdrop-filter: var(--glass-blur);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 32px;
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+
+    .top-bar.glass-panel {
+      border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    }
+
+    .zone-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: center;
+    }
+
+    .zone-badge img {
+      width: 30px;
+      height: 30px;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.35));
+    }
+
+    .zone-name {
+      font-family: var(--fantasy-font);
+      font-size: 1.05em;
+      color: var(--gold);
+      letter-spacing: 0.5px;
+    }
+
+    .zone-subtitle {
+      font-size: 0.7em;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-ghost,
+    .btn-danger,
+    .btn-secondary,
+    .btn-icon {
+      border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,0.08);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-weight: 600;
+      font-size: 0.92em;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn-ghost:hover,
+    .btn-danger:hover,
+    .btn-secondary:hover,
+    .btn-icon:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      background: rgba(255,255,255,0.12);
+    }
+
+    .btn-danger {
+      background: rgba(220, 38, 38, 0.2);
+      border-color: rgba(220, 38, 38, 0.45);
+      color: #fee2e2;
+    }
+
+    .btn-secondary {
+      border-radius: 12px;
+    }
+
+    .btn-icon {
+      width: 38px;
+      height: 38px;
+      justify-content: center;
+      padding: 0;
+    }
+
+    .battle-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .stage-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .stage-card {
+      display: grid;
+      gap: 8px;
+      justify-items: center;
+      padding: 12px 16px;
+      min-width: 140px;
+      background: rgba(15, 10, 25, 0.25);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-md);
+      text-align: center;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .stage-card.is-active {
+      border-color: rgba(255, 211, 110, 0.6);
+      box-shadow: 0 12px 24px rgba(255, 211, 110, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .stage-card .card-name {
+      font-size: 0.95em;
+      font-weight: 600;
+      text-transform: none;
+      letter-spacing: 0.2px;
+      color: var(--text);
+    }
+
+    .stage-card .card-meta {
+      font-size: 0.75em;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .stage-divider {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: var(--muted);
+    }
+
+    .vs-token {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.35);
+      display: grid;
+      place-items: center;
+      background: rgba(0,0,0,0.35);
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 2px;
+      font-size: 0.85em;
+    }
+
+    .stage-subtitle {
+      font-size: 0.75em;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+    }
+
+    .arena-callout {
+      padding: 8px 14px;
+      border-radius: 12px;
+      background: rgba(15, 10, 25, 0.35);
+      border: 1px solid rgba(255,255,255,0.12);
+      font-size: 0.9em;
+      color: var(--text);
+    }
+
+    .hud {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 18px;
+    }
+
+    .hud-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 18px;
+    }
+
+    .hud-title {
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .hud-cards {
+      display: grid;
+      gap: 10px;
+    }
+
+    .hud-card {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 12px;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-md);
+    }
+
+    .hud-card .card-title {
+      font-size: 0.92em;
+      font-weight: 600;
+    }
+
+    .hud-card .card-meta {
+      font-size: 0.75em;
+      color: var(--muted);
+    }
+
+    .hp-meter {
+      margin-top: 6px;
+      height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .hp-meter span {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, #7dffb4, #60a5fa);
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .rarity-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      font-size: 0.65em;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gold);
+      margin-top: 4px;
+    }
+
+    .element-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.7em;
+      color: var(--muted);
+    }
+
+    .element-badge img {
+      width: 16px;
+      height: 16px;
+      object-fit: contain;
+    }
+
+    .portrait-frame {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(0,0,0,0.4);
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+    }
+
+    .stage-card .portrait-frame {
+      width: 64px;
+      height: 64px;
+    }
+
+    .portrait-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .portrait-frame .portrait-fallback {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 0.65em;
+      color: var(--text);
+      background: rgba(10, 6, 18, 0.8);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 4px;
+      text-align: center;
+    }
+
+    .portrait-frame .portrait-fallback img {
+      width: 20px;
+      height: 20px;
+      object-fit: contain;
+    }
+
+    .portrait-frame:not(.is-fallback) .portrait-fallback {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .hud-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .ability-row {
+      display: grid;
+      gap: 16px;
+    }
+
+    .ability-group {
+      display: grid;
+      gap: 8px;
+    }
+
+    .ability-owner {
+      font-size: 0.8em;
+      text-transform: uppercase;
+      letter-spacing: 1.6px;
+      color: var(--muted);
+    }
+
+    .ability-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .ability-button {
+      display: grid;
+      gap: 4px;
+      align-items: center;
+      text-align: left;
+      padding: 10px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.3);
+      color: var(--text);
+      font-size: 0.85em;
+      min-width: 160px;
+      cursor: pointer;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .ability-button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 211, 110, 0.5);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+    }
+
+    .ability-button.locked {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .ability-name {
+      font-weight: 600;
+    }
+
+    .cooldown-badge {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 0.7em;
+      letter-spacing: 0.5px;
+    }
+
+    .locked-tag {
+      font-size: 0.7em;
+      color: var(--muted);
+    }
+
+    .hud-footer {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .battle-log {
+      flex: 1;
+      min-width: 220px;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+    }
+
+    .battle-log ul {
+      list-style: none;
+      display: grid;
+      gap: 6px;
+      font-size: 0.8em;
+      color: var(--muted);
+    }
+
+    .btn-auto-small {
+      align-self: flex-start;
+      padding: 8px 12px;
+      font-size: 0.8em;
+    }
+
+    .dev-only {
+      display: none;
+    }
+
+    body.dev-mode .dev-only {
+      display: block;
+    }
+
+    .dev-only .demo-section {
+      background: var(--glass-bg);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      border: 1px solid var(--glass-border);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: var(--glass-blur);
+    }
+
+    .dev-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .ambient-particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ambient-particles span {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 211, 110, 0.4);
+      animation: float 8s ease-in-out infinite;
+      opacity: 0.6;
+    }
+
+    .ambient-particles span:nth-child(1) { top: 20%; left: 15%; animation-delay: 0s; }
+    .ambient-particles span:nth-child(2) { top: 35%; left: 75%; animation-delay: 1s; }
+    .ambient-particles span:nth-child(3) { top: 60%; left: 25%; animation-delay: 2s; }
+    .ambient-particles span:nth-child(4) { top: 70%; left: 60%; animation-delay: 3s; }
+    .ambient-particles span:nth-child(5) { top: 45%; left: 50%; animation-delay: 4s; }
+    .ambient-particles span:nth-child(6) { top: 25%; left: 90%; animation-delay: 5s; }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(5, 3, 10, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+
+    .modal.is-open {
+      display: flex;
+    }
+
+    .modal-card {
+      background: rgba(15, 10, 25, 0.9);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius-lg);
+      padding: 20px 24px;
+      max-width: 360px;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 16px;
     }
 
     .container {
@@ -406,17 +953,17 @@
     }
 
     .vs-token {
-      width: 70px;
-      height: 70px;
-      border-radius: 18px;
-      border: 2px solid rgba(255,255,255,0.6);
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.35);
       display: grid;
       place-items: center;
-      background: rgba(0,0,0,0.45);
-      box-shadow: 0 14px 32px rgba(0,0,0,0.5);
-      font-weight: 800;
+      background: rgba(0,0,0,0.35);
+      font-weight: 700;
       color: var(--gold);
       letter-spacing: 2px;
+      font-size: 0.85em;
     }
 
     .action-bar {
@@ -491,7 +1038,7 @@
       border: 1px solid rgba(255,255,255,0.08);
     }
 
-    .output:empty::before {
+    body.dev-mode .output:empty::before {
       content: 'Use the buttons above to run dev-facing demos.';
       opacity: 0.6;
     }
@@ -514,130 +1061,167 @@
     .card-collection { width: 100%; }
 
     @media (max-width: 960px) {
-      .arena-wrap {
+      .battle-screen {
+        padding: 86px 20px 24px;
+      }
+
+      .top-bar {
+        padding: 10px 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .top-actions {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .hud-row {
         grid-template-columns: 1fr;
       }
 
-      .card-stack {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      }
-
-      .vs-token {
-        display: none;
-      }
-
-      .turn-strip {
-        flex-wrap: wrap;
+      .ability-buttons {
+        justify-content: center;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <header class="hero-header">
-      <div class="hero-logo" aria-hidden="true"></div>
-      <div style="flex: 1;">
-        <div class="eyebrow">Battle System Demo</div>
-        <h1>Battle first. Click first.</h1>
-        <p class="subtitle">Kid-first 3v3 arena—tap big buttons and watch your squad battle.</p>
+  <div class="ambient-particles" aria-hidden="true">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div class="battle-screen">
+    <header class="top-bar glass-panel">
+      <a href="./index.html" class="btn-ghost">← Back to Map</a>
+      <div class="zone-badge">
+        <img src="./assets/images/zone_backpack_256.svg" alt="" aria-hidden="true">
+        <div>
+          <div class="zone-name">Backpack Bastion</div>
+          <div class="zone-subtitle">World Encounter</div>
+        </div>
       </div>
-      <a href="./index.html" class="btn-back">
-        <span style="font-size: 1.2em;">←</span> Back to Home
-      </a>
+      <div class="top-actions">
+        <button class="btn-icon" id="audioToggle" type="button" aria-label="Audio settings">🔊</button>
+        <button class="btn-danger" id="quitBattle" type="button">Quit Battle</button>
+      </div>
     </header>
 
-    <section class="demo-section battle-hero">
-      <div class="arena-top">
-        <div class="turn-strip" id="turnStrip" aria-label="Turn order strip"></div>
-        <button class="btn-auto" style="flex:0 0 auto; padding:12px 16px; border-radius:12px;" onclick="resetArena()">Reset</button>
+    <main class="battle-stage">
+      <div class="stage-row stage-enemies" id="stage-enemies" aria-label="Enemy lineup"></div>
+      <div class="stage-divider">
+        <span class="vs-token">VS</span>
+        <span class="stage-subtitle">Backpack Bastion Skirmish</span>
       </div>
+      <div class="stage-row stage-heroes" id="stage-heroes" aria-label="Hero lineup"></div>
+      <div class="arena-callout" id="arenaCallout">Entering the zone...</div>
+    </main>
 
-      <div class="arena-wrap">
-        <div class="team">
-          <div class="team-label">Allies</div>
-          <div class="card-stack" id="team-left"></div>
+    <section class="hud glass-panel" aria-label="Battle HUD">
+      <div class="hud-row">
+        <div class="hud-column">
+          <div class="hud-title">Party</div>
+          <div class="hud-cards" id="partyHud"></div>
         </div>
-
-        <div class="vs-token">VS</div>
-
-        <div class="team">
-          <div class="team-label">Rivals</div>
-          <div class="card-stack" id="team-right"></div>
+        <div class="hud-column">
+          <div class="hud-title">Enemies</div>
+          <div class="hud-cards" id="enemyHud"></div>
         </div>
       </div>
-
-      <div class="action-bar">
-        <div class="big-buttons">
-          <button class="btn-attack" onclick="performAction('strike')">Attack!</button>
-          <button class="btn-shield" onclick="performAction('shield')">Shield</button>
-          <button class="btn-spell" onclick="performAction('spell')">Cast Spell</button>
-          <button class="btn-auto" onclick="runBattleDemo()">Auto Battle</button>
+      <div class="hud-actions">
+        <div class="ability-row" id="abilityRow"></div>
+        <div class="hud-footer">
+          <div class="battle-log">
+            <div class="hud-title">Battle Log</div>
+            <ul id="battleLog"></ul>
+          </div>
+          <button class="btn-secondary btn-auto-small" type="button" onclick="runBattleDemo()">Auto Battle</button>
         </div>
-        <div class="callout" id="arenaCallout">Loading squads...</div>
       </div>
     </section>
 
-    <section class="demo-section">
-      <h2>Quick Demos</h2>
-      <div class="button-group">
-        <button class="btn-auto" onclick="runBattleDemo()">⚔️ Run Battle Simulation</button>
-        <button class="btn-attack" onclick="showCharacter('trapper')">🛡️ Trapper</button>
-        <button class="btn-shield" onclick="showCharacter('sparkfin')">⚡ Sparkfin</button>
-        <button class="btn-spell" onclick="showCharacter('glowmoss')">🍄 Glowmoss</button>
-        <button class="btn-auto" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);" onclick="showTypeChart()">📊 Type Chart</button>
-      </div>
-      <div id="output" class="output scrollbar-custom"></div>
-    </section>
+    <section class="dev-only" id="devPanels">
+      <div class="dev-grid">
+        <section class="demo-section">
+          <h2>Quick Demos</h2>
+          <div class="button-group">
+            <button class="btn-secondary" onclick="runBattleDemo()">⚔️ Run Battle Simulation</button>
+            <button class="btn-secondary" onclick="showCharacter('trapper')">🛡️ Trapper</button>
+            <button class="btn-secondary" onclick="showCharacter('sparkfin')">⚡ Sparkfin</button>
+            <button class="btn-secondary" onclick="showCharacter('glowmoss')">🍄 Glowmoss</button>
+            <button class="btn-secondary" onclick="showTypeChart()">📊 Type Chart</button>
+          </div>
+          <div id="output" class="output scrollbar-custom"></div>
+        </section>
 
-    <section class="demo-section">
-      <h2>Roster Cards</h2>
-      <div class="character-grid" id="characterGrid"></div>
+        <section class="demo-section">
+          <h2>Roster Cards</h2>
+          <div class="character-grid" id="characterGrid"></div>
+        </section>
+      </div>
     </section>
+  </div>
+
+  <div class="modal" id="quitModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <h2>Leave battle?</h2>
+      <p class="subtitle">Your party will retreat back to the map.</p>
+      <div class="modal-actions">
+        <button class="btn-ghost" id="cancelQuit" type="button">Stay</button>
+        <button class="btn-danger" id="confirmQuit" type="button">Quit Battle</button>
+      </div>
+    </div>
   </div>
 
   <script src="./assets/js/battle-system/battle-engine.js"></script>
   <script src="./assets/js/battle-system/battle-simulator.js"></script>
   <script>
     let simulator = null;
-    let gameData = null;
+    let progressionData = null;
+    let heroMap = {};
     let teams = { left: [], right: [] };
     let turnOrder = [];
     let activeTurnIndex = 0;
+    let battleLog = [];
+    let isDevMode = false;
+    let audioEnabled = true;
+
+    const HERO_DATA_PATH = './assets/data/heroes-and-companions.json';
+    const PARTY_IDS = ['william', 'ember', 'sprite'];
+    const ABILITY_IDS = ['william', 'ember', 'sprite', 'golem'];
+    const ENEMY_IDS = ['trapper', 'sparkfin', 'glowmoss'];
+    const MAX_LOG_ITEMS = 5;
 
     const DEFAULT_ICON = './assets/images/logo.svg';
+    const ZONE_ICON = './assets/images/zone_backpack_256.svg';
     const portraitMap = {
+      william: './assets/images/Williams avatar.PNG',
+      ember: './assets/images/companion_ember_512.png',
+      sprite: './assets/images/companion_sprite_512.png',
+      golem: './assets/images/companion_golem_512.png',
       trapper: './assets/images/trapper-portrait.png',
       sparkfin: './assets/images/sparkfin-portrait.png',
       glowmoss: './assets/images/glowmoss-portrait.png'
     };
 
-    const roleIconMap = {
-      defender: './assets/images/zone_backpack_256.svg',
-      support: './assets/images/zone_focus_256.png',
-      scout: './assets/images/zone_launch_256.png',
-      controller: './assets/images/zone_homework_256.png',
-      summoner: './assets/images/banner.svg'
+    const elementIconMap = {
+      neutral: './assets/images/logo.svg',
+      fire: './assets/images/ember.svg',
+      light: './assets/images/sprite.svg',
+      rock: './assets/images/golem.svg',
+      metal: './assets/images/zone_backpack_256.svg',
+      water: './assets/images/zone_launch_256.png',
+      electric: './assets/images/zone_homework_256.png',
+      grass: './assets/images/zone_focus_256.png',
+      shadow: './assets/images/zone3.svg'
     };
 
-    const typeIconMap = {
-      metal: './assets/images/golem.svg',
-      light: './assets/images/logo.svg',
-      water: './assets/images/sprite.svg',
-      electric: './assets/images/ember.svg',
-      grass: './assets/images/zone3.svg',
-      shadow: './assets/images/zone4.svg'
-    };
-
-    const statusIconMap = {
-      shield: './assets/images/zone_backpack_256.svg',
-      stun: './assets/images/zone_focus_256.png',
-      poison: './assets/images/zone3.svg',
-      shock: './assets/images/ember.svg'
-    };
-
-    const SPELL_BASE_DAMAGE = 18;
-    const MIN_ATTACK_DAMAGE = 10;
-    const SPEED_TO_DAMAGE_RATIO = 2.5; // Demo pacing: faster units hit slightly harder
+    const DAMAGE_BASE = 14;
+    const HEAL_BASE = 10;
 
     let battleAudioReady = false;
     let battleSfx = null;
@@ -653,53 +1237,83 @@
 
     function playBattleSfx() {
       initBattleAudio();
-      if (battleSfx) {
+      if (battleSfx && audioEnabled) {
         battleSfx.play();
       }
     }
 
+    function initDevMode() {
+      const params = new URLSearchParams(window.location.search);
+      isDevMode = params.get('dev') === '1' || localStorage.getItem('wwBattleDev') === '1';
+      document.body.classList.toggle('dev-mode', isDevMode);
+    }
+
+    async function loadProgressionData() {
+      const response = await fetch(HERO_DATA_PATH, { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Failed to load ${HERO_DATA_PATH}`);
+      return response.json();
+    }
+
     async function init() {
       try {
+        initDevMode();
         simulator = new BattleSimulator();
         await simulator.loadGameData();
-        gameData = {
-          constants: simulator.gameConstants,
-          characters: simulator.characters
-        };
-
+        progressionData = await loadProgressionData();
+        heroMap = Object.fromEntries(progressionData.characters.map(char => [char.id, char]));
         setupArena();
-        displayCharacterCards();
-        log('Battle system loaded successfully! ✓');
+        renderAbilities();
+        pushBattleEvent('Entered Backpack Bastion.');
+        updateCallout('Choose an ability to begin.');
+        if (isDevMode) {
+          displayCharacterCards();
+          log('Battle system loaded successfully! ✓');
+        }
       } catch (error) {
-        log('Error loading battle system: ' + error.message, 'error');
+        updateCallout('Unable to load battle data.');
         console.error(error);
       }
     }
 
     function setupArena() {
-      const ids = ['trapper', 'sparkfin', 'glowmoss'];
-      teams.left = ids.map((id, idx) => createFighter(id, 'Allies', `L${idx + 1}`));
-      teams.right = ids.map((id, idx) => createFighter(id, 'Rivals', `R${idx + 1}`));
+      teams.left = PARTY_IDS.map((id, idx) => createHeroFighter(id, idx));
+      teams.right = ENEMY_IDS.map((id, idx) => createEnemyFighter(id, idx));
       buildTurnOrder();
-      renderTeams();
-      renderTurnStrip();
-      updateCallout('Tap a big button to see the team act.');
+      renderStage();
+      renderHud();
     }
 
-    function createFighter(id, teamName, slot) {
+    function createHeroFighter(id, slotIndex) {
+      const base = heroMap[id];
+      return {
+        id,
+        slot: `H${slotIndex + 1}`,
+        name: base.displayName,
+        title: base.classTitle,
+        level: base.level,
+        element: base.element.toLowerCase(),
+        types: [base.element.toLowerCase()],
+        hp: base.stats.hp,
+        maxHp: base.stats.hp,
+        speed: base.stats.spd,
+        rarity: 'hero'
+      };
+    }
+
+    function createEnemyFighter(id, slotIndex) {
       const base = simulator.characters[id];
       return {
         id,
-        slot,
-        teamName,
+        slot: `E${slotIndex + 1}`,
         name: base.name,
+        title: base.title,
+        level: base.rank + 1,
+        element: base.types[0],
+        types: base.types,
         hp: base.stats.hp,
         maxHp: base.stats.hp,
-        role: base.role_primary,
-        roleSecondary: base.role_secondary,
-        types: base.types,
         speed: base.stats.speed,
-        statuses: []
+        rarity: base.rarity
       };
     }
 
@@ -711,179 +1325,218 @@
       activeTurnIndex = 0;
     }
 
-    function renderTurnStrip() {
-      const strip = document.getElementById('turnStrip');
-      strip.innerHTML = '';
-      turnOrder.forEach((entry, idx) => {
-        const icon = document.createElement('div');
-        icon.className = 'turn-icon' + (idx === activeTurnIndex ? ' active' : '') + (entry.fighter.hp <= 0 ? ' downed' : '');
-        icon.title = `${entry.fighter.name} • ${entry.fighter.teamName}`;
-        icon.innerHTML = `
-          <img src="${getPortrait(entry.fighter.id)}" alt="${entry.fighter.name}">
-          <span class="turn-label"></span>
-        `;
-        strip.appendChild(icon);
-      });
+    function renderStage() {
+      const activeId = turnOrder[activeTurnIndex]?.fighter?.id;
+      renderStageRow('stage-heroes', teams.left, false, activeId);
+      renderStageRow('stage-enemies', teams.right, true, activeId);
     }
 
-    function renderTeams() {
-      renderTeam('left');
-      renderTeam('right');
-    }
-
-    function renderTeam(side) {
-      const stack = document.getElementById(`team-${side}`);
-      stack.innerHTML = '';
-      teams[side].forEach(fighter => {
-        const hpPercent = Math.max(0, Math.round((fighter.hp / fighter.maxHp) * 100));
+    function renderStageRow(containerId, fighters, isEnemy, activeId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = '';
+      fighters.forEach(fighter => {
         const card = document.createElement('div');
-        card.className = 'battle-card';
-        card.setAttribute('data-id', fighter.id);
+        const isActive = fighter.id === activeId;
+        card.className = `stage-card${isActive ? ' is-active' : ''}`;
         card.innerHTML = `
-          <div class="card-top">
-            <div class="portrait"><img src="${getPortrait(fighter.id)}" alt="${fighter.name} portrait"></div>
-            <div class="card-title">
-              <div class="card-name">${fighter.name}</div>
-              <div class="role-chip">
-                <img src="${getRoleIcon(fighter.role)}" alt="${fighter.role} icon">
-                ${formatRole(fighter.role)}
-              </div>
-            </div>
-          </div>
-          <div class="type-row">
-            ${fighter.types.map(type => `
-              <span class="type-chip">
-                <img src="${getTypeIcon(type)}" alt="${type} icon">
-                ${type}
-              </span>
-            `).join('')}
-          </div>
-          <div class="hp-bar">
-            <div class="hp-fill" style="width:${hpPercent}%;">
-              <span>${fighter.hp} HP</span>
-            </div>
-          </div>
-          <div class="status-row">
-            ${renderStatuses(fighter)}
-          </div>
+          ${portraitMarkup({ fighter, isEnemy })}
+          <div class="card-name">${fighter.name}</div>
+          <div class="card-meta">${isEnemy ? fighter.title : `Lvl ${fighter.level}`}</div>
         `;
-        stack.appendChild(card);
+        container.appendChild(card);
       });
     }
 
-    function renderStatuses(fighter) {
-      const statuses = fighter.statuses.length ? fighter.statuses : getDefaultStatuses(fighter.id);
-      return statuses.map(status => `
-        <span class="status-icon" title="${status}">
-          <img src="${statusIconMap[status] || DEFAULT_ICON}" alt="${status} icon">
-        </span>
-      `).join('');
+    function renderHud() {
+      renderHudCards('partyHud', teams.left, false);
+      renderHudCards('enemyHud', teams.right, true);
     }
 
-    function performAction(action) {
-      playBattleSfx();
-      if (!simulator) return init();
-      const actorEntry = turnOrder[activeTurnIndex];
-      const targetTeam = actorEntry.side === 'left' ? teams.right : teams.left;
-      const target = targetTeam.find(f => f.hp > 0);
-      if (!target) {
-        updateCallout('No rivals left to target!');
-        return;
+    function renderHudCards(containerId, fighters, isEnemy) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = '';
+      fighters.forEach(fighter => {
+        const hpPercent = Math.max(0, Math.round((fighter.hp / fighter.maxHp) * 100));
+        const elementIcon = getElementIcon(fighter.element);
+        const card = document.createElement('div');
+        card.className = 'hud-card';
+        card.innerHTML = `
+          ${portraitMarkup({ fighter, isEnemy })}
+          <div>
+            <div class="card-title">${fighter.name}</div>
+            <div class="card-meta">${isEnemy ? fighter.title : fighter.title}</div>
+            ${isEnemy ? `
+              <div class="rarity-badge">${fighter.rarity}</div>
+              <div class="element-badge">
+                ${elementIcon ? `<img src="${elementIcon}" alt="">` : ''}
+                ${fighter.element}
+              </div>
+            ` : `
+              <div class="card-meta">Lvl ${fighter.level}</div>
+            `}
+            <div class="hp-meter">
+              <span style="width:${hpPercent}%"></span>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function portraitMarkup({ fighter, isEnemy }) {
+      const src = getPortrait(fighter.id);
+      const initials = fighter.name.split(' ').map(word => word[0]).slice(0, 2).join('');
+      const elementIcon = getElementIcon(fighter.element);
+      const fallbackIcon = isEnemy ? ZONE_ICON : elementIcon;
+      const fallbackClass = src ? '' : ' is-fallback';
+      return `
+        <div class="portrait-frame${isEnemy ? ' enemy' : ''}${fallbackClass}">
+          ${src ? `<img src="${src}" alt="${fighter.name} portrait" onerror="handlePortraitError(this)">` : ''}
+          <div class="portrait-fallback">
+            ${fallbackIcon ? `<img src="${fallbackIcon}" alt="" aria-hidden="true">` : ''}
+            <div>${isEnemy ? fighter.name : initials}</div>
+          </div>
+        </div>
+      `;
+    }
+
+    function handlePortraitError(img) {
+      const frame = img.closest('.portrait-frame');
+      if (frame) {
+        frame.classList.add('is-fallback');
       }
-
-      let message = `${actorEntry.fighter.name} acts!`;
-      if (action === 'shield') {
-        addStatus(actorEntry.fighter, 'shield');
-        message = `${actorEntry.fighter.name} throws up a shield!`;
-      } else if (action === 'spell') {
-        target.hp = Math.max(0, target.hp - SPELL_BASE_DAMAGE);
-        addStatus(target, 'stun');
-        addStatus(target, 'shock');
-        message = `${actorEntry.fighter.name} casts a spell for ${SPELL_BASE_DAMAGE} dmg!`;
-      } else {
-        const dmg = Math.max(MIN_ATTACK_DAMAGE, Math.round(actorEntry.fighter.speed / SPEED_TO_DAMAGE_RATIO));
-        target.hp = Math.max(0, target.hp - dmg);
-        message = `${actorEntry.fighter.name} attacks ${target.name} for ${dmg} dmg!`;
-      }
-
-      renderTeams();
-      advanceTurn();
-      updateCallout(message);
-    }
-
-    function advanceTurn() {
-      activeTurnIndex = (activeTurnIndex + 1) % turnOrder.length;
-      renderTurnStrip();
-    }
-
-    function resetArena() {
-      playBattleSfx();
-      setupArena();
-      updateCallout('Teams refreshed. Take the first move!');
-    }
-
-    function addStatus(fighter, status) {
-      if (!fighter.statuses.includes(status)) {
-        fighter.statuses.push(status);
-      }
-    }
-
-    function getDefaultStatuses(id) {
-      const defaults = {
-        trapper: ['shield'],
-        sparkfin: ['shock'],
-        glowmoss: ['poison']
-      }; // Demo badges that mirror each hero's theme
-      return defaults[id] || ['shield'];
+      img.remove();
     }
 
     function getPortrait(id) {
-      return portraitMap[id] || './assets/images/logo_512.png';
+      return portraitMap[id] || '';
     }
 
-    function getRoleIcon(role) {
-      return roleIconMap[role] || './assets/images/banner.svg';
-    }
-
-    function getTypeIcon(type) {
-      return typeIconMap[type] || DEFAULT_ICON;
-    }
-
-    function formatRole(role) {
-      return role ? role.charAt(0).toUpperCase() + role.slice(1) : 'Role';
+    function getElementIcon(element) {
+      return elementIconMap[element] || DEFAULT_ICON;
     }
 
     function updateCallout(text) {
       const el = document.getElementById('arenaCallout');
-      el.textContent = text;
+      if (el) el.textContent = text;
+    }
+
+    function pushBattleEvent(text) {
+      battleLog.unshift(text);
+      battleLog = battleLog.slice(0, MAX_LOG_ITEMS);
+      renderBattleLog();
+    }
+
+    function renderBattleLog() {
+      const list = document.getElementById('battleLog');
+      if (!list) return;
+      list.innerHTML = battleLog.map(entry => `<li>${entry}</li>`).join('');
+    }
+
+    function renderAbilities() {
+      const abilityRow = document.getElementById('abilityRow');
+      if (!abilityRow) return;
+      abilityRow.innerHTML = '';
+      ABILITY_IDS.forEach(id => {
+        const hero = heroMap[id];
+        if (!hero) return;
+        const group = document.createElement('div');
+        group.className = 'ability-group';
+        const buttons = hero.abilities.map(ability => {
+          const isLocked = hero.level < ability.unlockLevel;
+          return `
+            <button class="ability-button${isLocked ? ' locked' : ''}" ${isLocked ? 'disabled' : ''} data-hero="${hero.id}" data-ability="${ability.abilityId}" title="${ability.description}${isLocked ? ` (Unlocks at L${ability.unlockLevel})` : ''}">
+              <span class="ability-name">${ability.name}</span>
+              <span class="cooldown-badge">CD ${ability.cooldown}</span>
+              ${isLocked ? `<span class="locked-tag">Locked L${ability.unlockLevel}</span>` : ''}
+            </button>
+          `;
+        }).join('');
+        group.innerHTML = `
+          <div class="ability-owner">${hero.displayName}</div>
+          <div class="ability-buttons">${buttons}</div>
+        `;
+        abilityRow.appendChild(group);
+      });
+
+      abilityRow.querySelectorAll('.ability-button:not(.locked)').forEach(button => {
+        button.addEventListener('click', () => {
+          const heroId = button.getAttribute('data-hero');
+          const abilityId = button.getAttribute('data-ability');
+          triggerAbility(heroId, abilityId);
+        });
+      });
+    }
+
+    function triggerAbility(heroId, abilityId) {
+      const hero = heroMap[heroId];
+      if (!hero) return;
+      const ability = hero.abilities.find(item => item.abilityId === abilityId);
+      if (!ability) return;
+      playBattleSfx();
+      let message = `${hero.displayName} uses ${ability.name}.`;
+
+      if (ability.type === 'damage' || ability.type === 'control') {
+        const target = teams.right.find(f => f.hp > 0) || teams.right[0];
+        if (target) {
+          const dmg = Math.max(8, DAMAGE_BASE + Math.round(hero.stats.atk / 2));
+          target.hp = Math.max(0, target.hp - dmg);
+          message = `${hero.displayName} uses ${ability.name} on ${target.name} (-${dmg}).`;
+        }
+      } else if (ability.type === 'heal' || ability.type === 'shield' || ability.type === 'buff') {
+        const target = teams.left.find(f => f.hp < f.maxHp) || teams.left[0];
+        if (target) {
+          const heal = Math.min(target.maxHp - target.hp, HEAL_BASE + hero.level * 2);
+          target.hp = Math.min(target.maxHp, target.hp + heal);
+          message = `${hero.displayName} uses ${ability.name} to support ${target.name}.`;
+        }
+      }
+
+      pushBattleEvent(message);
+      updateCallout(message);
+      advanceTurn();
+      renderHud();
+    }
+
+    function advanceTurn() {
+      activeTurnIndex = (activeTurnIndex + 1) % turnOrder.length;
+      renderStage();
     }
 
     function log(message) {
       const output = document.getElementById('output');
-      output.textContent = message;
+      if (output) {
+        output.textContent = message;
+      }
     }
 
     async function runBattleDemo() {
       playBattleSfx();
       if (!simulator) {
-        log('Loading battle system...');
         await init();
       }
-
-      log('Starting battle simulation...\n');
+      pushBattleEvent('Auto battle engaged.');
+      updateCallout('Auto battle engaged. The skirmish unfolds...');
 
       try {
         const result = simulator.runFullBattle();
-        let battleText = '='.repeat(48) + '\n';
-        battleText += 'BATTLE SIMULATION\n';
-        battleText += '='.repeat(48) + '\n\n';
-        battleText += result.battleLog.map(log => log.message).join('\n');
-        battleText += '\n\n' + '='.repeat(48);
-        battleText += '\nFinal Result: ' + result.winner.toUpperCase() + ' WINS!';
-        battleText += '\n' + '='.repeat(48);
-        log(battleText);
+        if (isDevMode) {
+          let battleText = '='.repeat(48) + '\n';
+          battleText += 'BATTLE SIMULATION\n';
+          battleText += '='.repeat(48) + '\n\n';
+          battleText += result.battleLog.map(log => log.message).join('\n');
+          battleText += '\n\n' + '='.repeat(48);
+          battleText += '\nFinal Result: ' + result.winner.toUpperCase() + ' WINS!';
+          battleText += '\n' + '='.repeat(48);
+          log(battleText);
+        }
+        pushBattleEvent(`${result.winner.toUpperCase()} wins the skirmish.`);
       } catch (error) {
-        log('Error running battle: ' + error.message);
+        if (isDevMode) {
+          log('Error running battle: ' + error.message);
+        }
         console.error(error);
       }
     }
@@ -965,31 +1618,29 @@
     }
 
     function displayCharacterCards() {
-      if (!gameData) return;
+      if (!simulator) return;
       const grid = document.getElementById('characterGrid');
+      if (!grid) return;
       grid.innerHTML = '';
-      const charIds = ['trapper', 'sparkfin', 'glowmoss'];
 
-      charIds.forEach(id => {
-        const char = gameData.characters[id];
+      ENEMY_IDS.forEach(id => {
+        const char = simulator.characters[id];
         const card = document.createElement('div');
         card.className = 'card-collection';
-        card.style.setProperty('--role-color-1', `var(--role-${char.role_primary}, var(--role-defender))`);
-        card.style.setProperty('--role-color-2', `var(--role-${char.role_primary}-light, var(--role-defender-light))`);
         card.innerHTML = `
           <div class="card-collection-portrait">
-            <img src="${getPortrait(id)}" alt="${char.name}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
+            <img src="${getPortrait(id) || DEFAULT_ICON}" alt="${char.name}" style="width:100%;height:100%;object-fit:cover;border-radius:10px;">
           </div>
           <div class="card-collection-name">${char.name}</div>
           <div class="card-collection-badges">
-            <div class="card-role-badge" style="--role-color-1: var(--role-${char.role_primary}, var(--role-defender)); --role-color-2: var(--role-${char.role_primary}-light, var(--role-defender-light));">
-              <img src="${getRoleIcon(char.role_primary)}" alt="${char.role_primary}" style="width:16px;height:16px;object-fit:contain;">
+            <div class="card-role-badge">
+              <img src="${getElementIcon(char.types[0])}" alt="${char.types[0]}" style="width:16px;height:16px;object-fit:contain;">
             </div>
           </div>
           <div class="card-type-icons">
             ${char.types.map(type => `
-              <div class="card-type-icon" style="--type-color-1: var(--type-${type}, var(--type-metal)); --type-color-2: var(--type-${type}-light, var(--type-metal-light));">
-                <img src="${getTypeIcon(type)}" alt="${type}" style="width:18px;height:18px;object-fit:contain;">
+              <div class="card-type-icon">
+                <img src="${getElementIcon(type)}" alt="${type}" style="width:18px;height:18px;object-fit:contain;">
               </div>
             `).join('')}
           </div>
@@ -999,7 +1650,57 @@
       });
     }
 
-    // Initialize on load
+    function initModalControls() {
+      const quitButton = document.getElementById('quitBattle');
+      const modal = document.getElementById('quitModal');
+      const confirm = document.getElementById('confirmQuit');
+      const cancel = document.getElementById('cancelQuit');
+      if (!modal) return;
+
+      const closeModal = () => {
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+      };
+
+      const openModal = () => {
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+      };
+
+      quitButton?.addEventListener('click', openModal);
+      cancel?.addEventListener('click', closeModal);
+      confirm?.addEventListener('click', () => {
+        window.location.href = './index.html';
+      });
+      modal.addEventListener('click', (event) => {
+        if (event.target === modal) closeModal();
+      });
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeModal();
+      });
+    }
+
+    function initAudioControls() {
+      const audioToggle = document.getElementById('audioToggle');
+      if (!audioToggle) return;
+
+      const updateIcon = () => {
+        audioToggle.textContent = audioEnabled ? '🔊' : '🔇';
+        audioToggle.setAttribute('aria-label', audioEnabled ? 'Audio on' : 'Audio muted');
+        if (window.Howler) {
+          window.Howler.mute(!audioEnabled);
+        }
+      };
+
+      updateIcon();
+      audioToggle.addEventListener('click', () => {
+        audioEnabled = !audioEnabled;
+        updateIcon();
+      });
+    }
+
+    initModalControls();
+    initAudioControls();
     init();
   </script>
 </body>
