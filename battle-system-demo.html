@@ -4,8 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>William's World - Battle System Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js" integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <link rel="stylesheet" href="./battle-system/ui/character-cards.css">
   <link rel="stylesheet" href="./assets/css/character-cards.css">
   <style>
     :root {
@@ -20,12 +22,14 @@
       --red: #dc2626;
       --card-border: rgba(255, 255, 255, 0.16);
       --glass: rgba(255, 255, 255, 0.06);
+      --font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial;
+      --fantasy-font: 'Cinzel', 'MedievalSharp', serif;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: var(--font);
       background:
         linear-gradient(135deg, rgba(16, 9, 31, 0.9), rgba(36, 20, 70, 0.9)),
         url('./assets/images/background.jpg') center/cover fixed;
@@ -65,10 +69,38 @@
     }
 
     h1 {
+      font-family: var(--fantasy-font);
       font-size: 2.6em;
       color: var(--gold);
       text-shadow: 0 6px 30px rgba(0,0,0,0.45);
       margin-bottom: 6px;
+    }
+
+    h2 {
+      font-family: var(--fantasy-font);
+      color: var(--gold);
+    }
+
+    .btn-back {
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(255,211,110,0.2), rgba(255,211,110,0.1));
+      border: 1px solid rgba(255,211,110,0.4);
+      color: var(--gold);
+      font-weight: 600;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .btn-back:hover {
+      background: linear-gradient(135deg, rgba(255,211,110,0.3), rgba(255,211,110,0.2));
+      border-color: rgba(255,211,110,0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(255,211,110,0.3);
     }
 
     .subtitle {
@@ -504,11 +536,14 @@
   <div class="container">
     <header class="hero-header">
       <div class="hero-logo" aria-hidden="true"></div>
-      <div>
+      <div style="flex: 1;">
         <div class="eyebrow">Battle System Demo</div>
         <h1>Battle first. Click first.</h1>
         <p class="subtitle">Kid-first 3v3 arena—tap big buttons and watch your squad battle.</p>
       </div>
+      <a href="./index.html" class="btn-back">
+        <span style="font-size: 1.2em;">←</span> Back to Home
+      </a>
     </header>
 
     <section class="demo-section battle-hero">
@@ -571,9 +606,9 @@
 
     const DEFAULT_ICON = './assets/images/logo.svg';
     const portraitMap = {
-      trapper: './assets/images/backpackbastion.png',
-      sparkfin: './assets/images/companion_sprite_512.png',
-      glowmoss: './assets/images/companion_golem_512.png'
+      trapper: './assets/images/trapper-portrait.png',
+      sparkfin: './assets/images/sparkfin-portrait.png',
+      glowmoss: './assets/images/glowmoss-portrait.png'
     };
 
     const roleIconMap = {
