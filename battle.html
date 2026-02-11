@@ -1,0 +1,2056 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+  <title>William's World - Battle Screen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Fredoka+One&family=Nunito:wght@400;600;700;800&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <style>
+/* ===== DESIGN PHILOSOPHY: Storybook Battlegrounds =====
+   Warm earth-tone parchment base, jewel-tone card accents,
+   dark fantasy glass panels, Cinzel + Nunito typography,
+   battle-table metaphor with collectible card game feel.
+   Matches existing Williams World dark-purple + gold palette.
+   ====================================================== */
+
+:root {
+  --bg: #0f0a1c;
+  --panel: rgba(18, 11, 32, 0.85);
+  --panel-strong: rgba(25, 14, 45, 0.92);
+  --text: #fff5e6;
+  --text-secondary: #e6d4b8;
+  --muted: rgba(255, 245, 230, 0.6);
+  --gold: #ffd36e;
+  --gold-dark: #c8942a;
+  --green: #7dffb4;
+  --green-dark: #34d399;
+  --blue: #60a5fa;
+  --red: #ef4444;
+  --red-dark: #dc2626;
+  --purple: #a78bfa;
+  --orange: #ff9d5c;
+  --cyan: #22d3ee;
+
+  --card-bg: rgba(30, 15, 40, 0.95);
+  --card-border: rgba(255, 255, 255, 0.16);
+  --glass-bg: rgba(20, 10, 35, 0.3);
+  --glass-blur: blur(14px) saturate(1.3);
+  --glass-border: rgba(255, 255, 255, 0.1);
+
+  --font: 'Nunito', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Cinzel', serif;
+  --font-action: 'Fredoka One', cursive;
+  --font-comic: 'Permanent Marker', cursive;
+
+  --radius-lg: 18px;
+  --radius-md: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 12px 40px rgba(0,0,0,0.45);
+
+  /* Element colors */
+  --type-fire: #ef4444;
+  --type-water: #3b82f6;
+  --type-grass: #22c55e;
+  --type-electric: #eab308;
+  --type-ice: #06b6d4;
+  --type-rock: #78716c;
+  --type-shadow: #6366f1;
+  --type-light: #fbbf24;
+  --type-wind: #14b8a6;
+  --type-metal: #94a3b8;
+  --type-neutral: #a8a29e;
+
+  /* Rarity colors */
+  --rarity-common: rgba(255,255,255,0.4);
+  --rarity-uncommon: #22c55e;
+  --rarity-rare: #3b82f6;
+  --rarity-elite: #a855f7;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; overflow: hidden; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  position: relative;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ===== BACKGROUND LAYER ===== */
+#battle-bg {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.8s ease;
+  z-index: 0;
+}
+#battle-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+    rgba(8,5,18,0.15) 0%,
+    rgba(8,5,18,0.35) 40%,
+    rgba(8,5,18,0.75) 100%);
+  pointer-events: none;
+}
+
+/* Floating particles */
+.particle {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--gold);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  animation: floatParticle 6s ease-in-out infinite;
+}
+@keyframes floatParticle {
+  0%, 100% { opacity: 0; transform: translateY(0) scale(0.5); }
+  20% { opacity: 0.8; }
+  80% { opacity: 0.4; }
+  100% { transform: translateY(-120px) scale(0); }
+}
+
+/* ===== SCREEN LAYERS ===== */
+.screen {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  pointer-events: none;
+  opacity: 0;
+}
+.screen.active {
+  pointer-events: auto;
+  opacity: 1;
+}
+.screen.exit {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+/* ===== SCREEN 1: ZONE SELECT / SCOUT ===== */
+#scout-screen {
+  gap: 24px;
+  padding: 24px;
+}
+.zone-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 900;
+  color: var(--gold);
+  text-shadow: 0 2px 20px rgba(255,211,110,0.4), 0 0 60px rgba(255,211,110,0.15);
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+.zone-subtitle {
+  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 400px;
+  line-height: 1.5;
+}
+.zone-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  font-size: 0.85rem;
+  color: var(--cyan);
+}
+
+.scout-btn {
+  position: relative;
+  padding: 18px 48px;
+  font-family: var(--font-action);
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  color: #1a0e2e;
+  background: linear-gradient(135deg, var(--gold), #ffb347);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 6px 30px rgba(255,211,110,0.4), inset 0 2px 0 rgba(255,255,255,0.3);
+  transition: all 0.2s ease;
+  overflow: hidden;
+  z-index: 1;
+}
+.scout-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 40px rgba(255,211,110,0.6), inset 0 2px 0 rgba(255,255,255,0.3);
+}
+.scout-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+.scout-btn .shimmer {
+  position: absolute;
+  top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  animation: btnShimmer 3s ease-in-out infinite;
+}
+@keyframes btnShimmer {
+  0% { left: -100%; }
+  50%, 100% { left: 100%; }
+}
+
+/* ===== SCREEN 2: CARD DRAW / REVEAL ===== */
+#draw-screen {
+  gap: 20px;
+  padding: 20px;
+}
+.draw-title {
+  font-family: var(--font-comic);
+  font-size: clamp(1.4rem, 4vw, 2.2rem);
+  color: var(--gold);
+  text-shadow: 0 2px 10px rgba(255,211,110,0.5);
+}
+.draw-area {
+  display: flex;
+  gap: clamp(12px, 3vw, 24px);
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+.draw-card-slot {
+  width: clamp(100px, 22vw, 160px);
+  height: clamp(140px, 31vw, 224px);
+  position: relative;
+  transform-style: preserve-3d;
+}
+.draw-card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.draw-card-inner.flipped {
+  transform: rotateY(180deg);
+}
+.draw-card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.draw-card-back {
+  background: url('https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/aBsHEkiCJJbvcNLB.png') center/cover;
+  border: 2px solid var(--gold-dark);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 15px rgba(255,211,110,0.2);
+}
+.draw-card-front {
+  transform: rotateY(180deg);
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px;
+  gap: 4px;
+}
+.draw-card-front .enemy-portrait {
+  width: 100%;
+  flex: 1;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  position: relative;
+  overflow: hidden;
+}
+.draw-card-front .enemy-name {
+  font-family: var(--font-display);
+  font-size: clamp(0.6rem, 1.8vw, 0.85rem);
+  font-weight: 700;
+  color: var(--gold);
+  text-align: center;
+  line-height: 1.2;
+}
+.draw-card-front .enemy-info {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 0.65rem;
+}
+.element-badge {
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.rarity-badge {
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+/* Enemy deck on the right */
+.enemy-deck {
+  position: relative;
+  width: clamp(80px, 18vw, 120px);
+  height: clamp(112px, 25vw, 168px);
+}
+.deck-stack {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url('https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/aBsHEkiCJJbvcNLB.png') center/cover;
+  border-radius: var(--radius-md);
+  border: 2px solid var(--gold-dark);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+.deck-stack:nth-child(1) { top: 0; left: 0; }
+.deck-stack:nth-child(2) { top: 3px; left: 3px; }
+.deck-stack:nth-child(3) { top: 6px; left: 6px; }
+.deck-glow {
+  position: absolute;
+  inset: -8px;
+  border-radius: calc(var(--radius-md) + 8px);
+  background: radial-gradient(ellipse, rgba(255,211,110,0.3), transparent 70%);
+  animation: deckPulse 2s ease-in-out infinite;
+}
+@keyframes deckPulse {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* ===== SCREEN 3: BATTLE FIELD ===== */
+#battle-screen {
+  padding: 8px;
+  gap: 0;
+  justify-content: space-between;
+}
+
+/* Top HUD */
+.battle-hud {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  z-index: 20;
+}
+.hud-left, .hud-right { display: flex; align-items: center; gap: 12px; }
+.round-counter {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  color: var(--gold);
+}
+.combo-meter {
+  font-family: var(--font-comic);
+  font-size: 0.85rem;
+  color: var(--orange);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.combo-meter.visible { opacity: 1; }
+.phase-indicator {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  padding: 4px 12px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+}
+
+/* Battle field - enemy row + hero row */
+.battle-field {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 8px 0;
+  gap: 8px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.card-row {
+  display: flex;
+  justify-content: center;
+  gap: clamp(8px, 2vw, 16px);
+  padding: 4px 0;
+}
+
+/* Battle card (shared between hero and enemy) */
+.battle-card {
+  width: clamp(100px, 28vw, 160px);
+  background: var(--card-bg);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: default;
+  box-shadow: var(--shadow);
+}
+.battle-card.hero-card {
+  cursor: pointer;
+}
+.battle-card.hero-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 50px rgba(0,0,0,0.5), 0 0 20px rgba(255,211,110,0.15);
+}
+.battle-card.hero-card.selected {
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(255,211,110,0.4), 0 12px 40px rgba(0,0,0,0.5);
+}
+.battle-card.defeated {
+  opacity: 0.35;
+  filter: grayscale(0.8);
+  pointer-events: none;
+}
+.battle-card.enemy-card.targeted {
+  border-color: var(--red);
+  box-shadow: 0 0 15px rgba(239,68,68,0.4);
+}
+
+.card-portrait {
+  width: 100%;
+  height: clamp(50px, 12vw, 80px);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.card-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.card-portrait .emoji-portrait {
+  font-size: 2rem;
+}
+.card-role-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 0.55rem;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: rgba(0,0,0,0.6);
+  color: var(--text);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.card-name {
+  font-family: var(--font-display);
+  font-size: clamp(0.6rem, 1.6vw, 0.8rem);
+  font-weight: 700;
+  color: var(--gold);
+  text-align: center;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.card-subtitle {
+  font-size: 0.55rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* HP Bar */
+.hp-bar-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.hp-bar {
+  flex: 1;
+  height: 8px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+}
+.hp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--green-dark), var(--green));
+  border-radius: 4px;
+  transition: width 0.5s ease;
+  position: relative;
+}
+.hp-bar-fill.low {
+  background: linear-gradient(90deg, var(--red-dark), var(--red));
+}
+.hp-bar-fill.mid {
+  background: linear-gradient(90deg, #d97706, var(--orange));
+}
+.hp-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px 4px 0 0;
+}
+.hp-text {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 36px;
+  text-align: right;
+}
+
+/* Status icons row */
+.status-row {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+  min-height: 16px;
+}
+.status-icon {
+  font-size: 0.6rem;
+  padding: 1px 5px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Lane connector lines */
+.lane-divider {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px 0;
+  gap: 8px;
+}
+.lane-line {
+  height: 2px;
+  flex: 1;
+  max-width: 200px;
+  background: linear-gradient(90deg, transparent, var(--gold-dark), transparent);
+  opacity: 0.3;
+}
+.lane-vs {
+  font-family: var(--font-comic);
+  font-size: 0.9rem;
+  color: var(--gold);
+  opacity: 0.6;
+}
+
+/* ===== ACTION PANEL (bottom) ===== */
+.action-panel {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  background: var(--panel-strong);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 20;
+}
+.action-label {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-align: center;
+}
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.action-btn {
+  flex: 1;
+  min-width: 80px;
+  max-width: 180px;
+  padding: 10px 12px;
+  font-family: var(--font);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text);
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  position: relative;
+}
+.action-btn:hover:not(:disabled) {
+  background: rgba(255,255,255,0.12);
+  border-color: var(--gold);
+  transform: translateY(-2px);
+}
+.action-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+.action-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.action-btn .move-name {
+  font-family: var(--font-action);
+  font-size: 0.8rem;
+  color: var(--gold);
+}
+.action-btn .move-desc {
+  font-size: 0.6rem;
+  color: var(--muted);
+  line-height: 1.2;
+}
+.action-btn .cooldown-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--red);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.action-btn.guard-btn { border-color: var(--blue); }
+.action-btn.guard-btn:hover { background: rgba(96,165,250,0.15); }
+
+.confirm-btn {
+  padding: 10px 32px;
+  font-family: var(--font-action);
+  font-size: 1rem;
+  color: #1a0e2e;
+  background: linear-gradient(135deg, var(--gold), #ffb347);
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(255,211,110,0.3);
+  transition: all 0.2s;
+  align-self: center;
+}
+.confirm-btn:hover { transform: scale(1.05); }
+.confirm-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+/* ===== SCREEN 4: WIN/LOSE ===== */
+#result-screen {
+  gap: 24px;
+  padding: 24px;
+}
+.result-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 900;
+  text-shadow: 0 4px 30px rgba(255,211,110,0.5);
+}
+.result-title.win { color: var(--gold); }
+.result-title.lose { color: var(--red); }
+.result-subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+.reward-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px 24px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+}
+.reward-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+.reward-icon { font-size: 1.3rem; }
+.reward-text { color: var(--text-secondary); }
+.reward-value { color: var(--gold); font-weight: 700; margin-left: auto; }
+
+.result-btn {
+  padding: 14px 40px;
+  font-family: var(--font-action);
+  font-size: 1.2rem;
+  color: #1a0e2e;
+  background: linear-gradient(135deg, var(--gold), #ffb347);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 6px 30px rgba(255,211,110,0.4);
+  transition: all 0.2s;
+}
+.result-btn:hover { transform: translateY(-2px) scale(1.03); }
+
+/* ===== FLOATING COMBAT TEXT ===== */
+.float-text {
+  position: fixed;
+  font-family: var(--font-comic);
+  font-weight: 700;
+  pointer-events: none;
+  z-index: 100;
+  animation: floatUp 1.2s ease-out forwards;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+}
+.float-text.damage { color: var(--red); font-size: 1.6rem; }
+.float-text.heal { color: var(--green); font-size: 1.4rem; }
+.float-text.super { color: #fbbf24; font-size: 1.8rem; }
+.float-text.resist { color: var(--muted); font-size: 1.1rem; }
+.float-text.status { color: var(--purple); font-size: 1.1rem; }
+.float-text.ko { color: var(--red); font-size: 2.5rem; }
+.float-text.combo { color: var(--orange); font-size: 1.8rem; }
+@keyframes floatUp {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  30% { transform: translateY(-20px) scale(1.2); }
+  100% { opacity: 0; transform: translateY(-60px) scale(0.8); }
+}
+
+/* ===== BATTLE EVENT BANNER ===== */
+.battle-event-banner {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  padding: 16px 40px;
+  background: var(--panel-strong);
+  backdrop-filter: var(--glass-blur);
+  border: 2px solid var(--gold-dark);
+  border-radius: var(--radius-lg);
+  z-index: 200;
+  text-align: center;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.battle-event-banner.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+.battle-event-banner .event-title {
+  font-family: var(--font-comic);
+  font-size: 1.3rem;
+  color: var(--gold);
+}
+.battle-event-banner .event-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* ===== SCREEN SHAKE ===== */
+.shake {
+  animation: screenShake 0.4s ease-out;
+}
+@keyframes screenShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px) rotate(-0.5deg); }
+  40% { transform: translateX(5px) rotate(0.5deg); }
+  60% { transform: translateX(-3px); }
+  80% { transform: translateX(2px); }
+}
+
+/* ===== ATTACK ANIMATION ===== */
+.attack-anim {
+  animation: attackSlide 0.4s ease-out;
+}
+@keyframes attackSlide {
+  0% { transform: translateY(0); }
+  30% { transform: translateY(-20px) scale(1.05); }
+  60% { transform: translateY(5px); }
+  100% { transform: translateY(0); }
+}
+.hit-flash {
+  animation: hitFlash 0.3s ease-out;
+}
+@keyframes hitFlash {
+  0% { filter: brightness(1); }
+  30% { filter: brightness(2.5); }
+  100% { filter: brightness(1); }
+}
+
+/* ===== BATTLE LOG ===== */
+.battle-log {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 260px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 8px;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius-md) 0 0 0;
+  z-index: 50;
+  font-size: 0.65rem;
+  color: var(--muted);
+  display: none;
+}
+.battle-log.visible { display: block; }
+.log-entry { padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+/* ===== ZONE SELECTOR ===== */
+.zone-selector {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 8px;
+}
+.zone-chip {
+  padding: 8px 20px;
+  font-family: var(--font);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.zone-chip:hover { border-color: var(--gold); color: var(--gold); }
+.zone-chip.active {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: rgba(255,211,110,0.1);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  .battle-card { padding: 6px; }
+  .card-portrait { height: 45px; }
+  .action-panel { padding: 8px; }
+  .battle-log { display: none !important; }
+}
+  </style>
+</head>
+<body>
+
+<!-- Background -->
+<div id="battle-bg"></div>
+
+<!-- Floating particles -->
+<div id="particles"></div>
+
+<!-- SCREEN 1: Zone Select + Scout -->
+<div id="scout-screen" class="screen active">
+  <div class="zone-title" id="zone-title">Launch Meadow</div>
+  <div class="zone-subtitle" id="zone-subtitle">A bright meadow where young adventurers take their first steps. Enemies here are friendly but feisty!</div>
+  <div class="zone-badge" id="zone-modifier">
+    <span>☀️</span>
+    <span id="modifier-text">Sunny Day: +10% Light moves</span>
+  </div>
+  <div class="zone-selector" id="zone-selector"></div>
+  <button class="scout-btn" id="scout-btn" onclick="startEncounter()">
+    <span class="shimmer"></span>
+    Scout for Trouble
+  </button>
+</div>
+
+<!-- SCREEN 2: Card Draw / Reveal -->
+<div id="draw-screen" class="screen">
+  <div class="draw-title" id="draw-title">Drawing Enemies...</div>
+  <div style="display:flex; align-items:center; gap: clamp(16px, 4vw, 32px); justify-content:center;">
+    <div class="draw-area" id="draw-area"></div>
+    <div class="enemy-deck" id="enemy-deck">
+      <div class="deck-glow"></div>
+      <div class="deck-stack"></div>
+      <div class="deck-stack"></div>
+      <div class="deck-stack"></div>
+    </div>
+  </div>
+  <button class="scout-btn" id="start-battle-btn" style="display:none;" onclick="startBattle()">
+    <span class="shimmer"></span>
+    Begin Battle!
+  </button>
+</div>
+
+<!-- SCREEN 3: Battle Field -->
+<div id="battle-screen" class="screen">
+  <div class="battle-hud">
+    <div class="hud-left">
+      <div class="round-counter" id="round-counter">Round 1</div>
+      <div class="combo-meter" id="combo-meter">Combo x2</div>
+    </div>
+    <div class="hud-right">
+      <div class="phase-indicator" id="phase-indicator">Your Turn</div>
+    </div>
+  </div>
+
+  <div class="battle-field">
+    <!-- Enemy Row -->
+    <div class="card-row" id="enemy-row"></div>
+
+    <!-- Lane Divider -->
+    <div class="lane-divider">
+      <div class="lane-line"></div>
+      <div class="lane-vs">VS</div>
+      <div class="lane-line"></div>
+    </div>
+
+    <!-- Hero Row -->
+    <div class="card-row" id="hero-row"></div>
+  </div>
+
+  <!-- Action Panel -->
+  <div class="action-panel" id="action-panel">
+    <div class="action-label" id="action-label">Select a hero to see their moves</div>
+    <div class="action-buttons" id="action-buttons"></div>
+  </div>
+</div>
+
+<!-- SCREEN 4: Result -->
+<div id="result-screen" class="screen">
+  <div class="result-title" id="result-title">Victory!</div>
+  <div class="result-subtitle" id="result-subtitle">William and his team triumphed!</div>
+  <div class="reward-list" id="reward-list"></div>
+  <button class="result-btn" onclick="resetBattle()">Battle Again</button>
+</div>
+
+<!-- Battle Event Banner -->
+<div class="battle-event-banner" id="battle-event-banner">
+  <div class="event-title" id="event-title"></div>
+  <div class="event-desc" id="event-desc"></div>
+</div>
+
+<!-- Battle Log -->
+<div class="battle-log" id="battle-log"></div>
+
+<script>
+/* ================================================================
+   WILLIAM'S WORLD — BATTLE ENGINE (self-contained, repo-ready)
+   ================================================================ */
+
+// ===== IMAGE URLS =====
+const IMG = {
+  william: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/sMoRWqDhtxxeKVIM.png',
+  ember: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/iCipTuDINrVPccTx.png',
+  sprite: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/KSZUAwlPwWkvIShw.png',
+  golem: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/xDrLaROHAMJMAkVZ.png',
+};
+
+const ZONE_BG = {
+  'launch-meadow': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/ViufidrtINIybyJL.png',
+  'homework-hills': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/jsTYrQVFsbdfOynZ.png',
+  'backpack-bastion': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/StAvzZIzdEKQxebb.png',
+  'focus-forest': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/WeOgAUHJzaIqkKqA.png',
+};
+
+// ===== ZONE DATA =====
+const ZONES = [
+  { id: 'launch-meadow', name: 'Launch Meadow', desc: 'A bright meadow where young adventurers take their first steps. Enemies here are friendly but feisty!', modifier: '☀️ Sunny Day: +10% Light moves', tier: 'T1' },
+  { id: 'homework-hills', name: 'Homework Hills', desc: 'Rolling hills of books and pencils. The enemies here are tricky and love to debuff!', modifier: '📚 Study Zone: +10% Shadow moves', tier: 'T2' },
+  { id: 'backpack-bastion', name: 'Backpack Bastion', desc: 'A fortified outpost of supplies and gear. Tough enemies guard the path ahead.', modifier: '🎒 Gear Up: +10% Metal moves', tier: 'T3' },
+  { id: 'focus-forest', name: 'Focus Forest', desc: 'A mystical forest of crystals and ancient trees. The strongest foes lurk in the shadows.', modifier: '🔮 Crystal Aura: +10% Ice moves', tier: 'T4' },
+];
+
+// ===== HERO DATA (from heroes-and-companions.json) =====
+const HEROES = [
+  {
+    id: 'william', name: 'William', title: 'Hero', element: 'NEUTRAL',
+    img: IMG.william,
+    stats: { hp: 120, atk: 14, def: 12, spd: 12 },
+    moves: [
+      { name: 'Tiger Strike', type: 'damage', element: 'NEUTRAL', cooldown: 0, maxCd: 1, power: 20, desc: 'A fast strike that always hits.', keywords: ['Damage'] },
+      { name: 'Team Call', type: 'buff', element: 'NEUTRAL', cooldown: 0, maxCd: 4, power: 0, desc: 'Rally: Focus (+15% ATK) for 2 turns.', keywords: ['Buff'], effect: 'focus' },
+      { name: 'Brave Guard', type: 'shield', element: 'NEUTRAL', cooldown: 0, maxCd: 3, power: 25, desc: 'Shield an ally for 2 turns.', keywords: ['Shield'], target: 'ally' },
+    ]
+  },
+  {
+    id: 'ember', name: 'Ember', title: 'Fire Tiger', element: 'FIRE',
+    img: IMG.ember,
+    stats: { hp: 110, atk: 16, def: 10, spd: 12 },
+    moves: [
+      { name: 'Ember Bite', type: 'damage', element: 'FIRE', cooldown: 0, maxCd: 2, power: 24, desc: 'A fiery bite that may Burn (25%).', keywords: ['Damage', 'Burn'], statusChance: 0.25, statusType: 'burn' },
+      { name: 'Heat Up', type: 'buff', element: 'FIRE', cooldown: 0, maxCd: 4, power: 0, desc: 'Gains Focus (+15% ATK) for 2 turns.', keywords: ['Buff'], effect: 'focus' },
+      { name: 'Flame Dash', type: 'damage', element: 'FIRE', cooldown: 0, maxCd: 3, power: 30, desc: 'Dash through for medium damage.', keywords: ['Damage'] },
+    ]
+  },
+  {
+    id: 'sprite', name: 'Sprite', title: 'Light Fairy', element: 'LIGHT',
+    img: IMG.sprite,
+    stats: { hp: 95, atk: 10, def: 10, spd: 15 },
+    moves: [
+      { name: 'Glow Heal', type: 'heal', element: 'LIGHT', cooldown: 0, maxCd: 3, power: 30, desc: 'Heal one ally.', keywords: ['Heal'], target: 'ally' },
+      { name: 'Sparkle Shield', type: 'shield', element: 'LIGHT', cooldown: 0, maxCd: 4, power: 20, desc: 'Shield one ally for 2 turns.', keywords: ['Shield'], target: 'ally' },
+      { name: 'Dazzle', type: 'control', element: 'LIGHT', cooldown: 0, maxCd: 5, power: 12, desc: 'May Blind all enemies (25%).', keywords: ['Blind'], statusChance: 0.25, statusType: 'blind', target: 'all_enemies' },
+    ]
+  },
+];
+
+// ===== ENEMY DATA (embedded subset from enemies.json) =====
+const ENEMIES_BY_ZONE = {
+  'launch-meadow': [
+    { id: 'dandelion-dagger', name: 'Dandelion Dagger', role: 'SKIRMISHER', element: 'GRASS', rarity: 'COMMON', emoji: '🌼', moves: [
+      { name: 'Puff Slash', type: 'damage', power: 14, desc: 'Quick slash, may Blind.', keywords: ['Damage'], statusChance: 0.25, statusType: 'blind' },
+      { name: 'Seed Sprint', type: 'buff', power: 0, desc: 'Boosts speed.', keywords: ['Buff'], effect: 'focus' }
+    ]},
+    { id: 'mudkip-bandit', name: 'Mudkip Bandit', role: 'BRUISER', element: 'WATER', rarity: 'COMMON', emoji: '💧', moves: [
+      { name: 'Mud Toss', type: 'damage', power: 14, desc: 'Toss mud; may Weaken.', keywords: ['Damage', 'Weaken'], statusChance: 0.2, statusType: 'weaken' },
+      { name: 'Puddle Guard', type: 'buff', power: 0, desc: 'Gains Guard.', keywords: ['Guard'], effect: 'guard' }
+    ]},
+    { id: 'pebble-pouncer', name: 'Pebble Pouncer', role: 'SKIRMISHER', element: 'ROCK', rarity: 'COMMON', emoji: '🪨', moves: [
+      { name: 'Pounce', type: 'damage', power: 16, desc: 'Hits harder if target is slower.', keywords: ['Damage'] },
+      { name: 'Stone Skin', type: 'buff', power: 0, desc: 'Raises DEF.', keywords: ['Guard'], effect: 'guard' }
+    ]},
+    { id: 'sunblink-moth', name: 'Sunblink Moth', role: 'CASTER', element: 'LIGHT', rarity: 'COMMON', emoji: '🦋', moves: [
+      { name: 'Glimmer Beam', type: 'damage', power: 12, desc: 'A simple light blast.', keywords: ['Damage'] },
+      { name: 'Dazzle', type: 'control', power: 8, desc: 'May Blind heroes.', keywords: ['Blind'], statusChance: 0.25, statusType: 'blind' }
+    ]},
+    { id: 'thorny-sneak', name: 'Thorny Sneak', role: 'TRICKSTER', element: 'GRASS', rarity: 'UNCOMMON', emoji: '🌿', moves: [
+      { name: 'Thorn Trap', type: 'control', power: 10, desc: 'Roots a hero.', keywords: ['Root'], statusChance: 1.0, statusType: 'root' },
+      { name: 'Sucker Vine', type: 'damage', power: 20, desc: 'Damage + lifesteal.', keywords: ['Damage', 'Heal'] }
+    ]},
+    { id: 'scorchling', name: 'Scorchling', role: 'BRUISER', element: 'FIRE', rarity: 'UNCOMMON', emoji: '🔥', moves: [
+      { name: 'Ember Bite', type: 'damage', power: 18, desc: 'Bites and may Burn.', keywords: ['Damage', 'Burn'], statusChance: 0.25, statusType: 'burn' },
+      { name: 'Heat Up', type: 'buff', power: 0, desc: 'Gains Focus.', keywords: ['Buff'], effect: 'focus' }
+    ]},
+    { id: 'windwink-imp', name: 'Windwink Imp', role: 'SKIRMISHER', element: 'WIND', rarity: 'COMMON', emoji: '💨', moves: [
+      { name: 'Gust Jab', type: 'damage', power: 12, desc: 'Fast jab of wind.', keywords: ['Damage'] },
+      { name: 'Slipstream', type: 'buff', power: 0, desc: 'Boosts team speed.', keywords: ['Buff'], effect: 'focus' }
+    ]},
+    { id: 'spark-dustling', name: 'Spark Dustling', role: 'CASTER', element: 'ELECTRIC', rarity: 'COMMON', emoji: '⚡', moves: [
+      { name: 'Static Pop', type: 'damage', power: 14, desc: 'May Shock.', keywords: ['Damage', 'Shock'], statusChance: 0.2, statusType: 'shock' },
+      { name: 'Charge', type: 'buff', power: 0, desc: 'Next hit does extra.', keywords: ['Buff'], effect: 'focus' }
+    ]},
+    { id: 'nightleaf-snatcher', name: 'Nightleaf Snatcher', role: 'TRICKSTER', element: 'SHADOW', rarity: 'RARE', emoji: '🌑', moves: [
+      { name: 'Swipe & Vanish', type: 'damage', power: 22, desc: 'Strikes and slows.', keywords: ['Damage', 'Debuff'], statusChance: 0.5, statusType: 'chill' },
+      { name: 'Shadow Cloak', type: 'buff', power: 0, desc: 'Dodges next attack.', keywords: ['Shield'], effect: 'guard' }
+    ]},
+    { id: 'slimecap-trickster', name: 'Slimecap Trickster', role: 'SUPPORT', element: 'GRASS', rarity: 'ELITE', emoji: '🍄', moves: [
+      { name: 'Spore Mist', type: 'debuff', power: 8, desc: 'Lowers hero ATK.', keywords: ['Debuff'], statusChance: 1.0, statusType: 'weaken' },
+      { name: 'Cap Bounce', type: 'damage', power: 18, desc: 'A bouncy slam.', keywords: ['Damage'] }
+    ]},
+  ],
+  'homework-hills': [
+    { id: 'eraser-wraith', name: 'Eraser Wraith', role: 'TRICKSTER', element: 'SHADOW', rarity: 'COMMON', emoji: '👻', moves: [
+      { name: 'Erase Confidence', type: 'debuff', power: 10, desc: 'Weakens defense.', keywords: ['Weaken'], statusChance: 1.0, statusType: 'weaken' },
+      { name: 'Smudge Swipe', type: 'damage', power: 16, desc: 'Quick swipe.', keywords: ['Damage'] }
+    ]},
+    { id: 'paper-cut-pirate', name: 'Paper Cut Pirate', role: 'SKIRMISHER', element: 'WIND', rarity: 'UNCOMMON', emoji: '🏴‍☠️', moves: [
+      { name: 'Cutlass Cut', type: 'damage', power: 22, desc: 'Hits harder if debuffed.', keywords: ['Damage'] },
+      { name: 'Ruffle Gust', type: 'control', power: 8, desc: 'May Blind.', keywords: ['Blind'], statusChance: 0.25, statusType: 'blind' }
+    ]},
+    { id: 'inkblob-gremlin', name: 'Inkblob Gremlin', role: 'CASTER', element: 'SHADOW', rarity: 'COMMON', emoji: '🖋️', moves: [
+      { name: 'Ink Spray', type: 'control', power: 8, desc: 'Blinds a hero.', keywords: ['Blind'], statusChance: 1.0, statusType: 'blind' },
+      { name: 'Blob Bolt', type: 'damage', power: 14, desc: 'Simple bolt.', keywords: ['Damage'] }
+    ]},
+    { id: 'quiz-golemlet', name: 'Quiz Golemlet', role: 'TANK', element: 'ROCK', rarity: 'UNCOMMON', emoji: '🗿', moves: [
+      { name: 'Pop Quiz Punch', type: 'damage', power: 18, desc: 'Solid punch.', keywords: ['Damage'] },
+      { name: 'Study Block', type: 'buff', power: 0, desc: 'Gains Guard.', keywords: ['Guard'], effect: 'guard' }
+    ]},
+    { id: 'ruler-knight', name: 'Ruler Knight', role: 'TANK', element: 'METAL', rarity: 'RARE', emoji: '📏', moves: [
+      { name: 'Measure Strike', type: 'damage', power: 20, desc: 'Precise strike.', keywords: ['Damage'] },
+      { name: 'Straighten Up', type: 'buff', power: 0, desc: 'Guard + cleanse.', keywords: ['Guard', 'Cleanse'], effect: 'guard' }
+    ]},
+    { id: 'glue-gooper', name: 'Glue Gooper', role: 'SUPPORT', element: 'WATER', rarity: 'COMMON', emoji: '🫠', moves: [
+      { name: 'Sticky Splash', type: 'control', power: 10, desc: 'Roots a hero.', keywords: ['Root'], statusChance: 1.0, statusType: 'root' },
+      { name: 'Goop Heal', type: 'heal', power: 15, desc: 'Heals an ally.', keywords: ['Heal'] }
+    ]},
+    { id: 'chalk-phantom', name: 'Chalk Phantom', role: 'CASTER', element: 'LIGHT', rarity: 'ELITE', emoji: '✨', moves: [
+      { name: 'Chalk Beam', type: 'damage', power: 24, desc: 'Powerful beam.', keywords: ['Damage'] },
+      { name: 'Dust Cloud', type: 'control', power: 8, desc: 'Blinds all heroes.', keywords: ['Blind'], statusChance: 0.3, statusType: 'blind' }
+    ]},
+  ],
+  'backpack-bastion': [
+    { id: 'zipper-viper', name: 'Zipper Viper', role: 'SKIRMISHER', element: 'METAL', rarity: 'COMMON', emoji: '🐍', moves: [
+      { name: 'Zip Strike', type: 'damage', power: 20, desc: 'Fast metal strike.', keywords: ['Damage'] },
+      { name: 'Coil Guard', type: 'buff', power: 0, desc: 'Gains Guard.', keywords: ['Guard'], effect: 'guard' }
+    ]},
+    { id: 'buckle-brute', name: 'Buckle Brute', role: 'TANK', element: 'METAL', rarity: 'UNCOMMON', emoji: '🔩', moves: [
+      { name: 'Buckle Bash', type: 'damage', power: 22, desc: 'Heavy bash.', keywords: ['Damage'] },
+      { name: 'Iron Wall', type: 'buff', power: 0, desc: 'Guard for team.', keywords: ['Guard'], effect: 'guard' }
+    ]},
+    { id: 'lint-lurker', name: 'Lint Lurker', role: 'TRICKSTER', element: 'SHADOW', rarity: 'COMMON', emoji: '🕸️', moves: [
+      { name: 'Lint Tangle', type: 'control', power: 10, desc: 'Roots a hero.', keywords: ['Root'], statusChance: 1.0, statusType: 'root' },
+      { name: 'Shadow Poke', type: 'damage', power: 18, desc: 'Sneaky poke.', keywords: ['Damage'] }
+    ]},
+    { id: 'compass-spinner', name: 'Compass Spinner', role: 'CASTER', element: 'WIND', rarity: 'RARE', emoji: '🧭', moves: [
+      { name: 'Spin Blast', type: 'damage', power: 24, desc: 'Whirling blast.', keywords: ['Damage'] },
+      { name: 'True North', type: 'buff', power: 0, desc: 'Focus for team.', keywords: ['Buff'], effect: 'focus' }
+    ]},
+    { id: 'thermos-titan', name: 'Thermos Titan', role: 'TANK', element: 'FIRE', rarity: 'ELITE', emoji: '🫗', moves: [
+      { name: 'Steam Blast', type: 'damage', power: 26, desc: 'Burns and damages.', keywords: ['Damage', 'Burn'], statusChance: 0.35, statusType: 'burn' },
+      { name: 'Heat Shield', type: 'buff', power: 0, desc: 'Guard + Focus.', keywords: ['Guard', 'Buff'], effect: 'guard' }
+    ]},
+  ],
+  'focus-forest': [
+    { id: 'crystal-crawler', name: 'Crystal Crawler', role: 'TANK', element: 'ICE', rarity: 'COMMON', emoji: '💎', moves: [
+      { name: 'Frost Bite', type: 'damage', power: 24, desc: 'Icy bite, may Chill.', keywords: ['Damage', 'Chill'], statusChance: 0.3, statusType: 'chill' },
+      { name: 'Crystal Shell', type: 'buff', power: 0, desc: 'Strong Guard.', keywords: ['Guard'], effect: 'guard' }
+    ]},
+    { id: 'mindmoth', name: 'Mindmoth', role: 'CASTER', element: 'SHADOW', rarity: 'UNCOMMON', emoji: '🦇', moves: [
+      { name: 'Psychic Pulse', type: 'damage', power: 22, desc: 'Mental attack.', keywords: ['Damage'] },
+      { name: 'Confuse Ray', type: 'control', power: 8, desc: 'May Shock.', keywords: ['Shock'], statusChance: 0.35, statusType: 'shock' }
+    ]},
+    { id: 'root-warden', name: 'Root Warden', role: 'TANK', element: 'GRASS', rarity: 'COMMON', emoji: '🌳', moves: [
+      { name: 'Root Slam', type: 'damage', power: 22, desc: 'Roots and slams.', keywords: ['Damage', 'Root'], statusChance: 0.3, statusType: 'root' },
+      { name: 'Nature Guard', type: 'buff', power: 0, desc: 'Guard for team.', keywords: ['Guard'], effect: 'guard' }
+    ]},
+    { id: 'prism-specter', name: 'Prism Specter', role: 'CASTER', element: 'LIGHT', rarity: 'RARE', emoji: '🌈', moves: [
+      { name: 'Prism Beam', type: 'damage', power: 28, desc: 'Powerful light beam.', keywords: ['Damage'] },
+      { name: 'Refract', type: 'buff', power: 0, desc: 'Focus + Shield.', keywords: ['Buff', 'Shield'], effect: 'focus' }
+    ]},
+    { id: 'void-weaver', name: 'Void Weaver', role: 'TRICKSTER', element: 'SHADOW', rarity: 'ELITE', emoji: '🕷️', moves: [
+      { name: 'Void Rend', type: 'damage', power: 30, desc: 'Devastating shadow strike.', keywords: ['Damage', 'Weaken'], statusChance: 0.4, statusType: 'weaken' },
+      { name: 'Dark Veil', type: 'buff', power: 0, desc: 'Dodge + Focus.', keywords: ['Shield', 'Buff'], effect: 'guard' }
+    ]},
+  ],
+};
+
+// Tier stat scaling
+const TIER_STATS = {
+  T1: { COMMON: {hp:60,atk:10,def:8,spd:10}, UNCOMMON: {hp:70,atk:12,def:9,spd:11}, RARE: {hp:80,atk:14,def:10,spd:12}, ELITE: {hp:95,atk:16,def:12,spd:12} },
+  T2: { COMMON: {hp:85,atk:14,def:11,spd:12}, UNCOMMON: {hp:95,atk:16,def:12,spd:13}, RARE: {hp:110,atk:18,def:13,spd:14}, ELITE: {hp:130,atk:20,def:15,spd:14} },
+  T3: { COMMON: {hp:120,atk:18,def:15,spd:14}, UNCOMMON: {hp:135,atk:20,def:16,spd:15}, RARE: {hp:155,atk:22,def:18,spd:16}, ELITE: {hp:185,atk:24,def:20,spd:16} },
+  T4: { COMMON: {hp:165,atk:22,def:18,spd:16}, UNCOMMON: {hp:185,atk:24,def:20,spd:17}, RARE: {hp:210,atk:26,def:22,spd:18}, ELITE: {hp:250,atk:28,def:24,spd:18} },
+};
+
+// Element colors
+const ELEMENT_COLORS = {
+  FIRE: 'var(--type-fire)', WATER: 'var(--type-water)', GRASS: 'var(--type-grass)',
+  ELECTRIC: 'var(--type-electric)', ICE: 'var(--type-ice)', ROCK: 'var(--type-rock)',
+  SHADOW: 'var(--type-shadow)', LIGHT: 'var(--type-light)', WIND: 'var(--type-wind)',
+  METAL: 'var(--type-metal)', NEUTRAL: 'var(--type-neutral)',
+  WATER_SHADOW: 'var(--type-shadow)', GRASS_ROCK: 'var(--type-rock)',
+  WIND_METAL: 'var(--type-metal)', SHADOW_WATER: 'var(--type-shadow)',
+};
+
+const RARITY_COLORS = {
+  COMMON: 'var(--rarity-common)', UNCOMMON: 'var(--rarity-uncommon)',
+  RARE: 'var(--rarity-rare)', ELITE: 'var(--rarity-elite)',
+};
+
+// Type chart (simplified)
+const TYPE_CHART = {
+  FIRE: { GRASS: 2, ICE: 2, WATER: 0.5, ROCK: 0.5, METAL: 0.5 },
+  WATER: { FIRE: 2, ROCK: 2, GRASS: 0.5, ELECTRIC: 0.5 },
+  GRASS: { WATER: 2, ROCK: 2, FIRE: 0.5, ICE: 0.5, SHADOW: 0.5, WIND: 0.5 },
+  ELECTRIC: { WATER: 2, WIND: 2, METAL: 2, ELECTRIC: 0.5 },
+  ICE: { GRASS: 2, ROCK: 2, WIND: 2, FIRE: 0.5, ICE: 0.5, METAL: 0.5 },
+  ROCK: { FIRE: 2, ICE: 2, ELECTRIC: 0.5, WATER: 0.5, WIND: 0.5 },
+  SHADOW: { LIGHT: 2, SHADOW: 0.5 },
+  LIGHT: { SHADOW: 2, LIGHT: 0.5 },
+  WIND: { GRASS: 2, ELECTRIC: 0.5, ICE: 0.5 },
+  METAL: { FIRE: 2, ICE: 2, ROCK: 2, ELECTRIC: 0.5, METAL: 0.5 },
+  NEUTRAL: {},
+};
+
+// Battle events
+const BATTLE_EVENTS = [
+  { title: '🌫️ Fog Rolls In!', desc: 'Accuracy -10% for 2 rounds.' },
+  { title: '💰 Treasure Chest!', desc: 'Break it for bonus XP!' },
+  { title: '⚠️ Enemy Reinforcements?', desc: 'Nope — false alarm! 😅' },
+  { title: '🌟 Star Alignment!', desc: 'All moves get +5 power this round!' },
+  { title: '💨 Tailwind!', desc: 'Your team acts first this round!' },
+  { title: '🌧️ Rain Starts!', desc: 'Water moves +15% this round.' },
+];
+
+// ===== GAME STATE =====
+let currentZone = ZONES[0];
+let drawnEnemies = [];
+let heroParty = [];
+let enemyParty = [];
+let selectedHeroIdx = -1;
+let heroActions = [null, null, null]; // { moveIdx, targetIdx }
+let currentRound = 1;
+let comboCount = 0;
+let battleLog = [];
+let battlePhase = 'player'; // player, enemy, resolve
+let lastEnemyTrio = null;
+
+// ===== INIT =====
+function init() {
+  createParticles();
+  buildZoneSelector();
+  setZone(ZONES[0]);
+}
+
+function createParticles() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.top = (60 + Math.random() * 40) + '%';
+    p.style.animationDelay = (Math.random() * 6) + 's';
+    p.style.animationDuration = (4 + Math.random() * 4) + 's';
+    p.style.width = (2 + Math.random() * 4) + 'px';
+    p.style.height = p.style.width;
+    container.appendChild(p);
+  }
+}
+
+function buildZoneSelector() {
+  const sel = document.getElementById('zone-selector');
+  sel.innerHTML = '';
+  ZONES.forEach(z => {
+    const chip = document.createElement('button');
+    chip.className = 'zone-chip' + (z.id === currentZone.id ? ' active' : '');
+    chip.textContent = z.name;
+    chip.onclick = () => setZone(z);
+    sel.appendChild(chip);
+  });
+}
+
+function setZone(zone) {
+  currentZone = zone;
+  document.getElementById('battle-bg').style.backgroundImage = `url('${ZONE_BG[zone.id]}')`;
+  document.getElementById('zone-title').textContent = zone.name;
+  document.getElementById('zone-subtitle').textContent = zone.desc;
+  document.getElementById('modifier-text').textContent = zone.modifier.replace(/^.+?\s/, '');
+  document.querySelector('#zone-modifier span').textContent = zone.modifier.split(' ')[0];
+  buildZoneSelector();
+}
+
+// ===== SCREEN MANAGEMENT =====
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => {
+    if (s.classList.contains('active')) {
+      s.classList.add('exit');
+      setTimeout(() => { s.classList.remove('active', 'exit'); }, 500);
+    }
+  });
+  setTimeout(() => {
+    document.getElementById(id).classList.add('active');
+  }, 300);
+}
+
+// ===== ENCOUNTER START =====
+function startEncounter() {
+  // Shake screen
+  document.body.classList.add('shake');
+  setTimeout(() => document.body.classList.remove('shake'), 400);
+
+  // Draw 3 enemies
+  drawEnemies();
+
+  setTimeout(() => {
+    showScreen('draw-screen');
+    setTimeout(() => revealCards(), 600);
+  }, 500);
+}
+
+function drawEnemies() {
+  const pool = ENEMIES_BY_ZONE[currentZone.id] || ENEMIES_BY_ZONE['launch-meadow'];
+  const tier = currentZone.tier;
+
+  // Separate by rarity
+  const commons = pool.filter(e => e.rarity === 'COMMON' || e.rarity === 'UNCOMMON');
+  const rares = pool.filter(e => e.rarity === 'RARE' || e.rarity === 'ELITE');
+
+  // Draw 2 commons + 1 rare (or uncommon if no rare)
+  let drawn = [];
+  const shuffledCommons = shuffle([...commons]);
+  const shuffledRares = shuffle([...rares]);
+
+  drawn.push(shuffledCommons[0] || pool[0]);
+  drawn.push(shuffledCommons[1] || shuffledCommons[0] || pool[1]);
+
+  if (shuffledRares.length > 0) {
+    // Small chance for elite
+    if (Math.random() < 0.15 && pool.some(e => e.rarity === 'ELITE')) {
+      drawn.push(pool.find(e => e.rarity === 'ELITE'));
+    } else {
+      drawn.push(shuffledRares[0]);
+    }
+  } else {
+    drawn.push(shuffledCommons[2] || pool[2] || pool[0]);
+  }
+
+  // Prevent same trio
+  const trioKey = drawn.map(e => e.id).sort().join(',');
+  if (trioKey === lastEnemyTrio && pool.length > 3) {
+    return drawEnemies(); // Re-draw
+  }
+  lastEnemyTrio = trioKey;
+
+  // Ensure no duplicate IDs
+  const seen = new Set();
+  drawn = drawn.filter(e => {
+    if (seen.has(e.id)) return false;
+    seen.add(e.id);
+    return true;
+  });
+  while (drawn.length < 3) {
+    const extra = pool.find(e => !seen.has(e.id));
+    if (extra) { drawn.push(extra); seen.add(extra.id); }
+    else break;
+  }
+
+  // Assign stats from tier
+  drawnEnemies = drawn.map(e => {
+    const stats = TIER_STATS[tier]?.[e.rarity] || TIER_STATS.T1.COMMON;
+    return { ...e, stats: { ...stats } };
+  });
+
+  // Build draw area
+  const area = document.getElementById('draw-area');
+  area.innerHTML = '';
+  drawnEnemies.forEach((enemy, i) => {
+    const slot = document.createElement('div');
+    slot.className = 'draw-card-slot';
+    slot.innerHTML = `
+      <div class="draw-card-inner" id="draw-card-${i}">
+        <div class="draw-card-face draw-card-back"></div>
+        <div class="draw-card-face draw-card-front">
+          <div class="enemy-portrait" style="background:linear-gradient(135deg, ${ELEMENT_COLORS[enemy.element] || 'var(--type-neutral)'}, rgba(30,15,40,0.8));">
+            <span style="font-size:2.5rem;">${enemy.emoji}</span>
+          </div>
+          <div class="enemy-name">${enemy.name}</div>
+          <div class="enemy-info">
+            <span class="element-badge" style="background:${ELEMENT_COLORS[enemy.element]};color:#fff;">${enemy.element}</span>
+            <span class="rarity-badge" style="background:${RARITY_COLORS[enemy.rarity]};color:#fff;">${enemy.rarity}</span>
+          </div>
+        </div>
+      </div>
+    `;
+    slot.style.opacity = '0';
+    slot.style.transform = 'translateX(100px)';
+    area.appendChild(slot);
+  });
+
+  document.getElementById('draw-title').textContent = 'Drawing Enemies...';
+  document.getElementById('start-battle-btn').style.display = 'none';
+}
+
+function revealCards() {
+  const slots = document.querySelectorAll('.draw-card-slot');
+
+  // Fly cards in
+  slots.forEach((slot, i) => {
+    setTimeout(() => {
+      slot.style.transition = 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      slot.style.opacity = '1';
+      slot.style.transform = 'translateX(0)';
+    }, i * 300);
+  });
+
+  // Flip cards one by one
+  const flipDelay = slots.length * 300 + 600;
+  slots.forEach((slot, i) => {
+    setTimeout(() => {
+      const inner = document.getElementById(`draw-card-${i}`);
+      inner.classList.add('flipped');
+      // Shake on reveal
+      document.body.classList.add('shake');
+      setTimeout(() => document.body.classList.remove('shake'), 300);
+    }, flipDelay + i * 800);
+  });
+
+  // Show battle button
+  setTimeout(() => {
+    document.getElementById('draw-title').textContent = 'Enemies Revealed!';
+    document.getElementById('start-battle-btn').style.display = '';
+    document.getElementById('start-battle-btn').style.animation = 'none';
+    document.getElementById('start-battle-btn').offsetHeight; // reflow
+    document.getElementById('start-battle-btn').style.animation = '';
+  }, flipDelay + slots.length * 800 + 400);
+}
+
+// ===== BATTLE START =====
+function startBattle() {
+  // Initialize hero party
+  heroParty = HEROES.map(h => ({
+    ...h,
+    currentHp: h.stats.hp,
+    maxHp: h.stats.hp,
+    currentStats: { ...h.stats },
+    statuses: [],
+    shields: [],
+    cooldowns: h.moves.map(() => 0),
+    isDefeated: false,
+    team: 'hero',
+  }));
+
+  // Initialize enemy party
+  enemyParty = drawnEnemies.map(e => ({
+    ...e,
+    currentHp: e.stats.hp,
+    maxHp: e.stats.hp,
+    currentStats: { ...e.stats },
+    statuses: [],
+    shields: [],
+    cooldowns: e.moves.map(() => 0),
+    isDefeated: false,
+    team: 'enemy',
+  }));
+
+  currentRound = 1;
+  comboCount = 0;
+  heroActions = [null, null, null];
+  selectedHeroIdx = -1;
+  battlePhase = 'player';
+
+  showScreen('battle-screen');
+  setTimeout(() => {
+    renderBattleField();
+    updateHUD();
+    // Maybe trigger a battle event
+    if (Math.random() < 0.4) {
+      setTimeout(() => triggerBattleEvent(), 1000);
+    }
+  }, 400);
+}
+
+// ===== RENDER BATTLE FIELD =====
+function renderBattleField() {
+  renderEnemyRow();
+  renderHeroRow();
+  renderActionPanel();
+}
+
+function renderEnemyRow() {
+  const row = document.getElementById('enemy-row');
+  row.innerHTML = '';
+  enemyParty.forEach((enemy, i) => {
+    const card = document.createElement('div');
+    card.className = 'battle-card enemy-card' + (enemy.isDefeated ? ' defeated' : '');
+    card.id = `enemy-card-${i}`;
+    const hpPct = (enemy.currentHp / enemy.maxHp) * 100;
+    const hpClass = hpPct <= 25 ? 'low' : hpPct <= 50 ? 'mid' : '';
+
+    card.innerHTML = `
+      <div class="card-portrait" style="background:linear-gradient(135deg, ${ELEMENT_COLORS[enemy.element] || 'var(--type-neutral)'}, rgba(30,15,40,0.7));">
+        <span class="emoji-portrait">${enemy.emoji}</span>
+        <span class="card-role-badge" style="color:${RARITY_COLORS[enemy.rarity]}">${enemy.rarity}</span>
+      </div>
+      <div class="card-name">${enemy.name}</div>
+      <div class="card-subtitle">${enemy.role} · ${enemy.element}</div>
+      <div class="hp-bar-container">
+        <div class="hp-bar"><div class="hp-bar-fill ${hpClass}" style="width:${hpPct}%"></div></div>
+        <div class="hp-text">${enemy.currentHp}/${enemy.maxHp}</div>
+      </div>
+      <div class="status-row">${renderStatuses(enemy.statuses)}</div>
+    `;
+    row.appendChild(card);
+  });
+}
+
+function renderHeroRow() {
+  const row = document.getElementById('hero-row');
+  row.innerHTML = '';
+  heroParty.forEach((hero, i) => {
+    const card = document.createElement('div');
+    const isSelected = selectedHeroIdx === i;
+    const hasAction = heroActions[i] !== null;
+    card.className = 'battle-card hero-card' +
+      (hero.isDefeated ? ' defeated' : '') +
+      (isSelected ? ' selected' : '');
+    card.id = `hero-card-${i}`;
+    card.onclick = () => selectHero(i);
+
+    const hpPct = (hero.currentHp / hero.maxHp) * 100;
+    const hpClass = hpPct <= 25 ? 'low' : hpPct <= 50 ? 'mid' : '';
+
+    card.innerHTML = `
+      <div class="card-portrait">
+        <img src="${hero.img}" alt="${hero.name}" style="object-fit:contain; background: linear-gradient(135deg, ${ELEMENT_COLORS[hero.element]}, rgba(30,15,40,0.5));">
+      </div>
+      <div class="card-name">${hero.name}</div>
+      <div class="card-subtitle">${hero.title} · ${hero.element}${hasAction ? ' ✓' : ''}</div>
+      <div class="hp-bar-container">
+        <div class="hp-bar"><div class="hp-bar-fill ${hpClass}" style="width:${hpPct}%"></div></div>
+        <div class="hp-text">${hero.currentHp}/${hero.maxHp}</div>
+      </div>
+      <div class="status-row">${renderStatuses(hero.statuses)}</div>
+    `;
+    row.appendChild(card);
+  });
+}
+
+function renderStatuses(statuses) {
+  if (!statuses || statuses.length === 0) return '';
+  const icons = { burn: '🔥', chill: '❄️', shock: '⚡', root: '🌿', blind: '👁️', weaken: '⬇️', guard: '🛡️', focus: '⬆️' };
+  return statuses.map(s =>
+    `<span class="status-icon" title="${s.type}: ${s.duration} turns">${icons[s.type] || '❓'}${s.duration}</span>`
+  ).join('');
+}
+
+function renderActionPanel() {
+  const panel = document.getElementById('action-buttons');
+  const label = document.getElementById('action-label');
+
+  if (battlePhase !== 'player') {
+    label.textContent = battlePhase === 'enemy' ? 'Enemy Turn...' : 'Resolving...';
+    panel.innerHTML = '';
+    return;
+  }
+
+  if (selectedHeroIdx === -1 || heroParty[selectedHeroIdx].isDefeated) {
+    label.textContent = 'Select a hero to see their moves';
+    panel.innerHTML = '';
+    return;
+  }
+
+  const hero = heroParty[selectedHeroIdx];
+  label.textContent = `${hero.name}'s Actions:`;
+
+  let html = '';
+  hero.moves.forEach((move, mi) => {
+    const onCd = hero.cooldowns[mi] > 0;
+    const isSelected = heroActions[selectedHeroIdx]?.moveIdx === mi;
+    html += `
+      <button class="action-btn ${move.type === 'shield' || move.type === 'buff' ? 'guard-btn' : ''} ${isSelected ? 'selected' : ''}"
+        ${onCd ? 'disabled' : ''}
+        onclick="selectMove(${selectedHeroIdx}, ${mi})"
+        style="${isSelected ? 'border-color:var(--gold);background:rgba(255,211,110,0.15);' : ''}">
+        <span class="move-name">${move.name}</span>
+        <span class="move-desc">${move.desc}</span>
+        <span style="font-size:0.55rem;color:${ELEMENT_COLORS[move.element] || 'var(--muted)'}">${move.keywords.join(' · ')}</span>
+        ${onCd ? `<span class="cooldown-badge">${hero.cooldowns[mi]}</span>` : ''}
+      </button>
+    `;
+  });
+
+  // Guard option
+  html += `
+    <button class="action-btn guard-btn ${heroActions[selectedHeroIdx]?.moveIdx === -1 ? 'selected' : ''}"
+      onclick="selectMove(${selectedHeroIdx}, -1)"
+      style="${heroActions[selectedHeroIdx]?.moveIdx === -1 ? 'border-color:var(--gold);background:rgba(255,211,110,0.15);' : ''}">
+      <span class="move-name">🛡️ Guard</span>
+      <span class="move-desc">Reduce damage this round.</span>
+    </button>
+  `;
+
+  panel.innerHTML = html;
+
+  // Check if all heroes have actions
+  const allSet = heroParty.every((h, i) => h.isDefeated || heroActions[i] !== null);
+  if (allSet) {
+    panel.innerHTML += `<button class="confirm-btn" onclick="executeRound()">⚔️ Execute Round!</button>`;
+  }
+}
+
+function selectHero(idx) {
+  if (battlePhase !== 'player') return;
+  if (heroParty[idx].isDefeated) return;
+  selectedHeroIdx = idx;
+  renderBattleField();
+}
+
+function selectMove(heroIdx, moveIdx) {
+  if (battlePhase !== 'player') return;
+
+  const hero = heroParty[heroIdx];
+  const move = moveIdx >= 0 ? hero.moves[moveIdx] : null;
+
+  // For damage/control moves, auto-target the first alive enemy in the same lane
+  let targetIdx = heroIdx; // Default: lane-based (1v1)
+  if (move && (move.target === 'ally' || move.type === 'heal' || move.type === 'shield')) {
+    // For ally-targeting moves, target the hero with lowest HP
+    let lowestHp = Infinity;
+    heroParty.forEach((h, i) => {
+      if (!h.isDefeated && h.currentHp < lowestHp) {
+        lowestHp = h.currentHp;
+        targetIdx = i;
+      }
+    });
+  } else {
+    // Find alive enemy in lane, or first alive enemy
+    if (!enemyParty[heroIdx] || enemyParty[heroIdx].isDefeated) {
+      targetIdx = enemyParty.findIndex(e => !e.isDefeated);
+    }
+  }
+
+  heroActions[heroIdx] = { moveIdx, targetIdx };
+
+  // Highlight targeted enemy
+  document.querySelectorAll('.enemy-card').forEach(c => c.classList.remove('targeted'));
+  if (move && move.type !== 'heal' && move.type !== 'shield' && move.type !== 'buff' && move.target !== 'ally') {
+    const enemyCard = document.getElementById(`enemy-card-${targetIdx}`);
+    if (enemyCard) enemyCard.classList.add('targeted');
+  }
+
+  renderBattleField();
+}
+
+// ===== EXECUTE ROUND =====
+async function executeRound() {
+  battlePhase = 'resolve';
+  renderActionPanel();
+  document.getElementById('phase-indicator').textContent = 'Resolving...';
+
+  // Phase 1: Player actions
+  for (let i = 0; i < heroParty.length; i++) {
+    if (heroParty[i].isDefeated || !heroActions[i]) continue;
+    await executeHeroAction(i);
+    await sleep(400);
+    if (checkBattleEnd()) return;
+  }
+
+  // Phase 2: Enemy actions
+  battlePhase = 'enemy';
+  document.getElementById('phase-indicator').textContent = 'Enemy Turn';
+  renderActionPanel();
+  await sleep(500);
+
+  for (let i = 0; i < enemyParty.length; i++) {
+    if (enemyParty[i].isDefeated) continue;
+    await executeEnemyAction(i);
+    await sleep(400);
+    if (checkBattleEnd()) return;
+  }
+
+  // Phase 3: End of round
+  processEndOfRound();
+  currentRound++;
+  updateHUD();
+
+  // Reset for next round
+  heroActions = [null, null, null];
+  selectedHeroIdx = -1;
+  battlePhase = 'player';
+  document.getElementById('phase-indicator').textContent = 'Your Turn';
+  renderBattleField();
+
+  // Maybe battle event
+  if (currentRound === 3 && Math.random() < 0.5) {
+    setTimeout(() => triggerBattleEvent(), 500);
+  }
+}
+
+async function executeHeroAction(heroIdx) {
+  const hero = heroParty[heroIdx];
+  const action = heroActions[heroIdx];
+  if (!action) return;
+
+  const heroCard = document.getElementById(`hero-card-${heroIdx}`);
+
+  if (action.moveIdx === -1) {
+    // Guard
+    applyStatus(hero, 'guard', 1);
+    spawnFloatText(heroCard, '🛡️ Guard!', 'status');
+    logBattle(`${hero.name} guards!`);
+    return;
+  }
+
+  const move = hero.moves[action.moveIdx];
+
+  // Set cooldown
+  hero.cooldowns[action.moveIdx] = move.maxCd;
+
+  if (move.type === 'damage' || move.type === 'control') {
+    const target = move.target === 'all_enemies'
+      ? enemyParty.filter(e => !e.isDefeated)
+      : [enemyParty[action.targetIdx]].filter(e => e && !e.isDefeated);
+
+    for (const enemy of target) {
+      // Attack animation
+      heroCard?.classList.add('attack-anim');
+      setTimeout(() => heroCard?.classList.remove('attack-anim'), 400);
+
+      const dmgResult = calcDamage(hero, enemy, move);
+      applyDamageToUnit(enemy, dmgResult.damage);
+
+      const enemyIdx = enemyParty.indexOf(enemy);
+      const enemyCard = document.getElementById(`enemy-card-${enemyIdx}`);
+      enemyCard?.classList.add('hit-flash');
+      setTimeout(() => enemyCard?.classList.remove('hit-flash'), 300);
+
+      // Float text
+      spawnFloatText(enemyCard, `-${dmgResult.damage}`, 'damage');
+      if (dmgResult.effectiveness === 'SUPER!') {
+        setTimeout(() => spawnFloatText(enemyCard, 'SUPER!', 'super'), 200);
+        comboCount++;
+      } else if (dmgResult.effectiveness === 'RESIST') {
+        setTimeout(() => spawnFloatText(enemyCard, 'Resist...', 'resist'), 200);
+      }
+
+      // Status effect
+      if (move.statusChance && Math.random() < move.statusChance) {
+        applyStatus(enemy, move.statusType, 2);
+        setTimeout(() => spawnFloatText(enemyCard, move.statusType.toUpperCase() + '!', 'status'), 300);
+      }
+
+      logBattle(`${hero.name} uses ${move.name} on ${enemy.name} for ${dmgResult.damage} damage!`);
+
+      if (enemy.isDefeated) {
+        spawnFloatText(enemyCard, 'K.O.!', 'ko');
+        logBattle(`${enemy.name} was defeated!`);
+        comboCount++;
+      }
+
+      renderEnemyRow();
+      await sleep(200);
+    }
+  } else if (move.type === 'heal') {
+    const target = heroParty[action.targetIdx];
+    if (target && !target.isDefeated) {
+      const healAmt = Math.min(move.power, target.maxHp - target.currentHp);
+      target.currentHp += healAmt;
+      const targetCard = document.getElementById(`hero-card-${action.targetIdx}`);
+      spawnFloatText(targetCard, `+${healAmt}`, 'heal');
+      logBattle(`${hero.name} heals ${target.name} for ${healAmt}!`);
+      renderHeroRow();
+    }
+  } else if (move.type === 'buff') {
+    if (move.effect === 'focus') {
+      heroParty.forEach(h => { if (!h.isDefeated) applyStatus(h, 'focus', 2); });
+      spawnFloatText(heroCard, 'Focus!', 'status');
+      logBattle(`${hero.name} uses ${move.name}! Team gains Focus!`);
+    } else {
+      applyStatus(hero, move.effect || 'guard', 2);
+      spawnFloatText(heroCard, move.keywords[0] + '!', 'status');
+      logBattle(`${hero.name} uses ${move.name}!`);
+    }
+    renderHeroRow();
+  } else if (move.type === 'shield') {
+    const target = heroParty[action.targetIdx];
+    if (target && !target.isDefeated) {
+      target.shields.push({ amount: move.power, duration: 2 });
+      const targetCard = document.getElementById(`hero-card-${action.targetIdx}`);
+      spawnFloatText(targetCard, `Shield +${move.power}`, 'status');
+      logBattle(`${hero.name} shields ${target.name} for ${move.power}!`);
+      renderHeroRow();
+    }
+  }
+}
+
+async function executeEnemyAction(enemyIdx) {
+  const enemy = enemyParty[enemyIdx];
+  if (enemy.isDefeated) return;
+
+  // Simple AI: pick a move (prefer damage, use buff if low HP)
+  const availableMoves = enemy.moves.filter((m, i) => enemy.cooldowns[i] <= 0);
+  let move;
+  if (availableMoves.length === 0) {
+    move = enemy.moves[0]; // fallback
+  } else if (enemy.currentHp < enemy.maxHp * 0.3 && availableMoves.some(m => m.type === 'buff' || m.type === 'heal')) {
+    move = availableMoves.find(m => m.type === 'buff' || m.type === 'heal') || availableMoves[0];
+  } else {
+    // Prefer damage moves
+    move = availableMoves.find(m => m.type === 'damage') || availableMoves[0];
+  }
+
+  const moveIdx = enemy.moves.indexOf(move);
+  enemy.cooldowns[moveIdx] = move.cooldown || 2;
+
+  const enemyCard = document.getElementById(`enemy-card-${enemyIdx}`);
+
+  if (move.type === 'damage' || move.type === 'control' || move.type === 'debuff') {
+    // Pick target: lane-based or lowest HP
+    let targetIdx = enemyIdx < heroParty.length ? enemyIdx : 0;
+    // AI personality: attack lowest HP hero
+    if (enemy.role === 'TRICKSTER' || enemy.role === 'CASTER') {
+      let lowestHp = Infinity;
+      heroParty.forEach((h, i) => {
+        if (!h.isDefeated && h.currentHp < lowestHp) {
+          lowestHp = h.currentHp;
+          targetIdx = i;
+        }
+      });
+    }
+    // Make sure target is alive
+    if (heroParty[targetIdx]?.isDefeated) {
+      targetIdx = heroParty.findIndex(h => !h.isDefeated);
+    }
+    if (targetIdx === -1) return;
+
+    const target = heroParty[targetIdx];
+    const dmgResult = calcDamage(enemy, target, move);
+
+    // Check guard
+    const isGuarding = target.statuses.some(s => s.type === 'guard');
+    const finalDmg = isGuarding ? Math.floor(dmgResult.damage * 0.5) : dmgResult.damage;
+
+    enemyCard?.classList.add('attack-anim');
+    setTimeout(() => enemyCard?.classList.remove('attack-anim'), 400);
+
+    // Apply shield absorption
+    let remainingDmg = finalDmg;
+    for (let si = target.shields.length - 1; si >= 0 && remainingDmg > 0; si--) {
+      if (target.shields[si].amount >= remainingDmg) {
+        target.shields[si].amount -= remainingDmg;
+        remainingDmg = 0;
+        if (target.shields[si].amount === 0) target.shields.splice(si, 1);
+      } else {
+        remainingDmg -= target.shields[si].amount;
+        target.shields.splice(si, 1);
+      }
+    }
+    if (remainingDmg > 0) {
+      target.currentHp = Math.max(0, target.currentHp - remainingDmg);
+      if (target.currentHp === 0) target.isDefeated = true;
+    }
+
+    const heroCard = document.getElementById(`hero-card-${targetIdx}`);
+    heroCard?.classList.add('hit-flash');
+    setTimeout(() => heroCard?.classList.remove('hit-flash'), 300);
+    document.body.classList.add('shake');
+    setTimeout(() => document.body.classList.remove('shake'), 300);
+
+    spawnFloatText(heroCard, `-${finalDmg}`, 'damage');
+    if (isGuarding) {
+      setTimeout(() => spawnFloatText(heroCard, 'Guarded!', 'status'), 200);
+    }
+
+    // Status effect
+    if (move.statusChance && Math.random() < move.statusChance) {
+      applyStatus(target, move.statusType, 2);
+      setTimeout(() => spawnFloatText(heroCard, move.statusType.toUpperCase() + '!', 'status'), 300);
+    }
+
+    logBattle(`${enemy.name} uses ${move.name} on ${target.name} for ${finalDmg} damage!`);
+    if (target.isDefeated) {
+      spawnFloatText(heroCard, 'K.O.!', 'ko');
+      logBattle(`${target.name} was defeated!`);
+    }
+
+    renderHeroRow();
+  } else if (move.type === 'buff') {
+    applyStatus(enemy, move.effect || 'guard', 2);
+    spawnFloatText(enemyCard, move.keywords[0] + '!', 'status');
+    logBattle(`${enemy.name} uses ${move.name}!`);
+    renderEnemyRow();
+  } else if (move.type === 'heal') {
+    // Heal lowest HP ally
+    let target = enemy;
+    let lowestHp = Infinity;
+    enemyParty.forEach(e => {
+      if (!e.isDefeated && e.currentHp < lowestHp) {
+        lowestHp = e.currentHp;
+        target = e;
+      }
+    });
+    const healAmt = Math.min(move.power || 15, target.maxHp - target.currentHp);
+    target.currentHp += healAmt;
+    const tIdx = enemyParty.indexOf(target);
+    const tCard = document.getElementById(`enemy-card-${tIdx}`);
+    spawnFloatText(tCard, `+${healAmt}`, 'heal');
+    logBattle(`${enemy.name} heals ${target.name} for ${healAmt}!`);
+    renderEnemyRow();
+  }
+}
+
+function calcDamage(attacker, defender, move) {
+  const power = move.power || 10;
+  const atkStat = attacker.currentStats.atk || 12;
+  const defStat = defender.currentStats.def || 10;
+
+  let baseDmg = power * (atkStat / (defStat + 50));
+
+  // Type effectiveness
+  const atkElement = move.element || attacker.element || 'NEUTRAL';
+  const defElement = defender.element || 'NEUTRAL';
+  let typeMulti = 1.0;
+  if (TYPE_CHART[atkElement] && TYPE_CHART[atkElement][defElement] !== undefined) {
+    typeMulti = TYPE_CHART[atkElement][defElement];
+  }
+
+  // Buff/debuff modifiers
+  let modifier = 0;
+  if (attacker.statuses) {
+    attacker.statuses.forEach(s => { if (s.type === 'focus') modifier += 0.15; });
+  }
+  if (defender.statuses) {
+    defender.statuses.forEach(s => { if (s.type === 'weaken') modifier += 0.15; });
+  }
+
+  const finalDmg = Math.max(1, Math.floor(baseDmg * typeMulti * (1 + modifier)));
+
+  let effectiveness = '';
+  if (typeMulti >= 2) effectiveness = 'SUPER!';
+  else if (typeMulti <= 0.5 && typeMulti > 0) effectiveness = 'RESIST';
+  else if (typeMulti === 0) effectiveness = 'IMMUNE';
+
+  return { damage: finalDmg, typeMultiplier: typeMulti, effectiveness };
+}
+
+function applyDamageToUnit(unit, damage) {
+  // Shield absorption
+  let remaining = damage;
+  for (let i = unit.shields.length - 1; i >= 0 && remaining > 0; i--) {
+    if (unit.shields[i].amount >= remaining) {
+      unit.shields[i].amount -= remaining;
+      remaining = 0;
+      if (unit.shields[i].amount === 0) unit.shields.splice(i, 1);
+    } else {
+      remaining -= unit.shields[i].amount;
+      unit.shields.splice(i, 1);
+    }
+  }
+  if (remaining > 0) {
+    unit.currentHp = Math.max(0, unit.currentHp - remaining);
+    if (unit.currentHp === 0) unit.isDefeated = true;
+  }
+}
+
+function applyStatus(unit, type, duration) {
+  const existing = unit.statuses.find(s => s.type === type);
+  if (existing) {
+    existing.duration = Math.max(existing.duration, duration);
+  } else {
+    unit.statuses.push({ type, duration });
+  }
+}
+
+function processEndOfRound() {
+  const allUnits = [...heroParty, ...enemyParty];
+  allUnits.forEach(unit => {
+    if (unit.isDefeated) return;
+
+    // DOT effects
+    unit.statuses.forEach(s => {
+      if (s.type === 'burn') {
+        const dot = 5;
+        unit.currentHp = Math.max(0, unit.currentHp - dot);
+        if (unit.currentHp === 0) unit.isDefeated = true;
+      }
+    });
+
+    // Tick cooldowns
+    unit.cooldowns = unit.cooldowns.map(cd => Math.max(0, cd - 1));
+
+    // Tick statuses
+    unit.statuses = unit.statuses.filter(s => {
+      s.duration--;
+      return s.duration > 0;
+    });
+
+    // Tick shields
+    unit.shields = unit.shields.filter(s => {
+      s.duration--;
+      return s.duration > 0;
+    });
+  });
+}
+
+function checkBattleEnd() {
+  const allEnemiesDead = enemyParty.every(e => e.isDefeated);
+  const allHeroesDead = heroParty.every(h => h.isDefeated);
+
+  if (allEnemiesDead) {
+    setTimeout(() => showResult(true), 800);
+    return true;
+  }
+  if (allHeroesDead) {
+    setTimeout(() => showResult(false), 800);
+    return true;
+  }
+  return false;
+}
+
+function showResult(isWin) {
+  showScreen('result-screen');
+  const title = document.getElementById('result-title');
+  const subtitle = document.getElementById('result-subtitle');
+  const rewards = document.getElementById('reward-list');
+
+  if (isWin) {
+    title.textContent = 'Victory!';
+    title.className = 'result-title win';
+    subtitle.textContent = 'William and his team triumphed!';
+
+    const xp = 50 + currentRound * 10 + comboCount * 5;
+    rewards.innerHTML = `
+      <div class="reward-item"><span class="reward-icon">⭐</span><span class="reward-text">XP Gained</span><span class="reward-value">+${xp}</span></div>
+      <div class="reward-item"><span class="reward-icon">🏅</span><span class="reward-text">Battle Badge</span><span class="reward-value">Earned!</span></div>
+      <div class="reward-item"><span class="reward-icon">🔥</span><span class="reward-text">Combo Bonus</span><span class="reward-value">x${comboCount}</span></div>
+      ${comboCount >= 3 ? '<div class="reward-item"><span class="reward-icon">🎖️</span><span class="reward-text">Streak Bonus</span><span class="reward-value">+25 XP</span></div>' : ''}
+      <div class="reward-item"><span class="reward-icon">📦</span><span class="reward-text">Loot</span><span class="reward-value">Card Frame!</span></div>
+    `;
+  } else {
+    title.textContent = 'Retreat!';
+    title.className = 'result-title lose';
+    subtitle.textContent = 'Retreat and train — you\'ll get them next time!';
+    rewards.innerHTML = `
+      <div class="reward-item"><span class="reward-icon">💪</span><span class="reward-text">Tip</span><span class="reward-value">Complete a routine mission for +10 HP!</span></div>
+      <div class="reward-item"><span class="reward-icon">⭐</span><span class="reward-text">Participation XP</span><span class="reward-value">+15</span></div>
+    `;
+  }
+}
+
+function resetBattle() {
+  showScreen('scout-screen');
+  lastEnemyTrio = null;
+}
+
+// ===== UI HELPERS =====
+function updateHUD() {
+  document.getElementById('round-counter').textContent = `Round ${currentRound}`;
+  const combo = document.getElementById('combo-meter');
+  if (comboCount >= 2) {
+    combo.textContent = `Combo x${comboCount}`;
+    combo.classList.add('visible');
+  } else {
+    combo.classList.remove('visible');
+  }
+}
+
+function spawnFloatText(element, text, type) {
+  if (!element) return;
+  const rect = element.getBoundingClientRect();
+  const ft = document.createElement('div');
+  ft.className = `float-text ${type}`;
+  ft.textContent = text;
+  ft.style.left = (rect.left + rect.width / 2 - 30 + (Math.random() * 20 - 10)) + 'px';
+  ft.style.top = (rect.top + rect.height / 3) + 'px';
+  document.body.appendChild(ft);
+  setTimeout(() => ft.remove(), 1200);
+}
+
+function triggerBattleEvent() {
+  const event = BATTLE_EVENTS[Math.floor(Math.random() * BATTLE_EVENTS.length)];
+  const banner = document.getElementById('battle-event-banner');
+  document.getElementById('event-title').textContent = event.title;
+  document.getElementById('event-desc').textContent = event.desc;
+  banner.classList.add('show');
+  setTimeout(() => banner.classList.remove('show'), 3000);
+}
+
+function logBattle(msg) {
+  battleLog.push(msg);
+  const log = document.getElementById('battle-log');
+  log.innerHTML += `<div class="log-entry">${msg}</div>`;
+  log.scrollTop = log.scrollHeight;
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function shuffle(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
+
+// ===== START =====
+init();
+</script>
+</body>
+</html>
