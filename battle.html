@@ -237,7 +237,7 @@ body {
   justify-content: center; perspective: 1000px;
 }
 .draw-card-slot {
-  width: clamp(100px, 22vw, 160px); height: clamp(140px, 31vw, 224px);
+  width: clamp(140px, 22vw, 200px); height: clamp(196px, 31vw, 280px);
   position: relative; transform-style: preserve-3d;
 }
 .draw-card-inner {
@@ -262,10 +262,10 @@ body {
 .draw-card-front .enemy-portrait {
   width: 100%; flex: 1; border-radius: var(--radius-sm);
   display: flex; align-items: center; justify-content: center;
-  font-size: 2.5rem; position: relative; overflow: hidden;
+  font-size: 3rem; position: relative; overflow: hidden;
 }
 .draw-card-front .enemy-name {
-  font-family: var(--font-display); font-size: clamp(0.6rem, 1.8vw, 0.85rem);
+  font-family: var(--font-display); font-size: clamp(0.8rem, 2vw, 1.1rem);
   font-weight: 700; color: var(--gold); text-align: center; line-height: 1.2;
 }
 .draw-card-front .enemy-info { display: flex; gap: 6px; align-items: center; font-size: 0.65rem; }
@@ -278,7 +278,7 @@ body {
   font-weight: 700; text-transform: uppercase;
 }
 .enemy-deck {
-  position: relative; width: clamp(80px, 18vw, 120px); height: clamp(112px, 25vw, 168px);
+  position: relative; width: clamp(100px, 18vw, 150px); height: clamp(140px, 25vw, 210px);
 }
 .deck-stack {
   position: absolute; width: 100%; height: 100%;
@@ -298,16 +298,31 @@ body {
 @keyframes deckPulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
 
 /* ===== SCREEN 3: BATTLE FIELD ===== */
-#battle-screen { padding: 8px; gap: 0; justify-content: space-between; }
+#battle-screen {
+  padding: 0; gap: 0;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 40px 1fr 140px;
+  height: 100vh; height: 100dvh;
+  position: relative;
+}
+#battle-screen::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(10,5,20,0.5) 0%, rgba(10,5,20,0.2) 30%, rgba(10,5,20,0.2) 70%, rgba(10,5,20,0.6) 100%);
+  pointer-events: none; z-index: 0;
+}
+#battle-screen > * { position: relative; z-index: 1; }
 .battle-hud {
   width: 100%; display: flex; justify-content: space-between; align-items: center;
-  padding: 8px 12px; background: var(--glass-bg); backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid var(--glass-border); border-radius: var(--radius-md); z-index: 20;
+  padding: 8px 20px; background: linear-gradient(180deg, rgba(15,10,30,0.9), rgba(15,10,30,0.6));
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--glass-border); z-index: 20; flex-shrink: 0;
+  height: 40px;
 }
 .hud-left, .hud-right { display: flex; align-items: center; gap: 12px; }
-.round-counter { font-family: var(--font-display); font-size: 0.9rem; color: var(--gold); }
+.round-counter { font-family: var(--font-display); font-size: 1.2rem; color: var(--gold); text-shadow: 0 0 10px rgba(255,211,110,0.3); }
 .combo-meter {
-  font-family: var(--font-comic); font-size: 0.85rem; color: var(--orange);
+  font-family: var(--font-comic); font-size: 1.1rem; color: var(--orange);
   opacity: 0; transition: opacity 0.3s;
 }
 .combo-meter.visible { opacity: 1; animation: comboPulse 0.6s ease; }
@@ -326,7 +341,7 @@ body {
   background: rgba(0,0,0,0.3); border-radius: 12px; overflow: hidden;
 }
 .turn-order-icon {
-  width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--card-border);
+  width: 36px; height: 36px; border-radius: 50%; border: 2px solid var(--card-border);
   overflow: hidden; transition: all 0.3s;
 }
 .turn-order-icon.active-turn { border-color: var(--gold); box-shadow: 0 0 10px rgba(255,211,110,0.5); transform: scale(1.15); }
@@ -335,19 +350,35 @@ body {
 
 /* Battle field */
 .battle-field {
-  flex: 1; width: 100%; display: flex; flex-direction: column;
-  justify-content: space-between; padding: 8px 0; gap: 8px;
-  max-width: 900px; margin: 0 auto;
+  width: 100%; display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 3vw 4px; gap: 4px;
+  overflow: hidden;
+  min-height: 0;
 }
-.card-row { display: flex; justify-content: center; gap: clamp(8px, 2vw, 16px); padding: 4px 0; }
+.card-row {
+  display: flex; justify-content: center; gap: clamp(8px, 1.5vw, 20px);
+  width: 100%; overflow: visible; align-items: center;
+  min-height: 0;
+  height: calc((100vh - 40px - 140px - 32px - 28px) / 2);
+  height: calc((100dvh - 40px - 140px - 32px - 28px) / 2);
+  max-height: 38vh;
+}
+.lane-divider { flex-shrink: 0; }
 
 /* Battle cards */
 .battle-card {
-  width: clamp(100px, 28vw, 160px); background: var(--card-bg);
-  border: 2px solid var(--card-border); border-radius: var(--radius-md);
-  padding: 8px; display: flex; flex-direction: column; gap: 4px;
+  aspect-ratio: 3 / 4;
+  height: 100%;
+  background: var(--card-bg);
+  border: 3px solid var(--card-border); border-radius: var(--radius-md);
+  padding: 0; display: flex; flex-direction: column;
   position: relative; transition: all 0.3s ease; cursor: default;
-  box-shadow: var(--shadow);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 2px rgba(255,255,255,0.1);
+  overflow: hidden;
+  flex-shrink: 1; flex-grow: 0;
 }
 .battle-card.hero-card { cursor: pointer; }
 .battle-card.hero-card:hover { transform: translateY(-4px); box-shadow: 0 16px 50px rgba(0,0,0,0.5), 0 0 20px rgba(255,211,110,0.15); }
@@ -357,38 +388,45 @@ body {
 @keyframes targetPulse { 0%, 100% { box-shadow: 0 0 15px rgba(239,68,68,0.4); } 50% { box-shadow: 0 0 25px rgba(239,68,68,0.7); } }
 
 .card-portrait {
-  width: 100%; height: clamp(50px, 12vw, 80px); border-radius: var(--radius-sm);
-  overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative;
+  width: 100%; border-radius: 0;
+  overflow: visible; display: flex; align-items: center; justify-content: center; position: relative;
+  background: linear-gradient(135deg, rgba(30,20,50,0.9), rgba(15,10,30,0.95));
+  flex: 1;
+  min-height: 0;
+}
+/* Card info overlaid on portrait bottom */
+.battle-card .card-info-overlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 20px 6px 4px; display: flex; flex-direction: column; gap: 1px;
+  background: linear-gradient(to top, rgba(10,5,20,0.95) 0%, rgba(10,5,20,0.8) 60%, transparent 100%);
+  z-index: 5;
 }
 .card-portrait img {
   width: 100%; height: 100%; object-fit: cover;
 }
-/* William's art is full-body, so we crop to show upper body */
-.card-portrait img[data-hero="william"] {
-  object-fit: cover;
-  object-position: center 15%;
-}
+
 .card-portrait .emoji-portrait { font-size: 2rem; }
 .card-role-badge {
-  position: absolute; top: 2px; right: 2px; font-size: 0.55rem; padding: 1px 6px;
+  position: absolute; top: 4px; right: 4px; font-size: 0.65rem; padding: 2px 8px;
   border-radius: 8px; background: rgba(0,0,0,0.6); color: var(--text);
   font-weight: 700; text-transform: uppercase;
 }
 .card-rank-star {
-  position: absolute; top: 2px; left: 2px; font-size: 0.55rem; padding: 1px 5px;
+  position: absolute; top: 4px; left: 4px; font-size: 0.7rem; padding: 2px 7px;
   border-radius: 8px; background: rgba(0,0,0,0.6); color: var(--gold);
   font-weight: 700;
 }
 .card-name {
-  font-family: var(--font-display); font-size: clamp(0.6rem, 1.6vw, 0.8rem);
-  font-weight: 700; color: var(--gold); text-align: center; line-height: 1.2;
+  font-family: var(--font-display); font-size: clamp(0.65rem, 1.2vw, 0.9rem);
+  font-weight: 700; color: var(--gold); text-align: center; line-height: 1;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.9);
 }
-.card-subtitle { font-size: 0.55rem; color: var(--muted); text-align: center; }
+.card-subtitle { font-size: 0.55rem; color: var(--muted); text-align: center; line-height: 1; display: none; }
 
 /* HP Bar */
 .hp-bar-container { width: 100%; display: flex; align-items: center; gap: 4px; }
-.hp-bar { flex: 1; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; position: relative; }
+.hp-bar { flex: 1; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; position: relative; }
 .hp-bar-fill {
   height: 100%; background: linear-gradient(90deg, var(--green-dark), var(--green));
   border-radius: 4px; transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1); position: relative;
@@ -400,7 +438,7 @@ body {
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 50%;
   background: rgba(255,255,255,0.2); border-radius: 4px 4px 0 0;
 }
-.hp-text { font-size: 0.6rem; font-weight: 700; color: var(--text); min-width: 36px; text-align: right; }
+.hp-text { font-size: 0.75rem; font-weight: 700; color: var(--text); min-width: 40px; text-align: right; }
 
 /* Status icons */
 .status-row { display: flex; gap: 3px; flex-wrap: wrap; min-height: 16px; }
@@ -412,24 +450,33 @@ body {
 @keyframes statusPop { 0% { transform: scale(0); } 50% { transform: scale(1.3); } 100% { transform: scale(1); } }
 
 /* Lane divider */
-.lane-divider { width: 100%; display: flex; justify-content: center; align-items: center; padding: 4px 0; gap: 8px; }
-.lane-line { height: 2px; flex: 1; max-width: 200px; background: linear-gradient(90deg, transparent, var(--gold-dark), transparent); opacity: 0.3; }
-.lane-vs { font-family: var(--font-comic); font-size: 0.9rem; color: var(--gold); opacity: 0.6; }
+.lane-divider { width: 100%; display: flex; justify-content: center; align-items: center; padding: 0; gap: 16px; max-width: 100%; margin: 0 auto; flex-shrink: 0; height: 24px; }
+.lane-line { height: 3px; flex: 1; max-width: 400px; background: linear-gradient(90deg, transparent, var(--gold), transparent); opacity: 0.6; }
+.lane-vs {
+  font-family: var(--font-comic); font-size: 1.6rem; color: var(--gold);
+  text-shadow: 0 0 20px rgba(255,211,110,0.6), 0 0 40px rgba(255,211,110,0.3), 0 2px 4px rgba(0,0,0,0.8);
+  letter-spacing: 0.15em; animation: vsPulse 2s ease-in-out infinite;
+}
+@keyframes vsPulse { 0%, 100% { text-shadow: 0 0 20px rgba(255,211,110,0.6), 0 0 40px rgba(255,211,110,0.3); } 50% { text-shadow: 0 0 30px rgba(255,211,110,0.9), 0 0 60px rgba(255,211,110,0.5); } }
 
 /* ===== ACTION PANEL ===== */
 .action-panel {
-  width: 100%; max-width: 900px; margin: 0 auto;
-  background: var(--panel-strong); backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--glass-border); border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  padding: 12px; display: flex; flex-direction: column; gap: 8px; z-index: 20;
+  position: relative;
+  background: linear-gradient(180deg, rgba(15,10,30,0.97), rgba(10,5,20,0.99));
+  backdrop-filter: blur(20px);
+  border-top: 3px solid rgba(255,211,110,0.5);
+  padding: 10px 20px 14px; display: flex; flex-direction: column; gap: 6px; z-index: 200;
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.8);
+  overflow-y: auto;
+  align-self: stretch;
 }
-.action-label { font-size: 0.75rem; color: var(--muted); text-align: center; }
-.action-buttons { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.action-label { font-size: 0.9rem; color: var(--muted); text-align: center; font-weight: 600; }
+.action-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 .action-btn {
-  flex: 1; min-width: 80px; max-width: 180px; padding: 10px 12px;
-  font-family: var(--font); font-size: 0.75rem; font-weight: 700;
-  color: var(--text); background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12); border-radius: var(--radius-sm);
+  flex: 1; min-width: 110px; max-width: 220px; padding: 10px 14px;
+  font-family: var(--font); font-size: 0.85rem; font-weight: 700;
+  color: var(--text); background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.15); border-radius: var(--radius-sm);
   cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column;
   align-items: center; gap: 2px; position: relative;
 }
@@ -437,8 +484,8 @@ body {
 .action-btn:active:not(:disabled) { transform: translateY(0); }
 .action-btn:disabled { opacity: 0.35; cursor: not-allowed; }
 .action-btn.selected { border-color: var(--gold) !important; background: rgba(255,211,110,0.15) !important; }
-.action-btn .move-name { font-family: var(--font-action); font-size: 0.8rem; color: var(--gold); }
-.action-btn .move-desc { font-size: 0.6rem; color: var(--muted); line-height: 1.2; }
+.action-btn .move-name { font-family: var(--font-action); font-size: 1rem; color: var(--gold); }
+.action-btn .move-desc { font-size: 0.75rem; color: var(--muted); line-height: 1.2; }
 .action-btn .cooldown-badge {
   position: absolute; top: -4px; right: -4px; width: 18px; height: 18px;
   border-radius: 50%; background: var(--red); color: white;
@@ -447,11 +494,13 @@ body {
 .action-btn.guard-btn { border-color: var(--blue); }
 .action-btn.guard-btn:hover { background: rgba(96,165,250,0.15); }
 .confirm-btn {
-  padding: 10px 32px; font-family: var(--font-action); font-size: 1rem;
+  padding: 14px 48px; font-family: var(--font-action); font-size: 1.15rem;
   color: #1a0e2e; background: linear-gradient(135deg, var(--gold), #ffb347);
   border: none; border-radius: 30px; cursor: pointer;
-  box-shadow: 0 4px 20px rgba(255,211,110,0.3); transition: all 0.2s; align-self: center;
+  box-shadow: 0 6px 30px rgba(255,211,110,0.4); transition: all 0.2s; align-self: center;
+  animation: confirmPulse 2s ease-in-out infinite;
 }
+@keyframes confirmPulse { 0%, 100% { box-shadow: 0 6px 30px rgba(255,211,110,0.4); } 50% { box-shadow: 0 8px 40px rgba(255,211,110,0.7); } }
 .confirm-btn:hover { transform: scale(1.05); }
 
 /* ===== SCREEN 4: RESULT ===== */
@@ -489,30 +538,67 @@ body {
 
 /* ===== EVOLUTION SCREEN ===== */
 #evolution-screen {
-  gap: 24px; padding: 24px; z-index: 300;
+  gap: 20px; padding: 24px; z-index: 300;
+  background: radial-gradient(ellipse at center, rgba(255,211,110,0.08) 0%, rgba(15,10,28,0.95) 60%);
 }
 .evo-title {
-  font-family: var(--font-display); font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-family: var(--font-display); font-size: clamp(2rem, 5vw, 3.5rem);
   font-weight: 900; color: var(--gold);
-  text-shadow: 0 0 40px rgba(255,211,110,0.6);
+  text-shadow: 0 0 40px rgba(255,211,110,0.6), 0 0 80px rgba(255,211,110,0.3);
   animation: evoPulse 1.5s ease-in-out infinite;
+  letter-spacing: 0.08em;
 }
-@keyframes evoPulse { 0%, 100% { text-shadow: 0 0 40px rgba(255,211,110,0.6); } 50% { text-shadow: 0 0 80px rgba(255,211,110,1); } }
+@keyframes evoPulse { 0%, 100% { text-shadow: 0 0 40px rgba(255,211,110,0.6); } 50% { text-shadow: 0 0 80px rgba(255,211,110,1), 0 0 120px rgba(255,211,110,0.5); } }
 .evo-container {
-  display: flex; align-items: center; gap: 32px; justify-content: center;
+  display: flex; align-items: flex-start; gap: 24px; justify-content: center;
+  flex-wrap: wrap; max-width: 900px;
+}
+.evo-group {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  animation: evoGroupAppear 0.8s ease-out both;
+}
+.evo-group:nth-child(2) { animation-delay: 0.3s; }
+.evo-group:nth-child(3) { animation-delay: 0.6s; }
+@keyframes evoGroupAppear {
+  0% { opacity: 0; transform: translateY(30px) scale(0.8); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.evo-pair {
+  display: flex; align-items: center; gap: 12px;
 }
 .evo-card {
-  width: 160px; height: 200px; border-radius: var(--radius-lg);
+  border-radius: var(--radius-lg);
   overflow: hidden; border: 3px solid var(--gold);
-  box-shadow: 0 0 40px rgba(255,211,110,0.5);
+  box-shadow: 0 0 30px rgba(255,211,110,0.4);
   transition: all 0.8s ease;
+  position: relative;
+}
+.evo-card.old {
+  width: 110px; height: 150px; opacity: 0.7;
+  filter: grayscale(0.3);
+}
+.evo-card.new {
+  width: 140px; height: 190px;
+  border-color: var(--gold);
+  box-shadow: 0 0 50px rgba(255,211,110,0.6), 0 0 100px rgba(255,211,110,0.2);
+  animation: evoCardGlow 2s ease-in-out infinite;
+}
+@keyframes evoCardGlow {
+  0%, 100% { box-shadow: 0 0 50px rgba(255,211,110,0.6); }
+  50% { box-shadow: 0 0 80px rgba(255,211,110,0.9), 0 0 120px rgba(255,211,110,0.3); }
 }
 .evo-card img { width: 100%; height: 100%; object-fit: cover; }
 .evo-arrow {
-  font-size: 2rem; color: var(--gold);
+  font-size: 2.5rem; color: var(--gold);
   animation: evoArrow 1s ease-in-out infinite;
+  text-shadow: 0 0 20px rgba(255,211,110,0.5);
 }
 @keyframes evoArrow { 0%, 100% { transform: translateX(0); opacity: 0.5; } 50% { transform: translateX(10px); opacity: 1; } }
+.evo-hero-name {
+  font-family: var(--font-display); color: var(--gold); font-size: 1rem;
+  text-shadow: 0 0 10px rgba(255,211,110,0.3);
+  font-weight: 700;
+}
 .evo-sparkles {
   position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(ellipse at center, rgba(255,211,110,0.15) 0%, transparent 70%);
@@ -525,16 +611,16 @@ body {
   animation: floatUp 1.2s ease-out forwards;
   text-shadow: 0 2px 8px rgba(0,0,0,0.6);
 }
-.float-text.damage { color: var(--red); font-size: 1.6rem; }
-.float-text.heal { color: var(--green); font-size: 1.4rem; }
-.float-text.super { color: #fbbf24; font-size: 2rem; animation: superFloat 1.4s ease-out forwards; }
-.float-text.resist { color: var(--muted); font-size: 1.1rem; }
-.float-text.status { color: var(--purple); font-size: 1.1rem; }
-.float-text.ko { color: var(--red); font-size: 2.5rem; animation: koFloat 1.5s ease-out forwards; }
-.float-text.combo { color: var(--orange); font-size: 1.8rem; }
-.float-text.xp { color: var(--cyan); font-size: 1rem; animation: xpOrb 1.5s ease-in forwards; }
-.float-text.immune { color: #94a3b8; font-size: 1.3rem; }
-.float-text.guard-text { color: var(--blue); font-size: 1.3rem; }
+.float-text.damage { color: var(--red); font-size: 2.2rem; }
+.float-text.heal { color: var(--green); font-size: 2rem; }
+.float-text.super { color: #fbbf24; font-size: 2.8rem; animation: superFloat 1.4s ease-out forwards; }
+.float-text.resist { color: var(--muted); font-size: 1.5rem; }
+.float-text.status { color: var(--purple); font-size: 1.5rem; }
+.float-text.ko { color: var(--red); font-size: 3.5rem; animation: koFloat 1.5s ease-out forwards; }
+.float-text.combo { color: var(--orange); font-size: 2.4rem; }
+.float-text.xp { color: var(--cyan); font-size: 1.3rem; animation: xpOrb 1.5s ease-in forwards; }
+.float-text.immune { color: #94a3b8; font-size: 1.6rem; }
+.float-text.guard-text { color: var(--blue); font-size: 1.8rem; }
 @keyframes floatUp {
   0% { opacity: 1; transform: translateY(0) scale(1); }
   30% { transform: translateY(-20px) scale(1.2); }
@@ -593,15 +679,15 @@ body {
 .attack-lunge-up { animation: lungUp 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
 @keyframes lungUp {
   0% { transform: translateY(0) scale(1); }
-  25% { transform: translateY(-30px) scale(1.08); }
-  50% { transform: translateY(-25px) scale(1.05); }
+  20% { transform: translateY(-60px) scale(1.12); }
+  40% { transform: translateY(-50px) scale(1.08); }
   100% { transform: translateY(0) scale(1); }
 }
 .attack-lunge-down { animation: lungDown 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
 @keyframes lungDown {
   0% { transform: translateY(0) scale(1); }
-  25% { transform: translateY(30px) scale(1.08); }
-  50% { transform: translateY(25px) scale(1.05); }
+  20% { transform: translateY(60px) scale(1.12); }
+  40% { transform: translateY(50px) scale(1.08); }
   100% { transform: translateY(0) scale(1); }
 }
 
@@ -676,12 +762,14 @@ body {
 /* Entrance animations for battle cards */
 .card-enter-hero { animation: cardEnterHero 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 @keyframes cardEnterHero {
-  0% { opacity: 0; transform: translateY(60px) scale(0.8) rotate(5deg); }
+  0% { opacity: 0; transform: translateY(100px) scale(0.6) rotate(8deg); }
+  60% { opacity: 1; transform: translateY(-10px) scale(1.05) rotate(-1deg); }
   100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
 }
 .card-enter-enemy { animation: cardEnterEnemy 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
 @keyframes cardEnterEnemy {
-  0% { opacity: 0; transform: translateY(-60px) scale(0.8) rotate(-5deg); }
+  0% { opacity: 0; transform: translateY(-100px) scale(0.6) rotate(-8deg); }
+  60% { opacity: 1; transform: translateY(10px) scale(1.05) rotate(1deg); }
   100% { opacity: 1; transform: translateY(0) scale(1) rotate(0); }
 }
 
@@ -739,9 +827,10 @@ body {
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 480px) {
-  .battle-card { padding: 6px; }
-  .card-portrait { height: 45px; }
-  .action-panel { padding: 8px; }
+  .battle-card { padding: 4px; min-width: 80px; max-width: 31vw; }
+  .card-portrait { max-height: 22vh; }
+  .action-panel { padding: 8px 10px; }
+  .action-btn { min-width: 80px; padding: 8px 10px; }
   .battle-log { display: none !important; }
   .turn-order-bar { display: none; }
 }
@@ -820,13 +909,13 @@ body {
   </div>
 
   <div class="battle-field">
-    <div class="card-row" id="enemy-row"></div>
+    <div class="card-row enemy-row-class" id="enemy-row"></div>
     <div class="lane-divider">
       <div class="lane-line"></div>
       <div class="lane-vs">VS</div>
       <div class="lane-line"></div>
     </div>
-    <div class="card-row" id="hero-row"></div>
+    <div class="card-row hero-row-class" id="hero-row"></div>
   </div>
 
   <div class="action-panel" id="action-panel">
@@ -872,9 +961,9 @@ body {
 // ===== IMAGE URLS =====
 const IMG = {
   william: [
-    'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/tEYVeMWBLXdYcYTz.PNG',
-    'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/tEYVeMWBLXdYcYTz.PNG',
-    'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/tEYVeMWBLXdYcYTz.PNG',
+    'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/lGLOGKbKJanwpnRd.png',
+    'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/GjuqkuFVvtWbJSFA.png',
+    'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/uVyReVHSHOAQYyWg.png',
   ],
   ember: [
     'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/hZBbuiyBIVYpcHwf.png',
@@ -1464,17 +1553,19 @@ function renderEnemyRow() {
     const hpPct = (enemy.currentHp / enemy.maxHp) * 100;
     const hpClass = hpPct <= 25 ? 'low' : hpPct <= 50 ? 'mid' : '';
     card.innerHTML = `
-      <div class="card-portrait" style="background:linear-gradient(135deg, ${ELEMENT_COLORS[enemy.element]}, rgba(30,15,40,0.7));overflow:hidden;">
+      <div class="card-portrait" style="background:linear-gradient(135deg, ${ELEMENT_COLORS[enemy.element]}, rgba(30,15,40,0.7));">
         ${ENEMY_IMAGES[enemy.id] ? `<img src="${ENEMY_IMAGES[enemy.id]}" alt="${enemy.name}" style="width:100%;height:100%;object-fit:cover;">` : `<span class="emoji-portrait">${enemy.emoji}</span>`}
         <span class="card-role-badge" style="color:${RARITY_COLORS[enemy.rarity]}">${enemy.rarity}</span>
       </div>
-      <div class="card-name">${enemy.name}</div>
-      <div class="card-subtitle">${enemy.role} · ${enemy.element}</div>
-      <div class="hp-bar-container">
-        <div class="hp-bar"><div class="hp-bar-fill ${hpClass}" style="width:${hpPct}%"></div></div>
-        <div class="hp-text">${enemy.currentHp}/${enemy.maxHp}</div>
+      <div class="card-info-overlay">
+        <div class="card-name">${enemy.name}</div>
+        <div class="card-subtitle">${enemy.role} · ${enemy.element}</div>
+        <div class="hp-bar-container">
+          <div class="hp-bar"><div class="hp-bar-fill ${hpClass}" style="width:${hpPct}%"></div></div>
+          <div class="hp-text">${enemy.currentHp}/${enemy.maxHp}</div>
+        </div>
+        <div class="status-row">${renderStatuses(enemy.statuses)}</div>
       </div>
-      <div class="status-row">${renderStatuses(enemy.statuses)}</div>
     `;
     if (!enemy.isDefeated) card.classList.add('card-enter-enemy');
     card.style.animationDelay = (i * 0.15) + 's';
@@ -1493,17 +1584,19 @@ function renderHeroRow() {
     const hpClass = hpPct <= 25 ? 'low' : hpPct <= 50 ? 'mid' : '';
     const rankStars = '★'.repeat(hero.rank + 1);
     card.innerHTML = `
-      <div class="card-portrait" style="background:linear-gradient(135deg, ${ELEMENT_COLORS[hero.element]}, rgba(30,15,40,0.7));overflow:hidden;">
-        <img src="${hero.img}" alt="${hero.name}" data-hero="${hero.id}" style="width:100%;height:100%;object-fit:cover;object-position:${hero.id === 'william' ? 'center 15%' : 'center'};background:rgba(15,10,28,0.3);">
+      <div class="card-portrait" style="background:${`linear-gradient(135deg, ${ELEMENT_COLORS[hero.element]}, rgba(30,15,40,0.7))`};">
+        <img src="${hero.img}" alt="${hero.name}" data-hero="${hero.id}" style="width:100%;height:100%;object-fit:cover;object-position:center;">
         <span class="card-rank-star">${rankStars}</span>
       </div>
-      <div class="card-name">${hero.name}</div>
-      <div class="card-subtitle">${hero.title} · ${hero.element}</div>
-      <div class="hp-bar-container">
-        <div class="hp-bar"><div class="hp-bar-fill ${hpClass}" style="width:${hpPct}%"></div></div>
-        <div class="hp-text">${hero.currentHp}/${hero.maxHp}</div>
+      <div class="card-info-overlay">
+        <div class="card-name">${hero.name}</div>
+        <div class="card-subtitle">${hero.title} · ${hero.element}</div>
+        <div class="hp-bar-container">
+          <div class="hp-bar"><div class="hp-bar-fill ${hpClass}" style="width:${hpPct}%"></div></div>
+          <div class="hp-text">${hero.currentHp}/${hero.maxHp}</div>
+        </div>
+        <div class="status-row">${renderStatuses(hero.statuses)}</div>
       </div>
-      <div class="status-row">${renderStatuses(hero.statuses)}</div>
       ${heroActions[i] !== null ? '<div style="position:absolute;top:-6px;right:-6px;background:var(--green);color:#000;width:18px;height:18px;border-radius:50%;font-size:0.7rem;display:flex;align-items:center;justify-content:center;font-weight:700;">✓</div>' : ''}
     `;
     if (!hero.isDefeated && battlePhase === 'player') {
@@ -2108,14 +2201,14 @@ function showEvolution() {
     const newTitle = RANK_TITLES[hero.id][evo.newRank];
 
     const group = document.createElement('div');
-    group.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:8px;';
+    group.className = 'evo-group';
     group.innerHTML = `
-      <div style="display:flex;align-items:center;gap:16px;">
-        <div class="evo-card" style="width:100px;height:130px;"><img src="${oldImg}" alt="${oldTitle}"></div>
+      <div class="evo-pair">
+        <div class="evo-card old"><img src="${oldImg}" alt="${oldTitle}" style="object-position:center"></div>
         <span class="evo-arrow">➤</span>
-        <div class="evo-card" style="width:120px;height:155px;border-color:${evo.newRank === 2 ? 'var(--gold)' : 'var(--blue)'}"><img src="${newImg}" alt="${newTitle}"></div>
+        <div class="evo-card new" style="border-color:${evo.newRank === 2 ? 'var(--gold)' : 'var(--blue)'}"><img src="${newImg}" alt="${newTitle}" style="object-position:center"></div>
       </div>
-      <div style="font-family:var(--font-display);color:var(--gold);font-size:0.9rem;">${hero.name}: ${newTitle}</div>
+      <div class="evo-hero-name">${hero.name}: ${newTitle}</div>
     `;
     container.appendChild(group);
   });
