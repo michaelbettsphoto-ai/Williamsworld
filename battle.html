@@ -1018,6 +1018,37 @@ const HEROES = [
   },
 ];
 
+// ===== ENEMY IMAGE MAP =====
+const ENEMY_IMAGES = {
+  'dandelion-dagger': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/MjEOCsNbbUdnqdcu.png',
+  'mudkip-bandit': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/tLNXpyLjyRfjDZYS.png',
+  'pebble-pouncer': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/xbnxDvagIJGKUiqc.png',
+  'sunblink-moth': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/spHADFiiaNOgjDKJ.png',
+  'thorny-sneak': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/quAAiUfmMcbNKMQL.png',
+  'scorchling': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/aIjpCfmeRuUVLfTe.png',
+  'windwink-imp': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/vIWIfJAJLOSYoJFg.png',
+  'spark-dustling': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/BKOqdcygUptKNRmX.png',
+  'nightleaf-snatcher': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/QXqZjdUKHULGJgBn.png',
+  'slimecap-trickster': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/tuGyktQgGHDEzRmf.png',
+  'eraser-wraith': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/eCQdyipNHgnsKnrW.png',
+  'paper-cut-pirate': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/kbYiGZockTSwemJa.png',
+  'inkblob-gremlin': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/RfkgRAJkHsSDMojg.png',
+  'quiz-golemlet': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/lIgqpnrTfmLjgFyY.png',
+  'ruler-knight': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/hCaVNSFQrJIteJfg.png',
+  'glue-gooper': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/sBuNBvjqaiSmWpDv.png',
+  'chalk-phantom': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/SgBiLLGjFqrCRyYn.png',
+  'zipper-viper': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/hSdrYvARVpLwpnQo.png',
+  'buckle-brute': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/kkrwmnIPCoPMlDRF.png',
+  'lint-lurker': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/syEqTGGozeWZPETm.png',
+  'compass-spinner': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/eYwBfcdmnDxzwWGL.png',
+  'thermos-titan': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/BQmuNOESStkNlogb.png',
+  'crystal-crawler': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/evCbKkKXGvzvrTKF.png',
+  'mindmoth': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/XargXwENKJLZyNHK.png',
+  'root-warden': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/FQnlWcWaaVSauKOr.png',
+  'prism-specter': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/eUesqWzUaKxQplhD.png',
+  'void-weaver': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/pQLSQIHfWtEsxVJK.png'
+};
+
 // ===== ENEMY DATA (embedded subset from enemies.json) =====
 const ENEMIES_BY_ZONE = {
   'launch-meadow': [
@@ -1334,8 +1365,8 @@ function drawEnemies() {
       <div class="draw-card-inner" id="draw-card-${i}">
         <div class="draw-card-face draw-card-back"></div>
         <div class="draw-card-face draw-card-front">
-          <div class="enemy-portrait" style="background:linear-gradient(135deg, ${ELEMENT_COLORS[enemy.element] || 'var(--type-neutral)'}, rgba(30,15,40,0.8));">
-            <span style="font-size:2.5rem;">${enemy.emoji}</span>
+          <div class="enemy-portrait" style="background:linear-gradient(135deg, ${ELEMENT_COLORS[enemy.element] || 'var(--type-neutral)'}, rgba(30,15,40,0.8));overflow:hidden;">
+            ${ENEMY_IMAGES[enemy.id] ? `<img src="${ENEMY_IMAGES[enemy.id]}" alt="${enemy.name}" style="width:100%;height:100%;object-fit:cover;">` : `<span style="font-size:2.5rem;">${enemy.emoji}</span>`}
           </div>
           <div class="enemy-name">${enemy.name}</div>
           <div class="enemy-info">
@@ -1451,8 +1482,8 @@ function renderEnemyRow() {
     const hpClass = hpPct <= 25 ? 'low' : hpPct <= 50 ? 'mid' : '';
 
     card.innerHTML = `
-      <div class="card-portrait" style="background:linear-gradient(135deg, ${ELEMENT_COLORS[enemy.element] || 'var(--type-neutral)'}, rgba(30,15,40,0.7));">
-        <span class="emoji-portrait">${enemy.emoji}</span>
+      <div class="card-portrait" style="background:linear-gradient(135deg, ${ELEMENT_COLORS[enemy.element] || 'var(--type-neutral)'}, rgba(30,15,40,0.7));overflow:hidden;">
+        ${ENEMY_IMAGES[enemy.id] ? `<img src="${ENEMY_IMAGES[enemy.id]}" alt="${enemy.name}" style="width:100%;height:100%;object-fit:cover;">` : `<span class="emoji-portrait">${enemy.emoji}</span>`}
         <span class="card-role-badge" style="color:${RARITY_COLORS[enemy.rarity]}">${enemy.rarity}</span>
       </div>
       <div class="card-name">${enemy.name}</div>
