@@ -62,6 +62,57 @@ body {
   -webkit-user-select: none;
 }
 
+/* ===== NAVIGATION ===== */
+.nav-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; padding: 8px 16px;
+  background: rgba(15, 10, 28, 0.7);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.back-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,211,110,0.15); border: 1px solid rgba(255,211,110,0.3);
+  color: var(--gold); font-family: var(--font); font-size: 0.85rem; font-weight: 700;
+  padding: 6px 14px; border-radius: 20px; cursor: pointer;
+  transition: all 0.2s ease;
+}
+.back-btn:hover { background: rgba(255,211,110,0.3); transform: scale(1.05); }
+.back-btn svg { width: 16px; height: 16px; }
+.nav-title {
+  flex: 1; text-align: center;
+  font-family: var(--font-display); font-size: 1rem; color: var(--gold);
+  letter-spacing: 0.05em;
+}
+.nav-streak {
+  font-family: var(--font); font-size: 0.8rem; color: var(--text-secondary);
+  display: flex; align-items: center; gap: 4px;
+}
+
+/* ===== LOCKED ZONE STYLES ===== */
+.zone-chip.locked {
+  opacity: 0.45; filter: grayscale(0.6);
+  cursor: not-allowed;
+  border-color: rgba(255,255,255,0.08) !important;
+  background: rgba(30, 15, 40, 0.6) !important;
+}
+.zone-chip.locked:hover { transform: none; }
+
+@keyframes shake-deny {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+.shake-deny { animation: shake-deny 0.4s ease; }
+
+.zone-lock-msg {
+  font-family: var(--font); font-size: 0.75rem; color: var(--orange);
+  text-align: center; margin-top: 4px;
+  opacity: 0.8;
+}
+
 /* ===== BACKGROUND ===== */
 #battle-bg {
   position: fixed; inset: 0;
@@ -103,7 +154,11 @@ body {
 .screen.exit { opacity: 0; transform: scale(0.95); }
 
 /* ===== SCREEN 1: ZONE SELECT ===== */
-#scout-screen { gap: 24px; padding: 24px; }
+#scout-screen { gap: 24px; padding: 24px; padding-top: 56px; }
+#draw-screen { padding-top: 56px; }
+#battle-screen { padding-top: 48px; }
+#result-screen { padding-top: 56px; }
+#evolution-screen { padding-top: 56px; }
 .zone-title {
   font-family: var(--font-display); font-size: clamp(1.8rem, 5vw, 3rem);
   font-weight: 900; color: var(--gold);
@@ -305,7 +360,14 @@ body {
   width: 100%; height: clamp(50px, 12vw, 80px); border-radius: var(--radius-sm);
   overflow: hidden; display: flex; align-items: center; justify-content: center; position: relative;
 }
-.card-portrait img { width: 100%; height: 100%; object-fit: cover; }
+.card-portrait img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+/* William's art is full-body, so we crop to show upper body */
+.card-portrait img[data-hero="william"] {
+  object-fit: cover;
+  object-position: center 15%;
+}
 .card-portrait .emoji-portrait { font-size: 2rem; }
 .card-role-badge {
   position: absolute; top: 2px; right: 2px; font-size: 0.55rem; padding: 1px 6px;
@@ -688,6 +750,16 @@ body {
 <body>
 
 <!-- Background -->
+<!-- Navigation Bar -->
+<nav class="nav-bar">
+  <button class="back-btn" onclick="goToHub()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+    Hub
+  </button>
+  <div class="nav-title">William's World</div>
+  <div class="nav-streak" id="nav-streak">🔥 <span id="streak-display">0</span> day streak</div>
+</nav>
+
 <div id="battle-bg"></div>
 
 <!-- VFX Overlay -->
@@ -800,9 +872,9 @@ body {
 // ===== IMAGE URLS =====
 const IMG = {
   william: [
-    'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/lhhkQOYooJWFKGdj.png',
-    'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/KskJnJUsFqnlnACT.png',
-    'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/wPsBUhLVPoqvKywh.png',
+    'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/tEYVeMWBLXdYcYTz.PNG',
+    'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/tEYVeMWBLXdYcYTz.PNG',
+    'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/tEYVeMWBLXdYcYTz.PNG',
   ],
   ember: [
     'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/hZBbuiyBIVYpcHwf.png',
@@ -849,11 +921,35 @@ function saveGameState() {
 
 // ===== ZONE DATA =====
 const ZONES = [
-  { id: 'launch-meadow', name: 'Launch Meadow', desc: 'A bright meadow where young adventurers take their first steps. Enemies here are friendly but feisty!', modifier: '☀️ Sunny Day: +10% Light moves', tier: 'T1' },
-  { id: 'homework-hills', name: 'Homework Hills', desc: 'Rolling hills of books and pencils. The enemies here are tricky and love to debuff!', modifier: '📚 Study Zone: +10% Shadow moves', tier: 'T2' },
-  { id: 'backpack-bastion', name: 'Backpack Bastion', desc: 'A fortified outpost of supplies and gear. Tough enemies guard the path ahead.', modifier: '🎒 Gear Up: +10% Metal moves', tier: 'T3' },
-  { id: 'focus-forest', name: 'Focus Forest', desc: 'A mystical forest of crystals and ancient trees. The strongest foes lurk in the shadows.', modifier: '🔮 Crystal Aura: +10% Ice moves', tier: 'T4' },
+  { id: 'launch-meadow', name: 'Launch Meadow', desc: 'A bright meadow where young adventurers take their first steps. Enemies here are friendly but feisty!', modifier: '☀️ Sunny Day: +10% Light moves', tier: 'T1', needStreak: 0 },
+  { id: 'homework-hills', name: 'Homework Hills', desc: 'Rolling hills of books and pencils. The enemies here are tricky and love to debuff!', modifier: '📚 Study Zone: +10% Shadow moves', tier: 'T2', needStreak: 3 },
+  { id: 'backpack-bastion', name: 'Backpack Bastion', desc: 'A fortified outpost of supplies and gear. Tough enemies guard the path ahead.', modifier: '🎒 Gear Up: +10% Metal moves', tier: 'T3', needStreak: 5 },
+  { id: 'focus-forest', name: 'Focus Forest', desc: 'A mystical forest of crystals and ancient trees. The strongest foes lurk in the shadows.', modifier: '🔮 Crystal Aura: +10% Ice moves', tier: 'T4', needStreak: 10 },
 ];
+
+// ===== HUB INTEGRATION: Read streak from main hub's localStorage =====
+function getHubStreak() {
+  try {
+    const hubState = JSON.parse(localStorage.getItem('williams_world_embed_state_v1'));
+    if (hubState) return hubState.maxStreak ?? hubState.streak ?? 0;
+  } catch(e) {}
+  return 0;
+}
+
+function isZoneUnlocked(zone) {
+  return getHubStreak() >= zone.needStreak;
+}
+
+// Read zone from URL params (from hub navigation)
+function getZoneFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const zoneParam = params.get('zone');
+  if (zoneParam) {
+    const found = ZONES.find(z => z.id === zoneParam || z.id === zoneParam.replace(/\s/g, '-'));
+    if (found && isZoneUnlocked(found)) return found;
+  }
+  return null;
+}
 
 // ===== HERO DATA (with rank-based evolution) =====
 function getHeroImg(heroId) { return IMG[heroId][gameState.teamRank] || IMG[heroId][0]; }
@@ -1135,8 +1231,10 @@ function spawnFloatText(element, text, type) {
 // ===== INIT =====
 function init() {
   createParticles();
+  // Check URL for zone param from hub
+  const urlZone = getZoneFromURL();
   buildZoneSelector();
-  setZone(ZONES[0]);
+  setZone(urlZone || ZONES[0]);
   updateXPDisplay();
 }
 
@@ -1158,11 +1256,22 @@ function createParticles() {
 function buildZoneSelector() {
   const sel = document.getElementById('zone-selector');
   sel.innerHTML = '';
+  const streak = getHubStreak();
   ZONES.forEach(z => {
     const chip = document.createElement('button');
-    chip.className = 'zone-chip' + (z.id === currentZone.id ? ' active' : '');
-    chip.textContent = z.name;
-    chip.onclick = () => setZone(z);
+    const unlocked = streak >= z.needStreak;
+    chip.className = 'zone-chip' + (z.id === currentZone.id ? ' active' : '') + (!unlocked ? ' locked' : '');
+    if (unlocked) {
+      chip.textContent = z.name;
+      chip.onclick = () => setZone(z);
+    } else {
+      chip.textContent = '🔒 ' + z.name;
+      chip.onclick = () => {
+        chip.classList.add('shake-deny');
+        setTimeout(() => chip.classList.remove('shake-deny'), 500);
+      };
+      chip.title = `Unlocks at ${z.needStreak}-day streak (current: ${streak})`;
+    }
     sel.appendChild(chip);
   });
 }
@@ -1211,6 +1320,13 @@ function showScreen(id) {
 
 // ===== ENCOUNTER START =====
 function startEncounter() {
+  // Check if current zone is unlocked
+  if (!isZoneUnlocked(currentZone)) {
+    const scoutBtn = document.getElementById('scout-btn');
+    scoutBtn.classList.add('shake-deny');
+    setTimeout(() => scoutBtn.classList.remove('shake-deny'), 500);
+    return;
+  }
   document.body.classList.add('shake');
   setTimeout(() => document.body.classList.remove('shake'), 400);
   drawEnemies();
@@ -1378,7 +1494,7 @@ function renderHeroRow() {
     const rankStars = '★'.repeat(hero.rank + 1);
     card.innerHTML = `
       <div class="card-portrait" style="background:linear-gradient(135deg, ${ELEMENT_COLORS[hero.element]}, rgba(30,15,40,0.7));overflow:hidden;">
-        <img src="${hero.img}" alt="${hero.name}" style="width:100%;height:100%;object-fit:cover;">
+        <img src="${hero.img}" alt="${hero.name}" data-hero="${hero.id}" style="width:100%;height:100%;object-fit:cover;object-position:${hero.id === 'william' ? 'center 15%' : 'center'};background:rgba(15,10,28,0.3);">
         <span class="card-rank-star">${rankStars}</span>
       </div>
       <div class="card-name">${hero.name}</div>
@@ -2052,7 +2168,20 @@ function addLog(text) {
   log.classList.add('visible');
 }
 
+// ===== NAVIGATION =====
+function goToHub() {
+  window.location.href = './index.html';
+}
+
+// Update streak display in nav
+function updateStreakDisplay() {
+  const streak = getHubStreak();
+  const el = document.getElementById('streak-display');
+  if (el) el.textContent = streak;
+}
+
 // ===== START =====
+updateStreakDisplay();
 init();
 </script>
 </body>

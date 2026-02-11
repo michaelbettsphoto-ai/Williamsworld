@@ -2058,7 +2058,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const zone = questZonesData.zones.find(item => item.id === activeQuestZoneId);
     if (!zone) return;
     if (state.streak < zone.unlockDays) return;
-    window.location.href = `./battle-system-demo.html?zone=${encodeURIComponent(zone.id)}`;
+    window.location.href = `./battle.html?zone=${encodeURIComponent(zone.id)}`;
   }
 
   function setupQuestLoreOverlay() {
@@ -2135,7 +2135,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       state.selectedParty = COMPANIONS.slice(0, 2);
     }
     save();
-    window.location.href = `battle-system-demo.html?zone=${zone.slug}`;
+    window.location.href = `./battle.html?zone=${zone.slug}`;
   }
 
   function setupZoneNavigation() {
