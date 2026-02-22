@@ -311,6 +311,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
   }
   
+  // Check if today is Saturday (6) or Sunday (0) in Chicago time — no time bomb on weekends
+  function isWeekend() {
+    const day = getChicagoTime().getDay(); // 0 = Sunday, 6 = Saturday
+    return day === 0 || day === 6;
+  }
+
   // Check if current time is within morning window (6:00-8:00 AM Chicago)
   function isInMorningWindow() {
     const now = getChicagoTime();
@@ -322,7 +328,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const beforeDeadline = (hour < MORNING_MISSION.DEADLINE_HOUR) || 
                            (hour === MORNING_MISSION.DEADLINE_HOUR && min < MORNING_MISSION.DEADLINE_MIN);
     
-    return afterStart && beforeDeadline;
+    return !isWeekend() && afterStart && beforeDeadline;
   }
   
   // Check if deadline has passed
@@ -331,6 +337,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const hour = now.getHours();
     const min = now.getMinutes();
     
+    if (isWeekend()) return false; // No deadline on weekends
     return (hour > MORNING_MISSION.DEADLINE_HOUR) || 
            (hour === MORNING_MISSION.DEADLINE_HOUR && min >= MORNING_MISSION.DEADLINE_MIN);
   }
@@ -1063,6 +1070,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       return; // Already processed
     }
     
+    if (isWeekend()) {
+      return; // No failure on weekends — no time bomb on Saturday or Sunday
+    }
+    
     if (areAllMorningTasksComplete()) {
       return; // Actually completed
     }
@@ -1293,7 +1304,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     
     // Update based on status
-    if (missionState.status === 'completed') {
+    // Weekend overrides everything — no bomb, no failure shown
+    if (isWeekend()) {
+      timerEl.style.display = 'none';
+      statusBanner.style.display = 'block';
+      statusBanner.className = 'missionStatusBanner weekend';
+      statusBanner.textContent = '🌅 Weekend — no deadline today! Take your time.';
+      bombVisual.style.display = 'none';
+    } else if (missionState.status === 'completed') {
       timerEl.style.display = 'none';
       statusBanner.style.display = 'block';
       statusBanner.className = 'missionStatusBanner success';
@@ -1310,6 +1328,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       statusBanner.innerHTML = `💥 Morning Mission Failed<br><span class="small">You missed: ${missedTasks}</span>`;
       bombVisual.innerHTML = '<div class="bombExploded">💥 BOOM!</div>';
       bombVisual.className = 'bombVisual exploded';
+    } else if (isWeekend()) {
+      // Weekend — hide the bomb UI entirely, just show the checklist
+      timerEl.style.display = 'none';
+      statusBanner.style.display = 'block';
+      statusBanner.className = 'missionStatusBanner weekend';
+      statusBanner.textContent = '🌅 Weekend — no deadline today! Take your time.';
+      bombVisual.style.display = 'none';
     } else if (isBeforeMorningWindow()) {
       timerEl.style.display = 'block';
       timerEl.className = 'missionTimer locked';
