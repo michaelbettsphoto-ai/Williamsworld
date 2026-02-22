@@ -344,6 +344,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Check if before morning window
   function isBeforeMorningWindow() {
+    if (isWeekend()) return false; // No window restriction on weekends
     const now = getChicagoTime();
     const hour = now.getHours();
     const min = now.getMinutes();
@@ -375,6 +376,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Get mission window string for tooltips
   function getMissionWindowString() {
+    if (isWeekend()) return 'Weekend — complete the mission any time today! 🌅';
     return `Morning Mission runs ${MORNING_MISSION.WINDOW_START_HOUR}:00–${MORNING_MISSION.DEADLINE_HOUR}:00 AM.`;
   }
 
@@ -2378,7 +2380,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         
         // MORNING MISSION-SPECIFIC TIME WINDOW CHECK
-        if (task.quest === 'morning' && checkbox.checked && !wasChecked) {
+        // On weekends there is no time restriction — mission can be completed any time.
+        if (task.quest === 'morning' && checkbox.checked && !wasChecked && !isWeekend()) {
           if (isBeforeMorningWindow()) {
             toast(getMissionWindowString());
             checkbox.checked = false;
