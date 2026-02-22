@@ -2,7 +2,7 @@
 // SCREEN TIME REWARD SYSTEM — William's World
 // ============================================
 // Screen time is EARNED, not given.
-// Sources: quests, tasks, prayer, exercise,
+// Sources: quests, tasks, church, exercise,
 //          school subjects, parent behavior award.
 // Default daily cap: 60 minutes.
 // Parent PIN (062923) can add bonus minutes.
@@ -23,7 +23,7 @@
     quest_night:    10,   // full Night-Before quest complete
     quest_morning:  10,   // full Morning Quest complete
     quest_backpack: 10,   // full Backpack Quest complete
-    prayer:         15,
+    church:         15,
     run_per_mile:   10,   // running: 10 min per mile
     pullups:         2,
     situps:          2,
@@ -432,16 +432,16 @@
               <button class="stTimerBtn stTimerBtnReset" id="stTimerResetBtn" style="display:none;">↺ Reset</button>
             </div>
           </div>
-          <!-- Prayer inside timer column -->
+          <!-- Church inside timer column -->
           <div class="stSection">
-            <div class="stSectionTitle">🙏 Prayer</div>
-            <div class="stSource" id="stSrc_prayer">
-              <div class="stSrcIcon">🙏</div>
+            <div class="stSectionTitle">⛪ Church</div>
+            <div class="stSource" id="stSrc_church">
+              <div class="stSrcIcon">⛪</div>
               <div class="stSrcInfo">
-                <div class="stSrcLabel">Prayer Time</div>
-                <div class="stSrcReward">+${REWARDS.prayer} min</div>
+                <div class="stSrcLabel">Church Time</div>
+                <div class="stSrcReward">+${REWARDS.church} min</div>
               </div>
-              <button class="stSrcBtn" data-src="prayer">Log</button>
+              <button class="stSrcBtn" data-src="church">Log</button>
             </div>
           </div>
         </div>
@@ -649,11 +649,11 @@
     }
     updateTimerUI();
 
-    // Prayer button
-    const prayerBtn  = document.querySelector('.stSrcBtn[data-src="prayer"]');
-    const prayerCard = document.getElementById('stSrc_prayer');
+    // Church button
+    const prayerBtn  = document.querySelector('.stSrcBtn[data-src="church"]');
+    const prayerCard = document.getElementById('stSrc_church');
     if (prayerBtn && prayerCard) {
-      const claimed = !!rec.sources['prayer'];
+      const claimed = !!rec.sources['church'];
       prayerBtn.disabled    = claimed;
       prayerBtn.textContent = claimed ? '✅ Done' : 'Log';
       prayerCard.classList.toggle('stSourceDone', claimed);
@@ -908,7 +908,7 @@
         padding-bottom: 4px;
       }
 
-      /* ── Prayer source card (single row) ── */
+      /* ── Church source card (single row) ── */
       .stSource {
         display: flex; align-items: center; gap: 10px;
         background: rgba(255,255,255,0.04);
@@ -1067,12 +1067,12 @@
     // Times Up dismiss
     document.getElementById('stTimesUpDismiss')?.addEventListener('click', dismissTimesUp);
 
-    // Prayer log button
-    const prayerBtn = document.querySelector('.stSrcBtn[data-src="prayer"]');
+    // Church log button
+    const prayerBtn = document.querySelector('.stSrcBtn[data-src="church"]');
     if (prayerBtn) {
       prayerBtn.addEventListener('click', () => {
-        const added = awardMinutes('prayer', REWARDS.prayer, 'Prayer Time');
-        if (added > 0) showToast(`🙏 +${added} min for Prayer Time!`);
+        const added = awardMinutes('church', REWARDS.church, 'Church Time');
+        if (added > 0) showToast(`⛪ +${added} min for Church Time!`);
         else showToast('Already logged today ✅');
         updateUI();
       });
