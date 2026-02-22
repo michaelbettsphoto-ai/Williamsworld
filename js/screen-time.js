@@ -418,94 +418,96 @@
         🏆 Daily cap reached! Ask a parent to unlock more time.
       </div>
 
-      <!-- ── Countdown Timer ── -->
-      <div class="stTimerCard" id="stTimerCard">
-        <div class="stTimerDisplay" id="stTimerDisplay">00:00</div>
-        <div class="stTimerSubLabel" id="stTimerSubLabel">Earn screen time to start the timer!</div>
-        <div class="stTimerBtns">
-          <button class="stTimerBtn stTimerBtnStart" id="stTimerStartBtn">▶ Start</button>
-          <button class="stTimerBtn stTimerBtnPause" id="stTimerPauseBtn" style="display:none;">⏸ Pause</button>
-          <button class="stTimerBtn stTimerBtnReset" id="stTimerResetBtn" style="display:none;">↺ Reset</button>
-        </div>
-      </div>
+      <!-- ── 3-column body ── -->
+      <div class="stBodyGrid">
 
-      <!-- Prayer -->
-      <div class="stSection">
-        <div class="stSectionTitle">🙏 Prayer</div>
-        <div class="stSource" id="stSrc_prayer">
-          <div class="stSrcIcon">🙏</div>
-          <div class="stSrcInfo">
-            <div class="stSrcLabel">Prayer Time</div>
-            <div class="stSrcReward">+${REWARDS.prayer} min</div>
-          </div>
-          <button class="stSrcBtn" data-src="prayer">Log</button>
-        </div>
-      </div>
-
-      <!-- Exercise section -->
-      <div class="stSection">
-        <div class="stSectionTitle">🏃 Exercise</div>
-
-        <!-- Running — stackable miles -->
-        <div class="stRunCard" id="stRunCard">
-          <div class="stRunLeft">
-            <span class="stRunIcon">🏃</span>
-            <div class="stRunInfo">
-              <div class="stRunLabel">Running</div>
-              <div class="stRunReward">+${REWARDS.run_per_mile} min per mile</div>
-              <div class="stRunTotal" id="stRunTotal">0 miles logged today</div>
+        <!-- COL 1: Timer -->
+        <div class="stCol stColTimer">
+          <div class="stTimerCard" id="stTimerCard">
+            <div class="stTimerDisplay" id="stTimerDisplay">00:00</div>
+            <div class="stTimerSubLabel" id="stTimerSubLabel">Earn screen time to start the timer!</div>
+            <div class="stTimerBtns">
+              <button class="stTimerBtn stTimerBtnStart" id="stTimerStartBtn">▶ Start</button>
+              <button class="stTimerBtn stTimerBtnPause" id="stTimerPauseBtn" style="display:none;">⏸ Pause</button>
+              <button class="stTimerBtn stTimerBtnReset" id="stTimerResetBtn" style="display:none;">↺ Reset</button>
             </div>
           </div>
-          <div class="stRunRight">
-            <input type="number" id="stMilesInput" class="stMilesInput" min="0.25" max="26" step="0.25" placeholder="Miles" />
-            <button class="stSrcBtn" id="stLogRunBtn">Log</button>
+          <!-- Prayer inside timer column -->
+          <div class="stSection">
+            <div class="stSectionTitle">🙏 Prayer</div>
+            <div class="stSource" id="stSrc_prayer">
+              <div class="stSrcIcon">🙏</div>
+              <div class="stSrcInfo">
+                <div class="stSrcLabel">Prayer Time</div>
+                <div class="stSrcReward">+${REWARDS.prayer} min</div>
+              </div>
+              <button class="stSrcBtn" data-src="prayer">Log</button>
+            </div>
           </div>
         </div>
 
-        <!-- Workout activities — single column -->
-        <div class="stWorkoutList" id="stWorkoutGrid">
-          ${WORKOUT_ACTIVITIES.map(a => `
-          <div class="stWorkoutRow" id="stWkt_${a.id}">
-            <div class="stWktIcon">${a.icon}</div>
-            <div class="stWktLabel">${a.label}</div>
-            <div class="stWktReward">+${REWARDS[a.id]} min</div>
-            <button class="stSrcBtn stWktBtn" data-wkt="${a.id}">Log</button>
-          </div>`).join('')}
-        </div>
-      </div>
-
-      <!-- School Work section — single column -->
-      <div class="stSection">
-        <div class="stSectionTitle">📚 School Work</div>
-        <div class="stSchoolList" id="stSchoolGrid">
-          ${SCHOOL_SUBJECTS.map(s => `
-          <div class="stSchoolRow" id="stSubj_${s.id}">
-            <div class="stSubjIcon">${s.icon}</div>
-            <div class="stSubjLabel">${s.label}</div>
-            <div class="stSubjReward">+${REWARDS.school_subject} min</div>
-            <div class="stSubjBtns">
-              <button class="stSrcBtn stSubjLogBtn" data-subj="${s.id}">Log</button>
-              <button class="stSrcBtn stSubjBonusBtn stParentBtn" data-subj="${s.id}" title="Parent: add bonus minutes">+🔒</button>
+        <!-- COL 2: Exercise -->
+        <div class="stCol stColExercise">
+          <div class="stSection">
+            <div class="stSectionTitle">🏃 Exercise</div>
+            <div class="stRunCard" id="stRunCard">
+              <div class="stRunLeft">
+                <span class="stRunIcon">🏃</span>
+                <div class="stRunInfo">
+                  <div class="stRunLabel">Running</div>
+                  <div class="stRunReward">+${REWARDS.run_per_mile} min per mile</div>
+                  <div class="stRunTotal" id="stRunTotal">0 miles logged today</div>
+                </div>
+              </div>
+              <div class="stRunRight">
+                <input type="number" id="stMilesInput" class="stMilesInput" min="0.25" max="26" step="0.25" placeholder="Miles" />
+                <button class="stSrcBtn" id="stLogRunBtn">Log</button>
+              </div>
             </div>
-          </div>`).join('')}
+            <div class="stWorkoutList" id="stWorkoutGrid">
+              ${WORKOUT_ACTIVITIES.map(a => `
+              <div class="stWorkoutRow" id="stWkt_${a.id}">
+                <div class="stWktIcon">${a.icon}</div>
+                <div class="stWktLabel">${a.label}</div>
+                <div class="stWktReward">+${REWARDS[a.id]} min</div>
+                <button class="stSrcBtn stWktBtn" data-wkt="${a.id}">Log</button>
+              </div>`).join('')}
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- Parent controls -->
-      <div class="stSection">
-        <div class="stSectionTitle">🔒 Parent Controls</div>
-        <div class="stParentGrid">
-          <button class="stBtn stBtnParent" id="stBehaviorBtn">⭐ Behavior Award</button>
-          <button class="stBtn stBtnParent" id="stUnlockCapBtn">🔓 Add More Time</button>
+        <!-- COL 3: School + Parent Controls + History -->
+        <div class="stCol stColSchool">
+          <div class="stSection">
+            <div class="stSectionTitle">📚 School Work</div>
+            <div class="stSchoolList" id="stSchoolGrid">
+              ${SCHOOL_SUBJECTS.map(s => `
+              <div class="stSchoolRow" id="stSubj_${s.id}">
+                <div class="stSubjIcon">${s.icon}</div>
+                <div class="stSubjLabel">${s.label}</div>
+                <div class="stSubjReward">+${REWARDS.school_subject} min</div>
+                <div class="stSubjBtns">
+                  <button class="stSrcBtn stSubjLogBtn" data-subj="${s.id}">Log</button>
+                  <button class="stSrcBtn stSubjBonusBtn stParentBtn" data-subj="${s.id}" title="Parent: add bonus minutes">+🔒</button>
+                </div>
+              </div>`).join('')}
+            </div>
+          </div>
+          <div class="stSection">
+            <div class="stSectionTitle">🔒 Parent Controls</div>
+            <div class="stParentGrid">
+              <button class="stBtn stBtnParent" id="stBehaviorBtn">⭐ Behavior Award</button>
+              <button class="stBtn stBtnParent" id="stUnlockCapBtn">🔓 Add More Time</button>
+            </div>
+            <div id="stBehaviorAwardsList" class="stAwardsList"></div>
+          </div>
+          <div class="stSection">
+            <div class="stSectionTitle">📅 This Week</div>
+            <div id="stHistory" class="stHistory"></div>
+          </div>
         </div>
-        <div id="stBehaviorAwardsList" class="stAwardsList"></div>
-      </div>
 
-      <!-- History -->
-      <div class="stSection">
-        <div class="stSectionTitle">📅 This Week</div>
-        <div id="stHistory" class="stHistory"></div>
-      </div>
+      </div><!-- end stBodyGrid -->
     `;
     return panel;
   }
@@ -737,7 +739,27 @@
     style.id = 'stStyles';
     style.textContent = `
       /* ── Panel ── */
-      .stPanel { position: relative; }
+      .stPanel { position: relative; grid-column: 1 / -1; }
+
+      /* ── 3-column body grid ── */
+      .stBodyGrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20px;
+        margin-top: 14px;
+        align-items: start;
+      }
+      .stCol {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+      @media (max-width: 980px) {
+        .stBodyGrid { grid-template-columns: 1fr 1fr; }
+      }
+      @media (max-width: 600px) {
+        .stBodyGrid { grid-template-columns: 1fr; }
+      }
 
       /* ── Summary ── */
       .stSummary { text-align: center; margin: 8px 0 6px; }
