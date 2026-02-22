@@ -2377,6 +2377,11 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
           
           checkItem.classList.add('completed');
+          
+          // Screen Time reward hook — award minutes for task + quest completion
+          if (window.ScreenTime && typeof window.ScreenTime.onTaskChecked === 'function') {
+            window.ScreenTime.onTaskChecked(task.id);
+          }
         } else if (wasChecked && !checkbox.checked) {
           // Task unchecked - do NOT remove completion flag (idempotent)
           // User can uncheck visually, but won't get rewards again
