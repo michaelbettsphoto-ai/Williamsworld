@@ -1582,34 +1582,73 @@ document.addEventListener('DOMContentLoaded', async () => {
     return dmg;
   }
 
-  // Midnight check: auto-grade any past ungraded days as FAIL and apply damage
+  // Midnight check: auto-grade any past ungraded days.
+  // PASS if all tasks complete, FAIL otherwise — same logic as the Grade button.
   function midnightCheck() {
     let totalDamage = 0;
+    let anyAutoGraded = false;
     const sortedKeys = Object.keys(state.days).sort();
     sortedKeys.forEach(dateKey => {
-      if (dateKey >= TODAY) return; // skip today
+      if (dateKey >= TODAY) return; // skip today and future
       const day = state.days[dateKey];
       if (day.result === "Not graded") {
-        // Midnight passed without grading — auto-FAIL and apply damage
-        day.result = "FAIL";
-        const dmg = calcDamage(day);
-        totalDamage += dmg;
-        state.streak = 0;
+        anyAutoGraded = true;
+        // Determine pass/fail using the same criteria as the Grade button
+        const nightIds = ["n_trapper","n_clothes","n_lunch","n_shoes"];
+        const nightOk = nightIds.every(id => day.tasks[id] === true);
+        const trapperCheckOk = day.tasks["m_trappercheck"] === true;
+        const passed = nightOk && trapperCheckOk;
+        day.result = passed ? "PASS" : "FAIL";
+        if (passed) {
+          const prevMaxStreak = state.maxStreak ?? 0;
+          state.streak = (state.streak || 0) + 1;
+          state.maxStreak = Math.max(prevMaxStreak, state.streak);
+        } else {
+          const dmg = calcDamage(day);
+          totalDamage += dmg;
+          state.streak = 0;
+        }
       }
     });
-    if (totalDamage > 0) {
-      state.hp = Math.max(0, state.hp - totalDamage);
-      // Cap HP to max based on current streak
-      const maxHP = getMaxHP();
-      if (state.hp > maxHP) state.hp = maxHP;
+    if (anyAutoGraded) {
+      if (totalDamage > 0) {
+        state.hp = Math.max(0, state.hp - totalDamage);
+        const maxHP = getMaxHP();
+        if (state.hp > maxHP) state.hp = maxHP;
+      }
       save();
-      setTimeout(() => {
-        toast(`💀 Midnight damage! -${totalDamage} HP for missed tasks`);
-        checkLevelDown();
-      }, 500);
+      if (totalDamage > 0) {
+        setTimeout(() => {
+          toast(`💀 Auto-graded: -${totalDamage} HP for missed tasks`);
+          checkLevelDown();
+        }, 500);
+      }
     }
   }
   midnightCheck();
+
+  // ── Live midnight auto-grade ──────────────────────────────────────────────
+  // If the app is left open overnight, schedule gradeDay() to fire automatically
+  // at the next midnight (Chicago time) and then every 24 hours after that.
+  (function scheduleMidnightAutoGrade() {
+    function msUntilMidnight() {
+      const now = getChicagoTime ? getChicagoTime() : new Date();
+      const midnight = new Date(now);
+      midnight.setHours(24, 0, 0, 0); // next midnight
+      return midnight - now;
+    }
+    function runAtMidnight() {
+      // Auto-grade today if not yet graded
+      if (state.days[TODAY] && state.days[TODAY].result === 'Not graded') {
+        gradeDay();
+        updateHeader();
+        toast('🌙 Auto-graded at midnight!');
+      }
+      // Schedule again for the following midnight
+      setTimeout(runAtMidnight, msUntilMidnight());
+    }
+    setTimeout(runAtMidnight, msUntilMidnight());
+  })();
 
   function isPassDay(){
     const day = state.days[TODAY];
