@@ -1,4 +1,4 @@
-// ============================================
+
 // SCREEN TIME REWARD SYSTEM — William's World
 // ============================================
 // Screen time is EARNED, not given.
@@ -68,6 +68,14 @@
     return `${m}m`;
   }
 
+  function fmtSec(totalSec) {
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+    if (h > 0) return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  }
+
   function showToast(msg) {
     const el = document.getElementById('toast');
     if (el) {
@@ -102,7 +110,8 @@
         sources: {},
         schoolBonus: {},
         behaviorAwards: [],
-        milesRun: 0,       // cumulative miles logged today
+        milesRun: 0,
+        timerUsedSec: 0,   // total seconds of screen time used today
       };
       saveState();
     }
@@ -110,8 +119,9 @@
     if (!r.sources)        r.sources = {};
     if (!r.schoolBonus)    r.schoolBonus = {};
     if (!r.behaviorAwards) r.behaviorAwards = [];
-    if (r.bonusCap  === undefined) r.bonusCap  = 0;
-    if (r.milesRun  === undefined) r.milesRun  = 0;
+    if (r.bonusCap        === undefined) r.bonusCap = 0;
+    if (r.milesRun        === undefined) r.milesRun = 0;
+    if (r.timerUsedSec    === undefined) r.timerUsedSec = 0;
     return r;
   }
 
@@ -135,17 +145,15 @@
     return actual;
   }
 
-  // Running: stackable — each mile call adds more minutes (no idempotency check)
+  // Running: stackable
   function awardRunMiles(miles) {
     const rec = getTodayRec();
     const mins = miles * REWARDS.run_per_mile;
-    // Running bypasses cap only up to cap; parent can unlock more
     const cap   = getDailyCap();
     const space = Math.max(0, cap - rec.earned);
     const actual = Math.min(mins, space);
     rec.earned   += actual;
     rec.milesRun += miles;
-    // Store as a stackable log entry
     const key = `run_${Date.now()}`;
     rec.sources[key] = { minutes: actual, label: `Run: ${miles} mile${miles !== 1 ? 's' : ''}`, ts: Date.now() };
     saveState();
@@ -161,7 +169,7 @@
     showToast(`🔓 Parent unlocked +${extraMinutes} min! New cap: ${getDailyCap()} min`);
   }
 
-  // Parent-only: add behavior award minutes (bypasses cap)
+  // Parent-only: behavior award (bypasses cap)
   function parentBehaviorAward(minutes, note) {
     const rec = getTodayRec();
     rec.earned += minutes;
@@ -171,7 +179,7 @@
     showToast(`⭐ Behavior Award: +${minutes} min! "${note || 'Great behavior!'}"`);
   }
 
-  // Parent-only: add school subject bonus minutes
+  // Parent-only: school subject bonus
   function parentSchoolBonus(subjectId, extraMinutes) {
     const rec = getTodayRec();
     if (!rec.schoolBonus[subjectId]) rec.schoolBonus[subjectId] = 0;
@@ -212,6 +220,138 @@
       const data = JSON.parse(raw);
       return data.days?.[todayKey()]?.tasks || null;
     } catch (_) { return null; }
+  }
+
+  // ── Countdown Timer ────────────────────────
+  let timerInterval  = null;
+  let timerRunning   = false;
+  let timerRemainSec = 0;   // seconds left in the current session
+
+  function getTimerTotalSec() {
+    // Earned minutes minus already-used seconds (converted to minutes)
+    const rec = getTodayRec();
+    const earnedSec = getEarned() * 60;
+    const usedSec   = rec.timerUsedSec || 0;
+    return Math.max(0, earnedSec - usedSec);
+  }
+
+  function startTimer() {
+    if (timerRunning) return;
+    timerRemainSec = getTimerTotalSec();
+    if (timerRemainSec <= 0) {
+      showToast('No screen time earned yet! Complete tasks to earn time.');
+      return;
+    }
+    timerRunning = true;
+    updateTimerUI();
+    timerInterval = setInterval(() => {
+      timerRemainSec--;
+      const rec = getTodayRec();
+      rec.timerUsedSec = (rec.timerUsedSec || 0) + 1;
+      saveState();
+      updateTimerUI();
+      if (timerRemainSec <= 0) {
+        stopTimer();
+        showTimesUp();
+      }
+    }, 1000);
+    updateTimerUI();
+  }
+
+  function pauseTimer() {
+    if (!timerRunning) return;
+    timerRunning = false;
+    clearInterval(timerInterval);
+    timerInterval = null;
+    updateTimerUI();
+  }
+
+  function stopTimer() {
+    timerRunning = false;
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerRemainSec = 0;
+    updateTimerUI();
+  }
+
+  function resetTimer() {
+    stopTimer();
+    const rec = getTodayRec();
+    rec.timerUsedSec = 0;
+    saveState();
+    timerRemainSec = getTimerTotalSec();
+    updateTimerUI();
+  }
+
+  function showTimesUp() {
+    const overlay = document.getElementById('stTimesUpOverlay');
+    if (overlay) {
+      overlay.style.display = 'flex';
+      // Pulse animation restart
+      const msg = overlay.querySelector('.stTimesUpMsg');
+      if (msg) {
+        msg.style.animation = 'none';
+        void msg.offsetWidth; // reflow
+        msg.style.animation = '';
+      }
+    }
+  }
+
+  function dismissTimesUp() {
+    const overlay = document.getElementById('stTimesUpOverlay');
+    if (overlay) overlay.style.display = 'none';
+  }
+
+  function updateTimerUI() {
+    const display   = document.getElementById('stTimerDisplay');
+    const startBtn  = document.getElementById('stTimerStartBtn');
+    const pauseBtn  = document.getElementById('stTimerPauseBtn');
+    const resetBtn  = document.getElementById('stTimerResetBtn');
+    const timerCard = document.getElementById('stTimerCard');
+
+    const totalAvail = getTimerTotalSec();
+    const showSec    = timerRunning ? timerRemainSec : totalAvail;
+
+    if (display) {
+      display.textContent = fmtSec(showSec);
+      display.className   = 'stTimerDisplay' +
+        (showSec <= 60 && showSec > 0 ? ' stTimerWarning' : '') +
+        (showSec <= 0 ? ' stTimerEmpty' : '');
+    }
+
+    if (timerCard) {
+      timerCard.className = 'stTimerCard' +
+        (timerRunning ? ' stTimerActive' : '') +
+        (showSec <= 0 && !timerRunning ? ' stTimerDepleted' : '');
+    }
+
+    if (startBtn) {
+      startBtn.style.display = timerRunning ? 'none' : 'inline-flex';
+      startBtn.disabled      = totalAvail <= 0 && !timerRunning;
+    }
+    if (pauseBtn) {
+      pauseBtn.style.display = timerRunning ? 'inline-flex' : 'none';
+    }
+    if (resetBtn) {
+      resetBtn.style.display = (!timerRunning && (getTodayRec().timerUsedSec || 0) > 0) ? 'inline-flex' : 'none';
+    }
+
+    // Sub-label under timer
+    const subLabel = document.getElementById('stTimerSubLabel');
+    if (subLabel) {
+      if (timerRunning) {
+        subLabel.textContent = 'Screen time is counting down…';
+      } else if (totalAvail <= 0) {
+        subLabel.textContent = 'No time remaining — earn more!';
+      } else {
+        const used = getTodayRec().timerUsedSec || 0;
+        if (used > 0) {
+          subLabel.textContent = `${fmtSec(used)} used today`;
+        } else {
+          subLabel.textContent = `${fmtSec(totalAvail)} available — press Start!`;
+        }
+      }
+    }
   }
 
   // ── PIN modal ──────────────────────────────
@@ -278,8 +418,20 @@
         🏆 Daily cap reached! Ask a parent to unlock more time.
       </div>
 
+      <!-- ── Countdown Timer ── -->
+      <div class="stTimerCard" id="stTimerCard">
+        <div class="stTimerDisplay" id="stTimerDisplay">00:00</div>
+        <div class="stTimerSubLabel" id="stTimerSubLabel">Earn screen time to start the timer!</div>
+        <div class="stTimerBtns">
+          <button class="stTimerBtn stTimerBtnStart" id="stTimerStartBtn">▶ Start</button>
+          <button class="stTimerBtn stTimerBtnPause" id="stTimerPauseBtn" style="display:none;">⏸ Pause</button>
+          <button class="stTimerBtn stTimerBtnReset" id="stTimerResetBtn" style="display:none;">↺ Reset</button>
+        </div>
+      </div>
+
       <!-- Prayer -->
-      <div class="stSourcesGrid" style="margin-bottom:10px;">
+      <div class="stSection">
+        <div class="stSectionTitle">🙏 Prayer</div>
         <div class="stSource" id="stSrc_prayer">
           <div class="stSrcIcon">🙏</div>
           <div class="stSrcInfo">
@@ -310,10 +462,10 @@
           </div>
         </div>
 
-        <!-- Workout activities grid -->
-        <div class="stWorkoutGrid" id="stWorkoutGrid">
+        <!-- Workout activities — single column -->
+        <div class="stWorkoutList" id="stWorkoutGrid">
           ${WORKOUT_ACTIVITIES.map(a => `
-          <div class="stWorkoutItem" id="stWkt_${a.id}">
+          <div class="stWorkoutRow" id="stWkt_${a.id}">
             <div class="stWktIcon">${a.icon}</div>
             <div class="stWktLabel">${a.label}</div>
             <div class="stWktReward">+${REWARDS[a.id]} min</div>
@@ -322,12 +474,12 @@
         </div>
       </div>
 
-      <!-- School Work section -->
+      <!-- School Work section — single column -->
       <div class="stSection">
         <div class="stSectionTitle">📚 School Work</div>
-        <div class="stSchoolGrid" id="stSchoolGrid">
+        <div class="stSchoolList" id="stSchoolGrid">
           ${SCHOOL_SUBJECTS.map(s => `
-          <div class="stSchoolSubject" id="stSubj_${s.id}">
+          <div class="stSchoolRow" id="stSubj_${s.id}">
             <div class="stSubjIcon">${s.icon}</div>
             <div class="stSubjLabel">${s.label}</div>
             <div class="stSubjReward">+${REWARDS.school_subject} min</div>
@@ -356,6 +508,22 @@
       </div>
     `;
     return panel;
+  }
+
+  function buildTimesUpOverlay() {
+    const overlay = document.createElement('div');
+    overlay.id = 'stTimesUpOverlay';
+    overlay.className = 'stTimesUpOverlay';
+    overlay.style.display = 'none';
+    overlay.innerHTML = `
+      <div class="stTimesUpContent">
+        <div class="stTimesUpMsg">⏰ TIME'S UP!</div>
+        <div class="stTimesUpSub">Your screen time for today is all done!</div>
+        <div class="stTimesUpSub2">Great job earning it — see you tomorrow, hero! 🦸</div>
+        <button class="stTimesUpDismiss" id="stTimesUpDismiss">OK, Got It!</button>
+      </div>
+    `;
+    return overlay;
   }
 
   function buildPinModal() {
@@ -473,12 +641,18 @@
     const banner = document.getElementById('stCapBanner');
     if (banner) banner.style.display = remaining <= 0 ? 'block' : 'none';
 
+    // Timer (update available time if not running)
+    if (!timerRunning) {
+      timerRemainSec = getTimerTotalSec();
+    }
+    updateTimerUI();
+
     // Prayer button
     const prayerBtn  = document.querySelector('.stSrcBtn[data-src="prayer"]');
     const prayerCard = document.getElementById('stSrc_prayer');
     if (prayerBtn && prayerCard) {
       const claimed = !!rec.sources['prayer'];
-      prayerBtn.disabled  = claimed;
+      prayerBtn.disabled    = claimed;
       prayerBtn.textContent = claimed ? '✅ Done' : 'Log';
       prayerCard.classList.toggle('stSourceDone', claimed);
     }
@@ -602,6 +776,106 @@
         padding: 7px 12px; margin-bottom: 10px; text-align: center;
       }
 
+      /* ── Countdown Timer Card ── */
+      .stTimerCard {
+        background: rgba(212,165,48,0.08);
+        border: 2px solid rgba(212,165,48,0.3);
+        border-radius: 18px;
+        padding: 20px 16px 16px;
+        text-align: center;
+        margin: 14px 0;
+        transition: border-color 0.4s, background 0.4s;
+      }
+      .stTimerCard.stTimerActive {
+        background: rgba(125,255,180,0.08);
+        border-color: rgba(125,255,180,0.5);
+        box-shadow: 0 0 20px rgba(125,255,180,0.15);
+      }
+      .stTimerCard.stTimerDepleted {
+        background: rgba(255,80,80,0.07);
+        border-color: rgba(255,80,80,0.35);
+      }
+      .stTimerDisplay {
+        font-family: var(--fantasy-font);
+        font-size: 3.6rem;
+        color: var(--gold);
+        letter-spacing: 0.04em;
+        line-height: 1;
+        margin-bottom: 6px;
+        transition: color 0.4s;
+      }
+      .stTimerDisplay.stTimerWarning { color: #ff9f43; animation: stTimerPulse 1s ease-in-out infinite; }
+      .stTimerDisplay.stTimerEmpty   { color: var(--red); }
+      .stTimerSubLabel {
+        font-size: 0.75rem; color: var(--muted); margin-bottom: 14px;
+      }
+      .stTimerBtns {
+        display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+      }
+      .stTimerBtn {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 9px 22px; border: none; border-radius: 10px;
+        font-size: 0.9rem; font-weight: 700; cursor: pointer;
+        transition: filter 0.15s, transform 0.1s;
+        letter-spacing: 0.03em;
+      }
+      .stTimerBtn:active { transform: scale(0.95); }
+      .stTimerBtn:hover:not(:disabled) { filter: brightness(1.15); }
+      .stTimerBtn:disabled { opacity: 0.4; cursor: default; }
+      .stTimerBtnStart { background: var(--green); color: #0a1a10; }
+      .stTimerBtnPause { background: #ff9f43; color: #1a0800; }
+      .stTimerBtnReset { background: rgba(255,255,255,0.12); color: var(--muted); }
+
+      @keyframes stTimerPulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50%       { opacity: 0.7; transform: scale(1.04); }
+      }
+
+      /* ── Times Up Overlay ── */
+      .stTimesUpOverlay {
+        position: fixed; inset: 0; z-index: 99999;
+        background: rgba(5,0,15,0.96);
+        display: flex; align-items: center; justify-content: center;
+        flex-direction: column;
+        backdrop-filter: blur(8px);
+      }
+      .stTimesUpContent {
+        text-align: center; padding: 40px 30px;
+        display: flex; flex-direction: column; align-items: center; gap: 16px;
+      }
+      .stTimesUpMsg {
+        font-family: var(--fantasy-font);
+        font-size: clamp(3rem, 12vw, 7rem);
+        color: var(--gold);
+        text-shadow: 0 0 40px rgba(212,165,48,0.8), 0 0 80px rgba(212,165,48,0.4);
+        animation: stTimesUpPulse 1.4s ease-in-out infinite;
+        line-height: 1.1;
+      }
+      .stTimesUpSub {
+        font-size: clamp(1rem, 3.5vw, 1.5rem);
+        color: var(--ink); max-width: 480px;
+      }
+      .stTimesUpSub2 {
+        font-size: clamp(0.85rem, 2.5vw, 1.1rem);
+        color: var(--muted); max-width: 420px;
+      }
+      .stTimesUpDismiss {
+        margin-top: 10px;
+        padding: 14px 40px; border: none; border-radius: 14px;
+        background: var(--gold); color: #1a0e00;
+        font-family: var(--fantasy-font); font-size: 1.1rem;
+        font-weight: 700; cursor: pointer; letter-spacing: 0.04em;
+        transition: filter 0.15s, transform 0.1s;
+        box-shadow: 0 0 20px rgba(212,165,48,0.5);
+      }
+      .stTimesUpDismiss:hover { filter: brightness(1.15); }
+      .stTimesUpDismiss:active { transform: scale(0.96); }
+
+      @keyframes stTimesUpPulse {
+        0%, 100% { text-shadow: 0 0 40px rgba(212,165,48,0.8), 0 0 80px rgba(212,165,48,0.4); transform: scale(1); }
+        50%       { text-shadow: 0 0 60px rgba(212,165,48,1), 0 0 120px rgba(212,165,48,0.6); transform: scale(1.03); }
+      }
+
       /* ── Section ── */
       .stSection { margin-top: 14px; }
       .stSectionTitle {
@@ -612,13 +886,12 @@
         padding-bottom: 4px;
       }
 
-      /* ── Prayer source card ── */
-      .stSourcesGrid { display: grid; grid-template-columns: 1fr; gap: 8px; }
+      /* ── Prayer source card (single row) ── */
       .stSource {
-        display: flex; align-items: center; gap: 8px;
+        display: flex; align-items: center; gap: 10px;
         background: rgba(255,255,255,0.04);
         border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 12px; padding: 10px;
+        border-radius: 12px; padding: 10px 12px;
         transition: background 0.2s;
       }
       .stSource.stSourceDone {
@@ -627,7 +900,7 @@
       }
       .stSrcIcon { font-size: 1.5rem; flex-shrink: 0; }
       .stSrcInfo { flex: 1; }
-      .stSrcLabel { font-size: 0.8rem; color: var(--ink); font-weight: 600; }
+      .stSrcLabel { font-size: 0.82rem; color: var(--ink); font-weight: 600; }
       .stSrcReward { font-size: 0.72rem; color: var(--green); }
 
       /* ── Running card ── */
@@ -654,43 +927,41 @@
       }
       .stMilesInput:focus { outline: none; border-color: var(--gold); }
 
-      /* ── Workout activities grid ── */
-      .stWorkoutGrid {
-        display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
-      }
-      .stWorkoutItem {
+      /* ── Workout list — single column ── */
+      .stWorkoutList { display: flex; flex-direction: column; gap: 8px; }
+      .stWorkoutRow {
+        display: flex; align-items: center; gap: 10px;
         background: rgba(255,255,255,0.04);
         border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 12px; padding: 10px;
-        display: flex; flex-direction: column; align-items: center;
-        gap: 4px; text-align: center; transition: background 0.2s;
+        border-radius: 12px; padding: 10px 12px;
+        transition: background 0.2s;
       }
-      .stWorkoutItem.stSourceDone {
+      .stWorkoutRow.stSourceDone {
         background: rgba(125,255,180,0.07);
         border-color: rgba(125,255,180,0.25);
       }
-      .stWktIcon { font-size: 1.5rem; }
-      .stWktLabel { font-size: 0.8rem; font-weight: 700; color: var(--ink); }
-      .stWktReward { font-size: 0.7rem; color: var(--green); }
+      .stWktIcon { font-size: 1.4rem; flex-shrink: 0; }
+      .stWktLabel { flex: 1; font-size: 0.82rem; font-weight: 700; color: var(--ink); }
+      .stWktReward { font-size: 0.72rem; color: var(--green); flex-shrink: 0; margin-right: 4px; }
 
-      /* ── School grid ── */
-      .stSchoolGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-      .stSchoolSubject {
+      /* ── School list — single column ── */
+      .stSchoolList { display: flex; flex-direction: column; gap: 8px; }
+      .stSchoolRow {
+        display: flex; align-items: center; gap: 10px;
         background: rgba(255,255,255,0.04);
         border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 12px; padding: 10px;
-        display: flex; flex-direction: column; align-items: center;
-        gap: 4px; text-align: center; transition: background 0.2s;
+        border-radius: 12px; padding: 10px 12px;
+        transition: background 0.2s;
       }
-      .stSchoolSubject.stSourceDone {
+      .stSchoolRow.stSourceDone {
         background: rgba(125,255,180,0.07);
         border-color: rgba(125,255,180,0.25);
       }
-      .stSubjIcon { font-size: 1.6rem; }
-      .stSubjLabel { font-size: 0.82rem; font-weight: 700; color: var(--ink); }
-      .stSubjReward { font-size: 0.7rem; color: var(--green); }
+      .stSubjIcon { font-size: 1.4rem; flex-shrink: 0; }
+      .stSubjLabel { flex: 1; font-size: 0.82rem; font-weight: 700; color: var(--ink); }
+      .stSubjReward { font-size: 0.72rem; color: var(--green); flex-shrink: 0; }
       .stSubjBonus { font-size: 0.68rem; color: var(--gold); }
-      .stSubjBtns { display: flex; gap: 4px; margin-top: 4px; }
+      .stSubjBtns { display: flex; gap: 4px; flex-shrink: 0; }
 
       /* ── Buttons ── */
       .stBtn, .stSrcBtn {
@@ -766,6 +1037,14 @@
 
   // ── Wire up events ──────────────────────────
   function wireEvents() {
+    // Timer buttons
+    document.getElementById('stTimerStartBtn')?.addEventListener('click', startTimer);
+    document.getElementById('stTimerPauseBtn')?.addEventListener('click', pauseTimer);
+    document.getElementById('stTimerResetBtn')?.addEventListener('click', resetTimer);
+
+    // Times Up dismiss
+    document.getElementById('stTimesUpDismiss')?.addEventListener('click', dismissTimesUp);
+
     // Prayer log button
     const prayerBtn = document.querySelector('.stSrcBtn[data-src="prayer"]');
     if (prayerBtn) {
@@ -899,12 +1178,16 @@
     const panel = buildPanel();
     dashboard.insertBefore(panel, dashboard.firstChild);
 
+    document.body.appendChild(buildTimesUpOverlay());
     document.body.appendChild(buildPinModal());
     document.body.appendChild(buildBehaviorModal());
     document.body.appendChild(buildUnlockCapModal());
     document.body.appendChild(buildSchoolBonusModal());
 
     wireEvents();
+
+    // Init timer display from saved state
+    timerRemainSec = getTimerTotalSec();
     updateUI();
   }
 
