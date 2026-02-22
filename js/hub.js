@@ -4350,11 +4350,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Check if a quest was just completed and record the time
     function checkQuestHighScore(quest) {
-      const day = state.days[TODAY];
-      if (!day) return;
+      // Read tasks from localStorage (state is scoped inside hub.js IIFE)
+      let dayTasks = null;
+      try {
+        const raw = localStorage.getItem('williams_world_embed_state_v1');
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          dayTasks = parsed.days?.[TODAY]?.tasks || null;
+        }
+      } catch (_) {}
+      if (!dayTasks) return;
 
       // All tasks for this quest must be done
-      const allDone = quest.taskIds.every(id => day.tasks[id] === true);
+      const allDone = quest.taskIds.every(id => dayTasks[id] === true);
       if (!allDone) return;
 
       const hs = loadHS();
