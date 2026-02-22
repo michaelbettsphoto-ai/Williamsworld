@@ -13,26 +13,38 @@
   'use strict';
 
   // ── Config ─────────────────────────────────
-  const PARENT_PIN      = '062923';
-  const DEFAULT_CAP     = 60;   // minutes — hard cap without parent unlock
-  const STORAGE_KEY     = 'williamsworld_screentime_v2';
+  const PARENT_PIN  = '062923';
+  const DEFAULT_CAP = 60;   // minutes — hard cap without parent unlock
+  const STORAGE_KEY = 'williamsworld_screentime_v2';
 
   // Minutes earned per reward
   const REWARDS = {
-    task_per_item:    2,   // each individual task checked
-    quest_night:     10,   // full Night-Before quest complete
-    quest_morning:   10,   // full Morning Quest complete
-    quest_backpack:  10,   // full Backpack Quest complete
-    prayer:          15,
-    exercise:        20,
-    school_subject:   5,   // per subject logged (ELA, Math, Science, Other)
+    task_per_item:   2,   // each individual task checked
+    quest_night:    10,   // full Night-Before quest complete
+    quest_morning:  10,   // full Morning Quest complete
+    quest_backpack: 10,   // full Backpack Quest complete
+    prayer:         15,
+    run_per_mile:   10,   // running: 10 min per mile
+    pullups:         2,
+    situps:          2,
+    pushups:         2,
+    stretching:      2,
+    school_subject:  5,   // per subject logged (ELA, Math, Science, Other)
   };
 
+  // Workout activities (non-running)
+  const WORKOUT_ACTIVITIES = [
+    { id: 'pullups',    label: 'Pull-Ups',   icon: '💪' },
+    { id: 'situps',     label: 'Sit-Ups',    icon: '🧘' },
+    { id: 'pushups',    label: 'Push-Ups',   icon: '🏋️' },
+    { id: 'stretching', label: 'Stretching', icon: '🤸' },
+  ];
+
   const SCHOOL_SUBJECTS = [
-    { id: 'ela',      label: 'ELA',     icon: '📖' },
-    { id: 'math',     label: 'Math',    icon: '🔢' },
-    { id: 'science',  label: 'Science', icon: '🔬' },
-    { id: 'other',    label: 'Other',   icon: '📝' },
+    { id: 'ela',     label: 'ELA',     icon: '📖' },
+    { id: 'math',    label: 'Math',    icon: '🔢' },
+    { id: 'science', label: 'Science', icon: '🔬' },
+    { id: 'other',   label: 'Other',   icon: '📝' },
   ];
 
   // Tasks that belong to each quest group (mirrors hub.js TASKS)
@@ -48,8 +60,6 @@
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
   }
 
-  function pad(n) { return String(Math.floor(n)).padStart(2,'0'); }
-
   function fmtMin(totalMin) {
     if (totalMin <= 0) return '0m';
     const h = Math.floor(totalMin / 60);
@@ -59,7 +69,6 @@
   }
 
   function showToast(msg) {
-    // Reuse hub.js toast if available, else fallback
     const el = document.getElementById('toast');
     if (el) {
       el.textContent = msg;
@@ -88,55 +97,62 @@
     const key = todayKey();
     if (!st.days[key]) {
       st.days[key] = {
-        earned: 0,          // total minutes earned today
-        bonusCap: 0,        // extra cap minutes added by parent
-        sources: {},        // source_id -> minutes awarded (for idempotency)
-        schoolBonus: {},    // subject_id -> parent bonus minutes added
-        behaviorAwards: [], // [{minutes, note, ts}]
+        earned: 0,
+        bonusCap: 0,
+        sources: {},
+        schoolBonus: {},
+        behaviorAwards: [],
+        milesRun: 0,       // cumulative miles logged today
       };
       saveState();
     }
-    // Ensure all fields exist (migration)
     const r = st.days[key];
-    if (!r.sources)       r.sources = {};
-    if (!r.schoolBonus)   r.schoolBonus = {};
+    if (!r.sources)        r.sources = {};
+    if (!r.schoolBonus)    r.schoolBonus = {};
     if (!r.behaviorAwards) r.behaviorAwards = [];
-    if (r.bonusCap === undefined) r.bonusCap = 0;
+    if (r.bonusCap  === undefined) r.bonusCap  = 0;
+    if (r.milesRun  === undefined) r.milesRun  = 0;
     return r;
   }
 
   let st = loadState();
 
   // ── Cap logic ──────────────────────────────
-  function getDailyCap() {
-    return DEFAULT_CAP + getTodayRec().bonusCap;
-  }
-
-  function getEarned() {
-    return getTodayRec().earned;
-  }
-
-  function getRemaining() {
-    return Math.max(0, getDailyCap() - getEarned());
-  }
+  function getDailyCap()  { return DEFAULT_CAP + getTodayRec().bonusCap; }
+  function getEarned()    { return getTodayRec().earned; }
+  function getRemaining() { return Math.max(0, getDailyCap() - getEarned()); }
 
   // ── Award minutes ──────────────────────────
-  // Returns actual minutes added (0 if already claimed or cap hit)
   function awardMinutes(sourceId, minutes, label) {
     const rec = getTodayRec();
     if (rec.sources[sourceId]) return 0; // already awarded
-
-    const cap = getDailyCap();
-    const space = Math.max(0, cap - rec.earned);
+    const cap    = getDailyCap();
+    const space  = Math.max(0, cap - rec.earned);
     const actual = Math.min(minutes, space);
-
     rec.sources[sourceId] = { minutes: actual, label, ts: Date.now() };
     rec.earned += actual;
     saveState();
     return actual;
   }
 
-  // Parent-only: add bonus cap minutes (no cap check — parent override)
+  // Running: stackable — each mile call adds more minutes (no idempotency check)
+  function awardRunMiles(miles) {
+    const rec = getTodayRec();
+    const mins = miles * REWARDS.run_per_mile;
+    // Running bypasses cap only up to cap; parent can unlock more
+    const cap   = getDailyCap();
+    const space = Math.max(0, cap - rec.earned);
+    const actual = Math.min(mins, space);
+    rec.earned   += actual;
+    rec.milesRun += miles;
+    // Store as a stackable log entry
+    const key = `run_${Date.now()}`;
+    rec.sources[key] = { minutes: actual, label: `Run: ${miles} mile${miles !== 1 ? 's' : ''}`, ts: Date.now() };
+    saveState();
+    return actual;
+  }
+
+  // Parent-only: add bonus cap minutes
   function parentAddCap(extraMinutes) {
     const rec = getTodayRec();
     rec.bonusCap += extraMinutes;
@@ -158,12 +174,11 @@
   // Parent-only: add school subject bonus minutes
   function parentSchoolBonus(subjectId, extraMinutes) {
     const rec = getTodayRec();
-    const bonusKey = `school_bonus_${subjectId}`;
     if (!rec.schoolBonus[subjectId]) rec.schoolBonus[subjectId] = 0;
     rec.schoolBonus[subjectId] += extraMinutes;
-    // Award the bonus minutes (bypass cap — parent override)
     rec.earned += extraMinutes;
-    rec.sources[bonusKey] = (rec.sources[bonusKey] || 0) + extraMinutes;
+    const bonusKey = `school_bonus_${subjectId}_${Date.now()}`;
+    rec.sources[bonusKey] = { minutes: extraMinutes, label: `School bonus: ${subjectId}`, ts: Date.now() };
     saveState();
     updateUI();
     const subj = SCHOOL_SUBJECTS.find(s => s.id === subjectId);
@@ -172,11 +187,9 @@
 
   // ── Public API (called by hub.js) ──────────
   window.ScreenTime = {
-    // Called when any individual task is checked
     onTaskChecked(taskId) {
       const added = awardMinutes(`task_${taskId}`, REWARDS.task_per_item, `Task: ${taskId}`);
       if (added > 0) showToast(`📱 +${added} min screen time earned!`);
-      // Check if a full quest was just completed
       for (const [quest, tasks] of Object.entries(QUEST_TASKS)) {
         if (!tasks.includes(taskId)) continue;
         const dayState = getHubDayTasks();
@@ -192,14 +205,12 @@
     },
   };
 
-  // Safely read hub.js task state
   function getHubDayTasks() {
     try {
       const raw = localStorage.getItem('williams_world_embed_state_v1');
       if (!raw) return null;
       const data = JSON.parse(raw);
-      const today = todayKey();
-      return data.days?.[today]?.tasks || null;
+      return data.days?.[todayKey()]?.tasks || null;
     } catch (_) { return null; }
   }
 
@@ -267,10 +278,8 @@
         🏆 Daily cap reached! Ask a parent to unlock more time.
       </div>
 
-      <!-- Reward sources grid -->
-      <div class="stSourcesGrid">
-
-        <!-- Prayer -->
+      <!-- Prayer -->
+      <div class="stSourcesGrid" style="margin-bottom:10px;">
         <div class="stSource" id="stSrc_prayer">
           <div class="stSrcIcon">🙏</div>
           <div class="stSrcInfo">
@@ -279,17 +288,38 @@
           </div>
           <button class="stSrcBtn" data-src="prayer">Log</button>
         </div>
+      </div>
 
-        <!-- Exercise -->
-        <div class="stSource" id="stSrc_exercise">
-          <div class="stSrcIcon">🏃</div>
-          <div class="stSrcInfo">
-            <div class="stSrcLabel">Exercise</div>
-            <div class="stSrcReward">+${REWARDS.exercise} min</div>
+      <!-- Exercise section -->
+      <div class="stSection">
+        <div class="stSectionTitle">🏃 Exercise</div>
+
+        <!-- Running — stackable miles -->
+        <div class="stRunCard" id="stRunCard">
+          <div class="stRunLeft">
+            <span class="stRunIcon">🏃</span>
+            <div class="stRunInfo">
+              <div class="stRunLabel">Running</div>
+              <div class="stRunReward">+${REWARDS.run_per_mile} min per mile</div>
+              <div class="stRunTotal" id="stRunTotal">0 miles logged today</div>
+            </div>
           </div>
-          <button class="stSrcBtn" data-src="exercise">Log</button>
+          <div class="stRunRight">
+            <input type="number" id="stMilesInput" class="stMilesInput" min="0.25" max="26" step="0.25" placeholder="Miles" />
+            <button class="stSrcBtn" id="stLogRunBtn">Log</button>
+          </div>
         </div>
 
+        <!-- Workout activities grid -->
+        <div class="stWorkoutGrid" id="stWorkoutGrid">
+          ${WORKOUT_ACTIVITIES.map(a => `
+          <div class="stWorkoutItem" id="stWkt_${a.id}">
+            <div class="stWktIcon">${a.icon}</div>
+            <div class="stWktLabel">${a.label}</div>
+            <div class="stWktReward">+${REWARDS[a.id]} min</div>
+            <button class="stSrcBtn stWktBtn" data-wkt="${a.id}">Log</button>
+          </div>`).join('')}
+        </div>
       </div>
 
       <!-- School Work section -->
@@ -408,13 +438,13 @@
 
   // ── UI update ──────────────────────────────
   function updateUI() {
-    const rec   = getTodayRec();
-    const earned = getEarned();
-    const cap   = getDailyCap();
-    const pct   = Math.min(100, Math.round((earned / cap) * 100));
+    const rec      = getTodayRec();
+    const earned   = getEarned();
+    const cap      = getDailyCap();
+    const pct      = Math.min(100, Math.round((earned / cap) * 100));
     const remaining = getRemaining();
 
-    // Summary numbers
+    // Summary
     const earnedEl = document.getElementById('stEarnedNum');
     const capEl    = document.getElementById('stCapNum');
     const labelEl  = document.getElementById('stSummaryLabel');
@@ -423,10 +453,10 @@
     if (labelEl) {
       if (remaining <= 0) {
         labelEl.textContent = '🏆 Daily cap reached! Great job, hero!';
-        labelEl.className = 'stSummaryLabel danger';
+        labelEl.className   = 'stSummaryLabel danger';
       } else {
         labelEl.textContent = `${remaining} min remaining — keep earning!`;
-        labelEl.className = 'stSummaryLabel';
+        labelEl.className   = 'stSummaryLabel';
       }
     }
 
@@ -435,7 +465,7 @@
     const pctEl = document.getElementById('stPercent');
     if (barEl) {
       barEl.style.width = pct + '%';
-      barEl.className = 'stBar' + (pct >= 100 ? ' danger' : pct >= 75 ? ' warning' : '');
+      barEl.className   = 'stBar' + (pct >= 100 ? ' danger' : pct >= 75 ? ' warning' : '');
     }
     if (pctEl) pctEl.textContent = pct + '%';
 
@@ -443,27 +473,43 @@
     const banner = document.getElementById('stCapBanner');
     if (banner) banner.style.display = remaining <= 0 ? 'block' : 'none';
 
-    // Prayer / Exercise buttons
-    ['prayer','exercise'].forEach(src => {
-      const btn = document.querySelector(`.stSrcBtn[data-src="${src}"]`);
-      const card = document.getElementById(`stSrc_${src}`);
-      if (!btn || !card) return;
-      const claimed = !!rec.sources[src];
-      btn.disabled = claimed;
-      btn.textContent = claimed ? '✅ Done' : 'Log';
+    // Prayer button
+    const prayerBtn  = document.querySelector('.stSrcBtn[data-src="prayer"]');
+    const prayerCard = document.getElementById('stSrc_prayer');
+    if (prayerBtn && prayerCard) {
+      const claimed = !!rec.sources['prayer'];
+      prayerBtn.disabled  = claimed;
+      prayerBtn.textContent = claimed ? '✅ Done' : 'Log';
+      prayerCard.classList.toggle('stSourceDone', claimed);
+    }
+
+    // Running total
+    const runTotal = document.getElementById('stRunTotal');
+    if (runTotal) {
+      const miles = rec.milesRun || 0;
+      runTotal.textContent = `${miles} mile${miles !== 1 ? 's' : ''} logged today`;
+    }
+
+    // Workout activity buttons
+    WORKOUT_ACTIVITIES.forEach(a => {
+      const card = document.getElementById(`stWkt_${a.id}`);
+      const btn  = document.querySelector(`.stWktBtn[data-wkt="${a.id}"]`);
+      if (!card || !btn) return;
+      const claimed = !!rec.sources[`wkt_${a.id}`];
+      btn.disabled      = claimed;
+      btn.textContent   = claimed ? '✅' : 'Log';
       card.classList.toggle('stSourceDone', claimed);
     });
 
     // School subjects
     SCHOOL_SUBJECTS.forEach(s => {
-      const card = document.getElementById(`stSubj_${s.id}`);
+      const card   = document.getElementById(`stSubj_${s.id}`);
       const logBtn = document.querySelector(`.stSubjLogBtn[data-subj="${s.id}"]`);
       if (!card || !logBtn) return;
       const claimed = !!rec.sources[`school_${s.id}`];
-      logBtn.disabled = claimed;
-      logBtn.textContent = claimed ? '✅' : 'Log';
+      logBtn.disabled     = claimed;
+      logBtn.textContent  = claimed ? '✅' : 'Log';
       card.classList.toggle('stSourceDone', claimed);
-      // Show bonus if any
       const bonus = rec.schoolBonus[s.id] || 0;
       let bonusEl = card.querySelector('.stSubjBonus');
       if (!bonusEl) {
@@ -474,10 +520,7 @@
       bonusEl.textContent = bonus > 0 ? `+${bonus} min bonus` : '';
     });
 
-    // Behavior awards list
     renderBehaviorAwards();
-
-    // History
     renderHistory();
   }
 
@@ -499,7 +542,7 @@
     el.innerHTML = `
       <div class="stHistHeader"><span>Date</span><span>Earned</span><span>Cap</span><span>%</span></div>
       ${keys.map(k => {
-        const r = st.days[k];
+        const r   = st.days[k];
         const cap = DEFAULT_CAP + (r.bonusCap || 0);
         const pct = Math.min(100, Math.round((r.earned / cap) * 100));
         const icon = r.earned >= cap ? '🏆' : r.earned > 0 ? '✅' : '—';
@@ -526,9 +569,7 @@
       .stSummary { text-align: center; margin: 8px 0 6px; }
       .stEarnedNum {
         font-family: var(--fantasy-font);
-        font-size: 2.2rem;
-        color: var(--gold);
-        line-height: 1;
+        font-size: 2.2rem; color: var(--gold); line-height: 1;
       }
       .stSummarySlash { font-size: 1.4rem; color: var(--muted); margin: 0 4px; }
       .stCapNum { font-family: var(--fantasy-font); font-size: 1.4rem; color: var(--muted); }
@@ -556,8 +597,7 @@
       .stCapBanner {
         background: rgba(125,255,180,0.12);
         border: 1px solid var(--green);
-        border-radius: 10px;
-        color: var(--green);
+        border-radius: 10px; color: var(--green);
         font-weight: 700; font-size: 0.82rem;
         padding: 7px 12px; margin-bottom: 10px; text-align: center;
       }
@@ -572,13 +612,13 @@
         padding-bottom: 4px;
       }
 
-      /* ── Source cards ── */
-      .stSourcesGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+      /* ── Prayer source card ── */
+      .stSourcesGrid { display: grid; grid-template-columns: 1fr; gap: 8px; }
       .stSource {
         display: flex; align-items: center; gap: 8px;
         background: rgba(255,255,255,0.04);
         border: 1px solid rgba(255,255,255,0.08);
-        border-radius: 12px; padding: 10px 10px;
+        border-radius: 12px; padding: 10px;
         transition: background 0.2s;
       }
       .stSource.stSourceDone {
@@ -590,17 +630,57 @@
       .stSrcLabel { font-size: 0.8rem; color: var(--ink); font-weight: 600; }
       .stSrcReward { font-size: 0.72rem; color: var(--green); }
 
-      /* ── School grid ── */
-      .stSchoolGrid {
+      /* ── Running card ── */
+      .stRunCard {
+        display: flex; align-items: center; justify-content: space-between;
+        gap: 10px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px; padding: 10px 12px;
+        margin-bottom: 8px;
+      }
+      .stRunLeft { display: flex; align-items: center; gap: 10px; flex: 1; }
+      .stRunIcon { font-size: 1.6rem; flex-shrink: 0; }
+      .stRunInfo { flex: 1; }
+      .stRunLabel { font-size: 0.82rem; font-weight: 700; color: var(--ink); }
+      .stRunReward { font-size: 0.7rem; color: var(--green); }
+      .stRunTotal { font-size: 0.68rem; color: var(--gold); margin-top: 2px; }
+      .stRunRight { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+      .stMilesInput {
+        width: 68px; padding: 6px 8px; border-radius: 8px;
+        border: 1px solid rgba(212,165,48,0.4);
+        background: rgba(255,255,255,0.06); color: var(--ink);
+        font-size: 0.85rem; text-align: center; box-sizing: border-box;
+      }
+      .stMilesInput:focus { outline: none; border-color: var(--gold); }
+
+      /* ── Workout activities grid ── */
+      .stWorkoutGrid {
         display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
       }
+      .stWorkoutItem {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        border-radius: 12px; padding: 10px;
+        display: flex; flex-direction: column; align-items: center;
+        gap: 4px; text-align: center; transition: background 0.2s;
+      }
+      .stWorkoutItem.stSourceDone {
+        background: rgba(125,255,180,0.07);
+        border-color: rgba(125,255,180,0.25);
+      }
+      .stWktIcon { font-size: 1.5rem; }
+      .stWktLabel { font-size: 0.8rem; font-weight: 700; color: var(--ink); }
+      .stWktReward { font-size: 0.7rem; color: var(--green); }
+
+      /* ── School grid ── */
+      .stSchoolGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
       .stSchoolSubject {
         background: rgba(255,255,255,0.04);
         border: 1px solid rgba(255,255,255,0.08);
         border-radius: 12px; padding: 10px;
         display: flex; flex-direction: column; align-items: center;
-        gap: 4px; text-align: center;
-        transition: background 0.2s;
+        gap: 4px; text-align: center; transition: background 0.2s;
       }
       .stSchoolSubject.stSourceDone {
         background: rgba(125,255,180,0.07);
@@ -616,8 +696,7 @@
       .stBtn, .stSrcBtn {
         padding: 6px 12px; border: none; border-radius: 8px;
         font-size: 0.78rem; font-weight: 700; cursor: pointer;
-        transition: filter 0.15s, transform 0.1s;
-        letter-spacing: 0.02em;
+        transition: filter 0.15s, transform 0.1s; letter-spacing: 0.02em;
       }
       .stBtn:active, .stSrcBtn:active { transform: scale(0.95); }
       .stBtn:hover:not(:disabled), .stSrcBtn:hover:not(:disabled) { filter: brightness(1.15); }
@@ -641,7 +720,6 @@
       }
 
       /* ── History ── */
-      .stHistory { }
       .stHistHeader, .stHistRow {
         display: grid; grid-template-columns: 1fr 50px 50px 60px;
         gap: 4px; font-size: 0.72rem; padding: 3px 4px; border-radius: 6px;
@@ -688,13 +766,43 @@
 
   // ── Wire up events ──────────────────────────
   function wireEvents() {
-    // Prayer / Exercise log buttons
-    document.querySelectorAll('.stSrcBtn[data-src]').forEach(btn => {
+    // Prayer log button
+    const prayerBtn = document.querySelector('.stSrcBtn[data-src="prayer"]');
+    if (prayerBtn) {
+      prayerBtn.addEventListener('click', () => {
+        const added = awardMinutes('prayer', REWARDS.prayer, 'Prayer Time');
+        if (added > 0) showToast(`🙏 +${added} min for Prayer Time!`);
+        else showToast('Already logged today ✅');
+        updateUI();
+      });
+    }
+
+    // Running log button
+    const logRunBtn = document.getElementById('stLogRunBtn');
+    if (logRunBtn) {
+      logRunBtn.addEventListener('click', () => {
+        const input = document.getElementById('stMilesInput');
+        const miles = parseFloat(input.value);
+        if (!miles || miles <= 0) {
+          showToast('Enter the number of miles first!');
+          return;
+        }
+        const added = awardRunMiles(miles);
+        if (added > 0) showToast(`🏃 +${added} min for ${miles} mile${miles !== 1 ? 's' : ''}!`);
+        else showToast('Daily cap reached — ask a parent to add more time!');
+        input.value = '';
+        updateUI();
+      });
+    }
+
+    // Workout activity buttons
+    document.querySelectorAll('.stWktBtn[data-wkt]').forEach(btn => {
       btn.addEventListener('click', () => {
-        const src = btn.dataset.src;
-        const mins = REWARDS[src];
-        const added = awardMinutes(src, mins, src.charAt(0).toUpperCase() + src.slice(1));
-        if (added > 0) showToast(`📱 +${added} min for ${src}!`);
+        const wkt   = btn.dataset.wkt;
+        const mins  = REWARDS[wkt];
+        const label = WORKOUT_ACTIVITIES.find(a => a.id === wkt)?.label || wkt;
+        const added = awardMinutes(`wkt_${wkt}`, mins, label);
+        if (added > 0) showToast(`💪 +${added} min for ${label}!`);
         else showToast('Already logged today ✅');
         updateUI();
       });
@@ -703,7 +811,7 @@
     // School subject log buttons
     document.querySelectorAll('.stSubjLogBtn[data-subj]').forEach(btn => {
       btn.addEventListener('click', () => {
-        const subj = btn.dataset.subj;
+        const subj  = btn.dataset.subj;
         const label = SCHOOL_SUBJECTS.find(s => s.id === subj)?.label || subj;
         const added = awardMinutes(`school_${subj}`, REWARDS.school_subject, `School: ${label}`);
         if (added > 0) showToast(`📚 +${added} min for ${label}!`);
@@ -739,7 +847,7 @@
     // Behavior award button
     document.getElementById('stBehaviorBtn').addEventListener('click', () => {
       openPinModal(() => {
-        document.getElementById('stBehaviorMin').value = '';
+        document.getElementById('stBehaviorMin').value  = '';
         document.getElementById('stBehaviorNote').value = '';
         document.getElementById('stBehaviorModal').style.display = 'flex';
       });
@@ -784,20 +892,13 @@
   // ── Mount ──────────────────────────────────
   function mount() {
     injectStyles();
-
     const dashboard = document.querySelector('.dashboard');
-    if (!dashboard) {
-      setTimeout(mount, 500);
-      return;
-    }
-
+    if (!dashboard) { setTimeout(mount, 500); return; }
     if (document.getElementById('screenTimePanel')) return;
 
-    // Insert panel as first child of dashboard (top of grid)
     const panel = buildPanel();
     dashboard.insertBefore(panel, dashboard.firstChild);
 
-    // Append modals to body
     document.body.appendChild(buildPinModal());
     document.body.appendChild(buildBehaviorModal());
     document.body.appendChild(buildUnlockCapModal());
