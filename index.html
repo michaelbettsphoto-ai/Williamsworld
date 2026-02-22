@@ -2319,7 +2319,120 @@
     margin-top: 4px;
     display: block;
   }
-  
+
+  /* High Score Button */
+  .highScoreBtn {
+    background: linear-gradient(135deg, #7c3aed, #5b21b6);
+    border: 2px solid #a78bfa;
+    border-radius: 999px;
+    padding: 6px 14px;
+    font-family: var(--fantasy-font);
+    font-size: 13px;
+    font-weight: 700;
+    color: #ede9fe;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(124,58,237,0.4);
+  }
+  .highScoreBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(124,58,237,0.6);
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  }
+  .hsModal {
+    position: fixed;
+    inset: 0;
+    background: rgba(10,5,25,0.85);
+    backdrop-filter: blur(8px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hsModalContent {
+    background: linear-gradient(135deg, rgba(30,15,50,0.97), rgba(20,10,40,0.97));
+    border: 2px solid var(--gold);
+    border-radius: var(--r1);
+    padding: 28px;
+    max-width: 480px;
+    width: 92%;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 0 40px rgba(255,211,110,0.3);
+  }
+  .hsModalHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(255,211,110,0.3);
+    padding-bottom: 14px;
+  }
+  .hsModalHeader h2 { font-family: var(--fantasy-font); color: var(--gold); font-size: 1.3em; flex: 1; margin: 0; }
+  .hsTrophy { font-size: 1.8em; }
+  .hsClose {
+    background: rgba(220,38,38,0.2);
+    border: 1px solid rgba(220,38,38,0.5);
+    color: #fca5a5;
+    border-radius: 50%;
+    width: 32px; height: 32px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .hsClose:hover { background: rgba(220,38,38,0.5); }
+  .hsRecordDisplay {
+    background: linear-gradient(135deg, rgba(255,211,110,0.1), rgba(212,165,48,0.1));
+    border: 2px solid rgba(255,211,110,0.4);
+    border-radius: var(--r2);
+    padding: 18px;
+    text-align: center;
+    margin-bottom: 18px;
+  }
+  .hsRecordTime { font-family: var(--fantasy-font); font-size: 2.2em; color: var(--gold); display: block; margin: 8px 0; }
+  .hsRecordLabel { font-size: 0.85em; color: var(--muted); opacity: 0.8; }
+  .hsRecordDate { font-size: 0.9em; color: var(--muted); margin-top: 4px; }
+  .hsNoRecord { color: var(--muted); opacity: 0.7; font-style: italic; text-align: center; padding: 12px 0; }
+  .hsHistoryList { display: flex; flex-direction: column; gap: 8px; }
+  .hsHistoryItem {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,211,110,0.15);
+    border-radius: 10px;
+    font-size: 0.9em;
+  }
+  .hsHistoryItem.record { border-color: rgba(255,211,110,0.5); background: rgba(255,211,110,0.08); }
+  .hsHistoryItem .hsDate { color: var(--muted); opacity: 0.8; }
+  .hsHistoryItem .hsTime { font-family: var(--fantasy-font); color: var(--gold); font-size: 1.05em; }
+  .hsHistoryItem .hsBadge { background: var(--gold); color: #1a0e2e; border-radius: 999px; padding: 2px 8px; font-size: 0.75em; font-weight: 700; }
+  .fireworksOverlay {
+    position: fixed; inset: 0; z-index: 10000;
+    pointer-events: none;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 12px;
+  }
+  .fireworksMsg {
+    font-family: var(--fantasy-font);
+    font-size: clamp(1.8em, 5vw, 3em);
+    color: var(--gold);
+    text-shadow: 0 0 30px rgba(255,211,110,0.8);
+    animation: pulse 0.6s ease infinite;
+    text-align: center; padding: 0 20px;
+  }
+  .fireworksSubMsg { font-size: 1.1em; color: var(--muted); text-align: center; }
+  .fireworkParticle {
+    position: absolute;
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    animation: fireworkBurst 1.2s ease-out forwards;
+  }
+  @keyframes fireworkBurst {
+    0% { transform: translate(0,0) scale(1); opacity: 1; }
+    100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+  }
+
   /* Bomb Visual */
   .bombVisual {
     background: linear-gradient(135deg, rgba(40,30,60,0.5), rgba(30,20,50,0.5));
@@ -2700,6 +2813,20 @@
         <div class="questNote">No Screen Time Until Done!</div>
         <div class="questFooter">
           <div class="xpBadge">Total: +50 XP</div>
+          <button id="nightHighScoreBtn" class="highScoreBtn" title="View your fastest completion times">🏆 High Score</button>
+        </div>
+      </div>
+
+      <!-- Night Mission High Score Modal -->
+      <div id="nightHighScoreModal" class="hsModal" style="display:none">
+        <div class="hsModalContent">
+          <div class="hsModalHeader">
+            <span class="hsTrophy">🌙</span>
+            <h2>Win Tomorrow Tonight Records</h2>
+            <button id="nightHighScoreClose" class="hsClose">✕</button>
+          </div>
+          <div id="nightHsRecordDisplay" class="hsRecordDisplay"></div>
+          <div id="nightHsHistoryList" class="hsHistoryList"></div>
         </div>
       </div>
 
@@ -2735,6 +2862,20 @@
         </div>
         <div class="questFooter">
           <div class="xpBadge">Total: +50 XP</div>
+          <button id="morningHighScoreBtn" class="highScoreBtn" title="View your fastest completion times">🏆 High Score</button>
+        </div>
+      </div>
+
+      <!-- Morning Mission High Score Modal -->
+      <div id="morningHighScoreModal" class="hsModal" style="display:none">
+        <div class="hsModalContent">
+          <div class="hsModalHeader">
+            <span class="hsTrophy">☀️</span>
+            <h2>Ready for School Records</h2>
+            <button id="morningHighScoreClose" class="hsClose">✕</button>
+          </div>
+          <div id="morningHsRecordDisplay" class="hsRecordDisplay"></div>
+          <div id="morningHsHistoryList" class="hsHistoryList"></div>
         </div>
       </div>
 
@@ -2770,6 +2911,20 @@
         </div>
         <div class="questFooter">
           <div class="xpBadge">Total: +50 XP</div>
+          <button id="backpackHighScoreBtn" class="highScoreBtn" title="View your fastest completion times">🏆 High Score</button>
+        </div>
+      </div>
+
+      <!-- Trapper Ready High Score Modal -->
+      <div id="backpackHighScoreModal" class="hsModal" style="display:none">
+        <div class="hsModalContent">
+          <div class="hsModalHeader">
+            <span class="hsTrophy">⭐</span>
+            <h2>Trapper Ready Records</h2>
+            <button id="backpackHighScoreClose" class="hsClose">✕</button>
+          </div>
+          <div id="backpackHsRecordDisplay" class="hsRecordDisplay"></div>
+          <div id="backpackHsHistoryList" class="hsHistoryList"></div>
         </div>
       </div>
       </div>

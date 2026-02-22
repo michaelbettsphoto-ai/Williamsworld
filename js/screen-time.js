@@ -211,6 +211,14 @@
       }
       updateUI();
     },
+    // Award arbitrary minutes (used by High Score system and parent controls)
+    addMinutes(minutes, label) {
+      const key = `bonus_${Date.now()}`;
+      const added = awardMinutes(key, minutes, label || 'Bonus');
+      if (added > 0) showToast(`📱 +${added} min screen time earned!`);
+      updateUI();
+      return added;
+    },
   };
 
   function getHubDayTasks() {

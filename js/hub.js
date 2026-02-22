@@ -4241,7 +4241,236 @@ document.addEventListener('DOMContentLoaded', async () => {
   } else {
     console.warn('[FAIL-SOFT] checkMorningMissionStatus not defined');
   }
-  
+
+  // ============================================================
+  // HIGH SCORE SYSTEM — All Three Missions
+  // Records earliest completion time per mission.
+  // Breaking the record triggers fireworks + +15 screen time.
+  // ============================================================
+  (function initHighScores() {
+    const HS_KEY = 'ww_highscores';
+
+    // Quest definitions
+    const QUESTS = [
+      {
+        id: 'night',
+        label: 'Win Tomorrow Tonight',
+        taskIds: ['n_trapper','n_clothes','n_lunch','n_shoes'],
+        btnId: 'nightHighScoreBtn',
+        modalId: 'nightHighScoreModal',
+        closeId: 'nightHighScoreClose',
+        recordId: 'nightHsRecordDisplay',
+        historyId: 'nightHsHistoryList',
+        cardId: 'questNight',
+        emoji: '🌙'
+      },
+      {
+        id: 'morning',
+        label: 'Ready for School',
+        taskIds: ['m_prayer','m_dressed','m_teeth','m_trappercheck'],
+        btnId: 'morningHighScoreBtn',
+        modalId: 'morningHighScoreModal',
+        closeId: 'morningHighScoreClose',
+        recordId: 'morningHsRecordDisplay',
+        historyId: 'morningHsHistoryList',
+        cardId: 'questMorning',
+        emoji: '☀️'
+      },
+      {
+        id: 'backpack',
+        label: 'Trapper Ready',
+        taskIds: ['t_work','t_notebooks','t_supplies','t_check'],
+        btnId: 'backpackHighScoreBtn',
+        modalId: 'backpackHighScoreModal',
+        closeId: 'backpackHighScoreClose',
+        recordId: 'backpackHsRecordDisplay',
+        historyId: 'backpackHsHistoryList',
+        cardId: 'questBackpack',
+        emoji: '⭐'
+      }
+    ];
+
+    // Load/save high score data
+    function loadHS() {
+      try { return JSON.parse(localStorage.getItem(HS_KEY)) || {}; } catch { return {}; }
+    }
+    function saveHS(data) {
+      localStorage.setItem(HS_KEY, JSON.stringify(data));
+    }
+
+    // Format a timestamp as HH:MM AM/PM (Chicago time)
+    function formatTime(ts) {
+      if (!ts) return '--';
+      const d = new Date(ts);
+      const options = { hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'America/Chicago' };
+      return d.toLocaleTimeString('en-US', options);
+    }
+
+    // Format a date key as readable string
+    function formatDate(dateKey) {
+      if (!dateKey) return '--';
+      const [y, m, d] = dateKey.split('-').map(Number);
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return `${months[m-1]} ${d}, ${y}`;
+    }
+
+    // Launch fireworks overlay
+    function showFireworks(questLabel) {
+      const overlay = document.createElement('div');
+      overlay.className = 'fireworksOverlay';
+      overlay.innerHTML = `
+        <div class="fireworksMsg">🎆 NEW RECORD! 🎆</div>
+        <div class="fireworksSubMsg">${questLabel} — Fastest ever!<br>+15 bonus screen time awarded! 📱</div>
+      `;
+      document.body.appendChild(overlay);
+
+      // Burst particles
+      const colors = ['#ffd36e','#7dffb4','#ff9d5c','#a78bfa','#f472b6','#60a5fa'];
+      for (let i = 0; i < 60; i++) {
+        setTimeout(() => {
+          const p = document.createElement('div');
+          p.className = 'fireworkParticle';
+          const angle = Math.random() * 360;
+          const dist = 80 + Math.random() * 220;
+          const tx = Math.cos(angle * Math.PI / 180) * dist;
+          const ty = Math.sin(angle * Math.PI / 180) * dist;
+          p.style.cssText = `
+            left: ${20 + Math.random() * 60}%;
+            top: ${20 + Math.random() * 60}%;
+            background: ${colors[Math.floor(Math.random() * colors.length)]};
+            --tx: ${tx}px; --ty: ${ty}px;
+          `;
+          overlay.appendChild(p);
+          setTimeout(() => p.remove(), 1300);
+        }, i * 30);
+      }
+
+      setTimeout(() => overlay.remove(), 4000);
+    }
+
+    // Check if a quest was just completed and record the time
+    function checkQuestHighScore(quest) {
+      const day = state.days[TODAY];
+      if (!day) return;
+
+      // All tasks for this quest must be done
+      const allDone = quest.taskIds.every(id => day.tasks[id] === true);
+      if (!allDone) return;
+
+      const hs = loadHS();
+      if (!hs[quest.id]) hs[quest.id] = { record: null, recordDate: null, history: [] };
+      const entry = hs[quest.id];
+
+      // Avoid recording the same day twice
+      if (entry.history.some(h => h.date === TODAY)) return;
+
+      const now = Date.now();
+      const todayEntry = { date: TODAY, time: now, isRecord: false };
+
+      // Compare with existing record (earlier time = better score)
+      const isNewRecord = !entry.record || now < entry.record;
+
+      if (isNewRecord) {
+        entry.record = now;
+        entry.recordDate = TODAY;
+        todayEntry.isRecord = true;
+        // Mark all previous history entries as non-record
+        entry.history.forEach(h => h.isRecord = false);
+        // Award +15 screen time bonus
+        if (window.ScreenTime && typeof window.ScreenTime.addMinutes === 'function') {
+          window.ScreenTime.addMinutes(15, 'New High Score! 🏆');
+        }
+        showFireworks(quest.label);
+        setTimeout(() => toast(`🏆 NEW RECORD! ${quest.emoji} ${quest.label} — fastest ever! +15 min screen time!`), 500);
+      }
+
+      entry.history.unshift(todayEntry);
+      // Keep last 30 entries
+      if (entry.history.length > 30) entry.history = entry.history.slice(0, 30);
+
+      saveHS(hs);
+
+      // Refresh modal if open
+      const modal = document.getElementById(quest.modalId);
+      if (modal && modal.style.display !== 'none') {
+        renderModal(quest);
+      }
+    }
+
+    // Render the high score modal content
+    function renderModal(quest) {
+      const hs = loadHS();
+      const entry = hs[quest.id] || { record: null, recordDate: null, history: [] };
+
+      const recordEl = document.getElementById(quest.recordId);
+      const histEl = document.getElementById(quest.historyId);
+      if (!recordEl || !histEl) return;
+
+      // Record display
+      if (entry.record) {
+        recordEl.innerHTML = `
+          <div class="hsRecordLabel">🏆 All-Time Best Completion Time</div>
+          <span class="hsRecordTime">${formatTime(entry.record)}</span>
+          <div class="hsRecordDate">Set on ${formatDate(entry.recordDate)}</div>
+        `;
+      } else {
+        recordEl.innerHTML = `<div class="hsNoRecord">No record yet — complete the mission to set one!</div>`;
+      }
+
+      // History list
+      if (entry.history.length === 0) {
+        histEl.innerHTML = `<div class="hsNoRecord">No completions recorded yet.</div>`;
+      } else {
+        histEl.innerHTML = entry.history.map(h => `
+          <div class="hsHistoryItem ${h.isRecord ? 'record' : ''}">
+            <span class="hsDate">${formatDate(h.date)}</span>
+            <span class="hsTime">${formatTime(h.time)}</span>
+            ${h.isRecord ? '<span class="hsBadge">🏆 Record</span>' : ''}
+          </div>
+        `).join('');
+      }
+    }
+
+    // Wire up buttons and modals for each quest
+    QUESTS.forEach(quest => {
+      // High Score button opens modal
+      const btn = document.getElementById(quest.btnId);
+      const modal = document.getElementById(quest.modalId);
+      const closeBtn = document.getElementById(quest.closeId);
+
+      if (btn && modal) {
+        btn.addEventListener('click', () => {
+          renderModal(quest);
+          modal.style.display = 'flex';
+        });
+      }
+      if (closeBtn && modal) {
+        closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+      }
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) modal.style.display = 'none';
+        });
+      }
+
+      // Hook into quest progress: check high score whenever a task is checked
+      const card = document.getElementById(quest.cardId);
+      if (card) {
+        card.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+          cb.addEventListener('change', () => {
+            if (cb.checked) setTimeout(() => checkQuestHighScore(quest), 100);
+          });
+        });
+      }
+    });
+
+    // Expose checkQuestHighScore globally so ScreenTime module can call it
+    window.QuestHighScore = { checkQuestHighScore, QUESTS };
+
+    // On load, check if any quest was already completed today (e.g. after page reload)
+    QUESTS.forEach(quest => checkQuestHighScore(quest));
+  })();
+
   } catch (error) {
     // Rule 4: Top-level error handler
     console.error('[CRITICAL] Homepage initialization failed:', error);
