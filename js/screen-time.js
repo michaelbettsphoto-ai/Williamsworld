@@ -29,6 +29,7 @@
     situps:          2,
     pushups:         2,
     stretching:      2,
+    protein_drink:  12,   // protein drink
     school_subject:  5,   // per subject logged (ELA, Math, Science, Other)
   };
 
@@ -37,7 +38,8 @@
     { id: 'pullups',    label: 'Pull-Ups',   icon: '💪' },
     { id: 'situps',     label: 'Sit-Ups',    icon: '🧘' },
     { id: 'pushups',    label: 'Push-Ups',   icon: '🏋️' },
-    { id: 'stretching', label: 'Stretching', icon: '🤸' },
+    { id: 'stretching',    label: 'Stretching',    icon: '🤸' },
+    { id: 'protein_drink', label: 'Protein Drink', icon: '🥤' },
   ];
 
   const SCHOOL_SUBJECTS = [
@@ -1104,6 +1106,48 @@
       });
     }
 
+    // Protein is Good! full-screen popup
+    function showProteinPopup() {
+      const overlay = document.createElement('div');
+      overlay.style.cssText = [
+        'position:fixed','top:0','left:0','width:100vw','height:100vh',
+        'background:linear-gradient(135deg,#0a0a2e 0%,#1a0a3e 50%,#0a1a2e 100%)',
+        'z-index:99999','display:flex','flex-direction:column',
+        'align-items:center','justify-content:center','cursor:pointer',
+        'animation:proteinFadeIn 0.4s ease'
+      ].join(';');
+
+      overlay.innerHTML = `
+        <style>
+          @keyframes proteinFadeIn { from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)} }
+          @keyframes proteinBounce { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+          @keyframes proteinShake  { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(-5deg)} 75%{transform:rotate(5deg)} }
+          @keyframes proteinGlow   { 0%,100%{text-shadow:0 0 20px #00e5ff,0 0 40px #00e5ff} 50%{text-shadow:0 0 40px #00e5ff,0 0 80px #00e5ff,0 0 120px #ffffff} }
+          .protein-icon  { font-size:8rem; animation:proteinShake 0.6s ease infinite; margin-bottom:1rem; }
+          .protein-title { font-family:'Cinzel Decorative',serif; font-size:3.5rem; font-weight:900;
+                           color:#00e5ff; animation:proteinGlow 1.5s ease infinite; text-align:center;
+                           line-height:1.2; margin-bottom:0.5rem; }
+          .protein-sub   { font-family:'Cinzel',serif; font-size:1.4rem; color:#ffd700;
+                           animation:proteinBounce 1s ease infinite; margin-bottom:2rem; }
+          .protein-mins  { font-family:'Cinzel Decorative',serif; font-size:2rem; color:#7fff00;
+                           background:rgba(0,229,255,0.15); border:2px solid #00e5ff;
+                           border-radius:12px; padding:0.5rem 2rem; margin-bottom:2rem; }
+          .protein-tap   { font-family:'Cinzel',serif; font-size:1rem; color:rgba(255,255,255,0.5); }
+          .protein-stars { font-size:2rem; letter-spacing:0.5rem; margin-bottom:1rem; }
+        </style>
+        <div class="protein-stars">⭐ ⭐ ⭐ ⭐ ⭐</div>
+        <div class="protein-icon">🥤</div>
+        <div class="protein-title">PROTEIN<br>IS GOOD!</div>
+        <div class="protein-sub">💪 Fuel Your Adventure! 💪</div>
+        <div class="protein-mins">+12 min Screen Time Earned!</div>
+        <div class="protein-tap">Tap anywhere to continue</div>
+      `;
+
+      overlay.addEventListener('click', () => overlay.remove());
+      document.body.appendChild(overlay);
+      setTimeout(() => { if (overlay.parentNode) overlay.remove(); }, 5000);
+    }
+
     // Workout activity buttons
     document.querySelectorAll('.stWktBtn[data-wkt]').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -1111,8 +1155,12 @@
         const mins  = REWARDS[wkt];
         const label = WORKOUT_ACTIVITIES.find(a => a.id === wkt)?.label || wkt;
         const added = awardMinutes(`wkt_${wkt}`, mins, label);
-        if (added > 0) showToast(`💪 +${added} min for ${label}!`);
-        else showToast('Already logged today ✅');
+        if (added > 0) {
+          showToast(`💪 +${added} min for ${label}!`);
+          if (wkt === 'protein_drink') showProteinPopup();
+        } else {
+          showToast('Already logged today ✅');
+        }
         updateUI();
       });
     });
