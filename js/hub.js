@@ -850,6 +850,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Create global audio manager instance
   const audioManager = new AudioManager(audioEventsData);
+  // Expose globally so inline onclicks and external scripts can reach it
+  window.audioManager = audioManager;
 
   function load(){
     try{
@@ -1974,6 +1976,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       overlay.classList.add("show");
       overlay.setAttribute("aria-hidden", "false");
     }
+    if (openMode === "click" && audioManager.isInitialized) audioManager.play('ui.panelOpen');
 
     questLoreLastFocused = document.activeElement;
     updateQuestLoreFocusables();
@@ -1988,6 +1991,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       overlay.classList.remove("show");
       overlay.setAttribute("aria-hidden", "true");
     }
+    if (audioManager.isInitialized) audioManager.play('ui.panelClose');
     activeQuestZoneId = null;
     questLoreOpenMode = null;
     questLoreHoverTarget = null;
@@ -2599,12 +2603,28 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!pass) checkLevelDown();
   }
 
+  // Initialize audio on first user interaction (required for mobile autoplay policy)
+  function initAudioOnInteraction() {
+    if (audioManager.isInitialized) return;
+    audioManager.init();
+    // Start background music after init
+    setTimeout(() => {
+      if (audioManager.isInitialized) {
+        audioManager.playMusic(audioManager.getCurrentMusicKey());
+      }
+    }, 150);
+  }
+
   document.querySelectorAll("#ww .nav button").forEach(btn=>{
     btn.addEventListener("click", ()=>{
       initAudioOnInteraction();
       audioManager.play('ui_click_confirm');
       document.querySelectorAll("#ww .nav button").forEach(b=>b.classList.remove("active"));
       btn.classList.add("active");
+      // Navigate to external page (Games / Battle)
+      const href = btn.dataset.navHref;
+      if (href) { window.location.href = href; return; }
+      // Scroll to section (Home / Tracker / Party / Map)
       const id = btn.dataset.section;
       const target = document.getElementById(id);
       if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
@@ -2669,6 +2689,168 @@ document.addEventListener('DOMContentLoaded', async () => {
       toast(`<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1.4 1.3-2.5 3-2.5s3 1.1 3 2.5c0 1.4-1.3 2.5-3 2.5s-3 1.1-3 2.5 1.3 2.5 3 2.5 3-1.1 3-2.5"/></svg> Awarded ${WAR_CHEST_AWARD_COST} gold to ${COMPANION_NAMES[comp]}!`);
     });
   });
+
+  // ============================================
+  // AUDIO TOGGLE & SETTINGS PANEL
+  // ============================================
+  (function wireAudioUI() {
+    const audioToggleEl   = document.getElementById('audioToggle');
+    const audioSettingsEl = document.getElementById('audioSettings');
+    const musicSlider     = document.getElementById('musicVolume');
+    const ambienceSlider  = document.getElementById('ambienceVolume');
+    const sfxSlider       = document.getElementById('sfxVolume');
+    const musicValEl      = document.getElementById('musicVolumeValue');
+    const ambienceValEl   = document.getElementById('ambienceVolumeValue');
+    const sfxValEl        = document.getElementById('sfxVolumeValue');
+    const reduceCheckbox  = document.getElementById('reduceSoundMode');
+
+    // Sync slider UI to current audioManager state
+    function syncAudioUI() {
+      if (musicSlider) {
+        const pct = Math.round(audioManager.volumes.music * 100);
+        musicSlider.value = pct;
+        if (musicValEl) musicValEl.textContent = pct + '%';
+      }
+      if (ambienceSlider) {
+        const pct = Math.round(audioManager.volumes.ambience * 100);
+        ambienceSlider.value = pct;
+        if (ambienceValEl) ambienceValEl.textContent = pct + '%';
+      }
+      if (sfxSlider) {
+        const pct = Math.round(audioManager.volumes.sfx * 100);
+        sfxSlider.value = pct;
+        if (sfxValEl) sfxValEl.textContent = pct + '%';
+      }
+      if (reduceCheckbox) reduceCheckbox.checked = audioManager.reduceSoundMode;
+    }
+
+    // Update toggle button visual to reflect mute state
+    function updateMuteVisual() {
+      if (!audioToggleEl) return;
+      audioToggleEl.classList.toggle('muted', audioManager.isMuted);
+      audioToggleEl.title = audioManager.isMuted
+        ? 'Audio Muted — click to open settings'
+        : 'Enable Sound / Audio Settings';
+    }
+
+    // Open / close the settings panel
+    if (audioToggleEl && audioSettingsEl) {
+      audioToggleEl.addEventListener('click', () => {
+        initAudioOnInteraction();
+        const isOpen = audioSettingsEl.classList.contains('show');
+        if (isOpen) {
+          audioSettingsEl.classList.remove('show');
+          audioManager.play('ui.panelClose');
+        } else {
+          syncAudioUI();
+          audioSettingsEl.classList.add('show');
+          audioManager.play('ui.panelOpen');
+          // Close weather menu if open
+          const wMenu = document.getElementById('weatherMenu');
+          if (wMenu) wMenu.classList.remove('show');
+        }
+      });
+
+      // Right-click to toggle global mute (quick access)
+      audioToggleEl.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        initAudioOnInteraction();
+        audioManager.toggleMute();
+        updateMuteVisual();
+      });
+    }
+
+    // Close settings panel when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!audioSettingsEl) return;
+      if (audioSettingsEl.classList.contains('show') &&
+          !audioSettingsEl.contains(e.target) &&
+          e.target !== audioToggleEl) {
+        audioSettingsEl.classList.remove('show');
+      }
+    });
+
+    // Volume sliders
+    if (musicSlider) {
+      musicSlider.addEventListener('input', () => {
+        initAudioOnInteraction();
+        audioManager.setVolume('music', parseInt(musicSlider.value) / 100);
+        if (musicValEl) musicValEl.textContent = musicSlider.value + '%';
+      });
+    }
+    if (ambienceSlider) {
+      ambienceSlider.addEventListener('input', () => {
+        initAudioOnInteraction();
+        audioManager.setVolume('ambience', parseInt(ambienceSlider.value) / 100);
+        if (ambienceValEl) ambienceValEl.textContent = ambienceSlider.value + '%';
+      });
+    }
+    if (sfxSlider) {
+      sfxSlider.addEventListener('input', () => {
+        initAudioOnInteraction();
+        audioManager.setVolume('sfx', parseInt(sfxSlider.value) / 100);
+        if (sfxValEl) sfxValEl.textContent = sfxSlider.value + '%';
+      });
+    }
+
+    // Reduce Sound Mode checkbox
+    if (reduceCheckbox) {
+      reduceCheckbox.addEventListener('change', () => {
+        initAudioOnInteraction();
+        audioManager.setReduceSoundMode(reduceCheckbox.checked);
+      });
+    }
+  })();
+
+  // ============================================
+  // WEATHER TOGGLE & MENU
+  // ============================================
+  (function wireWeatherUI() {
+    const weatherToggleEl = document.getElementById('weatherToggle');
+    const weatherMenuEl   = document.getElementById('weatherMenu');
+    if (!weatherToggleEl || !weatherMenuEl) return;
+
+    weatherToggleEl.addEventListener('click', () => {
+      initAudioOnInteraction();
+      const isOpen = weatherMenuEl.classList.contains('show');
+      if (isOpen) {
+        weatherMenuEl.classList.remove('show');
+      } else {
+        weatherMenuEl.classList.add('show');
+        audioManager.play('ui.panelOpen');
+        // Close audio settings if open
+        const aSettings = document.getElementById('audioSettings');
+        if (aSettings) aSettings.classList.remove('show');
+      }
+    });
+
+    document.querySelectorAll('.weatherOption').forEach(opt => {
+      opt.addEventListener('click', () => {
+        initAudioOnInteraction();
+        const weather = opt.dataset.weather;
+        // Update active visual
+        document.querySelectorAll('.weatherOption').forEach(o => o.classList.remove('active'));
+        opt.classList.add('active');
+        // Apply weather sound
+        if (weather === 'none') {
+          audioManager.stopWeatherAmbience();
+        } else {
+          audioManager.playWeatherAmbience(weather);
+        }
+        audioManager.play('ui.tabChange');
+        weatherMenuEl.classList.remove('show');
+      });
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+      if (weatherMenuEl.classList.contains('show') &&
+          !weatherMenuEl.contains(e.target) &&
+          e.target !== weatherToggleEl) {
+        weatherMenuEl.classList.remove('show');
+      }
+    });
+  })();
 
   // William Character Animation System
   // ============================================
@@ -3102,16 +3284,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       if (btn && modal) {
         btn.addEventListener('click', () => {
+          initAudioOnInteraction();
           renderModal(quest);
           modal.style.display = 'flex';
+          audioManager.play('ui.panelOpen');
         });
       }
       if (closeBtn && modal) {
-        closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+        closeBtn.addEventListener('click', () => {
+          modal.style.display = 'none';
+          audioManager.play('ui.panelClose');
+        });
       }
       if (modal) {
         modal.addEventListener('click', (e) => {
-          if (e.target === modal) modal.style.display = 'none';
+          if (e.target === modal) {
+            modal.style.display = 'none';
+            audioManager.play('ui.panelClose');
+          }
         });
       }
 
