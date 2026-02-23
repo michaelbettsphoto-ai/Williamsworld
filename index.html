@@ -2476,6 +2476,46 @@
     cursor: pointer;
   }
 
+  /* Mute Toggle Button */
+  #muteToggle {
+    position: fixed;
+    bottom: 20px;
+    right: 160px;
+    z-index: 100;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 2px solid var(--golden-border);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 28px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 15px rgba(212,165,48,0.3);
+    transition: all 0.3s ease;
+    pointer-events: auto;
+    color: var(--gold);
+  }
+  #muteToggle svg { pointer-events: none; }
+  #muteToggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4), 0 0 25px rgba(212,165,48,0.5);
+  }
+  #muteToggle:active {
+    transform: scale(0.95);
+  }
+  #muteToggle.muted {
+    color: #ef4444;
+    border-color: #ef4444;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 15px rgba(239,68,68,0.4);
+  }
+  #muteToggle.muted:hover {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.4), 0 0 25px rgba(239,68,68,0.6);
+  }
+
   /* Mobile responsiveness for audio controls */
   @media (max-width: 600px) {
     #audioToggle {
@@ -2490,6 +2530,14 @@
       bottom: 150px;
       right: 20px;
       min-width: 180px;
+    }
+
+    #muteToggle {
+      bottom: 150px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
     }
   }
   
@@ -2945,6 +2993,14 @@
   <div class="weatherOption" data-weather="snow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25"/><line x1="8" y1="16" x2="8" y2="20"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="16" y1="16" x2="16" y2="20"/></svg> Snow</div>
   <div class="weatherOption" data-weather="clouds"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg> Cloudy</div>
   <div class="weatherOption" data-weather="storm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 16.9A5 5 0 0 0 18 7h-1.26a8 8 0 1 0-11.62 9"/><polyline points="13,11 9,17 15,17 11,23"/></svg> Storm</div>
+</div>
+
+<!-- Mute Toggle Button -->
+<div id="muteToggle" title="Mute / Unmute All Audio">
+  <!-- Speaker-on icon (shown when not muted) -->
+  <svg id="muteIconOn" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+  <!-- Speaker-off icon (shown when muted) -->
+  <svg id="muteIconOff" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:none"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>
 </div>
 
 <!-- Audio Toggle Button -->

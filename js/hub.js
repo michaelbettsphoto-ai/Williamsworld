@@ -2824,6 +2824,100 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
 
+    // ---- Weather visual effect engine ----
+    const weatherContainer = document.getElementById('weatherContainer');
+    const weatherLightning  = document.getElementById('weatherLightning');
+    let   lightningInterval  = null;
+
+    function clearWeatherVisuals() {
+      if (weatherContainer) weatherContainer.innerHTML = '';
+      if (weatherLightning)  weatherLightning.style.animation = 'none';
+      if (lightningInterval) { clearTimeout(lightningInterval); lightningInterval = null; }
+    }
+
+    function createRain(count) {
+      if (!weatherContainer) return;
+      for (let i = 0; i < count; i++) {
+        const drop = document.createElement('div');
+        drop.className = 'raindrop';
+        drop.style.left     = Math.random() * 100 + '%';
+        drop.style.animationDuration = (0.4 + Math.random() * 0.6) + 's';
+        drop.style.animationDelay    = (Math.random() * 2) + 's';
+        drop.style.opacity  = (0.5 + Math.random() * 0.5).toString();
+        weatherContainer.appendChild(drop);
+      }
+    }
+
+    function createSnow(count) {
+      if (!weatherContainer) return;
+      const flakes = ['❄', '❅', '❆', '*'];
+      for (let i = 0; i < count; i++) {
+        const flake = document.createElement('div');
+        flake.className   = 'snowflake';
+        flake.textContent = flakes[Math.floor(Math.random() * flakes.length)];
+        flake.style.left  = Math.random() * 100 + '%';
+        flake.style.fontSize = (10 + Math.random() * 20) + 'px';
+        flake.style.animationDuration = (3 + Math.random() * 5) + 's';
+        flake.style.animationDelay    = (Math.random() * 5) + 's';
+        flake.style.opacity = (0.6 + Math.random() * 0.4).toString();
+        weatherContainer.appendChild(flake);
+      }
+    }
+
+    function createClouds(count) {
+      if (!weatherContainer) return;
+      for (let i = 0; i < count; i++) {
+        const cloud = document.createElement('div');
+        cloud.className   = 'cloud';
+        cloud.textContent = '☁';
+        cloud.style.top   = (5 + Math.random() * 40) + '%';
+        cloud.style.animationDuration = (20 + Math.random() * 30) + 's';
+        cloud.style.animationDelay    = (Math.random() * -30) + 's'; // stagger starts
+        cloud.style.fontSize = (50 + Math.random() * 60) + 'px';
+        cloud.style.opacity  = (0.4 + Math.random() * 0.4).toString();
+        weatherContainer.appendChild(cloud);
+      }
+    }
+
+    function startLightning() {
+      if (!weatherLightning) return;
+      function scheduleFlash() {
+        lightningInterval = setTimeout(() => {
+          weatherLightning.style.animation = 'none';
+          void weatherLightning.offsetWidth; // force reflow so animation restarts
+          weatherLightning.style.animation = 'lightning ' + (2 + Math.random() * 3) + 's ease-in-out';
+          scheduleFlash(); // queue next flash at a new random delay
+        }, (3 + Math.random() * 7) * 1000);
+      }
+      // First flash immediately
+      weatherLightning.style.animation = 'lightning 2s ease-in-out';
+      scheduleFlash();
+    }
+
+    function applyWeatherVisuals(weather) {
+      clearWeatherVisuals();
+      switch (weather) {
+        case 'rain':
+          createRain(80);
+          break;
+        case 'snow':
+          createSnow(60);
+          break;
+        case 'clouds':
+          createClouds(6);
+          break;
+        case 'storm':
+          createRain(120);
+          createClouds(4);
+          startLightning();
+          break;
+        case 'none':
+        default:
+          break;
+      }
+    }
+    // ---- end weather visual engine ----
+
     document.querySelectorAll('.weatherOption').forEach(opt => {
       opt.addEventListener('click', () => {
         initAudioOnInteraction();
@@ -2831,6 +2925,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Update active visual
         document.querySelectorAll('.weatherOption').forEach(o => o.classList.remove('active'));
         opt.classList.add('active');
+        // Apply weather visuals
+        applyWeatherVisuals(weather);
         // Apply weather sound
         if (weather === 'none') {
           audioManager.stopWeatherAmbience();
@@ -2850,6 +2946,41 @@ document.addEventListener('DOMContentLoaded', async () => {
         weatherMenuEl.classList.remove('show');
       }
     });
+  })();
+
+  // ============================================
+  // MUTE TOGGLE BUTTON
+  // ============================================
+  (function wireMuteToggle() {
+    const muteBtn = document.getElementById('muteToggle');
+    const iconOn  = document.getElementById('muteIconOn');
+    const iconOff = document.getElementById('muteIconOff');
+    if (!muteBtn) return;
+
+    function refreshMuteBtn() {
+      const muted = audioManager.isMuted;
+      muteBtn.classList.toggle('muted', muted);
+      muteBtn.title = muted ? 'Unmute Audio' : 'Mute All Audio';
+      if (iconOn)  iconOn.style.display  = muted ? 'none'  : '';
+      if (iconOff) iconOff.style.display = muted ? ''      : 'none';
+    }
+
+    muteBtn.addEventListener('click', () => {
+      initAudioOnInteraction();
+      audioManager.toggleMute();
+      refreshMuteBtn();
+      // Also keep the existing audioToggle visual in sync
+      const audioToggleEl = document.getElementById('audioToggle');
+      if (audioToggleEl) {
+        audioToggleEl.classList.toggle('muted', audioManager.isMuted);
+        audioToggleEl.title = audioManager.isMuted
+          ? 'Audio Muted — click to open settings'
+          : 'Enable Sound / Audio Settings';
+      }
+    });
+
+    // Initialise to match any saved mute state
+    refreshMuteBtn();
   })();
 
   // William Character Animation System
@@ -3211,8 +3342,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       const now = Date.now();
       const todayEntry = { date: TODAY, time: now, isRecord: false };
 
-      // Compare with existing record (earlier time = better score)
-      const isNewRecord = !entry.record || now < entry.record;
+      // Compare with existing record (earlier time-of-day = better score).
+      // We compare only the clock time (hours+minutes in Chicago TZ), NOT the
+      // absolute epoch, so a 7:00 AM completion today correctly beats a 7:30 AM
+      // completion from a previous day even though today's epoch is larger.
+      function chicagoMinsOfDay(ts) {
+        const str = new Date(ts).toLocaleString('en-US', {
+          timeZone: 'America/Chicago',
+          hour: '2-digit', minute: '2-digit', hour12: false
+        });
+        const [h, m] = str.split(':').map(Number);
+        return h * 60 + m;
+      }
+      const isNewRecord = !entry.record || chicagoMinsOfDay(now) < chicagoMinsOfDay(entry.record);
 
       if (isNewRecord) {
         entry.record = now;
