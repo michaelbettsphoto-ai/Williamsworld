@@ -245,6 +245,196 @@
     return Math.max(0, earnedSec - usedSec);
   }
 
+  // ── Full-screen timer overlay ──────────────
+  function showFullscreenTimer() {
+    let overlay = document.getElementById('stFullscreenTimerOverlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'stFullscreenTimerOverlay';
+      overlay.innerHTML = `
+        <style>
+          #stFullscreenTimerOverlay {
+            position: fixed; top:0; left:0; width:100vw; height:100vh;
+            background: linear-gradient(135deg,#0a0a2e 0%,#1a0a3e 50%,#0a1a2e 100%);
+            z-index: 9000; display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            font-family: 'Cinzel Decorative', serif;
+            transition: background 0.5s ease;
+          }
+          #stFullscreenTimerOverlay.fs-warn-yellow {
+            animation: fsBlinkYellow 0.8s ease infinite;
+          }
+          #stFullscreenTimerOverlay.fs-warn-red {
+            animation: fsBlinkRed 0.5s ease infinite;
+          }
+          @keyframes fsBlinkYellow {
+            0%,100% { background: linear-gradient(135deg,#0a0a2e 0%,#1a0a3e 50%,#0a1a2e 100%); }
+            50%      { background: linear-gradient(135deg,#3a3000 0%,#5a4800 50%,#3a3000 100%); }
+          }
+          @keyframes fsBlinkRed {
+            0%,100% { background: linear-gradient(135deg,#0a0a2e 0%,#1a0a3e 50%,#0a1a2e 100%); }
+            50%      { background: linear-gradient(135deg,#3a0000 0%,#5a0000 50%,#3a0000 100%); }
+          }
+          .fst-label {
+            font-family: 'Cinzel', serif; font-size: 1.1rem;
+            color: rgba(255,255,255,0.5); letter-spacing: 0.2em;
+            text-transform: uppercase; margin-bottom: 0.5rem;
+          }
+          .fst-display {
+            font-family: 'Cinzel Decorative', serif;
+            font-size: clamp(5rem, 18vw, 14rem);
+            font-weight: 900; color: #ffd700;
+            text-shadow: 0 0 30px rgba(255,215,0,0.6), 0 0 60px rgba(255,215,0,0.3);
+            line-height: 1; margin-bottom: 0.5rem;
+            transition: color 0.3s, text-shadow 0.3s;
+          }
+          .fst-display.fst-yellow {
+            color: #ffe000;
+            text-shadow: 0 0 30px rgba(255,224,0,0.9), 0 0 80px rgba(255,224,0,0.5);
+          }
+          .fst-display.fst-red {
+            color: #ff3333;
+            text-shadow: 0 0 30px rgba(255,50,50,0.9), 0 0 80px rgba(255,50,50,0.5);
+          }
+          .fst-sublabel {
+            font-family: 'Cinzel', serif; font-size: 1rem;
+            color: rgba(255,255,255,0.45); margin-bottom: 2.5rem;
+          }
+          .fst-warn-msg {
+            font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 700;
+            min-height: 2rem; margin-bottom: 1.5rem; text-align: center;
+            transition: opacity 0.3s;
+          }
+          .fst-warn-msg.fst-yellow-msg { color: #ffe000; }
+          .fst-warn-msg.fst-red-msg    { color: #ff3333; }
+          .fst-btns {
+            display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center;
+            margin-bottom: 2rem;
+          }
+          .fst-btn {
+            font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 700;
+            padding: 0.75rem 2rem; border-radius: 10px; border: 2px solid;
+            cursor: pointer; transition: all 0.2s;
+          }
+          .fst-btn-pause  { background:#1a1a4e; border-color:#ffd700; color:#ffd700; }
+          .fst-btn-pause:hover  { background:#2a2a6e; }
+          .fst-btn-resume { background:#1a3a1a; border-color:#7fff00; color:#7fff00; }
+          .fst-btn-resume:hover { background:#2a5a2a; }
+          .fst-btn-exit   { background:#2a0a0a; border-color:#ff6666; color:#ff6666; }
+          .fst-btn-exit:hover   { background:#4a1a1a; }
+          .fst-progress-wrap {
+            width: min(80vw, 600px); background: rgba(255,255,255,0.1);
+            border-radius: 999px; height: 10px; overflow: hidden;
+          }
+          .fst-progress-bar {
+            height: 100%; border-radius: 999px;
+            background: linear-gradient(90deg,#ffd700,#ffaa00);
+            transition: width 1s linear, background 0.3s;
+          }
+          .fst-progress-bar.fst-bar-yellow { background: linear-gradient(90deg,#ffe000,#ffcc00); }
+          .fst-progress-bar.fst-bar-red    { background: linear-gradient(90deg,#ff3333,#ff6666); }
+        </style>
+        <div class="fst-label">Screen Time Remaining</div>
+        <div class="fst-display" id="fstDisplay">00:00</div>
+        <div class="fst-sublabel" id="fstSubLabel"></div>
+        <div class="fst-warn-msg" id="fstWarnMsg"></div>
+        <div class="fst-btns">
+          <button class="fst-btn fst-btn-pause"  id="fstPauseBtn">⏸ Pause</button>
+          <button class="fst-btn fst-btn-resume" id="fstResumeBtn" style="display:none;">▶ Resume</button>
+          <button class="fst-btn fst-btn-exit"   id="fstExitBtn">✕ Exit</button>
+        </div>
+        <div class="fst-progress-wrap">
+          <div class="fst-progress-bar" id="fstProgressBar" style="width:100%"></div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+
+      document.getElementById('fstPauseBtn').addEventListener('click', () => {
+        pauseTimer();
+        document.getElementById('fstPauseBtn').style.display  = 'none';
+        document.getElementById('fstResumeBtn').style.display = 'inline-flex';
+      });
+      document.getElementById('fstResumeBtn').addEventListener('click', () => {
+        startTimer();
+        document.getElementById('fstPauseBtn').style.display  = 'inline-flex';
+        document.getElementById('fstResumeBtn').style.display = 'none';
+      });
+      document.getElementById('fstExitBtn').addEventListener('click', () => {
+        closeFullscreenTimer();
+      });
+    }
+    overlay.style.display = 'flex';
+    updateFullscreenTimer();
+  }
+
+  function closeFullscreenTimer() {
+    const overlay = document.getElementById('stFullscreenTimerOverlay');
+    if (overlay) overlay.style.display = 'none';
+  }
+
+  function updateFullscreenTimer() {
+    const overlay = document.getElementById('stFullscreenTimerOverlay');
+    if (!overlay || overlay.style.display === 'none') return;
+
+    const display     = document.getElementById('fstDisplay');
+    const subLabel    = document.getElementById('fstSubLabel');
+    const warnMsg     = document.getElementById('fstWarnMsg');
+    const progressBar = document.getElementById('fstProgressBar');
+    const pauseBtn    = document.getElementById('fstPauseBtn');
+    const resumeBtn   = document.getElementById('fstResumeBtn');
+
+    const totalSec  = getEarned() * 60;
+    const showSec   = timerRunning ? timerRemainSec : getTimerTotalSec();
+    const pct       = totalSec > 0 ? Math.max(0, (showSec / totalSec) * 100) : 0;
+
+    // Timer display
+    if (display) {
+      display.textContent = fmtSec(showSec);
+      display.className   = 'fst-display' +
+        (showSec <= 60  ? ' fst-red'    :
+         showSec <= 300 ? ' fst-yellow' : '');
+    }
+
+    // Sub-label
+    if (subLabel) {
+      subLabel.textContent = timerRunning ? 'counting down…' :
+        (showSec > 0 ? 'paused' : 'time is up!');
+    }
+
+    // Warning message
+    if (warnMsg) {
+      if (showSec <= 60 && showSec > 0) {
+        warnMsg.textContent  = '⚠️ LAST MINUTE!';
+        warnMsg.className    = 'fst-warn-msg fst-red-msg';
+      } else if (showSec <= 300 && showSec > 0) {
+        warnMsg.textContent  = '⚠️ 5 minutes remaining!';
+        warnMsg.className    = 'fst-warn-msg fst-yellow-msg';
+      } else {
+        warnMsg.textContent  = '';
+        warnMsg.className    = 'fst-warn-msg';
+      }
+    }
+
+    // Background blink — yellow from 5 min down to 1 min, red for full last minute
+    overlay.classList.remove('fs-warn-yellow','fs-warn-red');
+    if      (showSec <= 60  && showSec > 0)              overlay.classList.add('fs-warn-red');
+    else if (showSec <= 300 && showSec > 60 && showSec > 0) overlay.classList.add('fs-warn-yellow');
+
+    // Progress bar
+    if (progressBar) {
+      progressBar.style.width = pct + '%';
+      progressBar.className   = 'fst-progress-bar' +
+        (showSec <= 60  ? ' fst-bar-red'    :
+         showSec <= 300 ? ' fst-bar-yellow' : '');
+    }
+
+    // Pause/resume buttons
+    if (pauseBtn && resumeBtn) {
+      pauseBtn.style.display  = timerRunning   ? 'inline-flex' : 'none';
+      resumeBtn.style.display = !timerRunning  ? 'inline-flex' : 'none';
+    }
+  }
+
   function startTimer() {
     if (timerRunning) return;
     timerRemainSec = getTimerTotalSec();
@@ -253,6 +443,7 @@
       return;
     }
     timerRunning = true;
+    showFullscreenTimer();
     updateTimerUI();
     timerInterval = setInterval(() => {
       timerRemainSec--;
@@ -260,7 +451,9 @@
       rec.timerUsedSec = (rec.timerUsedSec || 0) + 1;
       saveState();
       updateTimerUI();
+      updateFullscreenTimer();
       if (timerRemainSec <= 0) {
+        closeFullscreenTimer();
         stopTimer();
         showTimesUp();
       }
