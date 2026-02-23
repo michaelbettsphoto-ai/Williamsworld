@@ -443,7 +443,9 @@
   #ww .nav button{
     border:2px solid var(--golden-border); background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); color:var(--ink);
     padding:8px 10px; border-radius:999px; cursor:pointer; font-weight:850; font-size:13px;
+    display: inline-flex; align-items: center; gap: 6px;
   }
+  #ww .nav button svg { flex-shrink: 0; }
   #ww .nav button.active{background: rgba(255,211,110,.25); border-color: var(--gold); box-shadow: 0 0 10px rgba(255,211,110,.4)}
   #ww .banner{
     margin-top:12px; border-radius:26px; border:3px solid var(--gold);
@@ -2254,8 +2256,9 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 15px rgba(212,165,48,0.3);
     transition: all 0.3s ease;
     pointer-events: auto;
+    color: var(--gold);
   }
-
+  #weatherToggle svg { pointer-events: none; }
   #weatherToggle:hover {
     transform: scale(1.1) rotate(10deg);
     box-shadow: 0 6px 16px rgba(0,0,0,0.4), 0 0 25px rgba(212,165,48,0.5);
@@ -2338,8 +2341,9 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.3), 0 0 15px rgba(212,165,48,0.3);
     transition: all 0.3s ease;
     pointer-events: auto;
+    color: var(--gold);
   }
-
+  #audioToggle svg { pointer-events: none; }
   #audioToggle:hover {
     transform: scale(1.1);
     box-shadow: 0 6px 16px rgba(0,0,0,0.4), 0 0 25px rgba(212,165,48,0.5);
@@ -2900,37 +2904,27 @@
 <div id="weatherLightning"></div>
 
 <!-- Weather Toggle Button -->
-<div id="weatherToggle" title="Weather Effects">🌤️</div>
+<div id="weatherToggle" title="Weather Effects"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div>
 
 <!-- Weather Menu -->
 <div id="weatherMenu">
-  <div class="weatherOption" data-weather="none">
-    <span>☀️</span> Clear
-  </div>
-  <div class="weatherOption" data-weather="rain">
-    <span>🌧️</span> Rain
-  </div>
-  <div class="weatherOption" data-weather="snow">
-    <span>❄️</span> Snow
-  </div>
-  <div class="weatherOption" data-weather="clouds">
-    <span>☁️</span> Cloudy
-  </div>
-  <div class="weatherOption" data-weather="storm">
-    <span>⛈️</span> Storm
-  </div>
+  <div class="weatherOption" data-weather="none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg> Clear</div>
+  <div class="weatherOption" data-weather="rain"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25"/><line x1="8" y1="19" x2="8" y2="21"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="16" y1="19" x2="16" y2="21"/></svg> Rain</div>
+  <div class="weatherOption" data-weather="snow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 17.58A5 5 0 0 0 18 8h-1.26A8 8 0 1 0 4 16.25"/><line x1="8" y1="16" x2="8" y2="20"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="16" y1="16" x2="16" y2="20"/></svg> Snow</div>
+  <div class="weatherOption" data-weather="clouds"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg> Cloudy</div>
+  <div class="weatherOption" data-weather="storm"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 16.9A5 5 0 0 0 18 7h-1.26a8 8 0 1 0-11.62 9"/><polyline points="13,11 9,17 15,17 11,23"/></svg> Storm</div>
 </div>
 
 <!-- Audio Toggle Button -->
-<div id="audioToggle" title="Enable Sound / Audio Settings">🔊</div>
+<div id="audioToggle" title="Enable Sound / Audio Settings"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg></div>
 
 <!-- Audio Settings Panel -->
 <div id="audioSettings">
-  <h3>🎵 Audio Settings</h3>
+  <h3>Audio Settings</h3>
   
   <div class="audioControl">
     <label>
-      <span>🎶 Music</span>
+      <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg> Music</span>
       <span id="musicVolumeValue">20%</span>
     </label>
     <input type="range" id="musicVolume" min="0" max="100" value="20">
@@ -2938,7 +2932,7 @@
   
   <div class="audioControl">
     <label>
-      <span>🌧️ Ambience</span>
+      <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18c0-3.3 4-6 9-6s9 2.7 9 6"/><path d="M7 12c0-2.2 2.2-4 5-4s5 1.8 5 4"/><circle cx="12" cy="6" r="1.5" fill="currentColor"/></svg> Ambience</span>
       <span id="ambienceVolumeValue">30%</span>
     </label>
     <input type="range" id="ambienceVolume" min="0" max="100" value="30">
@@ -2946,7 +2940,7 @@
   
   <div class="audioControl">
     <label>
-      <span>🔔 Sound FX</span>
+      <span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> Sound FX</span>
       <span id="sfxVolumeValue">70%</span>
     </label>
     <input type="range" id="sfxVolume" min="0" max="100" value="70">
@@ -2976,8 +2970,8 @@
           <button data-section="tracker">Tracker</button>
           <button data-section="party">Party</button>
           <button data-section="map">Map</button>
-          <button onclick="if(window.audioManager&&audioManager.isInitialized)audioManager.play('ui_click_confirm');window.location.href='games/index.html'">🎮 Games</button>
-          <button onclick="if(window.audioManager&&audioManager.isInitialized)audioManager.play('ui_click_confirm');window.location.href='battle.html'">⚔️ Battle System</button>
+          <button onclick="if(window.audioManager&&audioManager.isInitialized)audioManager.play('ui_click_confirm');window.location.href='games/index.html'"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="13" rx="3"/><path d="M8 12h2m-1-1v2"/><circle cx="16" cy="11.5" r="0.8" fill="currentColor"/><circle cx="14.5" cy="13" r="0.8" fill="currentColor"/></svg> Games</button>
+          <button onclick="if(window.audioManager&&audioManager.isInitialized)audioManager.play('ui_click_confirm');window.location.href='battle.html'"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="14.5,2 21,8.5 12,17.5 9.5,15"/><path d="M3 21l5-5"/><path d="M9.5 14.5L3 21"/><path d="M17 3l4 4-1.5 1.5"/></svg> Battle</button>
         </div>
       </div>
     </div>
@@ -3048,7 +3042,7 @@
         <div class="questGrid" id="tracker">
       <!-- Quest 1: Win Tomorrow Tonight -->
       <div class="questCard night" id="questNight">
-        <div class="questIcon">🌙</div>
+        <div class="questIcon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></div>
         <h3>Win Tomorrow Tonight</h3>
         <div class="questChecklist">
           <label class="checkItem" data-task="n_trapper">
@@ -3079,7 +3073,7 @@
         <div class="questNote">No Screen Time Until Done!</div>
         <div class="questFooter">
           <div class="xpBadge">Total: +50 XP</div>
-          <button id="nightHighScoreBtn" class="highScoreBtn" title="View your fastest completion times">🏆 High Score</button>
+          <button id="nightHighScoreBtn" class="highScoreBtn" title="View your fastest completion times"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H3V4h3M18 9h3V4h-3"/><path d="M6 4h12v7a6 6 0 0 1-12 0V4z"/><path d="M12 17v4"/><path d="M8 21h8"/></svg> High Score</button>
         </div>
       </div>
 
@@ -3098,7 +3092,7 @@
 
       <!-- Quest 2: Ready for School! -->
       <div class="questCard morning" id="questMorning">
-        <div class="questIcon">☀️</div>
+        <div class="questIcon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></div>
         <h3>Ready for School!</h3>
         <div class="questChecklist">
           <label class="checkItem" data-task="m_prayer">
@@ -3128,7 +3122,7 @@
         </div>
         <div class="questFooter">
           <div class="xpBadge">Total: +50 XP</div>
-          <button id="morningHighScoreBtn" class="highScoreBtn" title="View your fastest completion times">🏆 High Score</button>
+          <button id="morningHighScoreBtn" class="highScoreBtn" title="View your fastest completion times"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H3V4h3M18 9h3V4h-3"/><path d="M6 4h12v7a6 6 0 0 1-12 0V4z"/><path d="M12 17v4"/><path d="M8 21h8"/></svg> High Score</button>
         </div>
       </div>
 
@@ -3147,7 +3141,7 @@
 
       <!-- Quest 3: Trapper Ready Mission! -->
       <div class="questCard backpack" id="questBackpack">
-        <div class="questIcon">⭐</div>
+        <div class="questIcon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M9 6V4a3 3 0 0 1 6 0v2"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg></div>
         <h3>Trapper Ready Mission!</h3>
         <div class="questChecklist">
           <label class="checkItem" data-task="t_work">
@@ -3177,7 +3171,7 @@
         </div>
         <div class="questFooter">
           <div class="xpBadge">Total: +50 XP</div>
-          <button id="backpackHighScoreBtn" class="highScoreBtn" title="View your fastest completion times">🏆 High Score</button>
+          <button id="backpackHighScoreBtn" class="highScoreBtn" title="View your fastest completion times"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9H3V4h3M18 9h3V4h-3"/><path d="M6 4h12v7a6 6 0 0 1-12 0V4z"/><path d="M12 17v4"/><path d="M8 21h8"/></svg> High Score</button>
         </div>
       </div>
 
@@ -3339,9 +3333,9 @@
           <div class="warChestAmount"><span id="warChestGold">0</span> 🪙</div>
           <div class="small" style="color:var(--muted);">Award 50 gold to a companion!</div>
           <div class="awardBtnRow">
-            <button class="awardBtn" data-award="ember">🔥 Award <span class="awardName" data-companion="ember"></span></button>
-            <button class="awardBtn" data-award="sprite">✨ Award <span class="awardName" data-companion="sprite"></span></button>
-            <button class="awardBtn" data-award="golem">🗿 Award <span class="awardName" data-companion="golem"></span></button>
+            <button class="awardBtn" data-award="ember"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c0 6-6 8-6 13a6 6 0 0 0 12 0c0-5-6-7-6-13z"/><path d="M12 12c0 3-2 4-2 6a2 2 0 0 0 4 0c0-2-2-3-2-6z"/></svg> Award <span class="awardName" data-companion="ember"></span></button>
+            <button class="awardBtn" data-award="sprite"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg> Award <span class="awardName" data-companion="sprite"></span></button>
+            <button class="awardBtn" data-award="golem"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="10" rx="2"/><rect x="4" y="12" width="16" height="8" rx="2"/><circle cx="9" cy="6" r="1" fill="currentColor"/><circle cx="15" cy="6" r="1" fill="currentColor"/></svg> Award <span class="awardName" data-companion="golem"></span></button>
           </div>
         </div>
       </div>
