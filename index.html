@@ -455,7 +455,7 @@
     -webkit-backdrop-filter: var(--glass-blur);
     min-height: 420px;
   }
-  #ww .banner-inner{padding:18px; padding-top:16px; display:grid; grid-template-columns: 250px 1fr; gap:20px; align-items:start}
+  #ww .banner-inner{padding:18px; padding-top:24px; display:grid; grid-template-columns: 280px 1fr; gap:20px; align-items:start}
   #ww .banner-inner > .card{grid-column: 1 / -1}
   @media (max-width:980px){ #ww .banner-inner{grid-template-columns:1fr; justify-items:center; padding-top:16px} }
   #ww h1{margin:0 0 6px; font-size:48px; font-weight:900; color:var(--gold); 
@@ -488,8 +488,11 @@
      WILLIAM CARD DECK SYSTEM
      ============================================ */
   #ww .william-avatar {
-    width: 220px;
-    height: 360px;
+    width: 260px;
+    height: 466px;
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
     border-radius: 0;
     border: none;
     overflow: visible;
@@ -514,29 +517,29 @@
   #ww .william-avatar:hover { filter: none !important; }
   #ww .william-avatar.clickable-glow { animation: none !important; }
   #ww #williamCardDeck {
-    width: 220px;
-    height: 330px;
+    width: 260px;
+    height: 466px;
     position: relative;
     perspective: 1000px;
     cursor: pointer;
   }
   #ww .wcard-stack-item {
     position: absolute;
-    width: 220px;
-    height: 330px;
+    width: 260px;
+    height: 466px;
     border-radius: 16px;
     overflow: visible;
     transition: transform 0.15s ease;
     will-change: transform;
   }
-  #ww .wcard-stack-item img { width:100%; height:100%; object-fit:contain; display:block; border-radius:16px; background:transparent; }
+  #ww .wcard-stack-item img { width:100%; height:100%; object-fit:cover; display:block; border-radius:16px; background:#0a0a1a; }
   #ww .wcard-stack-item:nth-child(1) { transform: translateX(-6px) translateY(6px) rotate(-3deg); z-index: 1; box-shadow: 0 4px 16px rgba(0,0,0,0.6), 0 0 0 2px rgba(212,165,48,0.3); }
   #ww .wcard-stack-item:nth-child(2) { transform: translateX(-3px) translateY(3px) rotate(-1.5deg); z-index: 2; box-shadow: 0 6px 24px rgba(0,0,0,0.65), 0 0 0 2px rgba(212,165,48,0.4); }
   #ww .wcard-stack-item:nth-child(3) { transform: translateX(0) translateY(0) rotate(0deg); z-index: 3; box-shadow: 0 8px 32px rgba(0,0,0,0.7), 0 0 0 2px rgba(212,165,48,0.5); }
   #ww #williamActiveCard {
     position: absolute;
-    width: 220px;
-    height: 330px;
+    width: 260px;
+    height: 466px;
     top: 0; left: 0;
     z-index: 10;
     perspective: 1000px;
@@ -560,12 +563,12 @@
     -webkit-backface-visibility: hidden;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 0 2px rgba(212,165,48,0.6), 0 0 20px rgba(212,165,48,0.2);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.9), 0 0 0 2px rgba(212,165,48,0.8), 0 0 30px rgba(212,165,48,0.5), 0 0 60px rgba(212,165,48,0.2);
   }
-  #ww .wcard-front img, #ww .wcard-back img { width:100%; height:100%; object-fit:contain; display:block; border-radius:16px; background:transparent; }
+  #ww .wcard-front img, #ww .wcard-back img { width:100%; height:100%; object-fit:cover; display:block; border-radius:16px; background:#0a0a1a; }
   #ww .wcard-back { transform: rotateY(180deg); }
   #ww #williamCardDeck:hover #williamActiveCard { transform: translateY(-8px) scale(1.03); }
-  #ww #williamCardDeck:hover .wcard-front { box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 0 2px rgba(255,211,110,0.9), 0 0 40px rgba(255,211,110,0.4); }
+  #ww #williamCardDeck:hover .wcard-front { box-shadow: 0 20px 60px rgba(0,0,0,0.95), 0 0 0 3px rgba(255,211,110,1), 0 0 50px rgba(255,211,110,0.6), 0 0 100px rgba(255,211,110,0.3); }
   #ww .wcard-tap-ripple {
     position: absolute;
     border-radius: 50%;
@@ -712,7 +715,7 @@
     animation: hubCardAura 3s ease-in-out infinite;
   }
   @keyframes hubCardAura {
-    0%, 100% { box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 0 2px rgba(212,165,48,0.6), 0 0 20px rgba(212,165,48,0.2); }
+    0%, 100% { box-shadow: 0 12px 40px rgba(0,0,0,0.9), 0 0 0 2px rgba(212,165,48,0.8), 0 0 30px rgba(212,165,48,0.5), 0 0 60px rgba(212,165,48,0.2); }
     50% { box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 0 3px rgba(255,211,110,0.9), 0 0 40px rgba(255,211,110,0.5), 0 0 80px rgba(255,211,110,0.2); }
   }
 
