@@ -1512,6 +1512,7 @@ function revealCards() {
       const rect = slot.getBoundingClientRect();
       spawnElementParticles(drawnEnemies[i].element, rect.left + rect.width/2, rect.top + rect.height/2, 15);
       screenFlash(ELEMENT_RAW_COLORS[drawnEnemies[i].element] || 'white');
+      BattleSFX.play('card_draw');
     }, flipDelay + i * 800);
   });
   setTimeout(() => {
@@ -1537,6 +1538,7 @@ function startBattle() {
   heroActions = [null, null, null]; selectedHeroIdx = -1;
   battlePhase = 'player'; battleLog = [];
   showScreen('battle-screen');
+  BattleSFX.play('battle_start');
   setTimeout(() => {
     renderBattleField();
     updateHUD();
@@ -1673,6 +1675,7 @@ function renderActionPanel() {
 }
 
 function selectHero(idx) {
+  BattleSFX.play('btn_click');
   if (battlePhase !== 'player' || heroParty[idx].isDefeated) return;
   selectedHeroIdx = idx;
   renderHeroRow();
@@ -1680,6 +1683,7 @@ function selectHero(idx) {
 }
 
 function selectMove(heroIdx, moveIdx) {
+  BattleSFX.play('move_select');
   heroActions[heroIdx] = moveIdx;
   renderHeroRow();
   renderActionPanel();
@@ -1737,6 +1741,7 @@ async function executeRound() {
   updateHUD();
   renderBattleField();
   setPhaseIndicator('your-turn', 'Your Turn — Pick Moves!');
+  BattleSFX.play('round_start');
   document.getElementById('round-counter').classList.add('round-pulse');
   setTimeout(() => document.getElementById('round-counter').classList.remove('round-pulse'), 600);
 
@@ -1757,6 +1762,7 @@ async function resolveHeroAction(heroIdx) {
     // Guard animation
     heroCard.classList.add('guard-stance');
     setTimeout(() => heroCard.classList.remove('guard-stance'), 600);
+    BattleSFX.play('guard');
     spawnFloatText(heroCard, '🛡️ Guard!', 'guard-text');
     hero.statuses.push({ type: 'guard', duration: 1 });
     addLog(`${hero.name} guards!`);
@@ -1778,6 +1784,7 @@ async function resolveHeroAction(heroIdx) {
 
     // Lunge animation
     heroCard.classList.add('attack-lunge-up');
+    BattleSFX.play('attack_light');
     await sleep(250);
 
     for (const target of targets) {
@@ -1798,17 +1805,20 @@ async function resolveHeroAction(heroIdx) {
         document.body.classList.add('heavy-shake');
         setTimeout(() => document.body.classList.remove('heavy-shake'), 600);
         spawnFloatText(targetCard, 'SUPER EFFECTIVE!', 'super');
+        BattleSFX.play('super_effective');
         comboCount++;
       } else if (result.effectiveness < 1) {
         targetCard?.classList.add('resist-hit');
         setTimeout(() => targetCard?.classList.remove('resist-hit'), 400);
         spawnFloatText(targetCard, 'Resisted...', 'resist');
+        BattleSFX.play('resist');
         comboCount = 0;
       } else {
         targetCard?.classList.add('hit-flash');
         setTimeout(() => targetCard?.classList.remove('hit-flash'), 350);
         document.body.classList.add('shake');
         setTimeout(() => document.body.classList.remove('shake'), 400);
+        BattleSFX.play('attack_light');
       }
 
       await sleep(200);
@@ -1831,6 +1841,7 @@ async function resolveHeroAction(heroIdx) {
         targetCard?.classList.add('ko-shatter');
         spawnFloatText(targetCard, 'K.O.!', 'ko');
         screenFlash('rgba(239,68,68,0.3)');
+        BattleSFX.play('ko');
         document.body.classList.add('heavy-shake');
         setTimeout(() => document.body.classList.remove('heavy-shake'), 600);
         spawnXPOrbs(targetCard, 8);
@@ -1852,6 +1863,7 @@ async function resolveHeroAction(heroIdx) {
 
     heroCard.classList.add('heal-glow');
     setTimeout(() => heroCard.classList.remove('heal-glow'), 800);
+    BattleSFX.play('heal');
 
     for (const target of targets) {
       if (!target) continue;
@@ -1874,6 +1886,7 @@ async function resolveHeroAction(heroIdx) {
       target.shields.push({ amount: move.power, duration: 2 });
       tCard?.classList.add('shield-dome');
       setTimeout(() => tCard?.classList.remove('shield-dome'), 800);
+      BattleSFX.play('shield');
       spawnFloatText(tCard, `+${move.power} Shield`, 'guard-text');
       addLog(`${hero.name} shields ${target.name} for ${move.power}!`);
     }
@@ -1939,6 +1952,7 @@ async function resolveEnemyAction(enemyIdx) {
 
   // Enemy lunge animation
   enemyCard?.classList.add('attack-lunge-down');
+  BattleSFX.play('attack_heavy');
   await sleep(250);
 
   if (move.type === 'damage' || move.type === 'control' || move.type === 'debuff') {
@@ -1977,6 +1991,7 @@ async function resolveEnemyAction(enemyIdx) {
     setTimeout(() => targetCard?.classList.remove('hit-flash'), 350);
     document.body.classList.add('shake');
     setTimeout(() => document.body.classList.remove('shake'), 400);
+    BattleSFX.play('attack_heavy');
 
     await sleep(200);
     if (finalDmg > 0) {
@@ -1998,6 +2013,7 @@ async function resolveEnemyAction(enemyIdx) {
       targetCard?.classList.add('ko-shatter');
       spawnFloatText(targetCard, 'K.O.!', 'ko');
       screenFlash('rgba(239,68,68,0.3)');
+      BattleSFX.play('ko');
       document.body.classList.add('heavy-shake');
       setTimeout(() => document.body.classList.remove('heavy-shake'), 600);
       addLog(`${target.name} is defeated!`);
@@ -2070,6 +2086,7 @@ async function endOfRound() {
       const card = document.getElementById(`${unit.team === 'hero' ? 'hero' : 'enemy'}-card-${idx}`);
       card?.classList.add('burn-tick');
       setTimeout(() => card?.classList.remove('burn-tick'), 500);
+      BattleSFX.play('burn');
       spawnFloatText(card, `-${burnDmg} 🔥`, 'damage');
       addLog(`${unit.name} takes ${burnDmg} burn damage!`);
       if (unit.currentHp <= 0) {
@@ -2130,6 +2147,7 @@ function showVictory() {
   // Victory screen
   spawnConfetti(80);
   screenFlash('rgba(255,211,110,0.3)');
+  BattleSFX.play('victory');
   showScreen('result-screen');
   const title = document.getElementById('result-title');
   title.textContent = 'Victory!';
@@ -2164,6 +2182,7 @@ function showVictory() {
 function showDefeat() {
   gameState.totalBattles++;
   saveGameState();
+  BattleSFX.play('defeat');
   showScreen('result-screen');
   const title = document.getElementById('result-title');
   title.textContent = 'Retreat!';
@@ -2194,6 +2213,7 @@ function showEvolution() {
 
   showScreen('evolution-screen');
   screenFlash('rgba(255,211,110,0.5)');
+  BattleSFX.play('evolution');
   spawnConfetti(100);
 
   const container = document.getElementById('evo-container');
@@ -2281,6 +2301,273 @@ function updateStreakDisplay() {
 // ===== START =====
 updateStreakDisplay();
 init();
+
+// ============================================
+// BATTLE SFX ENGINE — Web Audio Synthesizer
+// ============================================
+const BattleSFX = (() => {
+  let ctx = null;
+  function getCtx() {
+    if (!ctx || ctx.state === 'closed') {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+  function master(c) {
+    const g = c.createGain(); g.gain.value = 0.7;
+    g.connect(c.destination); return g;
+  }
+
+  function play(type) {
+    try {
+      const c = getCtx();
+      const m = master(c);
+      const t = c.currentTime;
+
+      if (type === 'attack_light') {
+        // Quick swish + impact
+        const noise = c.createBufferSource();
+        const buf = c.createBuffer(1, c.sampleRate * 0.12, c.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(d.length*0.4));
+        noise.buffer = buf;
+        const f = c.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1800; f.Q.value = 1.2;
+        const g = c.createGain(); g.gain.setValueAtTime(0.35, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.12);
+        noise.connect(f); f.connect(g); g.connect(m); noise.start(t);
+        // Punch thud
+        const osc = c.createOscillator(); const og = c.createGain();
+        osc.frequency.setValueAtTime(180, t+0.04); osc.frequency.exponentialRampToValueAtTime(60, t+0.12);
+        og.gain.setValueAtTime(0.3, t+0.04); og.gain.exponentialRampToValueAtTime(0.001, t+0.14);
+        osc.connect(og); og.connect(m); osc.start(t+0.04); osc.stop(t+0.14);
+
+      } else if (type === 'attack_heavy') {
+        // Deep slam
+        const noise = c.createBufferSource();
+        const buf = c.createBuffer(1, c.sampleRate * 0.18, c.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(d.length*0.3));
+        noise.buffer = buf;
+        const f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 600;
+        const g = c.createGain(); g.gain.setValueAtTime(0.5, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.18);
+        noise.connect(f); f.connect(g); g.connect(m); noise.start(t);
+        const osc = c.createOscillator(); const og = c.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(120, t); osc.frequency.exponentialRampToValueAtTime(40, t+0.2);
+        og.gain.setValueAtTime(0.4, t); og.gain.exponentialRampToValueAtTime(0.001, t+0.2);
+        osc.connect(og); og.connect(m); osc.start(t); osc.stop(t+0.2);
+
+      } else if (type === 'super_effective') {
+        // Power chord + crack
+        [220, 330, 440, 550].forEach((freq, i) => {
+          const osc = c.createOscillator(); const g = c.createGain();
+          osc.type = 'sawtooth'; osc.frequency.value = freq;
+          g.gain.setValueAtTime(0, t + i*0.015);
+          g.gain.linearRampToValueAtTime(0.12, t + 0.03 + i*0.015);
+          g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+          osc.connect(g); g.connect(m); osc.start(t + i*0.015); osc.stop(t + 0.5);
+        });
+        const noise = c.createBufferSource();
+        const buf = c.createBuffer(1, c.sampleRate * 0.08, c.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(d.length*0.2));
+        noise.buffer = buf;
+        const g = c.createGain(); g.gain.setValueAtTime(0.4, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.08);
+        noise.connect(g); g.connect(m); noise.start(t);
+
+      } else if (type === 'resist') {
+        // Dull thud
+        const osc = c.createOscillator(); const g = c.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(200, t); osc.frequency.exponentialRampToValueAtTime(80, t+0.15);
+        g.gain.setValueAtTime(0.15, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.15);
+        osc.connect(g); g.connect(m); osc.start(t); osc.stop(t+0.15);
+
+      } else if (type === 'ko') {
+        // Dramatic KO crash
+        const noise = c.createBufferSource();
+        const buf = c.createBuffer(1, c.sampleRate * 0.3, c.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(d.length*0.5));
+        noise.buffer = buf;
+        const f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 400;
+        const g = c.createGain(); g.gain.setValueAtTime(0.6, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.3);
+        noise.connect(f); f.connect(g); g.connect(m); noise.start(t);
+        // Descending wail
+        const osc = c.createOscillator(); const og = c.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(400, t); osc.frequency.exponentialRampToValueAtTime(60, t+0.6);
+        og.gain.setValueAtTime(0.3, t); og.gain.exponentialRampToValueAtTime(0.001, t+0.6);
+        osc.connect(og); og.connect(m); osc.start(t); osc.stop(t+0.6);
+
+      } else if (type === 'heal') {
+        // Ascending chime
+        [523, 659, 784, 1047].forEach((freq, i) => {
+          const osc = c.createOscillator(); const g = c.createGain();
+          osc.type = 'sine'; osc.frequency.value = freq;
+          g.gain.setValueAtTime(0, t + i*0.09);
+          g.gain.linearRampToValueAtTime(0.13, t + 0.03 + i*0.09);
+          g.gain.exponentialRampToValueAtTime(0.001, t + 0.4 + i*0.09);
+          osc.connect(g); g.connect(m); osc.start(t + i*0.09); osc.stop(t + 0.5 + i*0.09);
+        });
+
+      } else if (type === 'shield') {
+        // Metallic clang + dome hum
+        const osc = c.createOscillator(); const g = c.createGain();
+        osc.type = 'square'; osc.frequency.setValueAtTime(800, t); osc.frequency.exponentialRampToValueAtTime(400, t+0.3);
+        g.gain.setValueAtTime(0.2, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.3);
+        osc.connect(g); g.connect(m); osc.start(t); osc.stop(t+0.3);
+        // Hum
+        const hum = c.createOscillator(); const hg = c.createGain();
+        hum.type = 'sine'; hum.frequency.value = 220;
+        hg.gain.setValueAtTime(0.08, t+0.1); hg.gain.exponentialRampToValueAtTime(0.001, t+0.6);
+        hum.connect(hg); hg.connect(m); hum.start(t+0.1); hum.stop(t+0.6);
+
+      } else if (type === 'guard') {
+        // Solid block thud
+        const noise = c.createBufferSource();
+        const buf = c.createBuffer(1, c.sampleRate * 0.1, c.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(d.length*0.3));
+        noise.buffer = buf;
+        const f = c.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 600; f.Q.value = 0.8;
+        const g = c.createGain(); g.gain.setValueAtTime(0.3, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.1);
+        noise.connect(f); f.connect(g); g.connect(m); noise.start(t);
+
+      } else if (type === 'status') {
+        // Eerie status ping
+        const osc = c.createOscillator(); const g = c.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(600, t); osc.frequency.exponentialRampToValueAtTime(300, t+0.4);
+        g.gain.setValueAtTime(0.15, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.4);
+        osc.connect(g); g.connect(m); osc.start(t); osc.stop(t+0.4);
+
+      } else if (type === 'burn') {
+        // Crackle
+        const noise = c.createBufferSource();
+        const buf = c.createBuffer(1, c.sampleRate * 0.15, c.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * (0.5 + 0.5*Math.sin(i*0.1)) * Math.exp(-i/(d.length*0.6));
+        noise.buffer = buf;
+        const f = c.createBiquadFilter(); f.type = 'highpass'; f.frequency.value = 2000;
+        const g = c.createGain(); g.gain.setValueAtTime(0.25, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.15);
+        noise.connect(f); f.connect(g); g.connect(m); noise.start(t);
+
+      } else if (type === 'victory') {
+        // Grand fanfare
+        const notes = [523, 659, 784, 1047, 1319, 1047, 784, 1047];
+        notes.forEach((freq, i) => {
+          const osc = c.createOscillator(); const g = c.createGain();
+          osc.type = 'square'; osc.frequency.value = freq;
+          g.gain.setValueAtTime(0, t + i*0.1);
+          g.gain.linearRampToValueAtTime(0.1, t + 0.04 + i*0.1);
+          g.gain.exponentialRampToValueAtTime(0.001, t + 0.3 + i*0.1);
+          osc.connect(g); g.connect(m); osc.start(t + i*0.1); osc.stop(t + 0.35 + i*0.1);
+        });
+        // Final chord
+        [523, 659, 784].forEach((freq, i) => {
+          const osc = c.createOscillator(); const g = c.createGain();
+          osc.type = 'sine'; osc.frequency.value = freq;
+          g.gain.setValueAtTime(0, t + 0.85);
+          g.gain.linearRampToValueAtTime(0.12, t + 0.9);
+          g.gain.exponentialRampToValueAtTime(0.001, t + 1.6);
+          osc.connect(g); g.connect(m); osc.start(t + 0.85); osc.stop(t + 1.6);
+        });
+
+      } else if (type === 'defeat') {
+        // Sad descending phrase
+        [523, 466, 415, 370, 330].forEach((freq, i) => {
+          const osc = c.createOscillator(); const g = c.createGain();
+          osc.type = 'sine'; osc.frequency.value = freq;
+          g.gain.setValueAtTime(0, t + i*0.18);
+          g.gain.linearRampToValueAtTime(0.12, t + 0.05 + i*0.18);
+          g.gain.exponentialRampToValueAtTime(0.001, t + 0.35 + i*0.18);
+          osc.connect(g); g.connect(m); osc.start(t + i*0.18); osc.stop(t + 0.4 + i*0.18);
+        });
+
+      } else if (type === 'battle_start') {
+        // Dramatic battle intro stab
+        [110, 220, 330, 440].forEach((freq, i) => {
+          const osc = c.createOscillator(); const g = c.createGain();
+          osc.type = 'sawtooth'; osc.frequency.value = freq;
+          g.gain.setValueAtTime(0, t + i*0.03);
+          g.gain.linearRampToValueAtTime(0.1, t + 0.05 + i*0.03);
+          g.gain.exponentialRampToValueAtTime(0.001, t + 0.5);
+          osc.connect(g); g.connect(m); osc.start(t + i*0.03); osc.stop(t + 0.5);
+        });
+        // Noise impact
+        const noise = c.createBufferSource();
+        const buf = c.createBuffer(1, c.sampleRate * 0.2, c.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * Math.exp(-i/(d.length*0.4));
+        noise.buffer = buf;
+        const f = c.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 500;
+        const g = c.createGain(); g.gain.setValueAtTime(0.4, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.2);
+        noise.connect(f); f.connect(g); g.connect(m); noise.start(t);
+
+      } else if (type === 'round_start') {
+        // Quick "ding" transition
+        const osc = c.createOscillator(); const g = c.createGain();
+        osc.type = 'sine'; osc.frequency.value = 880;
+        g.gain.setValueAtTime(0.15, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.25);
+        osc.connect(g); g.connect(m); osc.start(t); osc.stop(t+0.25);
+
+      } else if (type === 'evolution') {
+        // Epic evolution fanfare
+        const sweep = c.createOscillator(); const sg = c.createGain();
+        sweep.type = 'sine';
+        sweep.frequency.setValueAtTime(200, t); sweep.frequency.exponentialRampToValueAtTime(2000, t+0.8);
+        sg.gain.setValueAtTime(0.2, t); sg.gain.exponentialRampToValueAtTime(0.001, t+0.8);
+        sweep.connect(sg); sg.connect(m); sweep.start(t); sweep.stop(t+0.8);
+        [523, 659, 784, 1047, 1319, 1568].forEach((freq, i) => {
+          const osc = c.createOscillator(); const g = c.createGain();
+          osc.type = 'square'; osc.frequency.value = freq;
+          g.gain.setValueAtTime(0, t + 0.5 + i*0.08);
+          g.gain.linearRampToValueAtTime(0.1, t + 0.54 + i*0.08);
+          g.gain.exponentialRampToValueAtTime(0.001, t + 0.9 + i*0.08);
+          osc.connect(g); g.connect(m); osc.start(t + 0.5 + i*0.08); osc.stop(t + 1.0 + i*0.08);
+        });
+
+      } else if (type === 'xp_orb') {
+        [800, 1000, 1200, 1500].forEach((freq, i) => {
+          const osc = c.createOscillator(); const g = c.createGain();
+          osc.type = 'sine'; osc.frequency.value = freq;
+          g.gain.setValueAtTime(0, t + i*0.07);
+          g.gain.linearRampToValueAtTime(0.09, t + 0.02 + i*0.07);
+          g.gain.exponentialRampToValueAtTime(0.001, t + 0.15 + i*0.07);
+          osc.connect(g); g.connect(m); osc.start(t + i*0.07); osc.stop(t + 0.2 + i*0.07);
+        });
+
+      } else if (type === 'card_draw') {
+        // Card whoosh
+        const noise = c.createBufferSource();
+        const buf = c.createBuffer(1, c.sampleRate * 0.12, c.sampleRate);
+        const d = buf.getChannelData(0);
+        for (let i = 0; i < d.length; i++) d[i] = (Math.random()*2-1) * (1 - i/d.length);
+        noise.buffer = buf;
+        const f = c.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 1400; f.Q.value = 0.7;
+        const g = c.createGain(); g.gain.setValueAtTime(0.2, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.12);
+        noise.connect(f); f.connect(g); g.connect(m); noise.start(t);
+
+      } else if (type === 'btn_click') {
+        const osc = c.createOscillator(); const g = c.createGain();
+        osc.type = 'sine'; osc.frequency.value = 660;
+        g.gain.setValueAtTime(0.1, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.08);
+        osc.connect(g); g.connect(m); osc.start(t); osc.stop(t+0.08);
+
+      } else if (type === 'move_select') {
+        const osc = c.createOscillator(); const g = c.createGain();
+        osc.type = 'sine'; osc.frequency.value = 440;
+        g.gain.setValueAtTime(0.08, t); g.gain.exponentialRampToValueAtTime(0.001, t+0.06);
+        osc.connect(g); g.connect(m); osc.start(t); osc.stop(t+0.06);
+      }
+    } catch(e) {}
+  }
+
+  // Unlock audio context on first user interaction
+  document.addEventListener('click', () => { try { getCtx().resume(); } catch(e) {} }, { once: true });
+
+  return { play };
+})();
+
 </script>
 </body>
 </html>

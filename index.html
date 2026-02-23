@@ -638,6 +638,146 @@
     0%,100% { box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 0 2px rgba(212,165,48,0.6); }
     50% { box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 0 4px rgba(255,211,110,1), 0 0 60px rgba(255,211,110,0.8), 0 0 100px rgba(255,211,110,0.4); }
   }
+  /* ============================================
+     BATTLE VFX PORTED TO HUB
+     ============================================ */
+
+  /* Floating particles background */
+  #ww #hub-particles {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  #ww .hub-particle {
+    position: absolute; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle, rgba(255,211,110,0.6), transparent);
+    animation: hubParticleFloat 6s ease-in-out infinite;
+  }
+  @keyframes hubParticleFloat {
+    0%, 100% { opacity: 0.2; transform: translateY(0) scale(1); }
+    50% { opacity: 0.6; transform: translateY(-20px) scale(1.2); }
+  }
+
+  /* Screen flash overlay */
+  .hub-screen-flash {
+    position: fixed; inset: 0; z-index: 9000; pointer-events: none;
+    animation: hubScreenFlash 0.35s ease-out forwards;
+  }
+  @keyframes hubScreenFlash { 0% { opacity: 0.55; } 100% { opacity: 0; } }
+
+  /* Element burst particles */
+  .hub-element-particle {
+    position: fixed; width: 7px; height: 7px; border-radius: 50%;
+    pointer-events: none; z-index: 8000;
+    animation: hubElementBurst 0.75s ease-out forwards;
+  }
+  @keyframes hubElementBurst {
+    0% { opacity: 1; transform: translate(0, 0) scale(1.2); }
+    100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0); }
+  }
+
+  /* Float text (damage, XP, SUPER EFFECTIVE, K.O.) */
+  .hub-float-text {
+    position: fixed; pointer-events: none; z-index: 8500;
+    font-family: var(--fantasy-font); font-weight: 900; letter-spacing: 1px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.8), 0 0 20px currentColor;
+    animation: hubFloatUp 1.2s ease-out forwards;
+    white-space: nowrap;
+  }
+  @keyframes hubFloatUp {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    20%  { opacity: 1; transform: translateY(-15px) scale(1.15); }
+    100% { opacity: 0; transform: translateY(-70px) scale(0.8); }
+  }
+  .hub-float-text.xp    { color: #7dffb4; font-size: 1.5rem; }
+  .hub-float-text.levelup { color: #ffd36e; font-size: 2rem; animation: hubFloatSuper 1.5s ease-out forwards; }
+  .hub-float-text.damage  { color: #ef4444; font-size: 2rem; }
+  .hub-float-text.mission { color: #ffd36e; font-size: 2.2rem; animation: hubFloatSuper 1.5s ease-out forwards; }
+  .hub-float-text.ko      { color: #ef4444; font-size: 3rem; animation: hubFloatKO 1.5s ease-out forwards; }
+  .hub-float-text.heal    { color: #7dffb4; font-size: 1.8rem; }
+  @keyframes hubFloatSuper {
+    0%   { opacity: 0; transform: translateY(10px) scale(0.5); }
+    15%  { opacity: 1; transform: translateY(-20px) scale(1.3); }
+    50%  { opacity: 1; transform: translateY(-40px) scale(1.1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(0.9); }
+  }
+  @keyframes hubFloatKO {
+    0%   { opacity: 0; transform: scale(0) rotate(-10deg); }
+    20%  { opacity: 1; transform: scale(1.4) rotate(5deg); }
+    50%  { opacity: 1; transform: scale(1.1) rotate(-2deg); }
+    100% { opacity: 0; transform: scale(0.8) rotate(0deg) translateY(-50px); }
+  }
+
+  /* XP orbs */
+  .hub-xp-orb {
+    position: fixed; width: 10px; height: 10px; border-radius: 50%;
+    background: radial-gradient(circle, #7dffb4, #7c3aed);
+    box-shadow: 0 0 8px #7dffb4; z-index: 8000; pointer-events: none;
+  }
+
+  /* Confetti */
+  .hub-confetti {
+    position: fixed; z-index: 8000; pointer-events: none;
+    animation: hubConfettiFall linear forwards;
+  }
+  @keyframes hubConfettiFall {
+    0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+    100% { opacity: 0; transform: translateY(100vh) rotate(720deg); }
+  }
+
+  /* Card idle aura */
+  #ww #williamCardDeck.card-aura .wcard-front {
+    animation: hubCardAura 3s ease-in-out infinite;
+  }
+  @keyframes hubCardAura {
+    0%, 100% { box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 0 2px rgba(212,165,48,0.6), 0 0 20px rgba(212,165,48,0.2); }
+    50% { box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 0 3px rgba(255,211,110,0.9), 0 0 40px rgba(255,211,110,0.5), 0 0 80px rgba(255,211,110,0.2); }
+  }
+
+  /* Hit flash on card */
+  #ww #williamActiveCard.card-hit-flash {
+    animation: hubCardHitFlash 0.35s ease-out;
+  }
+  @keyframes hubCardHitFlash {
+    0%   { filter: brightness(1); }
+    15%  { filter: brightness(3) saturate(0); }
+    30%  { filter: brightness(0.8); }
+    50%  { filter: brightness(1.5); }
+    100% { filter: brightness(1); }
+  }
+
+  /* Lunge attack animation on card */
+  #ww #williamActiveCard.card-attack {
+    animation: hubCardAttack 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @keyframes hubCardAttack {
+    0%   { transform: translateY(0) scale(1); }
+    20%  { transform: translateY(-50px) scale(1.1); }
+    40%  { transform: translateY(-40px) scale(1.07); }
+    100% { transform: translateY(0) scale(1); }
+  }
+
+  /* KO shatter */
+  #ww #williamActiveCard.card-ko {
+    animation: hubCardKO 1s ease-out forwards;
+  }
+  @keyframes hubCardKO {
+    0%   { transform: scale(1); opacity: 1; filter: brightness(1); }
+    15%  { transform: scale(1.1); filter: brightness(3); }
+    30%  { transform: scale(1.05) rotate(2deg); filter: brightness(2); }
+    50%  { transform: scale(0.9) rotate(-3deg); opacity: 0.8; }
+    70%  { transform: scale(0.6) rotate(5deg); opacity: 0.5; }
+    100% { transform: scale(0) rotate(15deg); opacity: 0; }
+  }
+
+  /* Heal glow */
+  #ww #williamActiveCard.card-heal .wcard-front {
+    animation: hubCardHeal 0.8s ease-out;
+  }
+  @keyframes hubCardHeal {
+    0%   { box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 0 2px rgba(212,165,48,0.6); }
+    30%  { box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 30px rgba(125,255,180,0.7), inset 0 0 20px rgba(125,255,180,0.2); }
+    100% { box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 0 2px rgba(212,165,48,0.6); }
+  }
+
   #ww p{margin:0; color:var(--muted); font-weight:650; text-shadow: 1px 1px 2px rgba(0,0,0,.7)}
   #ww .ctaRow{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
   #ww .btn{
@@ -2861,6 +3001,8 @@
     </div>
 
     <section class="banner" data-banner id="home">
+      <div id="hub-particles"></div>
+      <div id="hub-vfx-overlay"></div>
       <div class="banner-inner">
         <div class="william-avatar" id="williamAvatar">
           <div id="williamCardDeck">
@@ -3777,6 +3919,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js" integrity="sha512-xi/RZRIF/S0hJ+yJJYuZ5yk6/8pCiRlEXZzoguSMl+vk2i3m6UjUO/WcZ11blRL/O+rnj94JRGwt/CHbc9+6EA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <script src="./js/hub.js"></script>
+<script src="./assets/js/hub-battle-effects.js"></script>
 <script src="./js/screen-time.js"></script>
 
 </body>
