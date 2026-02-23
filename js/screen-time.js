@@ -88,6 +88,15 @@
     }
   }
 
+  // Play a sound via the shared AudioManager (initialized in hub.js)
+  function playSound(key) {
+    try {
+      if (window.audioManager && window.audioManager.isInitialized) {
+        window.audioManager.play(key);
+      }
+    } catch (_) {}
+  }
+
   // ── State ──────────────────────────────────
   function loadState() {
     try {
@@ -144,6 +153,7 @@
     rec.sources[sourceId] = { minutes: actual, label, ts: Date.now() };
     rec.earned += actual;
     saveState();
+    if (actual > 0) playSound('ui.success');
     return actual;
   }
 
@@ -314,7 +324,7 @@
           .fst-btn {
             font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 700;
             padding: 0.75rem 2rem; border-radius: 10px; border: 2px solid;
-            cursor: pointer; transition: all 0.2s;
+            cursor: pointer; transition: all 0.2s; min-height: 44px;
           }
           .fst-btn-pause  { background:#1a1a4e; border-color:#ffd700; color:#ffd700; }
           .fst-btn-pause:hover  { background:#2a2a6e; }
@@ -440,9 +450,11 @@
     timerRemainSec = getTimerTotalSec();
     if (timerRemainSec <= 0) {
       showToast('No screen time earned yet! Complete tasks to earn time.');
+      playSound('ui.error');
       return;
     }
     timerRunning = true;
+    playSound('ui.toggleOn');
     showFullscreenTimer();
     updateTimerUI();
     timerInterval = setInterval(() => {
@@ -466,6 +478,7 @@
     timerRunning = false;
     clearInterval(timerInterval);
     timerInterval = null;
+    playSound('ui.toggleOff');
     updateTimerUI();
   }
 
@@ -503,6 +516,7 @@
   function dismissTimesUp() {
     const overlay = document.getElementById('stTimesUpOverlay');
     if (overlay) overlay.style.display = 'none';
+    playSound('ui.panelClose');
   }
 
   function updateTimerUI() {
@@ -1042,7 +1056,7 @@
         padding: 9px 22px; border: none; border-radius: 10px;
         font-size: 0.9rem; font-weight: 700; cursor: pointer;
         transition: filter 0.15s, transform 0.1s;
-        letter-spacing: 0.03em;
+        letter-spacing: 0.03em; min-height: 44px;
       }
       .stTimerBtn:active { transform: scale(0.95); }
       .stTimerBtn:hover:not(:disabled) { filter: brightness(1.15); }
@@ -1195,12 +1209,13 @@
         padding: 6px 12px; border: none; border-radius: 8px;
         font-size: 0.78rem; font-weight: 700; cursor: pointer;
         transition: filter 0.15s, transform 0.1s; letter-spacing: 0.02em;
+        min-height: 44px;
       }
       .stBtn:active, .stSrcBtn:active { transform: scale(0.95); }
       .stBtn:hover:not(:disabled), .stSrcBtn:hover:not(:disabled) { filter: brightness(1.15); }
       .stSrcBtn { background: var(--gold); color: #1a0e00; flex-shrink: 0; }
       .stSrcBtn:disabled { background: rgba(255,255,255,0.1); color: var(--muted); cursor: default; }
-      .stSubjBonusBtn { background: rgba(212,165,48,0.2); color: var(--gold); font-size: 0.7rem; padding: 5px 8px; }
+      .stSubjBonusBtn { background: rgba(212,165,48,0.2); color: var(--gold); font-size: 0.7rem; padding: 5px 8px; min-height: 44px; min-width: 44px; }
       .stBtnParent { background: rgba(124,58,237,0.25); color: #c084fc; border: 1px solid rgba(124,58,237,0.4); flex: 1; }
       .stBtnStart  { background: var(--green); color: #0a1a10; }
       .stBtnReset  { background: rgba(255,255,255,0.1); color: var(--muted); }
