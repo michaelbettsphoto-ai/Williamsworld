@@ -168,7 +168,7 @@
     rec.bonusCap += extraMinutes;
     saveState();
     updateUI();
-    showToast(`🔓 Parent unlocked +${extraMinutes} min! New cap: ${getDailyCap()} min`);
+    showToast(`<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"5\" y=\"11\" width=\"14\" height=\"11\" rx=\"2\"/><path d=\"M8 11V7a4 4 0 0 1 7.75-1.5\"/><circle cx=\"12\" cy=\"16\" r=\"1\" fill=\"currentColor\"/></svg> Parent unlocked +${extraMinutes} min! New cap: ${getDailyCap()} min`);
   }
 
   // Parent-only: behavior award (bypasses cap)
@@ -192,14 +192,14 @@
     saveState();
     updateUI();
     const subj = SCHOOL_SUBJECTS.find(s => s.id === subjectId);
-    showToast(`📚 +${extraMinutes} min bonus for ${subj ? subj.label : subjectId}!`);
+    showToast(`<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 19.5A2.5 2.5 0 0 1 6.5 17H20\"/><path d=\"M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z\"/></svg> +${extraMinutes} min bonus for ${subj ? subj.label : subjectId}!`);
   }
 
   // ── Public API (called by hub.js) ──────────
   window.ScreenTime = {
     onTaskChecked(taskId) {
       const added = awardMinutes(`task_${taskId}`, REWARDS.task_per_item, `Task: ${taskId}`);
-      if (added > 0) showToast(`📱 +${added} min screen time earned!`);
+      if (added > 0) showToast(`<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"5\" y=\"2\" width=\"14\" height=\"20\" rx=\"2\"/><path d=\"M12 18h.01\"/></svg> +${added} min screen time earned!`);
       for (const [quest, tasks] of Object.entries(QUEST_TASKS)) {
         if (!tasks.includes(taskId)) continue;
         const dayState = getHubDayTasks();
@@ -208,7 +208,7 @@
         if (allDone) {
           const questKey = `quest_${quest}`;
           const bonus = awardMinutes(questKey, REWARDS[`quest_${quest}`], `Quest complete: ${quest}`);
-          if (bonus > 0) showToast(`🏆 Quest complete! +${bonus} min screen time!`);
+          if (bonus > 0) showToast(`<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 2h12v6a6 6 0 0 1-12 0V2z\"/><path d=\"M6 5H2v2a4 4 0 0 0 4 4M18 5h4v2a4 4 0 0 1-4 4\"/><path d=\"M12 14v4M8 18h8\"/></svg> Quest complete! +${bonus} min screen time!`);
         }
       }
       updateUI();
@@ -217,7 +217,7 @@
     addMinutes(minutes, label) {
       const key = `bonus_${Date.now()}`;
       const added = awardMinutes(key, minutes, label || 'Bonus');
-      if (added > 0) showToast(`📱 +${added} min screen time earned!`);
+      if (added > 0) showToast(`<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"5\" y=\"2\" width=\"14\" height=\"20\" rx=\"2\"/><path d=\"M12 18h.01\"/></svg> +${added} min screen time earned!`);
       updateUI();
       return added;
     },
@@ -339,7 +339,7 @@
         <div class="fst-sublabel" id="fstSubLabel"></div>
         <div class="fst-warn-msg" id="fstWarnMsg"></div>
         <div class="fst-btns">
-          <button class="fst-btn fst-btn-pause"  id="fstPauseBtn">⏸ Pause</button>
+          <button class="fst-btn fst-btn-pause"  id="fstPauseBtn"><svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"6\" y=\"4\" width=\"4\" height=\"16\"/><rect x=\"14\" y=\"4\" width=\"4\" height=\"16\"/></svg> Pause</button>
           <button class="fst-btn fst-btn-resume" id="fstResumeBtn" style="display:none;">▶ Resume</button>
           <button class="fst-btn fst-btn-exit"   id="fstExitBtn">✕ Exit</button>
         </div>
@@ -404,10 +404,10 @@
     // Warning message
     if (warnMsg) {
       if (showSec <= 60 && showSec > 0) {
-        warnMsg.textContent  = '⚠️ LAST MINUTE!';
+        warnMsg.innerHTML  = `<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z\"/><line x1=\"12\" y1=\"9\" x2=\"12\" y2=\"13\"/><line x1=\"12\" y1=\"17\" x2=\"12.01\" y2=\"17\"/></svg> LAST MINUTE!`;
         warnMsg.className    = 'fst-warn-msg fst-red-msg';
       } else if (showSec <= 300 && showSec > 0) {
-        warnMsg.textContent  = '⚠️ 5 minutes remaining!';
+        warnMsg.innerHTML  = `<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z\"/><line x1=\"12\" y1=\"9\" x2=\"12\" y2=\"13\"/><line x1=\"12\" y1=\"17\" x2=\"12.01\" y2=\"17\"/></svg> 5 minutes remaining!`;
         warnMsg.className    = 'fst-warn-msg fst-yellow-msg';
       } else {
         warnMsg.textContent  = '';
@@ -631,7 +631,7 @@
             <div class="stTimerSubLabel" id="stTimerSubLabel">Earn screen time to start the timer!</div>
             <div class="stTimerBtns">
               <button class="stTimerBtn stTimerBtnStart" id="stTimerStartBtn">▶ Start</button>
-              <button class="stTimerBtn stTimerBtnPause" id="stTimerPauseBtn" style="display:none;">⏸ Pause</button>
+              <button class="stTimerBtn stTimerBtnPause" id="stTimerPauseBtn" style="display:none;"><svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"6\" y=\"4\" width=\"4\" height=\"16\"/><rect x=\"14\" y=\"4\" width=\"4\" height=\"16\"/></svg> Pause</button>
               <button class="stTimerBtn stTimerBtnReset" id="stTimerResetBtn" style="display:none;">↺ Reset</button>
             </div>
           </div>
@@ -705,7 +705,7 @@
             <div id="stBehaviorAwardsList" class="stAwardsList"></div>
           </div>
           <div class="stSection">
-            <div class="stSectionTitle">📅 This Week</div>
+            <div class="stSectionTitle"><svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"3\" y=\"4\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M16 2v4M8 2v4M3 10h18\"/><rect x=\"7\" y=\"14\" width=\"3\" height=\"3\" rx=\"1\" fill=\"currentColor\"/></svg> This Week</div>
             <div id="stHistory" class="stHistory"></div>
           </div>
         </div>
@@ -722,9 +722,9 @@
     overlay.style.display = 'none';
     overlay.innerHTML = `
       <div class="stTimesUpContent">
-        <div class="stTimesUpMsg">⏰ TIME'S UP!</div>
+        <div class="stTimesUpMsg"><svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><polyline points=\"12 6 12 12 16 14\"/></svg> TIME'S UP!</div>
         <div class="stTimesUpSub">Your screen time for today is all done!</div>
-        <div class="stTimesUpSub2">Great job earning it — see you tomorrow, hero! 🦸</div>
+        <div class="stTimesUpSub2">Great job earning it — see you tomorrow, hero! <svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 2a3 3 0 0 1 3 3v1l3 2v3l-3 1v1a3 3 0 0 1-6 0v-1l-3-1V8l3-2V5a3 3 0 0 1 3-3z\"/><path d=\"M9 21l3-8 3 8\"/></svg></div>
         <button class="stTimesUpDismiss" id="stTimesUpDismiss">OK, Got It!</button>
       </div>
     `;
@@ -825,7 +825,7 @@
     if (capEl)    capEl.textContent    = cap;
     if (labelEl) {
       if (remaining <= 0) {
-        labelEl.textContent = '🏆 Daily cap reached! Great job, hero!';
+        labelEl.textContent = '<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 2h12v6a6 6 0 0 1-12 0V2z\"/><path d=\"M6 5H2v2a4 4 0 0 0 4 4M18 5h4v2a4 4 0 0 1-4 4\"/><path d=\"M12 14v4M8 18h8\"/></svg> Daily cap reached! Great job, hero!';
         labelEl.className   = 'stSummaryLabel danger';
       } else {
         labelEl.textContent = `${remaining} min remaining — keep earning!`;
@@ -924,7 +924,7 @@
         const r   = st.days[k];
         const cap = DEFAULT_CAP + (r.bonusCap || 0);
         const pct = Math.min(100, Math.round((r.earned / cap) * 100));
-        const icon = r.earned >= cap ? '🏆' : r.earned > 0 ? '✅' : '—';
+        const icon = r.earned >= cap ? `<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 2h12v6a6 6 0 0 1-12 0V2z\"/><path d=\"M6 5H2v2a4 4 0 0 0 4 4M18 5h4v2a4 4 0 0 1-4 4\"/><path d=\"M12 14v4M8 18h8\"/></svg>` : r.earned > 0 ? `<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><polyline points=\"20 6 9 17 4 12\"/></svg>` : '—';
         return `<div class="stHistRow">
           <span class="stHistDate">${k}</span>
           <span class="stHistTime">${r.earned}m</span>
@@ -1277,7 +1277,7 @@
     if (prayerBtn) {
       prayerBtn.addEventListener('click', () => {
         const added = awardMinutes('church', REWARDS.church, 'Church Time');
-        if (added > 0) showToast(`⛪ +${added} min for Church Time!`);
+        if (added > 0) showToast(`<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 2v4M10 4h4\"/><path d=\"M4 22V10l8-6 8 6v12H4z\"/><path d=\"M9 22v-6h6v6\"/><path d=\"M10 14h4\"/></svg> +${added} min for Church Time!`);
         else showToast('Already logged today ✅');
         updateUI();
       });
@@ -1294,7 +1294,7 @@
           return;
         }
         const added = awardRunMiles(miles);
-        if (added > 0) showToast(`🏃 +${added} min for ${miles} mile${miles !== 1 ? 's' : ''}!`);
+        if (added > 0) showToast(`<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"13\" cy=\"4\" r=\"2\"/><path d=\"M7.5 13.5l2-3.5 3 3 2-4 3 5\"/><path d=\"M7 21l2-5 3 2 2-4\"/></svg> +${added} min for ${miles} mile${miles !== 1 ? 's' : ''}!`);
         else showToast('Daily cap reached — ask a parent to add more time!');
         input.value = '';
         updateUI();
@@ -1331,9 +1331,9 @@
           .protein-stars { font-size:2rem; letter-spacing:0.5rem; margin-bottom:1rem; }
         </style>
         <div class="protein-stars">⭐ ⭐ ⭐ ⭐ ⭐</div>
-        <div class="protein-icon">🥤</div>
+        <div class="protein-icon"><svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M8 2h8l2 6H6z\"/><rect x=\"6\" y=\"8\" width=\"12\" height=\"14\" rx=\"2\"/><path d=\"M10 13h4M12 11v4\"/></svg></div>
         <div class="protein-title">PROTEIN<br>IS GOOD!</div>
-        <div class="protein-sub">💪 Fuel Your Adventure! 💪</div>
+        <div class="protein-sub"><svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14.5 2.5c0 1.5-1.5 3-1.5 3H9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1l-1 3H7a4 4 0 0 0-4 4h18a4 4 0 0 0-4-4h-2l-1-3h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1.5z\"/></svg> Fuel Your Adventure! <svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14.5 2.5c0 1.5-1.5 3-1.5 3H9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1l-1 3H7a4 4 0 0 0-4 4h18a4 4 0 0 0-4-4h-2l-1-3h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1.5z\"/></svg></div>
         <div class="protein-mins">+12 min Screen Time Earned!</div>
         <div class="protein-tap">Tap anywhere to continue</div>
       `;
@@ -1351,7 +1351,7 @@
         const label = WORKOUT_ACTIVITIES.find(a => a.id === wkt)?.label || wkt;
         const added = awardMinutes(`wkt_${wkt}`, mins, label);
         if (added > 0) {
-          showToast(`💪 +${added} min for ${label}!`);
+          showToast(`<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M14.5 2.5c0 1.5-1.5 3-1.5 3H9a2 2 0 0 0-2 2v1a2 2 0 0 0 2 2h1l-1 3H7a4 4 0 0 0-4 4h18a4 4 0 0 0-4-4h-2l-1-3h1a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-1.5z\"/></svg> +${added} min for ${label}!`);
           if (wkt === 'protein_drink') showProteinPopup();
         } else {
           showToast('Already logged today ✅');
@@ -1366,7 +1366,7 @@
         const subj  = btn.dataset.subj;
         const label = SCHOOL_SUBJECTS.find(s => s.id === subj)?.label || subj;
         const added = awardMinutes(`school_${subj}`, REWARDS.school_subject, `School: ${label}`);
-        if (added > 0) showToast(`📚 +${added} min for ${label}!`);
+        if (added > 0) showToast(`<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 19.5A2.5 2.5 0 0 1 6.5 17H20\"/><path d=\"M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z\"/></svg> +${added} min for ${label}!`);
         else showToast('Already logged today ✅');
         updateUI();
       });
