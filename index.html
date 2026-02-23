@@ -1878,7 +1878,7 @@
     box-shadow:0 0 20px rgba(255,211,110,.6), 0 6px 16px rgba(0,0,0,.5);
   }
   #ww .badgeIcon.earned::after {
-    content: "✨";
+    content: "★";
     position: absolute;
     top: -5px;
     right: -5px;
@@ -2005,9 +2005,15 @@
   }
   #companionRewardOverlay .rewardEmoji {
     font-size: 100px;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     margin-bottom: 16px;
     animation: bounce 1s ease-in-out infinite;
+  }
+  #companionRewardOverlay .rewardEmoji .ww-icon {
+    width: 80px;
+    height: 80px;
   }
   #companionRewardOverlay .rewardAvatar {
     width: 120px;
@@ -2770,16 +2776,22 @@
   
   /* Wire Badges on Tasks */
   .wireBadge {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    text-align: center;
-    line-height: 24px;
     margin-right: 8px;
     font-size: 0.9em;
     border: 2px solid rgba(255,255,255,0.3);
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    flex-shrink: 0;
+  }
+  .wireBadge .ww-icon {
+    width: 14px;
+    height: 14px;
+    color: white;
   }
   
   .wireBadge.cut {
@@ -2789,7 +2801,7 @@
   }
   
   .wireBadge.cut::after {
-    content: '✂️';
+    content: '✂';
     position: absolute;
     top: -8px;
     right: -8px;
@@ -2900,7 +2912,17 @@
       opacity: 0;
     }
   }
-</style>
+
+  /* ── WW Icon sizing ─────────────────────────────────────────────────────── */
+  .ww-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    vertical-align: middle;
+    display: inline-block;
+  }
+
+  </style>
 
 <!-- Weather Effects Container -->
 <div id="weatherContainer"></div>
@@ -3028,7 +3050,7 @@
           </div>
           <div class="meter hpMeter" id="hpMeterBanner">
             <div class="meterTop">
-              <div><b>❤️ HP</b>: <span id="hpNow">100</span> / <span id="hpMax">100</span></div>
+              <div><b><svg class="ww-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true" width="20" height="20"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> HP</b>: <span id="hpNow">100</span> / <span id="hpMax">100</span></div>
               <div class="small">Missed tasks deal damage at midnight!</div>
             </div>
             <div class="bar"><div id="hpBar"></div></div>
@@ -3084,7 +3106,7 @@
       <div id="nightHighScoreModal" class="hsModal" style="display:none">
         <div class="hsModalContent">
           <div class="hsModalHeader">
-            <span class="hsTrophy">🌙</span>
+            <span class="hsTrophy"><svg class="ww-icon" style="width:1.8em;height:1.8em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
             <h2>Win Tomorrow Tonight Records</h2>
             <button id="nightHighScoreClose" class="hsClose">✕</button>
           </div>
@@ -3133,7 +3155,7 @@
       <div id="morningHighScoreModal" class="hsModal" style="display:none">
         <div class="hsModalContent">
           <div class="hsModalHeader">
-            <span class="hsTrophy">☀️</span>
+            <span class="hsTrophy"><svg class="ww-icon" style="width:1.8em;height:1.8em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></span>
             <h2>Ready for School Records</h2>
             <button id="morningHighScoreClose" class="hsClose">✕</button>
           </div>
@@ -3182,7 +3204,7 @@
       <div id="backpackHighScoreModal" class="hsModal" style="display:none">
         <div class="hsModalContent">
           <div class="hsModalHeader">
-            <span class="hsTrophy">⭐</span>
+            <span class="hsTrophy"><svg class="ww-icon" style="width:1.8em;height:1.8em" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></span>
             <h2>Trapper Ready Records</h2>
             <button id="backpackHighScoreClose" class="hsClose">✕</button>
           </div>
@@ -3210,7 +3232,7 @@
         <h3>XP & Streaks</h3>
         <div class="xpDisplay" id="dashXP">0</div>
         <div class="streakInfo"><span class="streakFire"><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M12 2c0 4-4 6-4 10a4 4 0 0 0 8 0c0-2-1-3-2-5 0 2-2 3-2 5a2 2 0 0 1-4 0c0-3 4-5 4-10z"/></svg></span> <span id="dashStreak">0</span> Days Streak</div>
-        <div class="small" style="margin-top:8px;">❤️ HP: <span id="dashHP">100</span>/<span id="dashHPMax">100</span></div>
+        <div class="small" style="margin-top:8px;"><svg class="ww-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true" width="20" height="20"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg> HP: <span id="dashHP">100</span>/<span id="dashHPMax">100</span></div>
         <div class="meter hpMeter" style="margin-top:6px;" id="hpMeterDash">
           <div class="bar"><div id="dashHPBar"></div></div>
         </div>
@@ -3232,7 +3254,7 @@
             <div class="badgeLabel">Bronze Shield<br>(3 days)</div>
           </div>
           <div class="badgeItem">
-            <div class="badgeIcon locked" id="streakBadge5">⚔️</div>
+            <div class="badgeIcon locked" id="streakBadge5"><svg class="ww-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="14.5,17.5 3,6 3,3 6,3 17.5,14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="19" y1="21" x2="21" y2="19"/></svg></div>
             <div class="badgeLabel">Silver Sword<br>(5 days)</div>
           </div>
           <div class="badgeItem">
@@ -3251,7 +3273,7 @@
         <h3>Task Badges</h3>
         <div class="badgeGrid">
           <div class="badgeItem">
-            <div class="badgeIcon locked" id="badge1">🎒</div>
+            <div class="badgeIcon locked" id="badge1"><svg class="ww-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M9 6V4a3 3 0 0 1 6 0v2"/></svg></div>
             <div class="badgeLabel">Trapper Master</div>
           </div>
           <div class="badgeItem">
@@ -3259,7 +3281,7 @@
             <div class="badgeLabel">Perfect Day</div>
           </div>
           <div class="badgeItem">
-            <div class="badgeIcon locked" id="badge3">⭐</div>
+            <div class="badgeIcon locked" id="badge3"><svg class="ww-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true" width="20" height="20"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
             <div class="badgeLabel">Streak Star</div>
           </div>
           <div class="badgeItem">
@@ -3275,7 +3297,7 @@
     <!-- Companion Party Section -->
     <div id="party" style="margin-top:24px;">
       <div class="dashPanel">
-        <h3>🎮 Companion Party</h3>
+        <h3><svg class="ww-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="13" rx="3"/><path d="M8 12h2m-1-1v2"/><circle cx="16" cy="11.5" r="0.8" fill="currentColor"/><circle cx="14.5" cy="13" r="0.8" fill="currentColor"/></svg> Companion Party</h3>
         <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:16px;">
           <div class="companion" id="companionEmber">
             <div class="header">
@@ -3332,7 +3354,7 @@
           </div>
         </div>
         <div class="warChestPanel" id="warChestPanel">
-          <h4>⚔️ War Chest ⚔️</h4>
+          <h4><svg class="ww-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="14.5,17.5 3,6 3,3 6,3 17.5,14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="19" y1="21" x2="21" y2="19"/></svg> War Chest <svg class="ww-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="14.5,17.5 3,6 3,3 6,3 17.5,14.5"/><line x1="13" y1="19" x2="19" y2="13"/><line x1="19" y1="21" x2="21" y2="19"/></svg></h4>
           <div class="warChestAmount"><span id="warChestGold">0</span> <svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1.4 1.3-2.5 3-2.5s3 1.1 3 2.5c0 1.4-1.3 2.5-3 2.5s-3 1.1-3 2.5 1.3 2.5 3 2.5 3-1.1 3-2.5"/></svg></div>
           <div class="small" style="color:var(--muted);">Award 50 gold to a companion!</div>
           <div class="awardBtnRow">

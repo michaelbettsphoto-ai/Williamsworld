@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       errorContainer.style.cssText = 'padding:40px;text-align:center;font-family:sans-serif;background:#1a0e2e;color:#fff5e6;min-height:100vh;display:flex;align-items:center;justify-content:center;';
       errorContainer.innerHTML = `
         <div style="max-width:500px;">
-          <h2><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Loading Error</h2>
+          <h2><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Loading Error</h2>
           <p>Could not load game data. Please refresh the page.</p>
           <button onclick="location.reload()" style="margin-top:20px;padding:10px 20px;cursor:pointer;background:#ffd36e;border:none;border-radius:8px;font-size:16px;">Refresh</button>
         </div>
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   };
   const COMPANION_MAX_TITLES = { ember: "Supernova Tiger", sprite: "Supernova Fairy", golem: "World Shaker" };
-  const COMPANION_EMOJIS = { ember: `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M12 2c0 4-4 6-4 10a4 4 0 0 0 8 0c0-2-1-3-2-5 0 2-2 3-2 5a2 2 0 0 1-4 0c0-3 4-5 4-10z"/></svg>`, sprite: `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5z"/><path d="M5 3l.5 1.5L7 5l-1.5.5L5 7l-.5-1.5L3 5l1.5-.5z"/><path d="M19 17l.5 1.5L21 19l-1.5.5L19 21l-.5-1.5L17 19l1.5-.5z"/></svg>`, golem: `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="7" y="2" width="10" height="14" rx="5"/><path d="M7 10c0 3 5 10 5 10s5-7 5-10"/><path d="M9 7h6M9 9h4"/></svg>` };
+  const COMPANION_EMOJIS = { ember: `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M12 2c0 4-4 6-4 10a4 4 0 0 0 8 0c0-2-1-3-2-5 0 2-2 3-2 5a2 2 0 0 1-4 0c0-3 4-5 4-10z"/></svg>`, sprite: `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M12 2l1.5 4.5L18 8l-4.5 1.5L12 14l-1.5-4.5L6 8l4.5-1.5z"/><path d="M5 3l.5 1.5L7 5l-1.5.5L5 7l-.5-1.5L3 5l1.5-.5z"/><path d="M19 17l.5 1.5L21 19l-1.5.5L19 21l-.5-1.5L17 19l1.5-.5z"/></svg>`, golem: `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="7" y="2" width="10" height="14" rx="5"/><path d="M7 10c0 3 5 10 5 10s5-7 5-10"/><path d="M9 7h6M9 9h4"/></svg>` };
   const COMPANION_IDS = progressionData.characters.filter(char => char.id !== "william").map(char => char.id);
   const COMPANION_NAMES = Object.fromEntries(COMPANION_IDS.map(id => [id, characterMap[id].displayName]));
   const COMPANION_CLASSES = Object.fromEntries(COMPANION_IDS.map(id => [id, characterMap[id].classTitle]));
@@ -199,10 +199,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     CONFETTI_COUNT: 30,      // Number of confetti particles
     SMOKE_PUFF_COUNT: 8,     // Number of smoke puffs
     WIRE_COLORS: {
-      'm_prayer': { color: '#dc2626', label: 'Red', icon: `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L8 8H4l4 4-2 8 6-4 6 4-2-8 4-4h-4z"/></svg>` },      // Fire/breakfast
-      'm_dressed': { color: '#22c55e', label: 'Green', icon: `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>` },   // Grass/clothes
-      'm_teeth': { color: '#3b82f6', label: 'Blue', icon: `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M3 21l9-9"/><path d="M12.22 6.22L16 2.5a2.12 2.12 0 0 1 3 3L15.28 9.5"/><path d="M10 14l-1.5 1.5M14 10l-1.5 1.5"/><circle cx="16.5" cy="7.5" r="1" fill="currentColor"/></svg>` },      // Water/teeth
-      'm_trappercheck': { color: '#a855f7', label: 'Purple', icon: `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M9 6V4a3 3 0 0 1 6 0v2"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>` } // Magic/backpack
+      'm_prayer': { color: '#dc2626', label: 'Red', icon: `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L8 8H4l4 4-2 8 6-4 6 4-2-8 4-4h-4z"/></svg>` },      // Fire/breakfast
+      'm_dressed': { color: '#22c55e', label: 'Green', icon: `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M20.38 3.46L16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.57a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.57a2 2 0 0 0-1.34-2.23z"/></svg>` },   // Grass/clothes
+      'm_teeth': { color: '#3b82f6', label: 'Blue', icon: `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M3 21l9-9"/><path d="M12.22 6.22L16 2.5a2.12 2.12 0 0 1 3 3L15.28 9.5"/><path d="M10 14l-1.5 1.5M14 10l-1.5 1.5"/><circle cx="16.5" cy="7.5" r="1" fill="currentColor"/></svg>` },      // Water/teeth
+      'm_trappercheck': { color: '#a855f7', label: 'Purple', icon: `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20V10a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M9 6V4a3 3 0 0 1 6 0v2"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>` } // Magic/backpack
     }
   };
 
@@ -913,7 +913,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       console.warn('[FAIL-SOFT] Toast element not found');
       return;
     }
-    el.textContent=msg;
+    el.innerHTML=msg;
     el.style.display="block";
     clearTimeout(toast._t);
     toast._t=setTimeout(()=>el.style.display="none", 2500);
@@ -1071,9 +1071,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       state.hp += MORNING_MISSION.STREAK_BONUS_HP;
       if (state.hp > maxHP) state.hp = maxHP;
       if (audioManager.isInitialized) audioManager.play('sfx.streakBonus');
-      toast(`<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3L2 22l10.7-3.79M4 3h.01M22 8h.01M15 2h.01M22 20h.01M22 2l-2.24 2.24M4 20l2.24-2.24"/><path d="M15 2c-1 3-4 6-7 8M22 8c-3 1-6 4-8 7"/><circle cx="14" cy="14" r="3"/></svg> Mission Complete! +${MORNING_MISSION.HP_COMPLETION_BONUS} HP + Streak +${MORNING_MISSION.STREAK_BONUS_HP} HP!`);
+      toast(`<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3L2 22l10.7-3.79M4 3h.01M22 8h.01M15 2h.01M22 20h.01M22 2l-2.24 2.24M4 20l2.24-2.24"/><path d="M15 2c-1 3-4 6-7 8M22 8c-3 1-6 4-8 7"/><circle cx="14" cy="14" r="3"/></svg> Mission Complete! +${MORNING_MISSION.HP_COMPLETION_BONUS} HP + Streak +${MORNING_MISSION.STREAK_BONUS_HP} HP!`);
     } else {
-      toast(`<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3L2 22l10.7-3.79M4 3h.01M22 8h.01M15 2h.01M22 20h.01M22 2l-2.24 2.24M4 20l2.24-2.24"/><path d="M15 2c-1 3-4 6-7 8M22 8c-3 1-6 4-8 7"/><circle cx="14" cy="14" r="3"/></svg> Morning Mission Complete! +${MORNING_MISSION.HP_COMPLETION_BONUS} HP`);
+      toast(`<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3L2 22l10.7-3.79M4 3h.01M22 8h.01M15 2h.01M22 20h.01M22 2l-2.24 2.24M4 20l2.24-2.24"/><path d="M15 2c-1 3-4 6-7 8M22 8c-3 1-6 4-8 7"/><circle cx="14" cy="14" r="3"/></svg> Morning Mission Complete! +${MORNING_MISSION.HP_COMPLETION_BONUS} HP`);
     }
     
     save();
@@ -1167,7 +1167,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const rewardStats = $('rewardCompStats');
     
     const rewardEmoji = $('rewardEmoji');
-    if (rewardEmoji) rewardEmoji.textContent = COMPANION_EMOJIS[companion];
+    if (rewardEmoji) rewardEmoji.innerHTML = COMPANION_EMOJIS[companion];
     
     const rewardCompName = $('rewardCompName');
     if (rewardCompName) rewardCompName.textContent = COMPANION_NAMES[companion];
@@ -1191,7 +1191,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (updates.length) {
         rewardPower.innerHTML = `<ul>${updates.map(update => `<li>${update.name}: ${update.changes.join(', ')}</li>`).join('')}</ul>`;
       } else {
-        rewardPower.innerHTML = `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> New Power Unlocked! <svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`;
+        rewardPower.innerHTML = `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg> New Power Unlocked! <svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`;
       }
     }
     overlay.classList.add('show');
@@ -1231,7 +1231,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       state.hp = LEVEL_DOWN_HP_RESET;
       save();
       showLevelDown(state.level);
-      toast(`<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="10" r="7"/><path d="M9 21h6M10 17v4M14 17v4M9 13a1 1 0 1 0 2 0 1 1 0 0 0-2 0M13 13a1 1 0 1 0 2 0 1 1 0 0 0-2 0"/></svg> LEVEL DOWN! Dropped to Level ${state.level}: ${getLevelTitle(state.level)}`);
+      toast(`<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="10" r="7"/><path d="M9 21h6M10 17v4M14 17v4M9 13a1 1 0 1 0 2 0 1 1 0 0 0-2 0M13 13a1 1 0 1 0 2 0 1 1 0 0 0-2 0"/></svg> LEVEL DOWN! Dropped to Level ${state.level}: ${getLevelTitle(state.level)}`);
     }
   }
   function showLevelUpCelebration(characterId, fromLevel, level) {
@@ -1329,14 +1329,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       timerEl.style.display = 'none';
       statusBanner.style.display = 'block';
       statusBanner.className = 'missionStatusBanner weekend';
-      statusBanner.innerHTML = `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="2" y1="18" x2="4" y2="18"/><line x1="20" y1="18" x2="22" y2="18"/><line x1="19.78" y1="10.22" x2="18.36" y2="11.64"/><line x1="23" y1="22" x2="1" y2="22"/><polyline points="8 6 12 2 16 6"/></svg> Weekend — no deadline today! Take your time.`;
+      statusBanner.innerHTML = `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="2" y1="18" x2="4" y2="18"/><line x1="20" y1="18" x2="22" y2="18"/><line x1="19.78" y1="10.22" x2="18.36" y2="11.64"/><line x1="23" y1="22" x2="1" y2="22"/><polyline points="8 6 12 2 16 6"/></svg> Weekend — no deadline today! Take your time.`;
       bombVisual.style.display = 'none';
     } else if (missionState.status === 'completed') {
       timerEl.style.display = 'none';
       statusBanner.style.display = 'block';
       statusBanner.className = 'missionStatusBanner success';
-      statusBanner.innerHTML = `<svg class='ww-icon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M5.8 11.3L2 22l10.7-3.79M4 3h.01M22 8h.01M15 2h.01M22 20h.01M22 2l-2.24 2.24M4 20l2.24-2.24'/><path d='M15 2c-1 3-4 6-7 8M22 8c-3 1-6 4-8 7'/><circle cx='14' cy='14' r='3'/></svg> Morning Mission Complete!`;
-      bombVisual.innerHTML = '<div class="bombDisarmed"><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor" stroke="none"/></svg> DISARMED</div>';
+      statusBanner.innerHTML = `<svg class='ww-icon' width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M5.8 11.3L2 22l10.7-3.79M4 3h.01M22 8h.01M15 2h.01M22 20h.01M22 2l-2.24 2.24M4 20l2.24-2.24'/><path d='M15 2c-1 3-4 6-7 8M22 8c-3 1-6 4-8 7'/><circle cx='14' cy='14' r='3'/></svg> Morning Mission Complete!`;
+      bombVisual.innerHTML = '<div class="bombDisarmed"><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor" stroke="none"/></svg> DISARMED</div>';
       bombVisual.className = 'bombVisual disarmed';
       if (audioManager.isInitialized) audioManager.play('sfx.bombDisarmed');
     } else if (missionState.status === 'failed') {
@@ -1346,8 +1346,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       const missedTasks = morningTaskIds.filter(id => !missionState.completedTasks[id])
         .map(id => TASKS.find(t => t.id === id).label.replace('Morning: ', ''))
         .join(', ');
-      statusBanner.innerHTML = `<svg class='ww-icon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true' ><path d='M13 2L3 14h8l-2 8 12-12h-8z'/></svg> Morning Mission Failed<br><span class="small">You missed: ${missedTasks}</span>`;
-      bombVisual.innerHTML = '<div class="bombExploded"><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M13 2L3 14h8l-2 8 12-12h-8z"/></svg> BOOM!</div>';
+      statusBanner.innerHTML = `<svg class='ww-icon' width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true' ><path d='M13 2L3 14h8l-2 8 12-12h-8z'/></svg> Morning Mission Failed<br><span class="small">You missed: ${missedTasks}</span>`;
+      bombVisual.innerHTML = '<div class="bombExploded"><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M13 2L3 14h8l-2 8 12-12h-8z"/></svg> BOOM!</div>';
       bombVisual.className = 'bombVisual exploded';
       if (audioManager.isInitialized) audioManager.play('sfx.bombExploded');
     } else if (isWeekend()) {
@@ -1355,12 +1355,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       timerEl.style.display = 'none';
       statusBanner.style.display = 'block';
       statusBanner.className = 'missionStatusBanner weekend';
-      statusBanner.innerHTML = `<svg class='ww-icon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M17 18a5 5 0 0 0-10 0'/><line x1='12' y1='2' x2='12' y2='9'/><line x1='4.22' y1='10.22' x2='5.64' y2='11.64'/><line x1='2' y1='18' x2='4' y2='18'/><line x1='20' y1='18' x2='22' y2='18'/><line x1='19.78' y1='10.22' x2='18.36' y2='11.64'/><line x1='23' y1='22' x2='1' y2='22'/><polyline points='8 6 12 2 16 6'/></svg> Weekend — no deadline today! Take your time.`;
+      statusBanner.innerHTML = `<svg class='ww-icon' width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M17 18a5 5 0 0 0-10 0'/><line x1='12' y1='2' x2='12' y2='9'/><line x1='4.22' y1='10.22' x2='5.64' y2='11.64'/><line x1='2' y1='18' x2='4' y2='18'/><line x1='20' y1='18' x2='22' y2='18'/><line x1='19.78' y1='10.22' x2='18.36' y2='11.64'/><line x1='23' y1='22' x2='1' y2='22'/><polyline points='8 6 12 2 16 6'/></svg> Weekend — no deadline today! Take your time.`;
       bombVisual.style.display = 'none';
     } else if (isBeforeMorningWindow()) {
       timerEl.style.display = 'block';
       timerEl.className = 'missionTimer locked';
-      timerEl.innerHTML = `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="5" y="11" width="14" height="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg> Opens at 6:00 AM`;
+      timerEl.innerHTML = `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="5" y="11" width="14" height="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg> Opens at 6:00 AM`;
       statusBanner.style.display = 'none';
       updateBombWires(bombVisual, completedCount, totalCount);
     } else if (isMorningDeadlinePassed()) {
@@ -1378,7 +1378,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       else if (remaining < 10 * 60 * 1000) urgency = 'warning'; // < 10 minutes
       
       timerEl.className = `missionTimer active ${urgency}`;
-      timerEl.innerHTML = `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Time Left: <strong>${formatted}</strong><br><span class="deadline">Mission ends at ${MORNING_MISSION.DEADLINE_HOUR}:00 AM</span>`;
+      timerEl.innerHTML = `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Time Left: <strong>${formatted}</strong><br><span class="deadline">Mission ends at ${MORNING_MISSION.DEADLINE_HOUR}:00 AM</span>`;
       statusBanner.style.display = 'none';
       updateBombWires(bombVisual, completedCount, totalCount);
     } else {
@@ -1402,7 +1402,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         checkItem.insertBefore(wireBadge, checkItem.querySelector('span'));
       }
       
-      wireBadge.textContent = wireColor.icon;
+      wireBadge.innerHTML = wireColor.icon;
       wireBadge.style.background = wireColor.color;
       wireBadge.title = `${wireColor.label} wire`;
       
@@ -1434,7 +1434,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Bomb emoji
     const bomb = document.createElement('div');
     bomb.className = 'bombEmoji';
-    bomb.innerHTML = `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><circle cx="11" cy="13" r="7"/><path d="M14.35 5.65L17 3M17 3l2-2M17 3l-2-2"/><path d="M16 8l2-2"/></svg>`;
+    bomb.innerHTML = `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><circle cx="11" cy="13" r="7"/><path d="M14.35 5.65L17 3M17 3l2-2M17 3l-2-2"/><path d="M16 8l2-2"/></svg>`;
     bombVisual.appendChild(bomb);
     
     // Wires
@@ -1466,12 +1466,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     overlay.className = 'missionOverlay success';
     overlay.innerHTML = `
       <div class="missionOverlayContent">
-        <div class="williamHero"><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M12 2a3 3 0 0 1 3 3v1l3 2v3l-3 1v1a3 3 0 0 1-6 0v-1l-3-1V8l3-2V5a3 3 0 0 1 3-3z"/><path d="M9 21l3-8 3 8"/></svg></div>
+        <div class="williamHero"><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M12 2a3 3 0 0 1 3 3v1l3 2v3l-3 1v1a3 3 0 0 1-6 0v-1l-3-1V8l3-2V5a3 3 0 0 1 3-3z"/><path d="M9 21l3-8 3 8"/></svg></div>
         <h2>Morning Mission Complete!</h2>
         <div class="missionStats">
-          <div><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> All tasks complete before deadline</div>
-          <div><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor" stroke="none"/></svg> +${MORNING_MISSION.HP_COMPLETION_BONUS} HP Bonus</div>
-          <div><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c0 4-4 6-4 10a4 4 0 0 0 8 0c0-2-1-3-2-5 0 2-2 3-2 5a2 2 0 0 1-4 0c0-3 4-5 4-10z"/></svg> Streak: ${state.morningMission.streak} days</div>
+          <div><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> All tasks complete before deadline</div>
+          <div><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor" stroke="none"/></svg> +${MORNING_MISSION.HP_COMPLETION_BONUS} HP Bonus</div>
+          <div><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c0 4-4 6-4 10a4 4 0 0 0 8 0c0-2-1-3-2-5 0 2-2 3-2 5a2 2 0 0 1-4 0c0-3 4-5 4-10z"/></svg> Streak: ${state.morningMission.streak} days</div>
         </div>
       </div>
     `;
@@ -1513,12 +1513,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     
     overlay.innerHTML = `
       <div class="missionOverlayContent">
-        <div class="williamSooty"><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9" stroke-width="3"/><line x1="15" y1="9" x2="15.01" y2="9" stroke-width="3"/><path d="M17 6l3-2"/></svg></div>
+        <div class="williamSooty"><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9" stroke-width="3"/><line x1="15" y1="9" x2="15.01" y2="9" stroke-width="3"/><path d="M17 6l3-2"/></svg></div>
         <h2>Morning Mission Failed</h2>
         <div class="missionStats">
-          <div><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Deadline passed at ${MORNING_MISSION.DEADLINE_HOUR}:00 AM</div>
-          <div><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="9" y="2" width="6" height="4" rx="1"/><rect x="4" y="4" width="16" height="18" rx="2"/><path d="M8 12h8M8 16h5"/></svg> You missed: ${missedTasks.join(', ')}</div>
-          <div><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Try again tomorrow!</div>
+          <div><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Deadline passed at ${MORNING_MISSION.DEADLINE_HOUR}:00 AM</div>
+          <div><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="9" y="2" width="6" height="4" rx="1"/><rect x="4" y="4" width="16" height="18" rx="2"/><path d="M8 12h8M8 16h5"/></svg> You missed: ${missedTasks.join(', ')}</div>
+          <div><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg> Try again tomorrow!</div>
         </div>
       </div>
     `;
@@ -1529,7 +1529,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       setTimeout(() => {
         const smoke = document.createElement('div');
         smoke.className = 'smoke';
-        smoke.innerHTML = `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M9 7c1.1 0 2 .9 2 2s-.9 2-2 2H2"/><path d="M12 4c1.7 0 3 1.3 3 3s-1.3 3-3 3H2"/><path d="M10 17c1.1 0 2 .9 2 2s-.9 2-2 2H2"/></svg>`;
+        smoke.innerHTML = `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M9 7c1.1 0 2 .9 2 2s-.9 2-2 2H2"/><path d="M12 4c1.7 0 3 1.3 3 3s-1.3 3-3 3H2"/><path d="M10 17c1.1 0 2 .9 2 2s-.9 2-2 2H2"/></svg>`;
         smoke.style.left = 45 + Math.random() * 10 + '%';
         smoke.style.animationDelay = Math.random() * 0.3 + 's';
         overlay.querySelector('.missionOverlayContent').appendChild(smoke);
@@ -1644,7 +1644,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       save();
       if (totalDamage > 0) {
         setTimeout(() => {
-          toast(`<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="10" r="7"/><path d="M9 21h6M10 17v4M14 17v4M9 13a1 1 0 1 0 2 0 1 1 0 0 0-2 0M13 13a1 1 0 1 0 2 0 1 1 0 0 0-2 0"/></svg> Auto-graded: -${totalDamage} HP for missed tasks`);
+          toast(`<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="10" r="7"/><path d="M9 21h6M10 17v4M14 17v4M9 13a1 1 0 1 0 2 0 1 1 0 0 0-2 0M13 13a1 1 0 1 0 2 0 1 1 0 0 0-2 0"/></svg> Auto-graded: -${totalDamage} HP for missed tasks`);
           checkLevelDown();
         }, 500);
       }
@@ -1667,7 +1667,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (state.days[TODAY] && state.days[TODAY].result === 'Not graded') {
         gradeDay();
         updateHeader();
-        toast('<svg class=\"ww-icon\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"/></svg> Auto-graded at midnight!');
+        toast('<svg class=\"ww-icon\" width=\"20\" height=\"20\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"/></svg> Auto-graded at midnight!');
       }
       // Schedule again for the following midnight
       setTimeout(runAtMidnight, msUntilMidnight());
@@ -1835,7 +1835,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const nameEl = $(`${comp}Name`);
       if (nameEl) nameEl.textContent = COMPANION_NAMES[comp];
       const classEl = $(`${comp}Class`);
-      if (classEl) classEl.textContent = `${COMPANION_EMOJIS[comp]} ${COMPANION_CLASSES[comp]}`;
+      if (classEl) classEl.innerHTML = `${COMPANION_EMOJIS[comp]} ${COMPANION_CLASSES[comp]}`;
       
       // Update companion title
       const titleEl = $(`${comp}Title`);
@@ -1946,7 +1946,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     lockOverlay.className = "questZoneLockOverlay";
     const lockIcon = document.createElement("div");
     lockIcon.className = "lockIcon";
-    lockIcon.innerHTML = `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="5" y="11" width="14" height="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>`;
+    lockIcon.innerHTML = `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="5" y="11" width="14" height="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg>`;
     const lockText = document.createElement("div");
     lockText.className = "questZoneLockText";
     lockText.textContent = unlockText;
@@ -2192,7 +2192,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (statusEl) {
           statusEl.classList.add('locked');
           statusEl.classList.remove('unlocked');
-          statusEl.innerHTML = `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg> Unlocks at ${zone.need} day${zone.need > 1 ? 's' : ''}`;
+          statusEl.innerHTML = `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg> Unlocks at ${zone.need} day${zone.need > 1 ? 's' : ''}`;
         }
       }
     };
@@ -2216,7 +2216,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function handleZoneSelection(zone) {
     if (!isZoneUnlocked(zone)) {
-      toast(`<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg> Locked — unlock at ${zone.need} day streak.`);
+      toast(`<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor"/></svg> Locked — unlock at ${zone.need} day streak.`);
       return;
     }
     state.currentZone = zone.slug;
@@ -2464,7 +2464,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           // Toast with HP if morning task
           if (hpAwarded > 0) {
-            toast(`+${task.xp} XP + ${hpAwarded} HP! <svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor" stroke="none"/></svg>`);
+            toast(`+${task.xp} XP + ${hpAwarded} HP! <svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" fill="currentColor" stroke="none"/></svg>`);
             // Check if mission complete
             checkMorningMissionStatus();
             updateMorningMissionUI();
@@ -2554,7 +2554,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Check if we just completed it (to avoid showing multiple times)
       if (!card.dataset.celebrated) {
         card.dataset.celebrated = 'true';
-        toast(`<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3L2 22l10.7-3.79M4 3h.01M22 8h.01M15 2h.01M22 20h.01M22 2l-2.24 2.24M4 20l2.24-2.24"/><path d="M15 2c-1 3-4 6-7 8M22 8c-3 1-6 4-8 7"/><circle cx="14" cy="14" r="3"/></svg> ${questType.toUpperCase()} QUEST COMPLETE!`);
+        toast(`<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3L2 22l10.7-3.79M4 3h.01M22 8h.01M15 2h.01M22 20h.01M22 2l-2.24 2.24M4 20l2.24-2.24"/><path d="M15 2c-1 3-4 6-7 8M22 8c-3 1-6 4-8 7"/><circle cx="14" cy="14" r="3"/></svg> ${questType.toUpperCase()} QUEST COMPLETE!`);
         audioManager.play('task_complete_stinger');
       }
     } else {
@@ -2580,13 +2580,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (state.hp > maxHP) state.hp = maxHP;
     save();
     updateHeader();
-    toast(pass ? "<svg class='ww-icon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M5.8 11.3L2 22l10.7-3.79M4 3h.01M22 8h.01M15 2h.01M22 20h.01M22 2l-2.24 2.24M4 20l2.24-2.24'/><path d='M15 2c-1 3-4 6-7 8M22 8c-3 1-6 4-8 7'/><circle cx='14' cy='14' r='3'/></svg> PASS! Streak +1" : `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> FAIL. Streak reset. -${calcDamage(state.days[TODAY])} HP!`);
+    toast(pass ? "<svg class='ww-icon' width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M5.8 11.3L2 22l10.7-3.79M4 3h.01M22 8h.01M15 2h.01M22 20h.01M22 2l-2.24 2.24M4 20l2.24-2.24'/><path d='M15 2c-1 3-4 6-7 8M22 8c-3 1-6 4-8 7'/><circle cx='14' cy='14' r='3'/></svg> PASS! Streak +1" : `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> FAIL. Streak reset. -${calcDamage(state.days[TODAY])} HP!`);
     if (pass) {
       audioManager.play('pass_day_stinger');
     if (window.williamCard) williamCard.celebrate();
       const newlyUnlocked = MAP.filter(zone => zone.need > prevMaxStreak && zone.need <= state.maxStreak);
       newlyUnlocked.forEach(zone => {
-        toast(`<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3L2 22l10.7-3.79M4 3h.01M22 8h.01M15 2h.01M22 20h.01M22 2l-2.24 2.24M4 20l2.24-2.24"/><path d="M15 2c-1 3-4 6-7 8M22 8c-3 1-6 4-8 7"/><circle cx="14" cy="14" r="3"/></svg> ${zone.title} Unlocked!`);
+        toast(`<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5.8 11.3L2 22l10.7-3.79M4 3h.01M22 8h.01M15 2h.01M22 20h.01M22 2l-2.24 2.24M4 20l2.24-2.24"/><path d="M15 2c-1 3-4 6-7 8M22 8c-3 1-6 4-8 7"/><circle cx="14" cy="14" r="3"/></svg> ${zone.title} Unlocked!`);
         audioManager.play('zone_unlock_stinger');
       });
     }
@@ -2615,7 +2615,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const topbar = document.querySelector(".topbar-inner .nav");
   if(topbar){
     const gradeBtn = document.createElement("button");
-    gradeBtn.innerHTML = `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M6 2h12v6a6 6 0 0 1-12 0V2z"/><path d="M6 5H2v2a4 4 0 0 0 4 4M18 5h4v2a4 4 0 0 1-4 4"/><path d="M12 14v4M8 18h8"/></svg> Grade`;
+    gradeBtn.innerHTML = `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><path d="M6 2h12v6a6 6 0 0 1-12 0V2z"/><path d="M6 5H2v2a4 4 0 0 0 4 4M18 5h4v2a4 4 0 0 1-4 4"/><path d="M12 14v4M8 18h8"/></svg> Grade`;
     gradeBtn.setAttribute("aria-label", "Grade today's progress and update streak");
     gradeBtn.addEventListener("click", () => {
       initAudioOnInteraction();
@@ -2630,7 +2630,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     topbar.appendChild(gradeBtn);
     
     const resetBtn = document.createElement("button");
-    resetBtn.innerHTML = `<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="4" y="6" width="16" height="12" rx="3"/><path d="M4 12h16M9 6V4M15 6V4"/></svg> Reset`;
+    resetBtn.innerHTML = `<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><rect x="4" y="6" width="16" height="12" rx="3"/><path d="M4 12h16M9 6V4M15 6V4"/></svg> Reset`;
     resetBtn.setAttribute("aria-label", "Reset today's task completion");
     resetBtn.addEventListener("click", ()=>{
       initAudioOnInteraction();
@@ -2666,7 +2666,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       addCompanionXP(WAR_CHEST_AWARD_COST, comp);
       save();
       updateHeader();
-      toast(`<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1.4 1.3-2.5 3-2.5s3 1.1 3 2.5c0 1.4-1.3 2.5-3 2.5s-3 1.1-3 2.5 1.3 2.5 3 2.5 3-1.1 3-2.5"/></svg> Awarded ${WAR_CHEST_AWARD_COST} gold to ${COMPANION_NAMES[comp]}!`);
+      toast(`<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" ><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9 9.5c0-1.4 1.3-2.5 3-2.5s3 1.1 3 2.5c0 1.4-1.3 2.5-3 2.5s-3 1.1-3 2.5 1.3 2.5 3 2.5 3-1.1 3-2.5"/></svg> Awarded ${WAR_CHEST_AWARD_COST} gold to ${COMPANION_NAMES[comp]}!`);
     });
   });
 
@@ -2916,7 +2916,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         recordId: 'nightHsRecordDisplay',
         historyId: 'nightHsHistoryList',
         cardId: 'questNight',
-        emoji: '<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
+        emoji: '<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
       },
       {
         id: 'morning',
@@ -2928,7 +2928,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         recordId: 'morningHsRecordDisplay',
         historyId: 'morningHsHistoryList',
         cardId: 'questMorning',
-        emoji: '<svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
+        emoji: '<svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
       },
       {
         id: 'backpack',
@@ -2940,7 +2940,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         recordId: 'backpackHsRecordDisplay',
         historyId: 'backpackHsHistoryList',
         cardId: 'questBackpack',
-        emoji: '⭐'
+        emoji: '★'
       }
     ];
 
@@ -2973,7 +2973,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const overlay = document.createElement('div');
       overlay.className = 'fireworksOverlay';
       overlay.innerHTML = `
-        <div class="fireworksMsg"><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg> NEW RECORD! <svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg></div>
+        <div class="fireworksMsg"><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg> NEW RECORD! <svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg></div>
         <div class="fireworksSubMsg">${questLabel} — Fastest ever!<br>+15 bonus screen time awarded!</div>
       `;
       document.body.appendChild(overlay);
@@ -3040,10 +3040,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         entry.history.forEach(h => h.isRecord = false);
         // Award +15 screen time bonus
         if (window.ScreenTime && typeof window.ScreenTime.addMinutes === 'function') {
-          window.ScreenTime.addMinutes(15, 'New High Score! <svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12v6a6 6 0 0 1-12 0V2z"/><path d="M6 5H2v2a4 4 0 0 0 4 4M18 5h4v2a4 4 0 0 1-4 4"/><path d="M12 14v4M8 18h8"/></svg>');
+          window.ScreenTime.addMinutes(15, 'New High Score! <svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12v6a6 6 0 0 1-12 0V2z"/><path d="M6 5H2v2a4 4 0 0 0 4 4M18 5h4v2a4 4 0 0 1-4 4"/><path d="M12 14v4M8 18h8"/></svg>');
         }
         showFireworks(quest.label);
-        setTimeout(() => toast(`<svg class='ww-icon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M6 2h12v6a6 6 0 0 1-12 0V2z'/><path d='M6 5H2v2a4 4 0 0 0 4 4M18 5h4v2a4 4 0 0 1-4 4'/><path d='M12 14v4M8 18h8'/></svg> NEW RECORD! ${quest.emoji} ${quest.label} — fastest ever! +15 min screen time!`), 500);
+        setTimeout(() => toast(`<svg class='ww-icon' width='20' height='20' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' aria-hidden='true'><path d='M6 2h12v6a6 6 0 0 1-12 0V2z'/><path d='M6 5H2v2a4 4 0 0 0 4 4M18 5h4v2a4 4 0 0 1-4 4'/><path d='M12 14v4M8 18h8'/></svg> NEW RECORD! ${quest.emoji} ${quest.label} — fastest ever! +15 min screen time!`), 500);
       }
 
       entry.history.unshift(todayEntry);
@@ -3071,7 +3071,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       // Record display
       if (entry.record) {
         recordEl.innerHTML = `
-          <div class="hsRecordLabel"><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12v6a6 6 0 0 1-12 0V2z"/><path d="M6 5H2v2a4 4 0 0 0 4 4M18 5h4v2a4 4 0 0 1-4 4"/><path d="M12 14v4M8 18h8"/></svg> All-Time Best Completion Time</div>
+          <div class="hsRecordLabel"><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12v6a6 6 0 0 1-12 0V2z"/><path d="M6 5H2v2a4 4 0 0 0 4 4M18 5h4v2a4 4 0 0 1-4 4"/><path d="M12 14v4M8 18h8"/></svg> All-Time Best Completion Time</div>
           <span class="hsRecordTime">${formatTime(entry.record)}</span>
           <div class="hsRecordDate">Set on ${formatDate(entry.recordDate)}</div>
         `;
@@ -3087,7 +3087,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           <div class="hsHistoryItem ${h.isRecord ? 'record' : ''}">
             <span class="hsDate">${formatDate(h.date)}</span>
             <span class="hsTime">${formatTime(h.time)}</span>
-            ${h.isRecord ? '<span class="hsBadge"><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12v6a6 6 0 0 1-12 0V2z"/><path d="M6 5H2v2a4 4 0 0 0 4 4M18 5h4v2a4 4 0 0 1-4 4"/><path d="M12 14v4M8 18h8"/></svg> Record</span>' : ''}
+            ${h.isRecord ? '<span class="hsBadge"><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12v6a6 6 0 0 1-12 0V2z"/><path d="M6 5H2v2a4 4 0 0 0 4 4M18 5h4v2a4 4 0 0 1-4 4"/><path d="M12 14v4M8 18h8"/></svg> Record</span>' : ''}
           </div>
         `).join('');
       }
@@ -3141,7 +3141,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const errorDiv = document.createElement('div');
     errorDiv.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);padding:40px;background:rgba(220,38,38,0.9);color:white;border-radius:12px;text-align:center;z-index:99999;';
     errorDiv.innerHTML = `
-      <h2><svg class="ww-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Initialization Error</h2>
+      <h2><svg class="ww-icon" width="20" height="20" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Initialization Error</h2>
       <p>Homepage could not start. Check console for details.</p>
       <button onclick="location.reload()" style="margin-top:20px;padding:10px 20px;cursor:pointer;">Refresh Page</button>
     `;
