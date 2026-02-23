@@ -455,9 +455,9 @@
     -webkit-backdrop-filter: var(--glass-blur);
     min-height: 420px;
   }
-  #ww .banner-inner{padding:18px; padding-top:32px; display:grid; grid-template-columns: 250px 1fr; gap:20px; align-items:center}
+  #ww .banner-inner{padding:18px; padding-top:16px; display:grid; grid-template-columns: 250px 1fr; gap:20px; align-items:start}
   #ww .banner-inner > .card{grid-column: 1 / -1}
-  @media (max-width:980px){ #ww .banner-inner{grid-template-columns:1fr; justify-items:center} }
+  @media (max-width:980px){ #ww .banner-inner{grid-template-columns:1fr; justify-items:center; padding-top:16px} }
   #ww h1{margin:0 0 6px; font-size:48px; font-weight:900; color:var(--gold); 
     font-family: var(--fantasy-font);
     text-shadow: 
@@ -507,7 +507,7 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    margin: 10px;
+    margin: 0;
     filter: none !important;
     animation: none !important;
   }
@@ -525,11 +525,11 @@
     width: 220px;
     height: 330px;
     border-radius: 16px;
-    overflow: hidden;
+    overflow: visible;
     transition: transform 0.15s ease;
     will-change: transform;
   }
-  #ww .wcard-stack-item img { width:100%; height:100%; object-fit:cover; display:block; border-radius:16px; }
+  #ww .wcard-stack-item img { width:100%; height:100%; object-fit:contain; display:block; border-radius:16px; background:transparent; }
   #ww .wcard-stack-item:nth-child(1) { transform: translateX(-6px) translateY(6px) rotate(-3deg); z-index: 1; box-shadow: 0 4px 16px rgba(0,0,0,0.6), 0 0 0 2px rgba(212,165,48,0.3); }
   #ww .wcard-stack-item:nth-child(2) { transform: translateX(-3px) translateY(3px) rotate(-1.5deg); z-index: 2; box-shadow: 0 6px 24px rgba(0,0,0,0.65), 0 0 0 2px rgba(212,165,48,0.4); }
   #ww .wcard-stack-item:nth-child(3) { transform: translateX(0) translateY(0) rotate(0deg); z-index: 3; box-shadow: 0 8px 32px rgba(0,0,0,0.7), 0 0 0 2px rgba(212,165,48,0.5); }
@@ -562,7 +562,7 @@
     overflow: hidden;
     box-shadow: 0 12px 40px rgba(0,0,0,0.8), 0 0 0 2px rgba(212,165,48,0.6), 0 0 20px rgba(212,165,48,0.2);
   }
-  #ww .wcard-front img, #ww .wcard-back img { width:100%; height:100%; object-fit:cover; display:block; border-radius:16px; }
+  #ww .wcard-front img, #ww .wcard-back img { width:100%; height:100%; object-fit:contain; display:block; border-radius:16px; background:transparent; }
   #ww .wcard-back { transform: rotateY(180deg); }
   #ww #williamCardDeck:hover #williamActiveCard { transform: translateY(-8px) scale(1.03); }
   #ww #williamCardDeck:hover .wcard-front { box-shadow: 0 20px 60px rgba(0,0,0,0.9), 0 0 0 2px rgba(255,211,110,0.9), 0 0 40px rgba(255,211,110,0.4); }

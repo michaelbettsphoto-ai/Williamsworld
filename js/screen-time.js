@@ -35,18 +35,18 @@
 
   // Workout activities (non-running)
   const WORKOUT_ACTIVITIES = [
-    { id: 'pullups',    label: 'Pull-Ups',   icon: '💪' },
-    { id: 'situps',     label: 'Sit-Ups',    icon: '🧘' },
-    { id: 'pushups',    label: 'Push-Ups',   icon: '🏋️' },
-    { id: 'stretching',    label: 'Stretching',    icon: '🤸' },
-    { id: 'protein_drink', label: 'Protein Drink', icon: '🥤' },
+    { id: 'pullups',    label: 'Pull-Ups',   icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4v16M18 4v16M6 12h12"/><path d="M3 8h3M18 8h3M3 16h3M18 16h3"/></svg>' },
+    { id: 'situps',     label: 'Sit-Ups',    icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M5 20l4-8 3 4 2-3 3 7"/><path d="M3 20h18"/></svg>' },
+    { id: 'pushups',    label: 'Push-Ups',   icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M5 20h14"/><path d="M8 20V12l4-6 4 6v8"/><path d="M6 14h2M16 14h2"/></svg>' },
+    { id: 'stretching',    label: 'Stretching',    icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M12 6v6l-4 4M12 12l4 4"/><path d="M6 22l2-4M18 22l-2-4"/></svg>' },
+    { id: 'protein_drink', label: 'Protein Drink', icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2h8l1 4H7L8 2z"/><path d="M7 6l1 14a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2l1-14"/><path d="M10 10h4"/></svg>' },
   ];
 
   const SCHOOL_SUBJECTS = [
-    { id: 'ela',     label: 'ELA',     icon: '📖' },
-    { id: 'math',    label: 'Math',    icon: '🔢' },
-    { id: 'science', label: 'Science', icon: '🔬' },
-    { id: 'other',   label: 'Other',   icon: '📝' },
+    { id: 'ela',     label: 'ELA',     icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><line x1="8" y1="7" x2="16" y2="7"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="12" y2="15"/></svg>' },
+    { id: 'math',    label: 'Math',    icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="16" y2="6"/><line x1="12" y1="2" x2="12" y2="10"/><line x1="8" y1="18" x2="16" y2="18"/><line x1="6" y1="14" x2="18" y2="22"/><line x1="18" y1="14" x2="6" y2="22"/></svg>' },
+    { id: 'science', label: 'Science', icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6v7l4 10H5L9 10V3z"/><line x1="9" y1="3" x2="15" y2="3"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/></svg>' },
+    { id: 'other',   label: 'Other',   icon: '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>' },
   ];
 
   // Tasks that belong to each quest group (mirrors hub.js TASKS)
@@ -597,7 +597,7 @@
     panel.id = 'screenTimePanel';
 
     panel.innerHTML = `
-      <h3>📱 Screen Time Earned Today</h3>
+      <h3><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg> Screen Time Earned Today</h3>
 
       <!-- Summary bar -->
       <div class="stSummary">
@@ -618,7 +618,7 @@
       </div>
 
       <div id="stCapBanner" class="stCapBanner" style="display:none;">
-        🏆 Daily cap reached! Ask a parent to unlock more time.
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><path d="M6 9H3V4h3M18 9h3V4h-3"/><path d="M6 4h12v7a6 6 0 0 1-12 0V4z"/><path d="M12 17v4"/><path d="M8 21h8"/></svg> Daily cap reached! Ask a parent to unlock more time.
       </div>
 
       <!-- ── 3-column body ── -->
@@ -637,9 +637,9 @@
           </div>
           <!-- Church inside timer column -->
           <div class="stSection">
-            <div class="stSectionTitle">⛪ Church</div>
+            <div class="stSectionTitle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M10 4h4"/><path d="M5 10h14l1 11H4L5 10z"/><path d="M9 21v-6h6v6"/></svg> Church</div>
             <div class="stSource" id="stSrc_church">
-              <div class="stSrcIcon">⛪</div>
+              <div class="stSrcIcon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M10 4h4"/><path d="M5 10h14l1 11H4L5 10z"/><path d="M9 21v-6h6v6"/></svg></div>
               <div class="stSrcInfo">
                 <div class="stSrcLabel">Church Time</div>
                 <div class="stSrcReward">+${REWARDS.church} min</div>
@@ -652,10 +652,10 @@
         <!-- COL 2: Exercise -->
         <div class="stCol stColExercise">
           <div class="stSection">
-            <div class="stSectionTitle">🏃 Exercise</div>
+            <div class="stSectionTitle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="4" r="2"/><path d="M4 13l4-4 3 3 4-4 3 3"/><path d="M4 20l4-4 3 3 4-4 3 3"/></svg> Exercise</div>
             <div class="stRunCard" id="stRunCard">
               <div class="stRunLeft">
-                <span class="stRunIcon">🏃</span>
+                <span class="stRunIcon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="M7 22l2-8-2-4h8l-2 4 2 8"/><path d="M5 10l2-2 4 2 3-3 3 1"/></svg></span>
                 <div class="stRunInfo">
                   <div class="stRunLabel">Running</div>
                   <div class="stRunReward">+${REWARDS.run_per_mile} min per mile</div>
@@ -682,7 +682,7 @@
         <!-- COL 3: School + Parent Controls + History -->
         <div class="stCol stColSchool">
           <div class="stSection">
-            <div class="stSectionTitle">📚 School Work</div>
+            <div class="stSectionTitle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> School Work</div>
             <div class="stSchoolList" id="stSchoolGrid">
               ${SCHOOL_SUBJECTS.map(s => `
               <div class="stSchoolRow" id="stSubj_${s.id}">
@@ -691,16 +691,16 @@
                 <div class="stSubjReward">+${REWARDS.school_subject} min</div>
                 <div class="stSubjBtns">
                   <button class="stSrcBtn stSubjLogBtn" data-subj="${s.id}">Log</button>
-                  <button class="stSrcBtn stSubjBonusBtn stParentBtn" data-subj="${s.id}" title="Parent: add bonus minutes">+🔒</button>
+                  <button class="stSrcBtn stSubjBonusBtn stParentBtn" data-subj="${s.id}" title="Parent: add bonus minutes"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></button>
                 </div>
               </div>`).join('')}
             </div>
           </div>
           <div class="stSection">
-            <div class="stSectionTitle">🔒 Parent Controls</div>
+            <div class="stSectionTitle"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Parent Controls</div>
             <div class="stParentGrid">
               <button class="stBtn stBtnParent" id="stBehaviorBtn">⭐ Behavior Award</button>
-              <button class="stBtn stBtnParent" id="stUnlockCapBtn">🔓 Add More Time</button>
+              <button class="stBtn stBtnParent" id="stUnlockCapBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg> Add More Time</button>
             </div>
             <div id="stBehaviorAwardsList" class="stAwardsList"></div>
           </div>
@@ -738,7 +738,7 @@
     modal.style.display = 'none';
     modal.innerHTML = `
       <div class="stPinCard">
-        <div class="stPinTitle">🔒 Parent PIN Required</div>
+        <div class="stPinTitle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Parent PIN Required</div>
         <div class="stPinSubtitle">Enter the parent PIN to continue</div>
         <input type="password" id="stPinInput" class="stPinInput" maxlength="10" placeholder="Enter PIN" autocomplete="off" />
         <div id="stPinError" class="stPinError" style="display:none;"></div>
@@ -778,7 +778,7 @@
     modal.style.display = 'none';
     modal.innerHTML = `
       <div class="stPinCard">
-        <div class="stPinTitle">🔓 Add More Screen Time</div>
+        <div class="stPinTitle"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:4px"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg> Add More Screen Time</div>
         <div class="stPinSubtitle">How many extra minutes to allow today?</div>
         <input type="number" id="stUnlockMin" class="stPinInput" min="1" max="240" placeholder="e.g. 30" />
         <div class="stPinBtns">
@@ -797,7 +797,7 @@
     modal.style.display = 'none';
     modal.innerHTML = `
       <div class="stPinCard">
-        <div class="stPinTitle" id="stSchoolBonusTitle">📚 Bonus Minutes</div>
+        <div class="stPinTitle" id="stSchoolBonusTitle">Bonus Minutes</div>
         <div class="stPinSubtitle">How many bonus minutes to add for this subject?</div>
         <input type="number" id="stSchoolBonusMin" class="stPinInput" min="1" max="60" placeholder="e.g. 10" />
         <div class="stPinBtns">
@@ -1109,7 +1109,9 @@
         color: var(--gold); margin-bottom: 8px;
         border-bottom: 1px solid rgba(212,165,48,0.2);
         padding-bottom: 4px;
+        display: flex; align-items: center; gap: 6px;
       }
+      .stSectionTitle svg { flex-shrink: 0; }
 
       /* ── Church source card (single row) ── */
       .stSource {
@@ -1123,7 +1125,7 @@
         background: rgba(125,255,180,0.07);
         border-color: rgba(125,255,180,0.25);
       }
-      .stSrcIcon { font-size: 1.5rem; flex-shrink: 0; }
+      .stSrcIcon { font-size: 1.5rem; flex-shrink: 0; display:flex; align-items:center; justify-content:center; color: var(--gold); }
       .stSrcInfo { flex: 1; }
       .stSrcLabel { font-size: 0.82rem; color: var(--ink); font-weight: 600; }
       .stSrcReward { font-size: 0.72rem; color: var(--green); }
@@ -1138,7 +1140,7 @@
         margin-bottom: 8px;
       }
       .stRunLeft { display: flex; align-items: center; gap: 10px; flex: 1; }
-      .stRunIcon { font-size: 1.6rem; flex-shrink: 0; }
+      .stRunIcon { font-size: 1.6rem; flex-shrink: 0; display:flex; align-items:center; justify-content:center; color: var(--gold); }
       .stRunInfo { flex: 1; }
       .stRunLabel { font-size: 0.82rem; font-weight: 700; color: var(--ink); }
       .stRunReward { font-size: 0.7rem; color: var(--green); }
@@ -1165,7 +1167,7 @@
         background: rgba(125,255,180,0.07);
         border-color: rgba(125,255,180,0.25);
       }
-      .stWktIcon { font-size: 1.4rem; flex-shrink: 0; }
+      .stWktIcon { font-size: 1.4rem; flex-shrink: 0; display:flex; align-items:center; justify-content:center; color: var(--gold); width:32px; }
       .stWktLabel { flex: 1; font-size: 0.82rem; font-weight: 700; color: var(--ink); }
       .stWktReward { font-size: 0.72rem; color: var(--green); flex-shrink: 0; margin-right: 4px; }
 
@@ -1182,7 +1184,7 @@
         background: rgba(125,255,180,0.07);
         border-color: rgba(125,255,180,0.25);
       }
-      .stSubjIcon { font-size: 1.4rem; flex-shrink: 0; }
+      .stSubjIcon { font-size: 1.4rem; flex-shrink: 0; display:flex; align-items:center; justify-content:center; color: var(--gold); width:32px; }
       .stSubjLabel { flex: 1; font-size: 0.82rem; font-weight: 700; color: var(--ink); }
       .stSubjReward { font-size: 0.72rem; color: var(--green); flex-shrink: 0; }
       .stSubjBonus { font-size: 0.68rem; color: var(--gold); }
@@ -1377,7 +1379,7 @@
         activeBonusSubj = btn.dataset.subj;
         const label = SCHOOL_SUBJECTS.find(s => s.id === activeBonusSubj)?.label || activeBonusSubj;
         openPinModal(() => {
-          document.getElementById('stSchoolBonusTitle').textContent = `📚 Bonus for ${label}`;
+          document.getElementById('stSchoolBonusTitle').textContent = `Bonus for ${label}`;
           document.getElementById('stSchoolBonusMin').value = '';
           document.getElementById('stSchoolBonusModal').style.display = 'flex';
         });
