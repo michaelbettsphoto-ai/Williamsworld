@@ -825,6 +825,31 @@ body {
 .battle-log.visible { display: block; }
 .log-entry { padding: 2px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
+
+.team-slots { display:grid; grid-template-columns: repeat(5, minmax(120px, 1fr)); gap:10px; width:min(1100px,95vw); margin:14px auto; }
+.team-slot { background:linear-gradient(140deg, rgba(255,255,255,0.08), rgba(0,0,0,0.25)); border:1px dashed rgba(255,255,255,0.3); border-radius:14px; min-height:96px; padding:10px; position:relative; }
+.team-slot.filled { border-style:solid; border-color:rgba(255,211,110,.65); box-shadow:0 0 14px rgba(255,211,110,.25); }
+.team-slot .slot-label { font-size:.68rem; color:var(--muted); margin-bottom:6px; }
+.team-slot .slot-name { font-weight:700; font-size:.85rem; }
+.team-slot .slot-meta { font-size:.65rem; color:var(--text-secondary); }
+.slot-remove { position:absolute; top:5px; right:6px; border:0; background:rgba(0,0,0,.45); color:#fff; border-radius:10px; padding:2px 6px; cursor:pointer; }
+.team-pools { width:min(1120px,95vw); margin:8px auto 0; display:grid; grid-template-columns:1.2fr 1fr; gap:14px; }
+.pick-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; }
+.pick-card { border:1px solid rgba(255,255,255,.18); border-radius:12px; padding:8px; background:rgba(8,10,20,.7); cursor:pointer; }
+.pick-card.selected { border-color:var(--green); box-shadow:0 0 12px rgba(52,211,153,.3); }
+.pick-card.locked { opacity:.6; cursor:not-allowed; border-color:rgba(255,255,255,.2); background:linear-gradient(145deg, rgba(20,20,35,.95), rgba(10,10,10,.85)); }
+.pick-card .pc-name { font-size:.82rem; font-weight:700; }
+.pick-card .pc-role { font-size:.65rem; color:var(--text-secondary); }
+.pick-card .lock-note { font-size:.62rem; color:#fbbf24; margin-top:4px; }
+.companion-tabs{display:flex;gap:8px;}
+#confirm-team-btn[disabled]{opacity:.6;filter:grayscale(.4);cursor:not-allowed;}
+.deck-toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:12px 0;}
+.deck-grid{width:min(1100px,95vw);display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;}
+.deck-card{padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(10,14,28,.72);cursor:pointer;}
+.deck-card small{display:block;color:var(--text-secondary);}
+.deck-detail{width:min(700px,95vw);background:rgba(5,8,16,.95);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:14px;margin:10px auto;display:none;}
+@media (max-width: 900px) { .team-slots { grid-template-columns: repeat(2, minmax(120px, 1fr)); } .team-pools { grid-template-columns: 1fr; } }
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 480px) {
   .battle-card { padding: 4px; min-width: 80px; max-width: 31vw; }
@@ -846,7 +871,10 @@ body {
     Hub
   </button>
   <div class="nav-title">William's World</div>
-  <div class="nav-streak" id="nav-streak">🔥 <span id="streak-display">0</span> day streak</div>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button class="back-btn" onclick="openDeckPage()" style="padding:8px 10px;">My Deck</button>
+    <div class="nav-streak" id="nav-streak">🔥 <span id="streak-display">0</span> day streak</div>
+  </div>
 </nav>
 
 <div id="battle-bg"></div>
@@ -889,9 +917,38 @@ body {
       <div class="deck-stack"></div>
     </div>
   </div>
-  <button class="scout-btn" id="start-battle-btn" style="display:none;" onclick="startBattle()">
+  <button class="scout-btn" id="start-battle-btn" style="display:none;" onclick="openTeamSelection()">
     <span class="shimmer"></span>
-    Begin Battle!
+    Build Team
+  </button>
+</div>
+
+<!-- SCREEN 2.5: Team Selection -->
+<div id="team-select-screen" class="screen">
+  <div class="draw-title">Build Your Battle Team</div>
+  <div class="zone-subtitle">Select exactly 3 cards + 2 companions before battle.</div>
+  <div id="unlock-banner" class="battle-event-banner" style="position:relative;left:auto;top:auto;transform:none;margin:12px auto;max-width:460px;display:none;"></div>
+  <div class="team-slots" id="team-slots"></div>
+  <div class="team-pools">
+    <div>
+      <div class="action-label" style="margin-bottom:8px;">Cards</div>
+      <div class="pick-grid" id="card-pool"></div>
+    </div>
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+        <div class="action-label">Companions</div>
+        <div class="companion-tabs">
+          <button id="tab-unlocked" class="action-btn selected" onclick="setCompanionTab('unlocked')">Unlocked</button>
+          <button id="tab-locked" class="action-btn" onclick="setCompanionTab('locked')">Locked</button>
+        </div>
+      </div>
+      <div class="pick-grid" id="companion-pool"></div>
+    </div>
+  </div>
+  <div class="action-label" id="team-warning" style="margin-top:12px;">Fill all five slots to begin.</div>
+  <button class="scout-btn" id="confirm-team-btn" onclick="launchBattleWithSelection()" disabled>
+    <span class="shimmer"></span>
+    Start Battle
   </button>
 </div>
 
@@ -929,7 +986,27 @@ body {
   <div class="result-title" id="result-title">Victory!</div>
   <div class="result-subtitle" id="result-subtitle"></div>
   <div class="reward-list" id="reward-list"></div>
-  <button class="result-btn" onclick="resetBattle()">Battle Again</button>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+  <button class="result-btn" id="view-deck-btn" onclick="openDeckPage()" style="display:none;">View Deck</button>
+  <button class="result-btn" id="continue-btn" onclick="resetBattle()">Continue</button>
+</div>
+</div>
+
+
+
+<!-- SCREEN 6: My Deck -->
+<div id="deck-screen" class="screen">
+  <div class="draw-title">My Deck</div>
+  <div class="zone-subtitle">Starter cards + captured enemies.</div>
+  <div class="deck-toolbar">
+    <input id="deck-search" placeholder="Search by name" oninput="renderDeckPage()" style="padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,.2);background:#0a0f1f;color:#fff;">
+    <select id="deck-filter-type" onchange="renderDeckPage()"><option value="">All Types</option></select>
+    <select id="deck-filter-source" onchange="renderDeckPage()"><option value="">Starter + Captured</option><option value="starter">Starter</option><option value="captured">Captured</option></select>
+    <select id="deck-sort" onchange="renderDeckPage()"><option value="newest">Newest Captured</option><option value="power">Highest Power</option></select>
+    <button class="back-btn" onclick="backFromDeck()">Back</button>
+  </div>
+  <div class="deck-grid" id="deck-grid"></div>
+  <div class="deck-detail" id="deck-detail"></div>
 </div>
 
 <!-- SCREEN 5: Evolution -->
@@ -1007,11 +1084,62 @@ function loadGameState() {
     const saved = localStorage.getItem('ww-battle-state');
     if (saved) return JSON.parse(saved);
   } catch(e) {}
-  return { teamXP: 0, teamRank: 0, wins: 0, totalBattles: 0 };
+  return { teamXP: 0, teamRank: 0, wins: 0, totalBattles: 0, playerDeck: null, teamSelections: null, lastCompanionUnlockLevel: 1 };
 }
 function saveGameState() {
   localStorage.setItem('ww-battle-state', JSON.stringify(gameState));
 }
+
+
+function getPlayerLevel() { return Math.max(1, Math.floor((gameState.teamXP || 0) / 100) + 1); }
+
+const COMPANION_ROSTER = [
+  { id: 'ember', name: 'Ember', role: 'Bruiser', element: 'Fire', unlockLevel: 1, icon: '🔥' },
+  { id: 'sprite', name: 'Sprite', role: 'Support', element: 'Light', unlockLevel: 2, icon: '✨' },
+  { id: 'golem', name: 'Golem', role: 'Tank', element: 'Earth', unlockLevel: 3, icon: '🪨' },
+  { id: 'voltwing-wisp', name: 'Voltwing Wisp', role: 'Agile', element: 'Electric', unlockLevel: 4, icon: '⚡' },
+  { id: 'frostvine-oracle', name: 'Frostvine Oracle', role: 'Support', element: 'Ice', unlockLevel: 5, icon: '❄️' }
+];
+
+function ensureDeckData() {
+  if (!Array.isArray(gameState.playerDeck)) {
+    const starters = buildHeroes().map(h => ({
+      id: h.id, name: h.name, type: h.element, role: h.title || h.element, rarity: 'Starter',
+      source: 'starter', portrait: h.img, passive: h.rankMoves?.[1]?.name || 'Battle Ready',
+      ultimate: h.rankMoves?.[2]?.name || h.moves[h.moves.length - 1]?.name || 'Heroic Strike',
+      abilities: h.moves.map(m => ({ name: m.name, desc: m.desc })),
+      stats: { ...h.stats }, capturedAt: null
+    }));
+    gameState.playerDeck = starters;
+  }
+  if (!gameState.teamSelections) {
+    gameState.teamSelections = { cards: gameState.playerDeck.slice(0,3).map(c => c.id), companions: ['ember', 'sprite'] };
+  }
+}
+
+function normalizeMoveFromAbility(ab, fallbackElement='NEUTRAL') {
+  return {
+    name: ab.name,
+    type: /heal|ward|shield|bloom/i.test(ab.name + ' ' + (ab.desc || '')) ? 'heal' : 'damage',
+    element: fallbackElement,
+    cooldown: 0, maxCd: 3,
+    power: 20,
+    desc: ab.desc || 'Battle move.',
+    keywords: ['Card']
+  };
+}
+
+function makeUnitFromDeckCard(card) {
+  const abilities = (card.abilities || []).slice(0,4).map(a => normalizeMoveFromAbility(a, card.type?.toUpperCase() || 'NEUTRAL'));
+  return {
+    id: card.id, name: card.name, title: card.role || card.type, element: (card.type || 'NEUTRAL').toUpperCase(),
+    rank: gameState.teamRank || 0,
+    img: card.portrait || IMG.william[0],
+    stats: card.stats || { hp: 100, atk: 12, def: 10, spd: 10 },
+    moves: abilities.length ? abilities : [{name:'Strike',type:'damage',element:'NEUTRAL',cooldown:0,maxCd:1,power:16,desc:'Simple hit.'}]
+  };
+}
+
 
 // ===== ZONE DATA =====
 const ZONES = [
@@ -1325,6 +1453,8 @@ function spawnFloatText(element, text, type) {
 // ===== INIT =====
 function init() {
   createParticles();
+  ensureDeckData();
+  saveGameState();
   // Check URL for zone param from hub
   const urlZone = getZoneFromURL();
   buildZoneSelector();
@@ -1521,9 +1651,86 @@ function revealCards() {
   }, flipDelay + slots.length * 800 + 400);
 }
 
+
+function openTeamSelection() {
+  ensureDeckData();
+  renderTeamSelection();
+  showCompanionUnlockBannerIfNeeded();
+  showScreen('team-select-screen');
+}
+
+let companionTab = 'unlocked';
+function setCompanionTab(tab){ companionTab = tab; document.getElementById('tab-unlocked')?.classList.toggle('selected',tab==='unlocked'); document.getElementById('tab-locked')?.classList.toggle('selected',tab==='locked'); renderTeamSelection(); }
+
+function renderTeamSelection() {
+  ensureDeckData();
+  const selections = gameState.teamSelections || { cards: [], companions: [] };
+  const slots = document.getElementById('team-slots');
+  const selectedCards = selections.cards.map(id => gameState.playerDeck.find(c => c.id === id)).filter(Boolean);
+  const selectedCompanions = selections.companions.map(id => COMPANION_ROSTER.find(c => c.id===id)).filter(Boolean);
+  const slotData = [
+    { label: 'Card Slot 1', item: selectedCards[0], kind: 'card', index: 0 },
+    { label: 'Card Slot 2', item: selectedCards[1], kind: 'card', index: 1 },
+    { label: 'Card Slot 3', item: selectedCards[2], kind: 'card', index: 2 },
+    { label: 'Companion Slot 1', item: selectedCompanions[0], kind: 'companion', index: 0 },
+    { label: 'Companion Slot 2', item: selectedCompanions[1], kind: 'companion', index: 1 },
+  ];
+  slots.innerHTML = slotData.map(s => `<div class="team-slot ${s.item ? 'filled':''}"><div class="slot-label">${s.label}</div>${s.item ? `<div class="slot-name">${s.item.icon || '🃏'} ${s.item.name}</div><div class="slot-meta">${s.item.role || s.item.type || ''}</div><button class="slot-remove" onclick="removeSelection('${s.kind}', ${s.index})">x</button>` : `<div class="slot-meta">Empty</div>`}</div>`).join('');
+
+  const cardPool = document.getElementById('card-pool');
+  cardPool.innerHTML = gameState.playerDeck.map(c => `<div class="pick-card ${selections.cards.includes(c.id)?'selected':''}" onclick="pickCard('${c.id}')"><div class="pc-name">${c.name}</div><div class="pc-role">${c.type} · ${c.role || ''}</div><div class="pc-role">${(c.abilities||[]).slice(0,2).map(a=>a.name).join(' · ')}</div></div>`).join('');
+
+  const lvl = getPlayerLevel();
+  const compPool = document.getElementById('companion-pool');
+  compPool.innerHTML = COMPANION_ROSTER.filter(c => companionTab === 'locked' ? lvl < c.unlockLevel : lvl >= c.unlockLevel).map(c => {
+    const locked = lvl < c.unlockLevel;
+    return `<div class="pick-card ${locked?'locked':''} ${selections.companions.includes(c.id)?'selected':''}" onclick="pickCompanion('${c.id}', ${locked})"><div class="pc-name">${c.icon} ${c.name}</div><div class="pc-role">${c.role} · ${c.element}</div>${locked?`<div class="lock-note">🔒 Unlocks at Level ${c.unlockLevel}</div>`:''}</div>`;
+  }).join('');
+
+  const filled = selections.cards.length === 3 && selections.companions.length === 2;
+  document.getElementById('confirm-team-btn').disabled = !filled;
+  document.getElementById('team-warning').textContent = filled ? 'Team ready.' : 'Fill all five slots to begin.';
+}
+
+function pickCard(id){ ensureDeckData(); const s=gameState.teamSelections; if (s.cards.includes(id)) return; if (s.cards.length>=3) s.cards.shift(); s.cards.push(id); saveGameState(); renderTeamSelection(); }
+function pickCompanion(id,locked){ if (locked) return; ensureDeckData(); const s=gameState.teamSelections; if (s.companions.includes(id)) return; if (s.companions.length>=2) s.companions.shift(); s.companions.push(id); saveGameState(); renderTeamSelection(); }
+function removeSelection(kind,index){ const s=gameState.teamSelections; if(kind==='card') s.cards.splice(index,1); else s.companions.splice(index,1); saveGameState(); renderTeamSelection(); }
+
+function showCompanionUnlockBannerIfNeeded(){
+  const lvl = getPlayerLevel();
+  const banner = document.getElementById('unlock-banner');
+  const prev = gameState.lastCompanionUnlockLevel || 1;
+  const newly = COMPANION_ROSTER.filter(c => c.unlockLevel > prev && c.unlockLevel <= lvl);
+  if (newly.length) {
+    banner.style.display='block';
+    banner.classList.add('show');
+    banner.innerHTML = `<div class="event-title">New companion unlocked!</div><div class="event-desc">${newly.map(n=>n.name).join(', ')} is now selectable.</div>`;
+    gameState.lastCompanionUnlockLevel = lvl;
+    saveGameState();
+    setTimeout(()=>{ banner.classList.remove('show'); banner.style.display='none'; }, 2500);
+  }
+}
+
+function launchBattleWithSelection(){ startBattle(); }
+
 // ===== BATTLE START =====
 function startBattle() {
-  const HEROES = buildHeroes();
+  ensureDeckData();
+  const selectedCardUnits = (gameState.teamSelections?.cards || []).map(id => gameState.playerDeck.find(c => c.id === id)).filter(Boolean).map(makeUnitFromDeckCard);
+  const selectedCompanionUnits = (gameState.teamSelections?.companions || []).map(id => {
+    const c = COMPANION_ROSTER.find(x => x.id === id);
+    if (!c) return null;
+    return {
+      id: c.id, name: c.name, title: c.role, element: c.element.toUpperCase(), rank: gameState.teamRank || 0,
+      img: IMG[c.id]?.[gameState.teamRank] || IMG.william[0],
+      stats: { hp: 100, atk: 12, def: 12, spd: 10 },
+      moves: [
+        { name: 'Strike', type: 'damage', element: c.element.toUpperCase(), cooldown: 0, maxCd: 1, power: 18, desc: 'Reliable attack.' },
+        { name: 'Guard Stance', type: 'buff', element: c.element.toUpperCase(), cooldown: 0, maxCd: 3, power: 0, desc: 'Reduce team damage.', effect: 'guard' }
+      ]
+    };
+  }).filter(Boolean);
+  const HEROES = [...selectedCardUnits, ...selectedCompanionUnits];
   heroParty = HEROES.map(h => ({
     ...h, currentHp: h.stats.hp, maxHp: h.stats.hp,
     currentStats: { ...h.stats }, statuses: [], shields: [],
@@ -1535,7 +1742,7 @@ function startBattle() {
     cooldowns: e.moves.map(() => 0), isDefeated: false, team: 'enemy',
   }));
   currentRound = 1; comboCount = 0;
-  heroActions = [null, null, null]; selectedHeroIdx = -1;
+  heroActions = new Array(heroParty.length).fill(null); selectedHeroIdx = -1;
   battlePhase = 'player'; battleLog = [];
   showScreen('battle-screen');
   BattleSFX.play('battle_start');
@@ -1735,7 +1942,7 @@ async function executeRound() {
 
   // Next round
   currentRound++;
-  heroActions = [null, null, null];
+  heroActions = new Array(heroParty.length).fill(null);
   selectedHeroIdx = -1;
   battlePhase = 'player';
   updateHUD();
@@ -2156,6 +2363,32 @@ function showVictory() {
 
   const rewards = document.getElementById('reward-list');
   rewards.innerHTML = '';
+
+  const capturedEnemy = drawnEnemies[Math.floor(Math.random() * drawnEnemies.length)];
+  if (capturedEnemy) {
+    ensureDeckData();
+    const captureCard = {
+      id: `${capturedEnemy.id}-${Date.now()}`,
+      name: capturedEnemy.name,
+      type: capturedEnemy.element,
+      role: capturedEnemy.role,
+      rarity: capturedEnemy.rarity || 'COMMON',
+      source: 'captured',
+      portrait: ENEMY_IMAGES[capturedEnemy.id] || '',
+      abilities: (capturedEnemy.moves || []).slice(0,4).map(m => ({ name: m.name, desc: m.desc || '' })),
+      passive: 'Captured Instinct',
+      ultimate: (capturedEnemy.moves || [])[0]?.name || 'Savage Burst',
+      stats: capturedEnemy.stats || { hp: 80, atk: 12, def: 10, spd: 10 },
+      capturedAt: new Date().toISOString(),
+      captureSource: currentZone.name
+    };
+    gameState.playerDeck.unshift(captureCard);
+    const cap = document.createElement('div');
+    cap.className = 'reward-item';
+    cap.innerHTML = `<span class="reward-icon">✅</span><span class="reward-text">Captured! ${capturedEnemy.name}</span><span class="reward-value">Added to Deck</span>`;
+    rewards.appendChild(cap);
+    document.getElementById('view-deck-btn').style.display = '';
+  }
   const items = [
     { icon: '⭐', text: 'Base XP', value: `+${baseXP}` },
     { icon: '⚡', text: `Speed Bonus (${currentRound} rounds)`, value: `+${roundBonus}` },
@@ -2174,12 +2407,14 @@ function showVictory() {
   });
 
   // Check if evolution should trigger
+  saveGameState();
   if (pendingEvolutions.length > 0) {
     setTimeout(() => showEvolution(), 3000);
   }
 }
 
 function showDefeat() {
+  document.getElementById('view-deck-btn').style.display = 'none';
   gameState.totalBattles++;
   saveGameState();
   BattleSFX.play('defeat');
@@ -2242,6 +2477,7 @@ function showEvolution() {
 }
 
 function continueAfterEvolution() {
+  saveGameState();
   if (pendingEvolutions.length > 0) {
     showEvolution();
   } else {
@@ -2263,6 +2499,7 @@ function triggerBattleEvent() {
 
 // ===== RESET =====
 function resetBattle() {
+  document.getElementById('view-deck-btn').style.display = 'none';
   showScreen('scout-screen');
   updateXPDisplay();
 }
@@ -2286,8 +2523,49 @@ function addLog(text) {
   log.classList.add('visible');
 }
 
+
+function openDeckPage() {
+  ensureDeckData();
+  renderDeckPage();
+  showScreen('deck-screen');
+}
+
+function backFromDeck() {
+  const active = document.getElementById('result-screen').classList.contains('active') ? 'result-screen' : 'scout-screen';
+  showScreen(active);
+}
+
+function renderDeckPage() {
+  ensureDeckData();
+  const search = (document.getElementById('deck-search')?.value || '').toLowerCase();
+  const fType = document.getElementById('deck-filter-type')?.value || '';
+  const fSource = document.getElementById('deck-filter-source')?.value || '';
+  const sort = document.getElementById('deck-sort')?.value || 'newest';
+  const types = [...new Set(gameState.playerDeck.map(c => c.type))].filter(Boolean);
+  const typeSel = document.getElementById('deck-filter-type');
+  if (typeSel && typeSel.options.length <= 1) {
+    types.forEach(t => { const o=document.createElement('option'); o.value=t; o.textContent=t; typeSel.appendChild(o); });
+  }
+  let cards = gameState.playerDeck.filter(c => c.name.toLowerCase().includes(search));
+  if (fType) cards = cards.filter(c => c.type === fType);
+  if (fSource) cards = cards.filter(c => c.source === fSource);
+  cards.sort((a,b) => sort === 'power' ? ((b.stats?.atk||0)+(b.stats?.hp||0)) - ((a.stats?.atk||0)+(a.stats?.hp||0)) : new Date(b.capturedAt || 0) - new Date(a.capturedAt || 0));
+  const grid = document.getElementById('deck-grid');
+  grid.innerHTML = cards.map((c,i) => `<div class="deck-card" onclick="showDeckCardDetail(${i})"><div><strong>${c.name}</strong></div><small>${c.type} · ${c.rarity || ''}</small><small>${(c.abilities||[]).slice(0,2).map(a=>a.name).join(' · ')}</small><small>ATK ${c.stats?.atk || 0} · HP ${c.stats?.hp || 0}</small></div>`).join('');
+  window.__deckViewCards = cards;
+}
+
+function showDeckCardDetail(i) {
+  const c = (window.__deckViewCards || [])[i];
+  if (!c) return;
+  const detail = document.getElementById('deck-detail');
+  detail.style.display = 'block';
+  detail.innerHTML = `<h3>${c.name}</h3><div>${c.type} · ${c.role || ''} · ${c.rarity || ''}</div><p><strong>Passive:</strong> ${c.passive || 'None'}</p><p><strong>Ultimate:</strong> ${c.ultimate || 'None'}</p><p><strong>Abilities:</strong></p><ul>${(c.abilities || []).map(a => `<li><strong>${a.name}</strong>: ${a.desc || ''}</li>`).join('')}</ul><p>Stats: HP ${c.stats?.hp || 0}, ATK ${c.stats?.atk || 0}, DEF ${c.stats?.def || 0}, SPD ${c.stats?.spd || 0}</p><p>${c.capturedAt ? `Captured: ${new Date(c.capturedAt).toLocaleString()}` : 'Starter Card'}</p>`;
+}
+
 // ===== NAVIGATION =====
 function goToHub() {
+
   window.location.href = './index.html';
 }
 
