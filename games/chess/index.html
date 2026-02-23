@@ -82,6 +82,7 @@
           <button id="undoBtn" class="btn">↩ Undo</button>
           <button class="btn btn-primary" onclick="returnToModeScreen()">🔄 Mode</button>
           <button id="resetStatsBtn" class="btn">Reset Stats</button>
+          <button id="muteBtn" class="btn" onclick="toggleSound()">🔊 Sound</button>
         </div>
         <div class="captured-pieces">
           <div><div style="color:var(--gold);font-size:13px;margin-bottom:4px;">White Captured:</div><div id="whiteCaptured"></div></div>
@@ -119,6 +120,7 @@
   </div>
 
   <a href="../LICENSE-GAMES.md" class="credits-link">📜 Credits</a>
+  <script src="../../assets/js/games/sound-engine.js"></script>
   <script src="../../assets/js/games/chess/game.js"></script>
 </body>
 </html>

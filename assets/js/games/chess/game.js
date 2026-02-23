@@ -98,6 +98,7 @@ let moveHistory, capturedWhite, capturedBlack;
 let lastMove; // {from,to}
 let wins = 0;
 let gameOver = false;
+let soundEnabled = true;
 
 // Mode / AI settings
 let gameMode    = null;  // '1p' | '2p'
@@ -119,6 +120,7 @@ const whiteCapturedEl = document.getElementById('whiteCaptured');
 const blackCapturedEl = document.getElementById('blackCaptured');
 const undoBtn         = document.getElementById('undoBtn');
 const resetStatsBtn   = document.getElementById('resetStatsBtn');
+const muteBtn         = document.getElementById('muteBtn');
 const aiBadge         = document.getElementById('aiBadge');
 const thinkingEl      = document.getElementById('thinkingIndicator');
 const gameEndModal    = document.getElementById('gameEndModal');
@@ -174,6 +176,7 @@ function startGame() {
   }
   loadWins();
   newGame();
+  if (window.GameSounds) GameSounds.unlock();
 }
 
 function returnToModeScreen() {
@@ -455,7 +458,7 @@ function executeMove(fromR, fromC, toR, toC) {
     player:currentPlayer, whiteKingPos:{...whiteKingPos}, blackKingPos:{...blackKingPos}
   });
 
-  // ── King captured → immediate win ──────────────────────────
+  // ── King captured → immediate win ──────────────────────
   if (captured && captured.toLowerCase() === 'k') {
     board[toR][toC] = piece;
     board[fromR][fromC] = null;
@@ -465,14 +468,15 @@ function executeMove(fromR, fromC, toR, toC) {
     gameOver = true;
     updateDisplay();
     drawBoard();
+    if (soundEnabled && window.GameSounds) GameSounds.chess.checkmate();
     const winner = currentPlayer === 'white' ? 'White' : 'Black';
     setTimeout(() => showEndModal(`${winner} wins! 👑`, `The King was captured!`), 150);
     return;
   }
-
   // Track captures
   if (captured) {
     isWhitePiece(captured) ? capturedBlack.push(captured) : capturedWhite.push(captured);
+    if (soundEnabled && window.GameSounds) GameSounds.chess.capture();
   }
 
   // Apply move
@@ -483,28 +487,29 @@ function executeMove(fromR, fromC, toR, toC) {
   if (piece === 'K') whiteKingPos = {row:toR,col:toC};
   if (piece === 'k') blackKingPos = {row:toR,col:toC};
 
-  // Pawn promotion
+    // Pawn promotion
+  const wasPromotion = (piece==='P' && toR===0) || (piece==='p' && toR===7);
   if (piece==='P' && toR===0) board[toR][toC]='Q';
   if (piece==='p' && toR===7) board[toR][toC]='q';
-
+  if (wasPromotion && soundEnabled && window.GameSounds) GameSounds.chess.promotion();
   lastMove = {from:{row:fromR,col:fromC},to:{row:toR,col:toC}};
   selectedSq = null;
   validMoves = [];
   currentPlayer = currentPlayer === 'white' ? 'black' : 'white';
-
   // Check / checkmate / stalemate
   isCheck = isKingInCheck(board, currentPlayer);
   const legalMoves = getAllLegalMoves(board, currentPlayer);
-
   updateDisplay();
   drawBoard();
-
+  if (!captured && !wasPromotion && soundEnabled && window.GameSounds) GameSounds.chess.move();
+  if (isCheck && legalMoves.length > 0 && soundEnabled && window.GameSounds) GameSounds.chess.check();
   if (legalMoves.length === 0) {
     gameOver = true;
     if (isCheck) {
       const winner = currentPlayer === 'white' ? 'Black' : 'White';
       wins++;
       saveWins();
+      if (soundEnabled && window.GameSounds) GameSounds.chess.checkmate();
       setTimeout(() => showEndModal(`Checkmate! ${winner} wins! 🎉`, `No legal moves remain.`), 150);
     } else {
       setTimeout(() => showEndModal(`Stalemate! 🤝`, `No legal moves — it's a draw.`), 150);
@@ -660,6 +665,12 @@ canvas.addEventListener('touchend', e => {
   canvas.dispatchEvent(new MouseEvent('click', {clientX:t.clientX, clientY:t.clientY}));
 }, {passive:false});
 
+// ── Sound Toggle ─────────────────────────────────────────────────
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  if (muteBtn) muteBtn.textContent = soundEnabled ? '🔊 Sound' : '🔇 Muted';
+  if (window.GameSounds) GameSounds.setEnabled(soundEnabled);
+}
 // ── Button Listeners ─────────────────────────────────────────────
 undoBtn.addEventListener('click', undoMove);
 resetStatsBtn.addEventListener('click', () => {

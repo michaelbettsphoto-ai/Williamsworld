@@ -57,6 +57,7 @@ function newGame() {
   addRandomTile();
   addRandomTile();
   updateBoard();
+  if (window.GameSounds) GameSounds.unlock();
 }
 
 // Add random tile (2 or 4)
@@ -137,7 +138,10 @@ function move(direction) {
           // Check for win
           if (newValue === 2048 && !hasWon) {
             hasWon = true;
+            if (soundEnabled && window.GameSounds) GameSounds.g2048.win();
             setTimeout(() => showWinMessage(), 300);
+          } else if (soundEnabled && window.GameSounds) {
+            GameSounds.g2048.merge(newValue);
           }
         } else {
           merged.push(row[i]);
@@ -160,7 +164,10 @@ function move(direction) {
           
           if (newValue === 2048 && !hasWon) {
             hasWon = true;
+            if (soundEnabled && window.GameSounds) GameSounds.g2048.win();
             setTimeout(() => showWinMessage(), 300);
+          } else if (soundEnabled && window.GameSounds) {
+            GameSounds.g2048.merge(newValue);
           }
         } else {
           merged.unshift(row[i]);
@@ -186,7 +193,10 @@ function move(direction) {
           
           if (newValue === 2048 && !hasWon) {
             hasWon = true;
+            if (soundEnabled && window.GameSounds) GameSounds.g2048.win();
             setTimeout(() => showWinMessage(), 300);
+          } else if (soundEnabled && window.GameSounds) {
+            GameSounds.g2048.merge(newValue);
           }
         } else {
           merged.push(col[i]);
@@ -214,7 +224,10 @@ function move(direction) {
           
           if (newValue === 2048 && !hasWon) {
             hasWon = true;
+            if (soundEnabled && window.GameSounds) GameSounds.g2048.win();
             setTimeout(() => showWinMessage(), 300);
+          } else if (soundEnabled && window.GameSounds) {
+            GameSounds.g2048.merge(newValue);
           }
         } else {
           merged.unshift(col[i]);
@@ -241,10 +254,11 @@ function move(direction) {
   if (moved) {
     addRandomTile();
     scoreDisplay.textContent = score;
-    playMoveSound();
+    if (soundEnabled && window.GameSounds) GameSounds.g2048.move();
     updateBoard();
     
     if (isGameOver()) {
+      if (soundEnabled && window.GameSounds) GameSounds.g2048.gameOver();
       setTimeout(() => showGameOverMessage(), 300);
     }
   }
@@ -263,35 +277,11 @@ function showGameOverMessage() {
   alert(`Game Over!\n\nFinal Score: ${score}\nHigh Score: ${highScore}`);
 }
 
-// Play sound effect
-function playMoveSound() {
-  if (!soundEnabled) return;
-  
-  try {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    
-    oscillator.frequency.value = 400;
-    oscillator.type = 'sine';
-    
-    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
-    
-    oscillator.start(audioCtx.currentTime);
-    oscillator.stop(audioCtx.currentTime + 0.05);
-  } catch (e) {
-    // Silently fail
-  }
-}
-
 // Toggle sound
 function toggleSound() {
   soundEnabled = !soundEnabled;
   muteBtn.textContent = soundEnabled ? '🔊 Sound' : '🔇 Muted';
+  if (window.GameSounds) GameSounds.setEnabled(soundEnabled);
 }
 
 // Keyboard controls

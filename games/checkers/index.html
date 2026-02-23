@@ -79,6 +79,7 @@
           <button id="newGameBtn" class="btn btn-primary">New Game</button>
           <button class="btn" onclick="returnToModeScreen()">🔄 Mode</button>
           <button id="resetStatsBtn" class="btn">Reset Stats</button>
+          <button id="muteBtn" class="btn" onclick="toggleSound()">🔊 Sound</button>
         </div>
         <div class="game-canvas-container">
           <canvas id="gameCanvas" width="480" height="480"></canvas>
@@ -112,6 +113,7 @@
   </div>
 
   <a href="../LICENSE-GAMES.md" class="credits-link">📜 Credits</a>
+  <script src="../../assets/js/games/sound-engine.js"></script>
   <script src="../../assets/js/games/checkers/game.js"></script>
 </body>
 </html>

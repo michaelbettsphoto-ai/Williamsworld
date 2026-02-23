@@ -117,6 +117,7 @@ function rotate() {
   
   if (!collides(0, 0, newShape)) {
     currentPiece.shape = newShape;
+    if (soundEnabled && window.GameSounds) GameSounds.tetris.rotate();
     draw();
   }
 }
@@ -154,7 +155,7 @@ function freeze() {
       }
     }
   }
-  
+  if (soundEnabled && window.GameSounds) GameSounds.tetris.drop();
   clearLines();
   newPiece();
 }
@@ -177,7 +178,7 @@ function clearLines() {
     score += linesCleared * 100 * linesCleared; // Bonus for multiple lines
     linesDisplay.textContent = lines;
     scoreDisplay.textContent = score;
-    playClearSound();
+    if (soundEnabled && window.GameSounds) GameSounds.tetris.lineClear(linesCleared);
     
     // Speed up game
     dropInterval = Math.max(200, 1000 - lines * 20);
@@ -273,6 +274,7 @@ function startGame() {
   
   lastDrop = Date.now();
   gameLoop = setInterval(update, 16);
+  if (window.GameSounds) GameSounds.unlock();
 }
 
 // Pause game
@@ -311,6 +313,7 @@ function gameOver() {
   clearInterval(gameLoop);
   
   saveHighScore();
+  if (soundEnabled && window.GameSounds) GameSounds.tetris.gameOver();
   
   // Show game over message
   ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
@@ -335,35 +338,11 @@ function gameOver() {
   pauseBtn.disabled = true;
 }
 
-// Sound effects
-function playClearSound() {
-  if (!soundEnabled) return;
-  
-  try {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    
-    oscillator.frequency.value = 600;
-    oscillator.type = 'square';
-    
-    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
-    
-    oscillator.start(audioCtx.currentTime);
-    oscillator.stop(audioCtx.currentTime + 0.2);
-  } catch (e) {
-    // Silently fail
-  }
-}
-
 // Toggle sound
 function toggleSound() {
   soundEnabled = !soundEnabled;
   muteBtn.textContent = soundEnabled ? '🔊 Sound' : '🔇 Muted';
+  if (window.GameSounds) GameSounds.setEnabled(soundEnabled);
 }
 
 // Keyboard controls

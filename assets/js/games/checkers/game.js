@@ -15,6 +15,7 @@ const C_RED='#dc2626',C_BLK='#1a1a1a',C_KING='#ffd700';
 let board,currentPlayer,selectedSq,validMoves;
 let wins=0,gameOver=false,mustJumpFrom=null;
 let gameMode=null,aiDifficulty=null,humanColor=null,aiColor=null,aiThinking=false;
+let soundEnabled=true;
 
 const modeScreen   = document.getElementById('modeScreen');
 const gameScreen   = document.getElementById('gameScreen');
@@ -29,6 +30,7 @@ const gameEndModal = document.getElementById('gameEndModal');
 const gemTitle     = document.getElementById('gemTitle');
 const gemSub       = document.getElementById('gemSub');
 const gemWins      = document.getElementById('gemWins');
+const muteBtn      = document.getElementById('muteBtn');
 
 // ── Mode Select ─────────────────────────────────────────────────
 function selectMode(mode, el) {
@@ -76,10 +78,10 @@ function startGame() {
   } else {
     aiBadge.style.display = 'none';
   }
-  loadWins();
+   loadWins();
   newGame();
+  if (window.GameSounds) GameSounds.unlock();
 }
-
 function returnToModeScreen() {
   gameEndModal.classList.remove('visible');
   gameScreen.classList.remove('visible');
@@ -238,10 +240,17 @@ function scheduleAiMove() {
 function executeMove(m) {
   if (gameOver) return;
   const isCapture = m.jumpRow !== null;
+  const pieceBefore = board[m.fromRow][m.fromCol];
   board[m.row][m.col] = board[m.fromRow][m.fromCol];
   board[m.fromRow][m.fromCol] = EMPTY;
   if (isCapture) board[m.jumpRow][m.jumpCol] = EMPTY;
   promoteIfNeeded(board, m.row, m.col);
+  const wasPromoted = board[m.row][m.col] !== pieceBefore;
+  if (soundEnabled && window.GameSounds) {
+    if (wasPromoted) GameSounds.checkers.kingPromotion();
+    else if (isCapture) GameSounds.checkers.capture();
+    else GameSounds.checkers.move();
+  }
   selectedSq = null; validMoves = [];
 
   if (isCapture) {
@@ -267,16 +276,19 @@ function executeMove(m) {
 
   if (redCount === 0) {
     gameOver = true; wins++; saveWins();
+    if (soundEnabled && window.GameSounds) GameSounds.checkers.win();
     setTimeout(() => showEndModal('⚫ Black Wins! 🎉', 'All red pieces captured!'), 150);
     return;
   }
   if (blackCount === 0) {
     gameOver = true; wins++; saveWins();
+    if (soundEnabled && window.GameSounds) GameSounds.checkers.win();
     setTimeout(() => showEndModal('🔴 Red Wins! 🎉', 'All black pieces captured!'), 150);
     return;
   }
   if (nextMoves.length === 0) {
     gameOver = true;
+    if (soundEnabled && window.GameSounds) GameSounds.checkers.win();
     const winner = currentPlayer === 'red' ? 'Black' : 'Red';
     setTimeout(() => showEndModal(`${winner} Wins! 🎉`, `${currentPlayer} has no moves left!`), 150);
     return;
@@ -381,3 +393,8 @@ document.getElementById('newGameBtn').addEventListener('click', newGame);
 document.getElementById('resetStatsBtn').addEventListener('click', () => {
   if (confirm('Reset all win statistics?')) { wins = 0; saveWins(); }
 });
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  if (muteBtn) muteBtn.textContent = soundEnabled ? '🔊 Sound' : '🔇 Muted';
+  if (window.GameSounds) GameSounds.setEnabled(soundEnabled);
+}

@@ -157,7 +157,7 @@ function update() {
     score += 10;
     scoreDisplay.textContent = score;
     generateFood();
-    playEatSound();
+    if (soundEnabled && window.GameSounds) GameSounds.snake.eat();
     
     // Increase speed slightly
     speed = Math.max(80, speed - 2);
@@ -182,6 +182,7 @@ function gameOver() {
   clearInterval(gameLoop);
   
   saveHighScore();
+  if (soundEnabled && window.GameSounds) GameSounds.snake.die();
   
   // Show game over message
   ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
@@ -222,6 +223,7 @@ function startGame() {
   
   draw();
   gameLoop = setInterval(gameStep, speed);
+  if (window.GameSounds) GameSounds.unlock();
 }
 
 // Pause game
@@ -260,31 +262,7 @@ function restartGame() {
 function toggleSound() {
   soundEnabled = !soundEnabled;
   muteBtn.textContent = soundEnabled ? '🔊 Sound' : '🔇 Muted';
-}
-
-// Simple sound effects (beep-like using Web Audio API)
-function playEatSound() {
-  if (!soundEnabled) return;
-  
-  try {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    
-    oscillator.frequency.value = 800;
-    oscillator.type = 'sine';
-    
-    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-    
-    oscillator.start(audioCtx.currentTime);
-    oscillator.stop(audioCtx.currentTime + 0.1);
-  } catch (e) {
-    // Silently fail if Web Audio API not supported
-  }
+  if (window.GameSounds) GameSounds.setEnabled(soundEnabled);
 }
 
 // Keyboard controls
