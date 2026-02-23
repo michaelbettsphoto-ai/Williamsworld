@@ -1255,6 +1255,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (williamImgOverlay) williamImgOverlay.src = getWilliamImage(level);
     overlay.classList.add('show');
     audioManager.play('hero_level_up_fanfare');
+    if (window.williamCard) williamCard.levelUp();
     
     // Create particle effects
     for (let i = 0; i < 30; i++) {
@@ -2458,6 +2459,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           const rect = checkItem.getBoundingClientRect();
           showFloatingXP(task.xp, rect.left + rect.width / 2, rect.top);
           
+          // Card deck reaction on task complete
+          if (window.williamCard) williamCard.celebrate();
+
           // Toast with HP if morning task
           if (hpAwarded > 0) {
             toast(`+${task.xp} XP + ${hpAwarded} HP! ❤️`);
@@ -2569,6 +2573,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!pass) {
       const dmg = calcDamage(state.days[TODAY]);
       state.hp = Math.max(0, state.hp - dmg);
+      if (window.williamCard) williamCard.hurt();
     }
     // Cap HP to new max (streak may have changed)
     const maxHP = getMaxHP();
@@ -2578,6 +2583,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     toast(pass ? "🎉 PASS! Streak +1" : `⚠️ FAIL. Streak reset. -${calcDamage(state.days[TODAY])} HP!`);
     if (pass) {
       audioManager.play('pass_day_stinger');
+    if (window.williamCard) williamCard.celebrate();
       const newlyUnlocked = MAP.filter(zone => zone.need > prevMaxStreak && zone.need <= state.maxStreak);
       newlyUnlocked.forEach(zone => {
         toast(`🎉 ${zone.title} Unlocked!`);
@@ -2665,1566 +2671,190 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // William Character Animation System
-  const williamAnimations = [
-    'william-jump',
-    'william-spin',
-    'william-shake',
-    'william-flip',
-    'william-wave',
-    'william-pulse-glow',
-    'william-bounce-rotate',
-    'william-swing',
-    'william-zoom',
-    'william-slide',
-    'william-wobble',
-    'william-float-spin',
-    'william-bounce-scale',
-    'william-rainbow',
-    'william-victory',
-    // Fun animations for kids!
-    'william-fire',
-    'william-fart',
-    'william-throw',
-    'william-burp',
-    'william-sneeze',
-    'william-dizzy',
-    'william-dance',
-    'william-explode',
-    // New skills!
-    'william-water-balloon',
-    'william-slip-out'
+  // ============================================
+  // WILLIAM CARD DECK SYSTEM
+  // ============================================
+  const WILLIAM_CARDS = [
+    { id: 'ready',     src: 'assets/images/william-card-ready.png',     label: 'WILLIAM — Ready',     rarity: 'common' },
+    { id: 'battle',    src: 'assets/images/william-card-battle.png',    label: 'WILLIAM EX — Battle', rarity: 'rare' },
+    { id: 'victory',   src: 'assets/images/william-card-victory.png',   label: 'WILLIAM ★ — Victory', rarity: 'holo' },
+    { id: 'scholar',   src: 'assets/images/william-card-scholar.png',   label: 'WILLIAM Scholar',     rarity: 'uncommon' },
+    { id: 'rest',      src: 'assets/images/william-card-rest.png',      label: 'WILLIAM ZZZ',         rarity: 'common' },
+    { id: 'legendary', src: 'assets/images/william-card-legendary.png', label: 'WILLIAM V-MAX ✦',     rarity: 'secret' },
   ];
 
-  function applyRandomWilliamAnimation() {
-    const williamAvatar = document.getElementById('williamAvatar');
-    if (!williamAvatar) return;
+  let wcDeckState = {
+    currentIndex: 0,
+    isFlipping: false,
+    flipCount: 0,
+  };
 
-    // Play idle sound
-    audioManager.playWilliamIdle();
-
-    // Remove any existing animation
-    williamAvatar.style.animation = 'none';
-    
-    // Force browser reflow to restart animation from beginning
-    // This is a standard technique to retrigger CSS animations
-    void williamAvatar.offsetWidth;
-    
-    // Pick a random animation
-    const randomAnimation = williamAnimations[Math.floor(Math.random() * williamAnimations.length)];
-    
-    // Apply the animation (2 seconds duration)
-    williamAvatar.style.animation = `${randomAnimation} 2s ease-in-out`;
-    
-    // Add particle effects for fun animations
-    if (randomAnimation === 'william-fire') {
-      createFireEffect(williamAvatar);
-    } else if (randomAnimation === 'william-fart') {
-      createFartEffect(williamAvatar);
-    } else if (randomAnimation === 'william-throw') {
-      createThrowEffect(williamAvatar);
-    } else if (randomAnimation === 'william-burp') {
-      createBurpEffect(williamAvatar);
-    } else if (randomAnimation === 'william-sneeze') {
-      createSneezeEffect(williamAvatar);
-    } else if (randomAnimation === 'william-explode') {
-      createExplodeEffect(williamAvatar);
-    } else if (randomAnimation === 'william-water-balloon') {
-      createWaterBalloonEffect(williamAvatar);
-    } else if (randomAnimation === 'william-slip-out') {
-      createSlipOutEffect(williamAvatar);
-    }
-    
-    // Remove animation after it completes
-    setTimeout(() => {
-      if (williamAvatar) williamAvatar.style.animation = 'none';
-    }, 2000);
-  }
-  
-  // Particle effect functions
-  function createFireEffect(element) {
-    const rect = element.getBoundingClientRect();
-    for (let i = 0; i < 15; i++) {
-      setTimeout(() => {
-        const flame = document.createElement('div');
-        flame.textContent = ['🔥', '💥', '✨'][Math.floor(Math.random() * 3)];
-        flame.style.cssText = `
-          position: fixed;
-          left: ${rect.right}px;
-          top: ${rect.top + rect.height / 2}px;
-          font-size: ${20 + Math.random() * 20}px;
-          pointer-events: none;
-          z-index: 10000;
-          animation: fireParticle 1s ease-out forwards;
-        `;
-        document.body.appendChild(flame);
-        setTimeout(() => flame.remove(), 1000);
-      }, i * 80);
-    }
-  }
-  
-  function createFartEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const fartCloud = document.createElement('div');
-    fartCloud.textContent = '💨';
-    fartCloud.style.cssText = `
-      position: fixed;
-      left: ${rect.left - 30}px;
-      top: ${rect.bottom - 40}px;
-      font-size: 40px;
-      pointer-events: none;
-      z-index: 10000;
-      animation: fartParticle 1.5s ease-out forwards;
-    `;
-    document.body.appendChild(fartCloud);
-    
-    // Add extra stink clouds
-    ['💩', '💨', '😷'].forEach((emoji, i) => {
-      setTimeout(() => {
-        const cloud = document.createElement('div');
-        cloud.textContent = emoji;
-        cloud.style.cssText = `
-          position: fixed;
-          left: ${rect.left - 20 + Math.random() * -30}px;
-          top: ${rect.bottom - 30 + Math.random() * -20}px;
-          font-size: ${25 + Math.random() * 15}px;
-          pointer-events: none;
-          z-index: 10000;
-          animation: fartParticle ${1 + Math.random()}s ease-out forwards;
-        `;
-        document.body.appendChild(cloud);
-        setTimeout(() => cloud.remove(), 1500);
-      }, i * 200);
-    });
-    
-    setTimeout(() => fartCloud.remove(), 1500);
-  }
-  
-  function createThrowEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const projectiles = ['🏀', '⚾', '🎾', '🏈', '⚽', '🍕', '🍎', '🍌'];
-    const projectile = document.createElement('div');
-    projectile.textContent = projectiles[Math.floor(Math.random() * projectiles.length)];
-    projectile.style.cssText = `
-      position: fixed;
-      left: ${rect.right}px;
-      top: ${rect.top + rect.height / 2}px;
-      font-size: 30px;
-      pointer-events: none;
-      z-index: 10000;
-      animation: throwParticle 1.2s ease-out forwards;
-    `;
-    document.body.appendChild(projectile);
-    setTimeout(() => projectile.remove(), 1200);
-  }
-  
-  function createBurpEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const burp = document.createElement('div');
-    burp.textContent = '🗣️💨';
-    burp.style.cssText = `
-      position: fixed;
-      left: ${rect.right - 10}px;
-      top: ${rect.top + 20}px;
-      font-size: 35px;
-      pointer-events: none;
-      z-index: 10000;
-      animation: burpParticle 1s ease-out forwards;
-    `;
-    document.body.appendChild(burp);
-    
-    // Add burp text
-    setTimeout(() => {
-      const text = document.createElement('div');
-      text.textContent = 'BURRRP!';
-      text.style.cssText = `
-        position: fixed;
-        left: ${rect.right + 10}px;
-        top: ${rect.top}px;
-        font-size: 20px;
-        font-weight: bold;
-        color: #4ade80;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-        pointer-events: none;
-        z-index: 10000;
-        animation: burpParticle 1s ease-out forwards;
-      `;
-      document.body.appendChild(text);
-      setTimeout(() => text.remove(), 1000);
-    }, 100);
-    
-    setTimeout(() => burp.remove(), 1000);
-  }
-  
-  function createSneezeEffect(element) {
-    const rect = element.getBoundingClientRect();
-    for (let i = 0; i < 10; i++) {
-      const sneeze = document.createElement('div');
-      sneeze.textContent = ['💦', '💧', '🤧'][Math.floor(Math.random() * 3)];
-      const randomX = 50 + Math.random() * 50;
-      const randomY = 30 + Math.random() * 30;
-      sneeze.style.cssText = `
-        position: fixed;
-        left: ${rect.right - 10}px;
-        top: ${rect.top + 30}px;
-        font-size: ${15 + Math.random() * 15}px;
-        pointer-events: none;
-        z-index: 10000;
-        animation: sneezeParticle ${0.8 + Math.random() * 0.4}s ease-out forwards;
-        --random-x: ${randomX}px;
-        --random-y: ${randomY}px;
-      `;
-      // Apply random transform using custom animation
-      const duration = 0.8 + Math.random() * 0.4;
-      sneeze.animate([
-        { transform: 'translateX(0) translateY(0) scale(1)', opacity: 1 },
-        { transform: `translateX(${randomX}px) translateY(-${randomY}px) scale(0.3)`, opacity: 0 }
-      ], {
-        duration: duration * 1000,
-        easing: 'ease-out',
-        fill: 'forwards'
-      });
-      document.body.appendChild(sneeze);
-      setTimeout(() => sneeze.remove(), 1200);
-    }
-    
-    // Add "ACHOO!" text
-    const text = document.createElement('div');
-    text.textContent = 'ACHOO!';
-    text.style.cssText = `
-      position: fixed;
-      left: ${rect.right + 10}px;
-      top: ${rect.top + 20}px;
-      font-size: 22px;
-      font-weight: bold;
-      color: #60a5fa;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-      pointer-events: none;
-      z-index: 10000;
-    `;
-    text.animate([
-      { transform: 'translateY(0) scale(0.8)', opacity: 1 },
-      { transform: 'translateY(-60px) scale(1.5)', opacity: 0 }
-    ], {
-      duration: 1000,
-      easing: 'ease-out',
-      fill: 'forwards'
-    });
-    document.body.appendChild(text);
-    setTimeout(() => text.remove(), 1000);
-  }
-  
-  function createExplodeEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const emojis = ['💥', '⭐', '✨', '💫', '🌟', '🎆', '🎇'];
-    for (let i = 0; i < 20; i++) {
-      setTimeout(() => {
-        const particle = document.createElement('div');
-        particle.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-        const angle = (Math.PI * 2 * i) / 20;
-        const distance = 150;
-        const x = Math.cos(angle) * distance;
-        const y = Math.sin(angle) * distance;
-        particle.style.cssText = `
-          position: fixed;
-          left: ${rect.left + rect.width / 2}px;
-          top: ${rect.top + rect.height / 2}px;
-          font-size: ${15 + Math.random() * 15}px;
-          pointer-events: none;
-          z-index: 10000;
-        `;
-        // Apply transform using Web Animations API for full browser support
-        particle.animate([
-          { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-          { transform: `translate(${x}px, ${y}px) scale(0.5)`, opacity: 0 }
-        ], {
-          duration: 1000,
-          easing: 'ease-out',
-          fill: 'forwards'
-        });
-        document.body.appendChild(particle);
-        setTimeout(() => particle.remove(), 1000);
-      }, i * 20);
-    }
-  }
-  
-  function createWaterBalloonEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const waterBalloon = document.createElement('div');
-    waterBalloon.textContent = '💧';
-    waterBalloon.style.cssText = `
-      position: fixed;
-      left: ${rect.right}px;
-      top: ${rect.top + rect.height / 2}px;
-      font-size: 40px;
-      pointer-events: none;
-      z-index: 10000;
-      animation: waterBalloonParticle 1.5s ease-out forwards;
-    `;
-    document.body.appendChild(waterBalloon);
-    
-    // Create splash effect at the end
-    setTimeout(() => {
-      const splash = document.createElement('div');
-      splash.textContent = '💦';
-      splash.style.cssText = `
-        position: fixed;
-        left: ${rect.right + 200}px;
-        top: ${rect.top + rect.height / 2 - 50}px;
-        font-size: 50px;
-        pointer-events: none;
-        z-index: 10000;
-        animation: waterSplash 0.6s ease-out forwards;
-      `;
-      document.body.appendChild(splash);
-      
-      // Find nearby elements and push them away from splash
-      const splashX = rect.right + 200;
-      const splashY = rect.top + rect.height / 2 - 50;
-      
-      const interactiveElements = [
-        ...document.querySelectorAll('.quest-card'),
-        ...document.querySelectorAll('.btn'),
-        ...document.querySelectorAll('.stat-card')
-      ];
-      
-      interactiveElements.forEach(element => {
-        const elementRect = element.getBoundingClientRect();
-        const elementCenterX = elementRect.left + elementRect.width / 2;
-        const elementCenterY = elementRect.top + elementRect.height / 2;
-        
-        const distance = Math.sqrt(
-          Math.pow(elementCenterX - splashX, 2) + 
-          Math.pow(elementCenterY - splashY, 2)
-        );
-        
-        // If element is within splash range
-        if (distance < 200) {
-          const angle = Math.atan2(elementCenterY - splashY, elementCenterX - splashX);
-          const pushDistance = 20 * (1 - distance / 200);
-          
-          const newX = Math.cos(angle) * pushDistance;
-          const newY = Math.sin(angle) * pushDistance;
-          
-          element.style.transition = 'transform 0.3s ease-out';
-          element.style.transform = `translate(${newX}px, ${newY}px)`;
-          element.style.animation = 'william-wobble 0.5s ease-in-out';
-          
-          setTimeout(() => {
-            element.style.animation = '';
-            element.style.transition = 'transform 1s ease-in-out';
-            element.style.transform = 'translate(0, 0)';
-          }, 500);
+  function wcGetNextCard() {
+    // Weighted random: legendary is rarer
+    const weights = [30, 20, 20, 15, 10, 5]; // ready, battle, victory, scholar, rest, legendary
+    const total = weights.reduce((a, b) => a + b, 0);
+    let r = Math.random() * total;
+    for (let i = 0; i < weights.length; i++) {
+      r -= weights[i];
+      if (r <= 0) {
+        // Don't repeat same card
+        if (i === wcDeckState.currentIndex && WILLIAM_CARDS.length > 1) {
+          return (i + 1) % WILLIAM_CARDS.length;
         }
-      });
-      
-      setTimeout(() => splash.remove(), 600);
-    }, 1050);
-    
-    setTimeout(() => waterBalloon.remove(), 1500);
-  }
-  
-  function createSlipOutEffect(element) {
-    // Add trail of dust clouds as William slips out
-    for (let i = 0; i < 5; i++) {
-      setTimeout(() => {
-        const rect = element.getBoundingClientRect();
-        const dust = document.createElement('div');
-        dust.textContent = '💨';
-        dust.style.cssText = `
-          position: fixed;
-          left: ${rect.left + (i * 30)}px;
-          top: ${rect.bottom - 20}px;
-          font-size: 25px;
-          pointer-events: none;
-          z-index: 9999;
-          animation: fartParticle 1s ease-out forwards;
-        `;
-        document.body.appendChild(dust);
-        setTimeout(() => dust.remove(), 1000);
-      }, i * 200);
-    }
-    
-    // Add "Wheee!" text
-    setTimeout(() => {
-      const rect = element.getBoundingClientRect();
-      const text = document.createElement('div');
-      text.textContent = 'Wheee!';
-      text.style.cssText = `
-        position: fixed;
-        left: ${rect.right + 50}px;
-        top: ${rect.top}px;
-        font-size: 24px;
-        font-weight: bold;
-        color: #ffd36e;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-        pointer-events: none;
-        z-index: 10000;
-      `;
-      text.animate([
-        { transform: 'translateY(0) scale(0.8)', opacity: 1 },
-        { transform: 'translateY(-40px) scale(1.2)', opacity: 0 }
-      ], {
-        duration: 1000,
-        easing: 'ease-out',
-        fill: 'forwards'
-      });
-      document.body.appendChild(text);
-      setTimeout(() => text.remove(), 1000);
-    }, 400);
-  }
-
-  // William Collision Detection System
-  function setupWilliamCollisionDetection() {
-    const williamAvatar = document.getElementById('williamAvatar');
-    if (!williamAvatar) return;
-    
-    // Get all interactive elements that can be bumped
-    const interactiveElements = [
-      ...document.querySelectorAll('.quest-card'),
-      ...document.querySelectorAll('.btn'),
-      ...document.querySelectorAll('.stat-card'),
-      document.getElementById('weatherToggle'),
-      document.getElementById('settingsToggle')
-    ].filter(el => el && el !== williamAvatar);
-    
-    // Check for collisions periodically
-    setInterval(() => {
-      const williamRect = williamAvatar.getBoundingClientRect();
-      
-      interactiveElements.forEach(element => {
-        if (!element) return;
-        
-        const elementRect = element.getBoundingClientRect();
-        
-        // Check if William is colliding with this element
-        const isColliding = !(
-          williamRect.right < elementRect.left ||
-          williamRect.left > elementRect.right ||
-          williamRect.bottom < elementRect.top ||
-          williamRect.top > elementRect.bottom
-        );
-        
-        if (isColliding) {
-          // Calculate push direction based on William's position relative to element
-          const williamCenterX = williamRect.left + williamRect.width / 2;
-          const williamCenterY = williamRect.top + williamRect.height / 2;
-          const elementCenterX = elementRect.left + elementRect.width / 2;
-          const elementCenterY = elementRect.top + elementRect.height / 2;
-          
-          const deltaX = elementCenterX - williamCenterX;
-          const deltaY = elementCenterY - williamCenterY;
-          
-          // Determine primary direction
-          const angle = Math.atan2(deltaY, deltaX);
-          const pushDistance = 10;
-          
-          // Apply push effect
-          const currentTransform = element.style.transform || '';
-          const translateMatch = currentTransform.match(/translate\(([^,]+),\s*([^)]+)\)/);
-          
-          let currentX = 0, currentY = 0;
-          if (translateMatch) {
-            currentX = parseFloat(translateMatch[1]) || 0;
-            currentY = parseFloat(translateMatch[2]) || 0;
-          }
-          
-          const newX = currentX + Math.cos(angle) * pushDistance;
-          const newY = currentY + Math.sin(angle) * pushDistance;
-          
-          // Apply wobble animation and translation
-          element.style.transition = 'transform 0.3s ease-out';
-          element.style.transform = `translate(${newX}px, ${newY}px)`;
-          
-          // Add wobble effect
-          element.style.animation = 'william-wobble 0.5s ease-in-out';
-          
-          // Reset after animation
-          setTimeout(() => {
-            element.style.animation = '';
-            element.style.transition = 'transform 1s ease-in-out';
-            element.style.transform = 'translate(0, 0)';
-          }, 500);
-        }
-      });
-    }, 100);
-  }
-
-  // Weather Effects System
-  const weatherContainer = document.getElementById('weatherContainer');
-  const weatherLightning = document.getElementById('weatherLightning');
-  const weatherToggle = document.getElementById('weatherToggle');
-  const weatherMenu = document.getElementById('weatherMenu');
-  let currentWeather = 'none';
-  let weatherParticles = [];
-  let lightningInterval = null;
-  
-  // Constants
-  const WEATHER_STORAGE_KEY = 'williamsWorldWeather';
-  const MIN_LIGHTNING_INTERVAL = 5000; // 5 seconds
-  const LIGHTNING_INTERVAL_RANGE = 5000; // Additional random 0-5 seconds
-
-  // Create rain
-  function createRain() {
-    clearWeather();
-    const rainCount = 100;
-    for (let i = 0; i < rainCount; i++) {
-      const drop = document.createElement('div');
-      drop.className = 'raindrop';
-      drop.style.left = Math.random() * 100 + '%';
-      drop.style.animationDuration = (Math.random() * 0.5 + 0.5) + 's';
-      drop.style.animationDelay = Math.random() * 2 + 's';
-      weatherContainer.appendChild(drop);
-      weatherParticles.push(drop);
-    }
-  }
-
-  // Create snow
-  function createSnow() {
-    clearWeather();
-    const snowCount = 50;
-    const snowflakes = ['❄', '❅', '❆'];
-    for (let i = 0; i < snowCount; i++) {
-      const flake = document.createElement('div');
-      flake.className = 'snowflake';
-      flake.textContent = snowflakes[Math.floor(Math.random() * snowflakes.length)];
-      flake.style.left = Math.random() * 100 + '%';
-      flake.style.fontSize = (Math.random() * 15 + 15) + 'px';
-      flake.style.animationDuration = (Math.random() * 3 + 3) + 's';
-      flake.style.animationDelay = Math.random() * 3 + 's';
-      weatherContainer.appendChild(flake);
-      weatherParticles.push(flake);
-    }
-  }
-
-  // Create clouds
-  function createClouds() {
-    clearWeather();
-    const cloudCount = 8;
-    const cloudEmojis = ['☁️', '☁', '🌥'];
-    for (let i = 0; i < cloudCount; i++) {
-      const cloud = document.createElement('div');
-      cloud.className = 'cloud';
-      cloud.textContent = cloudEmojis[Math.floor(Math.random() * cloudEmojis.length)];
-      cloud.style.top = (Math.random() * 40) + '%';
-      cloud.style.fontSize = (Math.random() * 40 + 40) + 'px';
-      cloud.style.animationDuration = (Math.random() * 20 + 20) + 's';
-      cloud.style.animationDelay = Math.random() * 10 + 's';
-      cloud.style.left = '-10%';
-      weatherContainer.appendChild(cloud);
-      weatherParticles.push(cloud);
-    }
-  }
-
-  // Create storm (rain + clouds + lightning)
-  function createStorm() {
-    clearWeather();
-    createRain();
-    
-    // Add some dark clouds
-    const cloudCount = 5;
-    for (let i = 0; i < cloudCount; i++) {
-      const cloud = document.createElement('div');
-      cloud.className = 'cloud';
-      cloud.textContent = '☁️';
-      cloud.style.top = (Math.random() * 30) + '%';
-      cloud.style.fontSize = (Math.random() * 50 + 50) + 'px';
-      cloud.style.animationDuration = (Math.random() * 15 + 15) + 's';
-      cloud.style.animationDelay = Math.random() * 8 + 's';
-      cloud.style.left = '-10%';
-      cloud.style.opacity = '0.8';
-      cloud.style.filter = 'brightness(0.6) drop-shadow(0 0 15px rgba(0, 0, 0, 0.5))';
-      weatherContainer.appendChild(cloud);
-      weatherParticles.push(cloud);
-    }
-
-    // Add lightning effect
-    if (lightningInterval) clearInterval(lightningInterval);
-    lightningInterval = setInterval(() => {
-      if (currentWeather === 'storm') {
-        weatherLightning.style.animation = 'lightning 0.4s ease-out';
-        setTimeout(() => {
-          weatherLightning.style.animation = '';
-        }, 400);
+        return i;
       }
-    }, MIN_LIGHTNING_INTERVAL + Math.random() * LIGHTNING_INTERVAL_RANGE);
+    }
+    return 0;
   }
 
-  // Clear all weather
-  function clearWeather() {
-    weatherParticles.forEach(particle => particle.remove());
-    weatherParticles = [];
-    if (lightningInterval) {
-      clearInterval(lightningInterval);
-      lightningInterval = null;
-    }
-    weatherLightning.style.animation = '';
-  }
+  function wcFlipToCard(cardIndex, opts = {}) {
+    const activeCard = document.getElementById('williamActiveCard');
+    const frontImg = document.getElementById('williamCardFront');
+    const label = document.getElementById('williamCardLabel');
+    if (!activeCard || !frontImg) return;
+    if (wcDeckState.isFlipping) return;
 
-  // Set weather
-  function setWeather(weather) {
-    currentWeather = weather;
-    
-    // Update weather icon
-    const weatherIcons = {
-      'none': '☀️',
-      'rain': '🌧️',
-      'snow': '❄️',
-      'clouds': '☁️',
-      'storm': '⛈️'
-    };
-    weatherToggle.textContent = weatherIcons[weather];
+    wcDeckState.isFlipping = true;
+    wcDeckState.flipCount++;
 
-    // Update active state
-    document.querySelectorAll('.weatherOption').forEach(option => {
-      option.classList.toggle('active', option.dataset.weather === weather);
-    });
+    const card = WILLIAM_CARDS[cardIndex];
 
-    // Apply weather effect
-    switch(weather) {
-      case 'rain':
-        createRain();
-        break;
-      case 'snow':
-        createSnow();
-        break;
-      case 'clouds':
-        createClouds();
-        break;
-      case 'storm':
-        createStorm();
-        break;
-      case 'none':
-      default:
-        clearWeather();
-        break;
-    }
-
-    if (audioManager.isInitialized) {
-      if (weather === 'none') {
-        audioManager.stopWeatherAmbience();
-        audioManager.playZoneAmbience(getZoneAmbienceEvent(state.currentZone));
+    // Play card sound
+    if (window.audioManager && audioManager.isInitialized) {
+      if (card.rarity === 'secret') {
+        audioManager.play('hero_level_up_fanfare');
+      } else if (card.rarity === 'holo' || card.rarity === 'rare') {
+        audioManager.play('ui_click_confirm');
       } else {
-        audioManager.stopZoneAmbience();
-        audioManager.playWeatherAmbience(weather);
+        audioManager.play('ui_click_soft');
       }
     }
 
-    // Save to localStorage
-    localStorage.setItem(WEATHER_STORAGE_KEY, weather);
-  }
-
-  function getZoneAmbienceEvent(zoneSlug) {
-    return audioEventsData?.zoneAmbience?.[zoneSlug]?.event || null;
-  }
-
-  // Toggle weather menu
-  weatherToggle.addEventListener('click', () => {
-    weatherMenu.classList.toggle('show');
-  });
-
-  // Weather option click handlers
-  document.querySelectorAll('.weatherOption').forEach(option => {
-    option.addEventListener('click', () => {
-      initAudioOnInteraction();
-      audioManager.play('ui_click_confirm');
-      const weather = option.dataset.weather;
-      setWeather(weather);
-      weatherMenu.classList.remove('show');
-    });
-  });
-
-  // Close menu when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!weatherToggle.contains(e.target) && !weatherMenu.contains(e.target)) {
-      weatherMenu.classList.remove('show');
+    // Spawn sparkles for rare cards
+    if (card.rarity !== 'common') {
+      wcSpawnSparkles(activeCard, card.rarity);
     }
-  });
 
-  // Load saved weather on init
-  const savedWeather = localStorage.getItem(WEATHER_STORAGE_KEY) || 'none';
-  setWeather(savedWeather);
+    // Add ripple
+    wcAddRipple(activeCard);
 
-  // ============================================
-  // AUDIO CONTROLS SYSTEM
-  // ============================================
-  
-  const audioToggle = document.getElementById('audioToggle');
-  const audioSettings = document.getElementById('audioSettings');
-  const musicVolumeSlider = document.getElementById('musicVolume');
-  const ambienceVolumeSlider = document.getElementById('ambienceVolume');
-  const sfxVolumeSlider = document.getElementById('sfxVolume');
-  const reduceSoundCheckbox = document.getElementById('reduceSoundMode');
-  
-  // Initialize audio on first user interaction
-  let audioInitialized = false;
-  let audioUnlocked = false;
-  try {
-    audioUnlocked = localStorage.getItem('williamsworld_audio_unlocked') === 'true';
-  } catch (e) {
-    console.warn('localStorage not available:', e);
-  }
-  
-  function initAudioOnInteraction() {
-    if (!audioInitialized) {
-      audioManager.init();
-      if (audioManager.isInitialized) {
-        audioInitialized = true;
-        audioUnlocked = true;
-        try {
-          localStorage.setItem('williamsworld_audio_unlocked', 'true');
-        } catch (e) {
-          console.warn('localStorage not available:', e);
+    // Start flip — show back
+    activeCard.classList.add('flipping');
+
+    setTimeout(() => {
+      // Mid-flip: swap front image
+      frontImg.src = card.src;
+      if (label) label.textContent = card.label;
+      wcDeckState.currentIndex = cardIndex;
+    }, 275);
+
+    setTimeout(() => {
+      // Complete flip — show front
+      activeCard.classList.remove('flipping');
+      wcDeckState.isFlipping = false;
+
+      // Legendary gets extra glow
+      if (card.rarity === 'secret') {
+        const deck = document.getElementById('williamCardDeck');
+        if (deck) {
+          deck.classList.add('card-levelup');
+          setTimeout(() => deck.classList.remove('card-levelup'), 1200);
         }
-        
-        const unlockEvent = audioEventsData?.autoplayPolicy?.firstGestureUnlock?.recommendedEventToPlay;
-        if (unlockEvent) {
-          audioManager.play(unlockEvent);
-        }
-        if (currentWeather === 'none') {
-          audioManager.playZoneAmbience(getZoneAmbienceEvent(state.currentZone));
-        } else {
-          audioManager.playWeatherAmbience(currentWeather);
-        }
-        audioManager.playMusic(audioManager.getCurrentMusicKey());
-        console.log('Audio initialized on user interaction');
       }
+    }, 600);
+  }
+
+  function wcAddRipple(el) {
+    const ripple = document.createElement('div');
+    ripple.className = 'wcard-tap-ripple';
+    ripple.style.cssText = 'width:40px;height:40px;left:50%;top:50%;margin:-20px 0 0 -20px;';
+    el.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  }
+
+  function wcSpawnSparkles(el, rarity) {
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const emojis = rarity === 'secret'
+      ? ['✨','⭐','🌟','💫','👑','🔥']
+      : rarity === 'holo' || rarity === 'rare'
+      ? ['✨','⭐','💫','🌟']
+      : ['✨','💫'];
+    const count = rarity === 'secret' ? 12 : rarity === 'rare' || rarity === 'holo' ? 7 : 4;
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        const sp = document.createElement('div');
+        sp.className = 'wcard-sparkle';
+        const angle = (Math.PI * 2 * i) / count + Math.random() * 0.5;
+        const dist = 60 + Math.random() * 80;
+        sp.style.cssText = `left:${cx}px;top:${cy}px;--dx:${Math.cos(angle)*dist}px;--dy:${Math.sin(angle)*dist}px;`;
+        sp.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        document.body.appendChild(sp);
+        setTimeout(() => sp.remove(), 900);
+      }, i * 40);
     }
   }
-  
-  // Try autoplay on load if audio was previously unlocked
-  async function tryAutoplayOnLoad() {
-    // Check if audio was unlocked and manager is ready (already initialized with settings loaded)
-    if (audioUnlocked) {
-      try {
-        audioManager.init();
-        if (audioManager.isInitialized && !audioManager.isMuted) {
-          audioInitialized = true;
-          
-          // Use the playMusic method to avoid code duplication
-          audioManager.playMusic(audioManager.getCurrentMusicKey());
-          console.log('Hub music autoplay succeeded');
-        }
-      } catch (error) {
-        // Autoplay blocked - will wait for user gesture
-        console.log('Autoplay blocked, waiting for user gesture');
-        audioInitialized = false;
+
+  // Public API for game events to trigger card reactions
+  window.williamCard = {
+    celebrate() {
+      const deck = document.getElementById('williamCardDeck');
+      if (!deck) return;
+      deck.classList.remove('card-celebrate');
+      void deck.offsetWidth;
+      deck.classList.add('card-celebrate');
+      setTimeout(() => deck.classList.remove('card-celebrate'), 700);
+      // Flip to victory card occasionally
+      if (Math.random() < 0.4) {
+        setTimeout(() => wcFlipToCard(2), 300); // victory
       }
-    }
-  }
-  
-  // Initialize on any user interaction (required for mobile)
-  document.addEventListener('click', initAudioOnInteraction, { once: true });
-  document.addEventListener('touchstart', initAudioOnInteraction, { once: true });
-  
-  // Try autoplay after page loads
-  tryAutoplayOnLoad();
-  
-  // Update volume display values
-  function updateVolumeDisplays() {
-    document.getElementById('musicVolumeValue').textContent = musicVolumeSlider.value + '%';
-    document.getElementById('ambienceVolumeValue').textContent = ambienceVolumeSlider.value + '%';
-    document.getElementById('sfxVolumeValue').textContent = sfxVolumeSlider.value + '%';
-  }
-  
-  // Load saved audio settings into UI
-  function loadAudioSettingsUI() {
-    musicVolumeSlider.value = Math.round(audioManager.volumes.music * 100);
-    ambienceVolumeSlider.value = Math.round(audioManager.volumes.ambience * 100);
-    sfxVolumeSlider.value = Math.round(audioManager.volumes.sfx * 100);
-    reduceSoundCheckbox.checked = audioManager.reduceSoundMode;
-    updateVolumeDisplays();
-    updateAudioToggleIcon();
-  }
-  
-  // Update audio toggle icon based on mute state
-  function updateAudioToggleIcon() {
-    if (audioManager.isMuted) {
-      audioToggle.textContent = '🔇';
-      audioToggle.classList.add('muted');
-    } else {
-      audioToggle.textContent = '🔊';
-      audioToggle.classList.remove('muted');
-    }
-  }
-  
-  // Toggle audio settings panel
-  audioToggle.addEventListener('click', (e) => {
-    initAudioOnInteraction();
-    
-    // If shift-click, toggle mute
-    if (e.shiftKey) {
-      audioManager.toggleMute();
-      updateAudioToggleIcon();
-      audioManager.play('ui.toggleOn');
-      return;
-    }
-    
-    audioSettings.classList.toggle('show');
-    if (audioSettings.classList.contains('show')) {
-      audioManager.play('ui.panelOpen');
-    } else {
-      audioManager.play('ui.panelClose');
-    }
-  });
-  
-  // Music volume slider
-  musicVolumeSlider.addEventListener('input', () => {
-    const value = musicVolumeSlider.value / 100;
-    audioManager.setVolume('music', value);
-    updateVolumeDisplays();
-  });
-  
-  // Ambience volume slider
-  ambienceVolumeSlider.addEventListener('input', () => {
-    const value = ambienceVolumeSlider.value / 100;
-    audioManager.setVolume('ambience', value);
-    updateVolumeDisplays();
-    
-    // Update current weather ambience if playing
-    if (currentWeather && currentWeather !== 'none') {
-      audioManager.playWeatherAmbience(currentWeather);
-    }
-  });
-  
-  // SFX volume slider
-  sfxVolumeSlider.addEventListener('input', () => {
-    const value = sfxVolumeSlider.value / 100;
-    audioManager.setVolume('sfx', value);
-    updateVolumeDisplays();
-    
-    // Play test sound
-    audioManager.play('ui_click_confirm');
-  });
-  
-  // Reduce sound mode checkbox
-  reduceSoundCheckbox.addEventListener('change', () => {
-    audioManager.setReduceSoundMode(reduceSoundCheckbox.checked);
-    audioManager.play('ui.toggleOn');
-  });
-  
-  // Close audio settings when clicking outside
-  document.addEventListener('click', (e) => {
-    if (!audioToggle.contains(e.target) && !audioSettings.contains(e.target)) {
-      if (audioSettings.classList.contains('show')) {
-        audioSettings.classList.remove('show');
-        audioManager.play('ui.panelClose');
-      }
-    }
-  });
-  
-  // Load audio settings on init
-  loadAudioSettingsUI();
-  
-  // Delay for autoplay check to complete before showing prompt
-  const AUTOPLAY_CHECK_DELAY_MS = 500;
-  setTimeout(() => {
-    if (!audioInitialized) {
-      toast('Tap anywhere to enable sound');
-    }
-  }, AUTOPLAY_CHECK_DELAY_MS);
-  
-  // Connect weather changes to audio
-  const originalSetWeather = setWeather;
-  setWeather = function(weather) {
-    originalSetWeather(weather);
-    
-    // Play weather ambience
-    if (weather === 'none') {
-      audioManager.playWeatherAmbience('sunny');
-    } else {
-      audioManager.playWeatherAmbience(weather);
-    }
+    },
+    hurt() {
+      const deck = document.getElementById('williamCardDeck');
+      if (!deck) return;
+      deck.classList.remove('card-hurt');
+      void deck.offsetWidth;
+      deck.classList.add('card-hurt');
+      setTimeout(() => deck.classList.remove('card-hurt'), 500);
+    },
+    levelUp() {
+      const deck = document.getElementById('williamCardDeck');
+      if (!deck) return;
+      deck.classList.add('card-levelup');
+      setTimeout(() => deck.classList.remove('card-levelup'), 1200);
+      // Flip to legendary or battle card
+      const idx = Math.random() < 0.3 ? 5 : 1; // legendary or battle
+      setTimeout(() => wcFlipToCard(idx), 400);
+    },
+    battle() { wcFlipToCard(1); },
+    rest()    { wcFlipToCard(4); },
+    study()   { wcFlipToCard(3); },
+    ready()   { wcFlipToCard(0); },
   };
 
-  // ============================================
-  // WILLIAM EASTER EGG EMOTE SYSTEM
-  // ============================================
-  
-  // Easter Egg Animations (Click-Triggered)
-  const easterEggEmotes = [
-    { name: 'easter-confetti-sneezus', effect: 'confettiSneeze', duration: 3000 },
-    { name: 'easter-banana-slip', effect: 'bananaSlip', duration: 4000 },
-    { name: 'easter-bubble-burp', effect: 'bubbleBurp', duration: 3000 },
-    { name: 'easter-pie-trap', effect: 'pieTrap', duration: 3000 },
-    { name: 'easter-rubber-chicken', effect: 'rubberChicken', duration: 3000 },
-    { name: 'easter-hero-landing', effect: 'heroLanding', duration: 2500 },
-    { name: 'easter-endless-scarf', effect: 'endlessScarf', duration: 4000 },
-    { name: 'easter-frog-crown', effect: 'frogCrown', duration: 3000 },
-    { name: 'easter-chipmunk-voice', effect: 'chipmunkVoice', duration: 3000 },
-    { name: 'easter-marshmallow-volley', effect: 'marshmallowVolley', duration: 3000 },
-    { name: 'easter-hair-tornado', effect: 'hairTornado', duration: 3500 },
-    { name: 'easter-tiger-shuffle', effect: 'tigerShuffle', duration: 3000 },
-    { name: 'easter-lego-step', effect: 'legoStep', duration: 3000 },
-    { name: 'easter-goose-chase', effect: 'gooseChase', duration: 4000 },
-    { name: 'easter-sock-chest', effect: 'sockChest', duration: 3500 }
-  ];
-  
-  // State machine for William animations
-  let williamState = {
-    current: 'idle', // idle, auto-emote, easter-egg, rest
-    lastEasterEgg: null,
-    clickCount: 0,
-    clickTimestamps: [],
-    isOnCooldown: false,
-    restUntil: null,
-    autoEmoteTimer: null,
-    nextAutoEmoteTime: null
-  };
-  
-  // Easter Egg Particle Effects
-  function createConfettiSneezeEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const confetti = ['🎊', '🎉', '✨', '⭐', '💫'];
-    for (let i = 0; i < 20; i++) {
-      setTimeout(() => {
-        const particle = document.createElement('div');
-        particle.textContent = confetti[Math.floor(Math.random() * confetti.length)];
-        const angle = Math.random() * Math.PI * 2;
-        const distance = 80 + Math.random() * 70;
-        const x = Math.cos(angle) * distance;
-        const y = Math.sin(angle) * distance;
-        particle.style.cssText = `
-          position: fixed;
-          left: ${rect.right - 10}px;
-          top: ${rect.top + 40}px;
-          font-size: ${20 + Math.random() * 15}px;
-          pointer-events: none;
-          z-index: 10000;
-        `;
-        particle.animate([
-          { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-          { transform: `translate(${x}px, ${y}px) scale(0.3) rotate(${Math.random() * 720}deg)`, opacity: 0 }
-        ], { duration: 1000, easing: 'ease-out', fill: 'forwards' });
-        document.body.appendChild(particle);
-        setTimeout(() => particle.remove(), 1000);
-      }, i * 30);
+  // Init card deck click handler
+  if (document.getElementById('williamCardDeck')) {
+    const deck = document.getElementById('williamCardDeck');
+
+    function handleCardClick(e) {
+      e.stopPropagation();
+      if (wcDeckState.isFlipping) return;
+      const nextIdx = wcGetNextCard();
+      wcFlipToCard(nextIdx);
     }
-  }
-  
-  function createBananaSlipEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const banana = document.createElement('div');
-    banana.textContent = '🍌';
-    banana.style.cssText = `
-      position: fixed;
-      left: ${rect.left - 20}px;
-      top: ${rect.bottom - 10}px;
-      font-size: 30px;
-      pointer-events: none;
-      z-index: 10000;
-    `;
-    document.body.appendChild(banana);
-    setTimeout(() => banana.remove(), 2000);
-    
-    // Thumbs up at the end
-    setTimeout(() => {
-      const thumbsUp = document.createElement('div');
-      thumbsUp.textContent = '👍';
-      thumbsUp.style.cssText = `
-        position: fixed;
-        left: ${rect.right + 10}px;
-        top: ${rect.top + 20}px;
-        font-size: 40px;
-        pointer-events: none;
-        z-index: 10000;
-      `;
-      thumbsUp.animate([
-        { transform: 'scale(0)', opacity: 0 },
-        { transform: 'scale(1.2)', opacity: 1 },
-        { transform: 'scale(1)', opacity: 1 }
-      ], { duration: 500, easing: 'ease-out' });
-      document.body.appendChild(thumbsUp);
-      setTimeout(() => thumbsUp.remove(), 1500);
-    }, 3000);
-  }
-  
-  function createBubbleBurpEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const bubble = document.createElement('div');
-    bubble.textContent = '💭';
-    bubble.style.cssText = `
-      position: fixed;
-      left: ${rect.right}px;
-      top: ${rect.top + 30}px;
-      font-size: 40px;
-      pointer-events: none;
-      z-index: 10000;
-    `;
-    bubble.animate([
-      { transform: 'translateY(0) scale(0.8)', opacity: 0.8 },
-      { transform: 'translateY(-100px) scale(1.5)', opacity: 0 }
-    ], { duration: 2000, easing: 'ease-out', fill: 'forwards' });
-    document.body.appendChild(bubble);
-    
-    // Sparkles when it pops
-    setTimeout(() => {
-      const sparkles = ['✨', '⭐', '💫'];
-      for (let i = 0; i < 8; i++) {
-        const sparkle = document.createElement('div');
-        sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
-        const angle = (Math.PI * 2 * i) / 8;
-        const distance = 50;
-        const x = Math.cos(angle) * distance;
-        const y = Math.sin(angle) * distance;
-        sparkle.style.cssText = `
-          position: fixed;
-          left: ${rect.right}px;
-          top: ${rect.top - 70}px;
-          font-size: 20px;
-          pointer-events: none;
-          z-index: 10000;
-        `;
-        sparkle.animate([
-          { transform: 'translate(0, 0) scale(1)', opacity: 1 },
-          { transform: `translate(${x}px, ${y}px) scale(0.5)`, opacity: 0 }
-        ], { duration: 600, easing: 'ease-out', fill: 'forwards' });
-        document.body.appendChild(sparkle);
-        setTimeout(() => sparkle.remove(), 600);
-      }
-    }, 1800);
-    setTimeout(() => bubble.remove(), 2000);
-  }
-  
-  function createPieTrapEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const pie = document.createElement('div');
-    pie.textContent = '🥧';
-    pie.style.cssText = `
-      position: fixed;
-      left: ${rect.right - 20}px;
-      top: ${rect.top + 10}px;
-      font-size: 50px;
-      pointer-events: none;
-      z-index: 10000;
-    `;
-    pie.animate([
-      { transform: 'scale(0) rotate(0deg)', opacity: 0 },
-      { transform: 'scale(1.5) rotate(360deg)', opacity: 1 },
-      { transform: 'scale(1) rotate(360deg)', opacity: 0 }
-    ], { duration: 800, easing: 'ease-out', fill: 'forwards' });
-    document.body.appendChild(pie);
-    setTimeout(() => pie.remove(), 800);
-  }
-  
-  function createRubberChickenEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const chicken = document.createElement('div');
-    chicken.textContent = '🐔';
-    chicken.style.cssText = `
-      position: fixed;
-      left: ${rect.right + 10}px;
-      top: ${rect.top + 30}px;
-      font-size: 40px;
-      pointer-events: none;
-      z-index: 10000;
-    `;
-    chicken.animate([
-      { transform: 'translateY(20px) scale(0)', opacity: 0 },
-      { transform: 'translateY(0) scale(1)', opacity: 1 },
-      { transform: 'translateY(0) scale(1.1)', opacity: 1 },
-      { transform: 'translateY(20px) scale(0)', opacity: 0 }
-    ], { duration: 2500, easing: 'ease-in-out', fill: 'forwards' });
-    document.body.appendChild(chicken);
-    setTimeout(() => chicken.remove(), 2500);
-  }
-  
-  function createHeroLandingEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const impact = document.createElement('div');
-    impact.textContent = '💥';
-    impact.style.cssText = `
-      position: fixed;
-      left: ${rect.left + rect.width / 2 - 20}px;
-      top: ${rect.bottom - 10}px;
-      font-size: 40px;
-      pointer-events: none;
-      z-index: 10000;
-    `;
-    impact.animate([
-      { transform: 'scale(0)', opacity: 0 },
-      { transform: 'scale(1.5)', opacity: 1 },
-      { transform: 'scale(0)', opacity: 0 }
-    ], { duration: 600, easing: 'ease-out', fill: 'forwards' });
-    document.body.appendChild(impact);
-    setTimeout(() => impact.remove(), 600);
-  }
-  
-  function createEndlessScarfEffect(element) {
-    const rect = element.getBoundingClientRect();
-    for (let i = 0; i < 10; i++) {
-      setTimeout(() => {
-        const scarf = document.createElement('div');
-        scarf.textContent = '🧣';
-        scarf.style.cssText = `
-          position: fixed;
-          left: ${rect.right + (i * 15)}px;
-          top: ${rect.top + 40}px;
-          font-size: 25px;
-          pointer-events: none;
-          z-index: 10000;
-        `;
-        scarf.animate([
-          { transform: 'translateX(0) scale(0)', opacity: 0 },
-          { transform: 'translateX(0) scale(1)', opacity: 1 },
-          { transform: 'translateX(0) scale(1)', opacity: 0.5 }
-        ], { duration: 300, easing: 'ease-out', fill: 'forwards' });
-        document.body.appendChild(scarf);
-        setTimeout(() => scarf.remove(), 3000);
-      }, i * 200);
-    }
-  }
-  
-  function createFrogCrownEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const frog = document.createElement('div');
-    frog.textContent = '🐸';
-    frog.style.cssText = `
-      position: fixed;
-      left: ${rect.left + rect.width / 2 - 20}px;
-      top: ${rect.top - 40}px;
-      font-size: 40px;
-      pointer-events: none;
-      z-index: 10000;
-    `;
-    frog.animate([
-      { transform: 'translateY(20px) scale(0)', opacity: 0 },
-      { transform: 'translateY(0) scale(1)', opacity: 1 }
-    ], { duration: 500, easing: 'ease-out', fill: 'forwards' });
-    document.body.appendChild(frog);
-    setTimeout(() => frog.remove(), 2500);
-    
-    // Ribbit text
-    setTimeout(() => {
-      const text = document.createElement('div');
-      text.textContent = 'Ribbit!';
-      text.style.cssText = `
-        position: fixed;
-        left: ${rect.right + 10}px;
-        top: ${rect.top}px;
-        font-size: 20px;
-        font-weight: bold;
-        color: #4ade80;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-        pointer-events: none;
-        z-index: 10000;
-      `;
-      text.animate([
-        { transform: 'scale(0)', opacity: 0 },
-        { transform: 'scale(1.2)', opacity: 1 },
-        { transform: 'scale(1)', opacity: 0 }
-      ], { duration: 1000, easing: 'ease-out', fill: 'forwards' });
-      document.body.appendChild(text);
-      setTimeout(() => text.remove(), 1000);
-    }, 1000);
-  }
-  
-  function createChipmunkVoiceEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const notes = ['🎵', '🎶', '🎼'];
-    for (let i = 0; i < 6; i++) {
-      setTimeout(() => {
-        const note = document.createElement('div');
-        note.textContent = notes[Math.floor(Math.random() * notes.length)];
-        note.style.cssText = `
-          position: fixed;
-          left: ${rect.right + (i * 10)}px;
-          top: ${rect.top + 20}px;
-          font-size: ${20 + Math.random() * 10}px;
-          pointer-events: none;
-          z-index: 10000;
-        `;
-        note.animate([
-          { transform: 'translateY(0) scale(0.5)', opacity: 1 },
-          { transform: 'translateY(-60px) scale(1)', opacity: 0 }
-        ], { duration: 1500, easing: 'ease-out', fill: 'forwards' });
-        document.body.appendChild(note);
-        setTimeout(() => note.remove(), 1500);
-      }, i * 200);
-    }
-  }
-  
-  function createMarshmallowVolleyEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const marshmallow = document.createElement('div');
-    marshmallow.textContent = '🍡';
-    marshmallow.style.cssText = `
-      position: fixed;
-      left: ${rect.right}px;
-      top: ${rect.top + rect.height / 2}px;
-      font-size: 30px;
-      pointer-events: none;
-      z-index: 10000;
-    `;
-    marshmallow.animate([
-      { transform: 'translateX(0) translateY(0)', opacity: 1 },
-      { transform: 'translateX(150px) translateY(-60px)', opacity: 1 },
-      { transform: 'translateX(0) translateY(0)', opacity: 1 }
-    ], { duration: 1500, easing: 'ease-in-out', fill: 'forwards' });
-    document.body.appendChild(marshmallow);
-    setTimeout(() => marshmallow.remove(), 1500);
-  }
-  
-  function createHairTornadoEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const tornado = document.createElement('div');
-    tornado.textContent = '🌪️';
-    tornado.style.cssText = `
-      position: fixed;
-      left: ${rect.left + rect.width / 2 - 20}px;
-      top: ${rect.top - 50}px;
-      font-size: 50px;
-      pointer-events: none;
-      z-index: 10000;
-    `;
-    tornado.animate([
-      { transform: 'scale(0) rotate(0deg)', opacity: 0 },
-      { transform: 'scale(1) rotate(360deg)', opacity: 1 },
-      { transform: 'scale(1) rotate(720deg)', opacity: 1 },
-      { transform: 'scale(0) rotate(1080deg)', opacity: 0 }
-    ], { duration: 2000, easing: 'ease-in-out', fill: 'forwards' });
-    document.body.appendChild(tornado);
-    setTimeout(() => tornado.remove(), 2000);
-  }
-  
-  function createTigerShuffleEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const pawPrints = ['🐾'];
-    for (let i = 0; i < 8; i++) {
-      setTimeout(() => {
-        const paw = document.createElement('div');
-        paw.textContent = pawPrints[0];
-        paw.style.cssText = `
-          position: fixed;
-          left: ${rect.left + rect.width / 2 + (i % 2 === 0 ? -30 : 30)}px;
-          top: ${rect.bottom - 20 + (i * 10)}px;
-          font-size: 25px;
-          pointer-events: none;
-          z-index: 9999;
-        `;
-        paw.animate([
-          { transform: 'scale(0)', opacity: 0 },
-          { transform: 'scale(1)', opacity: 1 },
-          { transform: 'scale(1)', opacity: 0 }
-        ], { duration: 800, easing: 'ease-out', fill: 'forwards' });
-        document.body.appendChild(paw);
-        setTimeout(() => paw.remove(), 800);
-      }, i * 150);
-    }
-  }
-  
-  function createLegoStepEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const lego = document.createElement('div');
-    lego.textContent = '🧱';
-    lego.style.cssText = `
-      position: fixed;
-      left: ${rect.left + rect.width / 2 - 15}px;
-      top: ${rect.bottom - 10}px;
-      font-size: 30px;
-      pointer-events: none;
-      z-index: 10000;
-    `;
-    document.body.appendChild(lego);
-    setTimeout(() => lego.remove(), 2500);
-    
-    // "OUCH!" text
-    const text = document.createElement('div');
-    text.textContent = 'OUCH!';
-    text.style.cssText = `
-      position: fixed;
-      left: ${rect.right + 10}px;
-      top: ${rect.top}px;
-      font-size: 24px;
-      font-weight: bold;
-      color: #ef4444;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-      pointer-events: none;
-      z-index: 10000;
-    `;
-    text.animate([
-      { transform: 'scale(0)', opacity: 0 },
-      { transform: 'scale(1.3)', opacity: 1 },
-      { transform: 'scale(1)', opacity: 0 }
-    ], { duration: 1000, easing: 'ease-out', fill: 'forwards' });
-    document.body.appendChild(text);
-    setTimeout(() => text.remove(), 1000);
-  }
-  
-  function createGooseChaseEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const goose = document.createElement('div');
-    goose.textContent = '🦆';
-    goose.style.cssText = `
-      position: fixed;
-      left: ${rect.right + 20}px;
-      top: ${rect.top + rect.height / 2 - 20}px;
-      font-size: 40px;
-      pointer-events: none;
-      z-index: 10000;
-    `;
-    goose.animate([
-      { transform: 'translateX(0) scale(1)', opacity: 1 },
-      { transform: 'translateX(-50px) scale(1.1)', opacity: 1 },
-      { transform: 'translateX(0) scale(1)', opacity: 1 }
-    ], { duration: 2000, easing: 'ease-in-out', fill: 'forwards' });
-    document.body.appendChild(goose);
-    
-    // Feather at the end
-    setTimeout(() => {
-      const feather = document.createElement('div');
-      feather.textContent = '🪶';
-      feather.style.cssText = `
-        position: fixed;
-        left: ${rect.right + 20}px;
-        top: ${rect.top + rect.height / 2 - 20}px;
-        font-size: 30px;
-        pointer-events: none;
-        z-index: 10000;
-      `;
-      feather.animate([
-        { transform: 'translateY(0) rotate(0deg) scale(0)', opacity: 0 },
-        { transform: 'translateY(-50px) rotate(360deg) scale(1)', opacity: 1 }
-      ], { duration: 1000, easing: 'ease-out', fill: 'forwards' });
-      document.body.appendChild(feather);
-      setTimeout(() => feather.remove(), 2000);
-    }, 2500);
-    
-    setTimeout(() => goose.remove(), 3500);
-  }
-  
-  function createSockChestEffect(element) {
-    const rect = element.getBoundingClientRect();
-    const chest = document.createElement('div');
-    chest.textContent = '🧦🧦🧦';
-    chest.style.cssText = `
-      position: fixed;
-      left: ${rect.right}px;
-      top: ${rect.top + 20}px;
-      font-size: 35px;
-      pointer-events: none;
-      z-index: 10000;
-    `;
-    chest.animate([
-      { transform: 'translateY(20px) scale(0)', opacity: 0 },
-      { transform: 'translateY(0) scale(1.2)', opacity: 1 },
-      { transform: 'translateY(-10px) scale(1)', opacity: 1 }
-    ], { duration: 800, easing: 'ease-out', fill: 'forwards' });
-    document.body.appendChild(chest);
-    setTimeout(() => chest.remove(), 2500);
-  }
-  
-  // Call particle effect based on emote name
-  function triggerEasterEggEffect(effectName, element) {
-    const effects = {
-      confettiSneeze: createConfettiSneezeEffect,
-      bananaSlip: createBananaSlipEffect,
-      bubbleBurp: createBubbleBurpEffect,
-      pieTrap: createPieTrapEffect,
-      rubberChicken: createRubberChickenEffect,
-      heroLanding: createHeroLandingEffect,
-      endlessScarf: createEndlessScarfEffect,
-      frogCrown: createFrogCrownEffect,
-      chipmunkVoice: createChipmunkVoiceEffect,
-      marshmallowVolley: createMarshmallowVolleyEffect,
-      hairTornado: createHairTornadoEffect,
-      tigerShuffle: createTigerShuffleEffect,
-      legoStep: createLegoStepEffect,
-      gooseChase: createGooseChaseEffect,
-      sockChest: createSockChestEffect
-    };
-    
-    if (effects[effectName]) {
-      effects[effectName](element);
-    }
-  }
-  
-  // Apply Easter egg emote
-  function applyEasterEggEmote() {
-    const williamAvatar = document.getElementById('williamAvatar');
-    if (!williamAvatar || williamState.current === 'rest') return;
-    
-    // Get available emotes (exclude last played for no immediate repeats)
-    let availableEmotes = easterEggEmotes;
-    if (williamState.lastEasterEgg) {
-      availableEmotes = easterEggEmotes.filter(e => e.name !== williamState.lastEasterEgg);
-    }
-    
-    // Pick random Easter egg
-    const emote = availableEmotes[Math.floor(Math.random() * availableEmotes.length)];
-    williamState.lastEasterEgg = emote.name;
-    williamState.current = 'easter-egg';
-    
-    // Remove any existing animation
-    williamAvatar.style.animation = 'none';
-    void williamAvatar.offsetWidth;
-    
-    // Apply the Easter egg animation
-    williamAvatar.style.animation = `${emote.name} ${emote.duration}ms ease-in-out`;
-    
-    // Trigger particle effect
-    triggerEasterEggEffect(emote.effect, williamAvatar);
-    
-    // Return to idle after animation completes
-    setTimeout(() => {
-      williamAvatar.style.animation = 'none';
-      williamState.current = 'idle';
-      
-      // If auto-emote was scheduled during Easter egg, reschedule it
-      if (williamState.nextAutoEmoteTime && Date.now() > williamState.nextAutoEmoteTime) {
-        scheduleNextAutoEmote();
-      }
-    }, emote.duration);
-  }
-  
-  // Check for anti-spam (5+ clicks in ~3 seconds)
-  function checkAntiSpam() {
-    const now = Date.now();
-    williamState.clickTimestamps = williamState.clickTimestamps.filter(t => now - t < 3000);
-    
-    if (williamState.clickTimestamps.length >= 5) {
-      enterRestState();
-      return true;
-    }
-    return false;
-  }
-  
-  // Enter rest state (60 second break)
-  function enterRestState() {
-    const williamAvatar = document.getElementById('williamAvatar');
-    const restOverlay = document.getElementById('williamRestOverlay');
-    if (!williamAvatar || !restOverlay) return;
-    
-    williamState.current = 'rest';
-    williamState.restUntil = Date.now() + 60000; // 60 seconds
-    williamState.clickTimestamps = [];
-    
-    // Clear auto-emote timer
-    if (williamState.autoEmoteTimer) {
-      clearTimeout(williamState.autoEmoteTimer);
-      williamState.autoEmoteTimer = null;
-    }
-    
-    // Apply rest animation
-    williamAvatar.style.animation = 'none';
-    void williamAvatar.offsetWidth;
-    williamAvatar.style.animation = 'easter-rest-state 3s ease-in-out infinite';
-    
-    // Show rest overlay
-    restOverlay.classList.add('show');
-    
-    // Countdown timer
-    const countdownEl = document.getElementById('restCountdown');
-    const countdownInterval = setInterval(() => {
-      const remaining = Math.ceil((williamState.restUntil - Date.now()) / 1000);
-      if (countdownEl) countdownEl.textContent = Math.max(0, remaining);
-      
-      if (remaining <= 0) {
-        clearInterval(countdownInterval);
-        exitRestState();
-      }
-    }, 1000);
-  }
-  
-  // Exit rest state
-  function exitRestState() {
-    const williamAvatar = document.getElementById('williamAvatar');
-    const restOverlay = document.getElementById('williamRestOverlay');
-    if (!williamAvatar || !restOverlay) return;
-    
-    williamState.current = 'idle';
-    williamState.restUntil = null;
-    
-    // Remove rest animation
-    williamAvatar.style.animation = 'none';
-    
-    // Hide rest overlay
-    restOverlay.classList.remove('show');
-    
-    // Resume auto-emote cycle
-    scheduleNextAutoEmote();
-  }
-  
-  // Handle William avatar click
-  function handleWilliamClick() {
-    initAudioOnInteraction(); // Initialize audio on first interaction
-    
-    if (williamState.current === 'rest') {
-      // During rest, just show a tiny blink (do nothing for now)
-      return;
-    }
-    
-    // Always play tap sound first
-    audioManager.playWilliamTap();
-    
-    // Track click for anti-spam
-    williamState.clickTimestamps.push(Date.now());
-    
-    // Check for spam
-    if (checkAntiSpam()) {
-      return;
-    }
-    
-    // Check cooldown
-    if (williamState.isOnCooldown) {
-      return;
-    }
-    
-    // Play Easter egg sound
-    audioManager.playWilliamEasterEgg();
-    
-    // Trigger Easter egg emote
-    applyEasterEggEmote();
-    
-    // Set cooldown (1-2 seconds random)
-    williamState.isOnCooldown = true;
-    const cooldownDuration = 1000 + Math.random() * 1000; // 1-2 seconds
-    setTimeout(() => {
-      williamState.isOnCooldown = false;
-    }, cooldownDuration);
-  }
-  
-  // Schedule next auto-emote
-  function scheduleNextAutoEmote() {
-    // Clear existing timer
-    if (williamState.autoEmoteTimer) {
-      clearTimeout(williamState.autoEmoteTimer);
-    }
-    
-    // Schedule next emote in 10 seconds
-    williamState.nextAutoEmoteTime = Date.now() + 10000;
-    williamState.autoEmoteTimer = setTimeout(() => {
-      // Only play if not in Easter egg or rest state
-      if (williamState.current === 'idle') {
-        applyRandomWilliamAnimation();
-      }
-      
-      // Schedule next one
-      scheduleNextAutoEmote();
-    }, 10000);
-  }
-  
-  // Start the animation timer (every 10 seconds for Easter egg unlock window) - only if element exists
-  if (document.getElementById('williamAvatar')) {
-    const williamAvatar = document.getElementById('williamAvatar');
-    
-    // Add click handler
-    williamAvatar.addEventListener('click', handleWilliamClick);
-    williamAvatar.addEventListener('touchend', (e) => {
+
+    deck.addEventListener('click', handleCardClick);
+    deck.addEventListener('touchend', (e) => {
       e.preventDefault();
-      handleWilliamClick();
+      handleCardClick(e);
     });
-    
-    // Add glow class for affordance
-    williamAvatar.classList.add('clickable-glow');
-    
-    // Trigger the first animation after 1 second
-    setTimeout(applyRandomWilliamAnimation, 1000);
-    
-    // Start the 10-second cycle
-    scheduleNextAutoEmote();
 
-    // Setup collision detection after DOM is ready
-    setTimeout(setupWilliamCollisionDetection, 100);
+    // Show hint briefly then fade
+    const hint = document.getElementById('williamCardHint');
+    if (hint) {
+      setTimeout(() => { hint.style.opacity = '0'; hint.style.transition = 'opacity 1s'; }, 4000);
+    }
   }
 
   // INIT
