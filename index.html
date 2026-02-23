@@ -2732,8 +2732,8 @@
           <button data-section="tracker">Tracker</button>
           <button data-section="party">Party</button>
           <button data-section="map">Map</button>
-          <button onclick="window.location.href='games/index.html'">🎮 Games</button>
-          <button onclick="window.location.href='battle.html'">⚔️ Battle System</button>
+          <button onclick="if(window.audioManager&&audioManager.isInitialized)audioManager.play('ui_click_confirm');window.location.href='games/index.html'">🎮 Games</button>
+          <button onclick="if(window.audioManager&&audioManager.isInitialized)audioManager.play('ui_click_confirm');window.location.href='battle.html'">⚔️ Battle System</button>
         </div>
       </div>
     </div>

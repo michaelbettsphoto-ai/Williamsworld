@@ -470,6 +470,22 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Gameplay
         'gameplay.battleHit': ['gameplay/battle-hit'],
+        // Mission / bomb / wire events
+        'sfx.wireCut':          ['sfx/wire_cut'],
+        'sfx.bombTick':         ['sfx/bomb_tick'],
+        'sfx.bombDisarmed':     ['sfx/bomb_disarmed'],
+        'sfx.bombExploded':     ['sfx/bomb_exploded'],
+        'sfx.missionComplete':  ['sfx/mission_complete'],
+        'sfx.missionFailed':    ['sfx/mission_failed'],
+        // Progression events
+        'sfx.xpEarn':           ['sfx/xp_earn'],
+        'sfx.hpGain':           ['sfx/hp_gain'],
+        'sfx.hpLoss':           ['sfx/hp_loss'],
+        'sfx.goldEarn':         ['sfx/gold_earn'],
+        'sfx.goldSpend':        ['sfx/gold_spend'],
+        'sfx.streakBonus':      ['sfx/streak_bonus'],
+        'sfx.levelDown':        ['sfx/level_down'],
+        'sfx.zoneEnter':        ['sfx/zone_enter'],
       };
 
       if (this.audioEvents?.events) {
@@ -1054,6 +1070,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (state.morningMission.streak % MORNING_MISSION.STREAK_BONUS_INTERVAL === 0) {
       state.hp += MORNING_MISSION.STREAK_BONUS_HP;
       if (state.hp > maxHP) state.hp = maxHP;
+      if (audioManager.isInitialized) audioManager.play('sfx.streakBonus');
       toast(`🎉 Mission Complete! +${MORNING_MISSION.HP_COMPLETION_BONUS} HP + Streak +${MORNING_MISSION.STREAK_BONUS_HP} HP!`);
     } else {
       toast(`🎉 Morning Mission Complete! +${MORNING_MISSION.HP_COMPLETION_BONUS} HP`);
@@ -1320,6 +1337,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       statusBanner.textContent = '🎉 Morning Mission Complete!';
       bombVisual.innerHTML = '<div class="bombDisarmed">💚 DISARMED</div>';
       bombVisual.className = 'bombVisual disarmed';
+      if (audioManager.isInitialized) audioManager.play('sfx.bombDisarmed');
     } else if (missionState.status === 'failed') {
       timerEl.style.display = 'none';
       statusBanner.style.display = 'block';
@@ -1330,6 +1348,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       statusBanner.innerHTML = `💥 Morning Mission Failed<br><span class="small">You missed: ${missedTasks}</span>`;
       bombVisual.innerHTML = '<div class="bombExploded">💥 BOOM!</div>';
       bombVisual.className = 'bombVisual exploded';
+      if (audioManager.isInitialized) audioManager.play('sfx.bombExploded');
     } else if (isWeekend()) {
       // Weekend — hide the bomb UI entirely, just show the checklist
       timerEl.style.display = 'none';
@@ -1388,6 +1407,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       if (isMorningTaskCompletedToday(taskId)) {
         wireBadge.classList.add('cut');
+        if (audioManager.isInitialized) audioManager.play('sfx.wireCut');
       } else {
         wireBadge.classList.remove('cut');
       }
@@ -1440,6 +1460,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Show mission success animation
   function showMorningMissionSuccess() {
+    if (audioManager.isInitialized) audioManager.play('sfx.missionComplete');
     const overlay = document.createElement('div');
     overlay.className = 'missionOverlay success';
     overlay.innerHTML = `
@@ -1480,6 +1501,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   
   // Show mission failed animation
   function showMorningMissionFailed() {
+    if (audioManager.isInitialized) audioManager.play('sfx.missionFailed');
     const overlay = document.createElement('div');
     overlay.className = 'missionOverlay failed';
     
@@ -2200,6 +2222,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!state.selectedParty || state.selectedParty.length !== 2) {
       state.selectedParty = COMPANIONS.slice(0, 2);
     }
+    if (audioManager.isInitialized) audioManager.play('sfx.zoneEnter');
     save();
     window.location.href = `./battle.html?zone=${zone.slug}`;
   }
@@ -2421,12 +2444,14 @@ document.addEventListener('DOMContentLoaded', async () => {
               state.hp += hpAwarded;
               const maxHP = getMaxHP();
               if (state.hp > maxHP) state.hp = maxHP;
+              if (audioManager.isInitialized) audioManager.play('sfx.hpGain');
             }
           }
           
           state.xp += task.xp;
           addCompanionXP(Math.floor(task.xp * COMPANION_XP_SHARE));
           state.warChest += Math.floor(task.xp * WAR_CHEST_XP_RATE);
+          if (audioManager.isInitialized) audioManager.play('sfx.xpEarn');
           recalcLevel();
           
           // Show floating XP animation
@@ -2630,6 +2655,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
       }
       audioManager.play('ui.success');
+      audioManager.play('sfx.goldSpend');
       state.warChest -= WAR_CHEST_AWARD_COST;
       addCompanionXP(WAR_CHEST_AWARD_COST, comp);
       save();
