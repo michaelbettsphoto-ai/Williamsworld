@@ -8,53 +8,110 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=Cinzel:wght@700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../../assets/css/shared.css">
+  <style>
+    #modeScreen { display:flex; flex-direction:column; align-items:center; gap:18px; padding:30px 10px; }
+    #modeScreen h2 { font-family:'Cinzel',serif; color:var(--gold); font-size:1.8rem; margin:0; }
+    .mode-row { display:flex; gap:16px; flex-wrap:wrap; justify-content:center; width:100%; }
+    .mode-card { background:rgba(255,255,255,0.07); border:2px solid var(--border); border-radius:12px; padding:22px 28px; cursor:pointer; text-align:center; transition:border-color .2s,background .2s; min-width:120px; }
+    .mode-card:hover,.mode-card.selected { border-color:var(--gold); background:rgba(255,211,110,0.12); }
+    .mode-card .icon { font-size:2.2rem; }
+    .mode-card .label { font-family:'Cinzel',serif; color:var(--gold); font-size:.9rem; margin-top:6px; }
+    .mode-card .sublabel { color:var(--muted); font-size:.75rem; margin-top:3px; }
+    .diff-row,.color-row { display:none; }
+    .diff-row.visible,.color-row.visible { display:flex; }
+    #startGameBtn { display:none; }
+    #startGameBtn.visible { display:inline-block; }
+    #gameScreen { display:none; }
+    #gameScreen.visible { display:block; }
+    .ai-badge { display:inline-block; background:rgba(255,211,110,0.18); border:1px solid var(--gold); border-radius:20px; padding:3px 14px; font-size:.8rem; color:var(--gold); margin-left:8px; vertical-align:middle; }
+    #thinkingIndicator { display:none; text-align:center; color:var(--gold); font-size:.9rem; margin:6px 0; animation:pulse 1s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    #gameEndModal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.85); z-index:9999; align-items:center; justify-content:center; }
+    #gameEndModal.visible { display:flex; }
+    .gem-box { background:linear-gradient(135deg,#1a0a2e,#2d1b4e); border:3px solid var(--gold); border-radius:20px; padding:40px 50px; text-align:center; max-width:380px; }
+    .gem-box .gem-title { font-family:'Cinzel',serif; font-size:2rem; color:var(--gold); margin-bottom:10px; }
+    .gem-box .gem-sub { color:#ccc; font-size:1rem; margin-bottom:20px; }
+    .gem-box .gem-wins { font-size:.85rem; color:var(--muted); margin-bottom:20px; }
+    .gem-btns { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+  </style>
 </head>
 <body>
   <div class="container">
-    <!-- Header -->
     <div class="topbar">
       <div class="topbar-inner">
         <div class="brand">⚫ Checkers Game</div>
         <a href="../index.html" class="btn">← Back to Games</a>
       </div>
     </div>
-
-    <!-- Game Panel -->
     <div class="panel">
-      <!-- Score Display -->
-      <div class="score-display">
-        <span id="turnDisplay">Red's Turn</span> | Wins: <span id="wins">0</span>
+
+      <!-- MODE SELECT -->
+      <div id="modeScreen">
+        <h2>⚫ Checkers</h2>
+        <div style="color:var(--gold);font-family:'Cinzel',serif;font-size:.9rem;">Select Mode</div>
+        <div class="mode-row">
+          <div class="mode-card" onclick="selectMode('1p',this)"><div class="icon">🤖</div><div class="label">1 Player</div><div class="sublabel">vs Computer</div></div>
+          <div class="mode-card" onclick="selectMode('2p',this)"><div class="icon">👥</div><div class="label">2 Players</div><div class="sublabel">Same Device</div></div>
+        </div>
+        <div class="diff-row mode-row" id="diffRow">
+          <div style="width:100%;text-align:center;color:var(--gold);font-family:'Cinzel',serif;font-size:.9rem;">Difficulty</div>
+          <div class="mode-card" onclick="selectDiff('easy',this)"><div class="icon">🌱</div><div class="label">Easy</div><div class="sublabel">Random moves</div></div>
+          <div class="mode-card" onclick="selectDiff('medium',this)"><div class="icon">⚔️</div><div class="label">Medium</div><div class="sublabel">4-ply lookahead</div></div>
+          <div class="mode-card" onclick="selectDiff('hard',this)"><div class="icon">🔥</div><div class="label">Hard</div><div class="sublabel">8-ply alpha-beta</div></div>
+        </div>
+        <div class="color-row mode-row" id="colorRow">
+          <div style="width:100%;text-align:center;color:var(--gold);font-family:'Cinzel',serif;font-size:.9rem;">Play as</div>
+          <div class="mode-card" onclick="selectColor('red',this)"><div class="icon">🔴</div><div class="label">Red</div><div class="sublabel">Move first</div></div>
+          <div class="mode-card" onclick="selectColor('black',this)"><div class="icon">⚫</div><div class="label">Black</div><div class="sublabel">Move second</div></div>
+        </div>
+        <button id="startGameBtn" class="btn btn-primary" onclick="startGame()">⚔️ Start Game</button>
       </div>
 
-      <!-- Game Controls -->
-      <div class="game-controls">
-        <button id="newGameBtn" class="btn btn-primary">New Game</button>
-        <button id="resetStatsBtn" class="btn">Reset Stats</button>
+      <!-- GAME SCREEN -->
+      <div id="gameScreen">
+        <div class="score-display">
+          <span id="turnDisplay">Red's Turn</span>
+          <span id="aiBadge" class="ai-badge" style="display:none"></span>
+          &nbsp;| Wins: <span id="wins">0</span>
+        </div>
+        <div id="thinkingIndicator">🤖 Computer is thinking…</div>
+        <div class="game-controls">
+          <button id="newGameBtn" class="btn btn-primary">New Game</button>
+          <button class="btn" onclick="returnToModeScreen()">🔄 Mode</button>
+          <button id="resetStatsBtn" class="btn">Reset Stats</button>
+        </div>
+        <div class="game-canvas-container">
+          <canvas id="gameCanvas" width="480" height="480"></canvas>
+        </div>
+        <div class="instructions">
+          <h3>📖 How to Play</h3>
+          <ul>
+            <li>Click a piece to select it, then click a valid square to move</li>
+            <li>Red pieces move first</li>
+            <li>Jump over opponent pieces to capture them — multi-jump if possible</li>
+            <li>Reach the opposite end to become a King (can move backwards)</li>
+            <li>Capture all opponent pieces to win!</li>
+          </ul>
+        </div>
       </div>
 
-      <!-- Canvas -->
-      <div class="game-canvas-container">
-        <canvas id="gameCanvas" width="480" height="480"></canvas>
-      </div>
+    </div>
+  </div>
 
-      <!-- Instructions -->
-      <div class="instructions">
-        <h3>📖 How to Play</h3>
-        <ul>
-          <li>Click a piece to select it, then click a valid square to move</li>
-          <li>Red pieces move first</li>
-          <li>Regular pieces can only move diagonally forward</li>
-          <li>Jump over opponent pieces to capture them</li>
-          <li>Reach the opposite end to become a King (can move backwards)</li>
-          <li>Capture all opponent pieces to win!</li>
-        </ul>
+  <!-- Game End Modal -->
+  <div id="gameEndModal">
+    <div class="gem-box">
+      <div class="gem-title" id="gemTitle">⚫ Game Over</div>
+      <div class="gem-sub" id="gemSub"></div>
+      <div class="gem-wins" id="gemWins"></div>
+      <div class="gem-btns">
+        <button class="btn btn-primary" onclick="rematch()">🔄 Rematch</button>
+        <button class="btn" onclick="returnToModeScreen()">🏠 Mode Select</button>
       </div>
     </div>
   </div>
 
-  <!-- Credits Link -->
   <a href="../LICENSE-GAMES.md" class="credits-link">📜 Credits</a>
-
   <script src="../../assets/js/games/checkers/game.js"></script>
 </body>
 </html>

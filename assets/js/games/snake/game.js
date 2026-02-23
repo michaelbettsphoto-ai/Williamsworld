@@ -317,6 +317,46 @@ pauseBtn.addEventListener('click', pauseGame);
 restartBtn.addEventListener('click', restartGame);
 muteBtn.addEventListener('click', toggleSound);
 
+// D-Pad on-screen controls
+function dpadPress(dir) {
+  if (!gameRunning || gamePaused) return;
+  switch (dir) {
+    case 'up':    if (direction.y === 0) direction = { x: 0, y: -1 }; break;
+    case 'down':  if (direction.y === 0) direction = { x: 0, y: 1 };  break;
+    case 'left':  if (direction.x === 0) direction = { x: -1, y: 0 }; break;
+    case 'right': if (direction.x === 0) direction = { x: 1, y: 0 };  break;
+  }
+}
+const dpadUp    = document.getElementById('dpadUp');
+const dpadDown  = document.getElementById('dpadDown');
+const dpadLeft  = document.getElementById('dpadLeft');
+const dpadRight = document.getElementById('dpadRight');
+if (dpadUp) {
+  ['touchstart', 'mousedown'].forEach(ev => {
+    dpadUp.addEventListener(ev,    e => { e.preventDefault(); dpadPress('up');    }, { passive: false });
+    dpadDown.addEventListener(ev,  e => { e.preventDefault(); dpadPress('down');  }, { passive: false });
+    dpadLeft.addEventListener(ev,  e => { e.preventDefault(); dpadPress('left');  }, { passive: false });
+    dpadRight.addEventListener(ev, e => { e.preventDefault(); dpadPress('right'); }, { passive: false });
+  });
+}
+
+// Touch swipe controls on canvas
+let touchStartX = 0, touchStartY = 0;
+canvas.addEventListener('touchstart', e => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+canvas.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  const dy = e.changedTouches[0].clientY - touchStartY;
+  if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return;
+  if (Math.abs(dx) > Math.abs(dy)) {
+    dpadPress(dx > 0 ? 'right' : 'left');
+  } else {
+    dpadPress(dy > 0 ? 'down' : 'up');
+  }
+}, { passive: true });
+
 // Initialize
 loadHighScore();
 draw();

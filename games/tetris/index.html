@@ -39,13 +39,32 @@
         <canvas id="gameCanvas" width="300" height="600"></canvas>
       </div>
 
+      <!-- D-Pad Controls -->
+      <div class="dpad-container" id="dpad">
+        <div class="dpad-row">
+          <div class="dpad-center"></div>
+          <button class="dpad-btn" id="dpadUp" aria-label="Rotate">🔄</button>
+          <div class="dpad-center"></div>
+        </div>
+        <div class="dpad-row">
+          <button class="dpad-btn" id="dpadLeft" aria-label="Left">◀</button>
+          <div class="dpad-center"></div>
+          <button class="dpad-btn" id="dpadRight" aria-label="Right">▶</button>
+        </div>
+        <div class="dpad-row">
+          <div class="dpad-center"></div>
+          <button class="dpad-btn" id="dpadDown" aria-label="Down">▼</button>
+          <div class="dpad-center"></div>
+        </div>
+      </div>
+
       <!-- Instructions -->
       <div class="instructions">
         <h3>📖 How to Play</h3>
         <ul>
-          <li>← → Arrow keys: Move piece left/right</li>
-          <li>↓ Arrow key: Move piece down faster</li>
-          <li>↑ Arrow key or Space: Rotate piece</li>
+          <li>← → Arrow keys or D-pad: Move piece left/right</li>
+          <li>↓ Arrow key or D-pad ▼: Move piece down faster</li>
+          <li>↑ Arrow key, Space, or D-pad 🔄: Rotate piece</li>
           <li>Complete horizontal lines to clear them</li>
           <li>Game ends when pieces reach the top</li>
         </ul>

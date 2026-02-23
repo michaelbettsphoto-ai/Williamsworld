@@ -313,3 +313,53 @@ canvas {
     text-align: center;
   }
 }
+
+/* ── On-Screen D-Pad Controls ─────────────────────────────────────────── */
+.dpad-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin: 16px auto 8px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.dpad-row {
+  display: flex;
+  gap: 4px;
+}
+.dpad-btn {
+  width: 56px;
+  height: 56px;
+  background: rgba(212, 165, 48, 0.15);
+  border: 2px solid var(--golden-border);
+  border-radius: 10px;
+  color: var(--gold);
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.1s, transform 0.1s;
+  touch-action: manipulation;
+}
+.dpad-btn:active,
+.dpad-btn.pressed {
+  background: rgba(212, 165, 48, 0.45);
+  transform: scale(0.92);
+}
+.dpad-center {
+  width: 56px;
+  height: 56px;
+  background: rgba(212, 165, 48, 0.08);
+  border: 2px solid rgba(212, 165, 48, 0.3);
+  border-radius: 10px;
+}
+/* Hide D-pad on large screens where keyboard is available */
+@media (min-width: 769px) {
+  .dpad-container { display: none; }
+}
+/* Always show on touch devices regardless of screen size */
+@media (pointer: coarse) {
+  .dpad-container { display: flex !important; }
+}

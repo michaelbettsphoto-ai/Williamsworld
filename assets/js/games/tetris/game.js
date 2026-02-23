@@ -397,6 +397,40 @@ pauseBtn.addEventListener('click', pauseGame);
 restartBtn.addEventListener('click', restartGame);
 muteBtn.addEventListener('click', toggleSound);
 
+// D-Pad on-screen controls
+const dpadUp    = document.getElementById('dpadUp');
+const dpadDown  = document.getElementById('dpadDown');
+const dpadLeft  = document.getElementById('dpadLeft');
+const dpadRight = document.getElementById('dpadRight');
+if (dpadUp) {
+  ['touchstart', 'mousedown'].forEach(ev => {
+    dpadUp.addEventListener(ev,    e => { e.preventDefault(); if (gameRunning && !gamePaused) rotate();       }, { passive: false });
+    dpadDown.addEventListener(ev,  e => { e.preventDefault(); if (gameRunning && !gamePaused) move('down');  }, { passive: false });
+    dpadLeft.addEventListener(ev,  e => { e.preventDefault(); if (gameRunning && !gamePaused) move('left');  }, { passive: false });
+    dpadRight.addEventListener(ev, e => { e.preventDefault(); if (gameRunning && !gamePaused) move('right'); }, { passive: false });
+  });
+}
+
+// Touch swipe controls on canvas
+let tStartX = 0, tStartY = 0;
+canvas.addEventListener('touchstart', e => {
+  tStartX = e.touches[0].clientX;
+  tStartY = e.touches[0].clientY;
+}, { passive: true });
+canvas.addEventListener('touchend', e => {
+  if (!gameRunning || gamePaused) return;
+  const dx = e.changedTouches[0].clientX - tStartX;
+  const dy = e.changedTouches[0].clientY - tStartY;
+  if (Math.abs(dx) < 10 && Math.abs(dy) < 10) { rotate(); return; }
+  if (Math.abs(dx) > Math.abs(dy)) {
+    move(dx > 0 ? 'right' : 'left');
+  } else if (dy > 0) {
+    move('down');
+  } else {
+    rotate();
+  }
+}, { passive: true });
+
 // Initialize
 loadHighScore();
 initBoard();

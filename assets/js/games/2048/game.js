@@ -343,5 +343,19 @@ gameBoard.addEventListener('touchend', (e) => {
 startBtn.addEventListener('click', newGame);
 muteBtn.addEventListener('click', toggleSound);
 
+// D-Pad on-screen controls
+const dpadUp    = document.getElementById('dpadUp');
+const dpadDown  = document.getElementById('dpadDown');
+const dpadLeft  = document.getElementById('dpadLeft');
+const dpadRight = document.getElementById('dpadRight');
+if (dpadUp) {
+  ['touchstart', 'mousedown'].forEach(ev => {
+    dpadUp.addEventListener(ev,    e => { e.preventDefault(); move('up');    }, { passive: false });
+    dpadDown.addEventListener(ev,  e => { e.preventDefault(); move('down');  }, { passive: false });
+    dpadLeft.addEventListener(ev,  e => { e.preventDefault(); move('left');  }, { passive: false });
+    dpadRight.addEventListener(ev, e => { e.preventDefault(); move('right'); }, { passive: false });
+  });
+}
+
 // Initialize game
 init();
