@@ -453,7 +453,7 @@
     -webkit-backdrop-filter: var(--glass-blur);
     min-height: 420px;
   }
-  #ww .banner-inner{padding:18px; padding-top:28px; display:grid; grid-template-columns: 250px 1fr; gap:20px; align-items:center}
+  #ww .banner-inner{padding:18px; display:grid; grid-template-columns: 250px 1fr; gap:20px; align-items:center}
   #ww .banner-inner > .card{grid-column: 1 / -1}
   @media (max-width:980px){ #ww .banner-inner{grid-template-columns:1fr; justify-items:center} }
   #ww h1{margin:0 0 6px; font-size:48px; font-weight:900; color:var(--gold); 
@@ -495,7 +495,7 @@
     flex-shrink: 0;
     background: transparent;
     padding: 0;
-    padding-top: 44px;
+    padding-top: 0;
     position: relative;
     z-index: 100;
     transition: none;
@@ -506,7 +506,6 @@
     -moz-user-select: none;
     -ms-user-select: none;
     margin: 10px;
-    margin-top: 0;
     filter: none !important;
     animation: none !important;
   }
@@ -599,29 +598,7 @@
     animation: pulse 2s ease-in-out infinite;
     pointer-events: none;
   }
-  #ww #williamCardLabel {
-    position: absolute;
-    top: -36px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(135deg, rgba(20,10,35,0.95) 0%, rgba(40,20,60,0.95) 100%);
-    border: 2px solid rgba(212,165,48,0.85);
-    border-radius: 10px;
-    padding: 5px 14px;
-    font-size: 12px;
-    font-weight: 900;
-    color: var(--gold);
-    white-space: nowrap;
-    opacity: 1;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    pointer-events: none;
-    font-family: var(--fantasy-font);
-    letter-spacing: 1px;
-    text-shadow: 0 0 8px rgba(255,211,110,0.6);
-    box-shadow: 0 2px 12px rgba(0,0,0,0.6), 0 0 8px rgba(212,165,48,0.3);
-    z-index: 20;
-  }
-  #ww #williamCardDeck:hover #williamCardLabel { opacity: 1; transform: translateX(-50%) translateY(-2px); }
+  /* Card label removed — card art is self-explanatory */
   #ww #williamCardDeck.card-hurt #williamActiveCard { animation: wcardHurt 0.4s ease-in-out; }
   @keyframes wcardHurt {
     0%,100% { transform: translateX(0); }
@@ -3026,8 +3003,7 @@
                 </div>
               </div>
             </div>
-            <!-- Label and hint -->
-            <div id="williamCardLabel">WILLIAM — Ready</div>
+            <!-- Label removed — card art is self-explanatory -->
             <div id="williamCardHint">✦ tap to reveal ✦</div>
           </div>
           <!-- Keep hidden img for legacy JS compatibility -->

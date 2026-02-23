@@ -2710,7 +2710,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   function wcFlipToCard(cardIndex, opts = {}) {
     const activeCard = document.getElementById('williamActiveCard');
     const frontImg = document.getElementById('williamCardFront');
-    const label = document.getElementById('williamCardLabel');
     if (!activeCard || !frontImg) return;
     if (wcDeckState.isFlipping) return;
 
@@ -2744,7 +2743,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     setTimeout(() => {
       // Mid-flip: swap front image
       frontImg.src = card.src;
-      if (label) label.textContent = card.label;
       wcDeckState.currentIndex = cardIndex;
     }, 275);
 
