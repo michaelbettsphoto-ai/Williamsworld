@@ -155,6 +155,8 @@ python3 generate-placeholder-audio.py
 - Extend battle mechanics in `./assets/js/battle-system/battle-engine.js`
 - See `./battle-system/IMPLEMENTATION_GUIDE.md` for detailed instructions
 
+
+
 ## 🖼️ Images & Assets
 
 The application uses Google Drive to host images:

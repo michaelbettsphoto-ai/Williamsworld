@@ -3037,6 +3037,292 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   }
 
+  // ============================================
+  // HOMEWORK QUEST BOARD + ENEMY DECK
+  // ============================================
+  const HOMEWORK_KEY = 'ww_homework_quests_v1';
+  const PARENT_PIN = '4242';
+  let parentModeUnlocked = false;
+
+  const DEFAULT_HOMEWORK_QUESTS = [
+    { id:'hw_choice_board', subject:'Math', title:'Choice Board', dueDate:'2026-02-26', status:'Not Started', notes:'', reminder:'', callout:'' },
+    { id:'hw_african_leader_packet', subject:'ELA', title:'African American Leader’s Packet', dueDate:'2026-02-27', status:'Not Started', notes:'Students know how many leaders they were assigned; teacher discussed daily.', reminder:'', callout:'' },
+    { id:'hw_hatchet_stem', subject:'ELA (STEM group project)', title:'Hatchet STEM Scene Build (Recycled Items Only)', dueDate:'2026-02-25', status:'Not Started', notes:'Bring listed items from take-home folder. ONLY recycled items from home — nothing store-bought.', reminder:'Bring recycled items only.', callout:'ALL items must be here by Wednesday.' },
+    { id:'hw_wordly_wise', subject:'ELA', title:'Wordly Wise Packets', dueDate:'2026-03-03', status:'Not Started', notes:'Packets handed out today.', reminder:'', callout:'' },
+    { id:'hw_science_slides', subject:'Science', title:'Science Slides', dueDate:'2026-03-06', status:'Not Started', notes:'', reminder:'', callout:'' },
+    { id:'hw_terrarium_materials', subject:'Science (materials)', title:'Terrarium Materials Needed', dueDate:'2026-03-06', status:'Not Started', notes:'Materials needed (leave details blank so parent can add specifics).', reminder:'', callout:'' }
+  ];
+
+  const homeworkState = {
+    quests: loadHomeworkQuests()
+  };
+
+  function loadHomeworkQuests() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(HOMEWORK_KEY));
+      if (Array.isArray(parsed) && parsed.length) return parsed;
+    } catch (error) {
+      console.warn('[FAIL-SOFT] Could not parse homework quests:', error);
+    }
+    localStorage.setItem(HOMEWORK_KEY, JSON.stringify(DEFAULT_HOMEWORK_QUESTS));
+    return structuredClone ? structuredClone(DEFAULT_HOMEWORK_QUESTS) : JSON.parse(JSON.stringify(DEFAULT_HOMEWORK_QUESTS));
+  }
+
+  function saveHomeworkQuests() {
+    localStorage.setItem(HOMEWORK_KEY, JSON.stringify(homeworkState.quests));
+  }
+
+  function parseDueDate(dateStr) {
+    if (!dateStr) return null;
+    const d = new Date(`${dateStr}T00:00:00`);
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+
+  function formatDueDate(dateStr) {
+    const d = parseDueDate(dateStr);
+    if (!d) return 'No due date';
+    return d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+  }
+
+  function getDueLabel(dateStr) {
+    const d = parseDueDate(dateStr);
+    if (!d) return '';
+    const now = new Date();
+    const deltaHours = (d.getTime() - now.getTime()) / (1000 * 60 * 60);
+    if (deltaHours < -24) return 'overdue';
+    if (deltaHours <= 48) return 'soon';
+    return '';
+  }
+
+  function sortHomeworkQuests() {
+    homeworkState.quests.sort((a, b) => {
+      const da = parseDueDate(a.dueDate);
+      const db = parseDueDate(b.dueDate);
+      if (!da && !db) return 0;
+      if (!da) return 1;
+      if (!db) return -1;
+      return da - db;
+    });
+  }
+
+  function showHomeworkVictory() {
+    const el = $('homeworkVictory');
+    if (!el) return;
+    el.hidden = false;
+    setTimeout(() => { el.hidden = true; }, 1100);
+  }
+
+  function updateHomeworkStatus(id, status) {
+    const quest = homeworkState.quests.find(item => item.id === id);
+    if (!quest) return;
+    const wasDone = quest.status === 'Done';
+    quest.status = status;
+    if (status === 'Done' && !wasDone) {
+      showHomeworkVictory();
+      if (window.hubBattleEffects) window.hubBattleEffects.spawnConfetti(26);
+    }
+    saveHomeworkQuests();
+    renderHomeworkBoard();
+  }
+
+  function renderHomeworkBoard() {
+    const listEl = $('homeworkQuestList');
+    const bannerEl = $('homeworkDueSoonBanner');
+    if (!listEl || !bannerEl) return;
+
+    sortHomeworkQuests();
+    listEl.innerHTML = '';
+
+    const dueSoonCount = homeworkState.quests.filter(q => getDueLabel(q.dueDate) === 'soon').length;
+    bannerEl.hidden = dueSoonCount === 0;
+    bannerEl.textContent = dueSoonCount ? `⚠️ ${dueSoonCount} quest${dueSoonCount > 1 ? 's are' : ' is'} due within 48 hours!` : '';
+
+    homeworkState.quests.forEach((quest, index) => {
+      const dueFlag = getDueLabel(quest.dueDate);
+      const card = document.createElement('article');
+      card.className = `homeworkQuestCard ${dueFlag === 'soon' ? 'dueSoon' : ''} ${dueFlag === 'overdue' ? 'overdue' : ''}`;
+      card.innerHTML = `
+        <div class="homeworkTop">
+          <span class="subjectBadge">${quest.subject}</span>
+          <div class="questDue">${formatDueDate(quest.dueDate)}</div>
+        </div>
+        <h3>${quest.title}</h3>
+        <div class="questStatus">Status: ${quest.status}</div>
+        ${dueFlag === 'soon' ? '<div class="homeworkLabel dueSoonLabel">⚠️ Due Soon</div>' : ''}
+        ${dueFlag === 'overdue' ? '<div class="homeworkLabel overdueLabel">⏰ Overdue</div>' : ''}
+        ${quest.notes ? `<div class="questMeta"><b>Notes:</b> ${quest.notes}</div>` : ''}
+        ${quest.reminder ? `<div class="questMeta"><b>Party reminder:</b> ${quest.reminder}</div>` : ''}
+        ${quest.callout ? `<div class="questMeta"><b>Callout:</b> ${quest.callout}</div>` : ''}
+        <div class="homeworkQuestActions">
+          <button data-action="start" data-id="${quest.id}">Start Quest</button>
+          <button class="secondary" data-action="done" data-id="${quest.id}">Mark Complete</button>
+        </div>
+        ${parentModeUnlocked ? `<div class="homeworkQuestActions"><button data-action="edit" data-id="${quest.id}">Edit</button><button data-action="delete" data-id="${quest.id}">Delete</button><button data-action="up" data-id="${quest.id}" ${index===0?'disabled':''}>↑</button><button data-action="down" data-id="${quest.id}" ${index===homeworkState.quests.length-1?'disabled':''}>↓</button></div>` : ''}
+      `;
+      listEl.appendChild(card);
+    });
+  }
+
+  function resetHomeworkForm() {
+    $('homeworkEditId').value = '';
+    $('homeworkForm').reset();
+    $('homeworkStatus').value = 'Not Started';
+  }
+
+  function setParentMode(enabled) {
+    parentModeUnlocked = enabled;
+    const panel = $('homeworkParentPanel');
+    const btn = $('parentModeBtn');
+    if (panel) panel.hidden = !enabled;
+    if (btn) btn.textContent = enabled ? '🔒 Exit Parent' : '⚙️ Parent';
+    if (!enabled) resetHomeworkForm();
+    renderHomeworkBoard();
+  }
+
+  function setupHomeworkBoard() {
+    const listEl = $('homeworkQuestList');
+    const parentBtn = $('parentModeBtn');
+    const form = $('homeworkForm');
+    const resetBtn = $('homeworkFormReset');
+    if (!listEl || !parentBtn || !form || !resetBtn) return;
+
+    parentBtn.addEventListener('click', () => {
+      if (parentModeUnlocked) return setParentMode(false);
+      const entered = window.prompt('Enter Parent PIN');
+      if (entered === PARENT_PIN) {
+        setParentMode(true);
+      } else if (entered !== null) {
+        toast('Wrong PIN.');
+      }
+    });
+
+    listEl.addEventListener('click', (event) => {
+      const btn = event.target.closest('button[data-action]');
+      if (!btn) return;
+      const { action, id } = btn.dataset;
+      if (action === 'start') return updateHomeworkStatus(id, 'In Progress');
+      if (action === 'done') return updateHomeworkStatus(id, 'Done');
+      if (!parentModeUnlocked) return;
+      const idx = homeworkState.quests.findIndex(item => item.id === id);
+      if (idx === -1) return;
+      if (action === 'delete') {
+        homeworkState.quests.splice(idx, 1);
+      } else if (action === 'up' && idx > 0) {
+        [homeworkState.quests[idx - 1], homeworkState.quests[idx]] = [homeworkState.quests[idx], homeworkState.quests[idx - 1]];
+      } else if (action === 'down' && idx < homeworkState.quests.length - 1) {
+        [homeworkState.quests[idx + 1], homeworkState.quests[idx]] = [homeworkState.quests[idx], homeworkState.quests[idx + 1]];
+      } else if (action === 'edit') {
+        const quest = homeworkState.quests[idx];
+        $('homeworkEditId').value = quest.id;
+        $('homeworkSubject').value = quest.subject || '';
+        $('homeworkTitle').value = quest.title || '';
+        $('homeworkDue').value = quest.dueDate || '';
+        $('homeworkStatus').value = quest.status || 'Not Started';
+        $('homeworkNotes').value = quest.notes || '';
+        $('homeworkReminder').value = quest.reminder || '';
+        $('homeworkCallout').value = quest.callout || '';
+        return;
+      }
+      saveHomeworkQuests();
+      renderHomeworkBoard();
+    });
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!parentModeUnlocked) return;
+      const id = $('homeworkEditId').value || `hw_${Date.now()}`;
+      const payload = {
+        id,
+        subject: $('homeworkSubject').value.trim(),
+        title: $('homeworkTitle').value.trim(),
+        dueDate: $('homeworkDue').value,
+        status: $('homeworkStatus').value,
+        notes: $('homeworkNotes').value.trim(),
+        reminder: $('homeworkReminder').value.trim(),
+        callout: $('homeworkCallout').value.trim()
+      };
+      const existingIndex = homeworkState.quests.findIndex(item => item.id === id);
+      if (existingIndex >= 0) homeworkState.quests[existingIndex] = payload;
+      else homeworkState.quests.push(payload);
+      saveHomeworkQuests();
+      resetHomeworkForm();
+      renderHomeworkBoard();
+    });
+
+    resetBtn.addEventListener('click', resetHomeworkForm);
+    renderHomeworkBoard();
+  }
+
+  function inferEnemyType(enemy) {
+    return enemy.element || enemy.role || enemy.zone || 'Mystic';
+  }
+
+  function slugifyEnemyId(value) {
+    return String(value || 'enemy').replace(/[^a-z0-9]+/gi, '').toLowerCase();
+  }
+
+  function escapeXml(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&apos;');
+  }
+
+  function enemyCardSvgDataUrl(enemy) {
+    const enemyType = inferEnemyType(enemy);
+    const difficulty = enemy.rarity === 'BOSS' ? 9 : enemy.rarity === 'ELITE' ? 7 : enemy.rarity === 'RARE' ? 5 : 3;
+    const flavor = enemy.flavorText || 'A troublemaker from William World.';
+    const abilities = (enemy.moves || []).slice(0, 3).map((move, idx) => `<tspan x="26" y="${262 + idx * 28}">• ${escapeXml(move.name || 'Ability')}</tspan>`).join('');
+    const slug = slugifyEnemyId(enemy.id || enemy.name);
+    let hash = 0;
+    for (let i = 0; i < slug.length; i += 1) hash = (hash * 31 + slug.charCodeAt(i)) % 360;
+    const hueA = hash;
+    const hueB = (hash + 36) % 360;
+
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420" role="img" aria-label="${escapeXml(enemy.name)} card">
+      <defs>
+        <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stop-color="hsl(${hueA},65%,24%)"/>
+          <stop offset="1" stop-color="hsl(${hueB},70%,11%)"/>
+        </linearGradient>
+      </defs>
+      <rect x="2" y="2" width="296" height="416" rx="20" fill="url(#bg)" stroke="#d4a530" stroke-width="4"/>
+      <rect x="16" y="16" width="268" height="48" rx="10" fill="rgba(13,10,18,.6)"/>
+      <text x="24" y="46" fill="#ffd36e" font-size="20" font-family="Verdana" font-weight="700">${escapeXml(enemy.name || 'Enemy')}</text>
+      <rect x="22" y="74" width="256" height="148" rx="12" fill="rgba(255,255,255,.08)"/>
+      <text x="26" y="98" fill="#fff" font-size="14" font-family="Verdana">Type: ${escapeXml(enemyType)}</text>
+      <text x="26" y="120" fill="#fff" font-size="14" font-family="Verdana">Difficulty: ${difficulty}/10</text>
+      <text x="24" y="250" fill="#fce8c0" font-size="14" font-family="Verdana" font-weight="700">Abilities</text>
+      <text fill="#fff" font-size="13" font-family="Verdana">${abilities || '<tspan x="26" y="262">• Sneaky strike</tspan>'}</text>
+      <text x="24" y="366" fill="#e3cfab" font-size="12" font-family="Verdana" font-style="italic">${escapeXml(flavor.slice(0, 70))}</text>
+      <text x="24" y="386" fill="#e3cfab" font-size="12" font-family="Verdana" font-style="italic">${escapeXml(flavor.slice(70, 140))}</text>
+    </svg>`;
+
+    return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  }
+
+  async function renderEnemyDeck() {
+    const deck = $('enemyDeckGrid');
+    if (!deck) return;
+    try {
+      const response = await fetch('./assets/data/enemies.json', { cache: 'no-store' });
+      const data = await response.json();
+      const enemies = Array.isArray(data.enemies) ? data.enemies : [];
+      deck.innerHTML = enemies.map(enemy => {
+        const cardImage = enemyCardSvgDataUrl(enemy);
+        const abilities = (enemy.moves || []).slice(0, 4).map(move => `<li>${move.name}</li>`).join('');
+        const flavor = enemy.flavorText || 'A troublemaker from William World.';
+        const difficulty = enemy.rarity === 'BOSS' ? 9 : enemy.rarity === 'ELITE' ? 7 : enemy.rarity === 'RARE' ? 5 : 3;
+        return `<article class="enemyCardEntry"><img loading="lazy" src="${cardImage}" alt="${enemy.name} card art"><h4>${enemy.name}</h4><div>Type: ${inferEnemyType(enemy)}</div><div>Difficulty: ${difficulty}/10</div><div>${flavor}</div><ul>${abilities}</ul></article>`;
+      }).join('');
+    } catch (error) {
+      console.warn('[FAIL-SOFT] Unable to load enemy deck:', error);
+      deck.innerHTML = '<p>Enemy deck is temporarily unavailable.</p>';
+    }
+  }
+
   // INIT
   applyAssets();
   setupQuestLoreOverlay();
@@ -3046,6 +3332,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   updateHeader();
   setupZoneNavigation();
   showStoredNotice();
+  setupHomeworkBoard();
+  renderEnemyDeck();
   
   // ============================================
   // MORNING MISSION TIMER LOOP
