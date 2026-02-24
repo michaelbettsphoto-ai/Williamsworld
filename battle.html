@@ -279,6 +279,17 @@ body {
 }
 .enemy-deck {
   position: relative; width: clamp(100px, 18vw, 150px); height: clamp(140px, 25vw, 210px);
+  cursor: pointer;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.enemy-deck:hover { transform: translateY(-4px) scale(1.03); filter: brightness(1.1); }
+.enemy-deck:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: var(--radius-md); }
+.deck-tap-hint {
+  margin-top: 6px;
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--gold);
+  text-shadow: 0 0 10px rgba(255, 211, 110, 0.45);
 }
 .deck-stack {
   position: absolute; width: 100%; height: 100%;
@@ -838,6 +849,8 @@ body {
 .pick-card { border:1px solid rgba(255,255,255,.18); border-radius:12px; padding:8px; background:rgba(8,10,20,.7); cursor:pointer; }
 .pick-card.selected { border-color:var(--green); box-shadow:0 0 12px rgba(52,211,153,.3); }
 .pick-card.locked { opacity:.6; cursor:not-allowed; border-color:rgba(255,255,255,.2); background:linear-gradient(145deg, rgba(20,20,35,.95), rgba(10,10,10,.85)); }
+.pick-card .pc-media{width:100%;height:78px;border-radius:10px;overflow:hidden;display:grid;place-items:center;margin-bottom:6px;border:1px solid rgba(255,255,255,.2);background:rgba(14,18,30,.9);font-size:1.5rem;}
+.pick-card .pc-media img{width:100%;height:100%;object-fit:cover;display:block;}
 .pick-card .pc-name { font-size:.82rem; font-weight:700; }
 .pick-card .pc-role { font-size:.65rem; color:var(--text-secondary); }
 .pick-card .lock-note { font-size:.62rem; color:#fbbf24; margin-top:4px; }
@@ -846,8 +859,14 @@ body {
 .deck-toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin:12px 0;}
 .deck-grid{width:min(1100px,95vw);display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px;}
 .deck-card{padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.2);background:rgba(10,14,28,.72);cursor:pointer;}
+.deck-card-top{display:flex;gap:8px;align-items:center;}
+.deck-thumb{width:44px;height:44px;border-radius:9px;overflow:hidden;flex-shrink:0;border:1px solid rgba(255,255,255,.22);display:grid;place-items:center;background:rgba(20,20,35,.8);font-size:1.2rem;}
+.deck-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
 .deck-card small{display:block;color:var(--text-secondary);}
 .deck-detail{width:min(700px,95vw);background:rgba(5,8,16,.95);border:1px solid rgba(255,255,255,.2);border-radius:14px;padding:14px;margin:10px auto;display:none;}
+.deck-detail-head{display:flex;gap:12px;align-items:center;margin-bottom:10px;}
+.deck-detail-portrait{width:88px;height:88px;border-radius:14px;overflow:hidden;border:1px solid rgba(255,255,255,.22);display:grid;place-items:center;font-size:2rem;}
+.deck-detail-portrait img{width:100%;height:100%;object-fit:cover;display:block;}
 @media (max-width: 900px) { .team-slots { grid-template-columns: repeat(2, minmax(120px, 1fr)); } .team-pools { grid-template-columns: 1fr; } }
 
 /* ===== RESPONSIVE ===== */
@@ -910,13 +929,14 @@ body {
   <div class="draw-title" id="draw-title">Drawing Enemies...</div>
   <div style="display:flex; align-items:center; gap: clamp(16px, 4vw, 32px); justify-content:center;">
     <div class="draw-area" id="draw-area"></div>
-    <div class="enemy-deck" id="enemy-deck">
+    <div class="enemy-deck" id="enemy-deck" role="button" tabindex="0" aria-label="Open William's deck" onclick="openDeckPage()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDeckPage();}">
       <div class="deck-glow"></div>
       <div class="deck-stack"></div>
       <div class="deck-stack"></div>
       <div class="deck-stack"></div>
     </div>
   </div>
+  <div class="deck-tap-hint">Tap the deck to view William's cards</div>
   <button class="scout-btn" id="start-battle-btn" style="display:none;" onclick="openTeamSelection()">
     <span class="shimmer"></span>
     Build Team
@@ -1275,6 +1295,16 @@ const ENEMY_IMAGES = {
   'void-weaver': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/pQLSQIHfWtEsxVJK.png'
 };
 
+function getEnemyArt(enemy) {
+  const id = typeof enemy === 'string' ? enemy : enemy?.id;
+  return (id && ENEMY_IMAGES[id]) ? ENEMY_IMAGES[id] : '';
+}
+
+function renderEnemyArt(enemy, fallbackEmoji, className = 'emoji-portrait') {
+  const src = getEnemyArt(enemy);
+  return src ? `<img src="${src}" alt="${enemy?.name || 'Enemy'}" style="width:100%;height:100%;object-fit:cover;">` : `<span class="${className}">${fallbackEmoji || enemy?.emoji || '👾'}</span>`;
+}
+
 // ===== ENEMY DATA =====
 const ENEMIES_BY_ZONE = {
   'launch-meadow': [
@@ -1603,7 +1633,7 @@ function drawEnemies() {
         <div class="draw-card-face draw-card-back"></div>
         <div class="draw-card-face draw-card-front">
           <div class="enemy-portrait" style="background:linear-gradient(135deg, ${ELEMENT_COLORS[enemy.element] || 'var(--type-neutral)'}, rgba(30,15,40,0.8));overflow:hidden;">
-            ${ENEMY_IMAGES[enemy.id] ? `<img src="${ENEMY_IMAGES[enemy.id]}" alt="${enemy.name}" style="width:100%;height:100%;object-fit:cover;">` : `<span style="font-size:2.5rem;">${enemy.emoji}</span>`}
+            ${renderEnemyArt(enemy, enemy.emoji)}
           </div>
           <div class="enemy-name">${enemy.name}</div>
           <div class="enemy-info">
@@ -1678,7 +1708,10 @@ function renderTeamSelection() {
   slots.innerHTML = slotData.map(s => `<div class="team-slot ${s.item ? 'filled':''}"><div class="slot-label">${s.label}</div>${s.item ? `<div class="slot-name">${s.item.icon || '🃏'} ${s.item.name}</div><div class="slot-meta">${s.item.role || s.item.type || ''}</div><button class="slot-remove" onclick="removeSelection('${s.kind}', ${s.index})">x</button>` : `<div class="slot-meta">Empty</div>`}</div>`).join('');
 
   const cardPool = document.getElementById('card-pool');
-  cardPool.innerHTML = gameState.playerDeck.map(c => `<div class="pick-card ${selections.cards.includes(c.id)?'selected':''}" onclick="pickCard('${c.id}')"><div class="pc-name">${c.name}</div><div class="pc-role">${c.type} · ${c.role || ''}</div><div class="pc-role">${(c.abilities||[]).slice(0,2).map(a=>a.name).join(' · ')}</div></div>`).join('');
+  cardPool.innerHTML = gameState.playerDeck.map(c => {
+    const art = c.source === 'captured' ? renderEnemyArt({ id: c.id, name: c.name }, '🃏', '') : (c.portrait ? `<img src="${c.portrait}" alt="${c.name}" style="width:100%;height:100%;object-fit:cover;">` : '<span>🛡️</span>');
+    return `<div class="pick-card ${selections.cards.includes(c.id)?'selected':''}" onclick="pickCard('${c.id}')"><div class="pc-media">${art}</div><div class="pc-name">${c.name}</div><div class="pc-role">${c.type} · ${c.role || ''}</div><div class="pc-role">${(c.abilities||[]).slice(0,2).map(a=>a.name).join(' · ')}</div></div>`;
+  }).join('');
 
   const lvl = getPlayerLevel();
   const compPool = document.getElementById('companion-pool');
@@ -1768,7 +1801,7 @@ function renderEnemyRow() {
     const hpClass = hpPct <= 25 ? 'low' : hpPct <= 50 ? 'mid' : '';
     card.innerHTML = `
       <div class="card-portrait" style="background:linear-gradient(135deg, ${ELEMENT_COLORS[enemy.element]}, rgba(30,15,40,0.7));">
-        ${ENEMY_IMAGES[enemy.id] ? `<img src="${ENEMY_IMAGES[enemy.id]}" alt="${enemy.name}" style="width:100%;height:100%;object-fit:cover;">` : `<span class="emoji-portrait">${enemy.emoji}</span>`}
+        ${renderEnemyArt(enemy, enemy.emoji)}
         <span class="card-role-badge" style="color:${RARITY_COLORS[enemy.rarity]}">${enemy.rarity}</span>
       </div>
       <div class="card-info-overlay">
@@ -1833,7 +1866,7 @@ function renderTurnOrder() {
   const alive = allUnits.filter(u => !u.isDefeated);
   alive.sort((a, b) => b.currentStats.spd - a.currentStats.spd);
   bar.innerHTML = alive.map((u, i) => {
-    const imgSrc = u.side === 'hero' ? u.img : (ENEMY_IMAGES[u.id] || '');
+    const imgSrc = u.side === 'hero' ? u.img : getEnemyArt(u);
     const inner = imgSrc ? `<img src="${imgSrc}" alt="${u.name}">` : `<span style="font-size:0.8rem;">${u.emoji || '?'}</span>`;
     return `<div class="turn-order-icon ${i === 0 ? 'active-turn' : ''}" style="border-color:${u.side === 'hero' ? 'var(--green)' : 'var(--red)'}">${inner}</div>${i < alive.length - 1 ? '<span class="turn-order-arrow">▸</span>' : ''}`;
   }).join('');
@@ -2535,6 +2568,12 @@ function backFromDeck() {
   showScreen(active);
 }
 
+function getCardPortrait(card) {
+  if (card?.portrait) return card.portrait;
+  if (card?.source === 'captured' && card?.id) return ENEMY_IMAGES[card.id] || '';
+  return IMG.william[0];
+}
+
 function renderDeckPage() {
   ensureDeckData();
   const search = (document.getElementById('deck-search')?.value || '').toLowerCase();
@@ -2551,7 +2590,18 @@ function renderDeckPage() {
   if (fSource) cards = cards.filter(c => c.source === fSource);
   cards.sort((a,b) => sort === 'power' ? ((b.stats?.atk||0)+(b.stats?.hp||0)) - ((a.stats?.atk||0)+(a.stats?.hp||0)) : new Date(b.capturedAt || 0) - new Date(a.capturedAt || 0));
   const grid = document.getElementById('deck-grid');
-  grid.innerHTML = cards.map((c,i) => `<div class="deck-card" onclick="showDeckCardDetail(${i})"><div><strong>${c.name}</strong></div><small>${c.type} · ${c.rarity || ''}</small><small>${(c.abilities||[]).slice(0,2).map(a=>a.name).join(' · ')}</small><small>ATK ${c.stats?.atk || 0} · HP ${c.stats?.hp || 0}</small></div>`).join('');
+  grid.innerHTML = cards.map((c,i) => {
+    const img = getCardPortrait(c);
+    const fallback = c.source === 'captured' ? (ENEMY_POOLS?.[selectedZone?.id]?.find(e => e.id === c.id)?.emoji || '🃏') : '🛡️';
+    return `<div class="deck-card" onclick="showDeckCardDetail(${i})">
+      <div class="deck-card-top">
+        <div class="deck-thumb">${img ? `<img src="${img}" alt="${c.name}">` : fallback}</div>
+        <div><strong>${c.name}</strong><small>${c.type} · ${c.rarity || ''}</small></div>
+      </div>
+      <small>${(c.abilities||[]).slice(0,2).map(a=>a.name).join(' · ')}</small>
+      <small>ATK ${c.stats?.atk || 0} · HP ${c.stats?.hp || 0}</small>
+    </div>`;
+  }).join('');
   window.__deckViewCards = cards;
 }
 
@@ -2560,7 +2610,12 @@ function showDeckCardDetail(i) {
   if (!c) return;
   const detail = document.getElementById('deck-detail');
   detail.style.display = 'block';
-  detail.innerHTML = `<h3>${c.name}</h3><div>${c.type} · ${c.role || ''} · ${c.rarity || ''}</div><p><strong>Passive:</strong> ${c.passive || 'None'}</p><p><strong>Ultimate:</strong> ${c.ultimate || 'None'}</p><p><strong>Abilities:</strong></p><ul>${(c.abilities || []).map(a => `<li><strong>${a.name}</strong>: ${a.desc || ''}</li>`).join('')}</ul><p>Stats: HP ${c.stats?.hp || 0}, ATK ${c.stats?.atk || 0}, DEF ${c.stats?.def || 0}, SPD ${c.stats?.spd || 0}</p><p>${c.capturedAt ? `Captured: ${new Date(c.capturedAt).toLocaleString()}` : 'Starter Card'}</p>`;
+  const img = getCardPortrait(c);
+  const fallback = c.source === 'captured' ? (ENEMY_POOLS?.[selectedZone?.id]?.find(e => e.id === c.id)?.emoji || '🃏') : '🛡️';
+  detail.innerHTML = `<div class="deck-detail-head">
+    <div class="deck-detail-portrait">${img ? `<img src="${img}" alt="${c.name}">` : fallback}</div>
+    <div><h3>${c.name}</h3><div>${c.type} · ${c.role || ''} · ${c.rarity || ''}</div></div>
+  </div><p><strong>Passive:</strong> ${c.passive || 'None'}</p><p><strong>Ultimate:</strong> ${c.ultimate || 'None'}</p><p><strong>Abilities:</strong></p><ul>${(c.abilities || []).map(a => `<li><strong>${a.name}</strong>: ${a.desc || ''}</li>`).join('')}</ul><p>Stats: HP ${c.stats?.hp || 0}, ATK ${c.stats?.atk || 0}, DEF ${c.stats?.def || 0}, SPD ${c.stats?.spd || 0}</p><p>${c.capturedAt ? `Captured: ${new Date(c.capturedAt).toLocaleString()}` : 'Starter Card'}</p>`;
 }
 
 // ===== NAVIGATION =====
