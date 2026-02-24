@@ -60,7 +60,7 @@ CardName: Thorny Sneak
 Type: Grass
 Difficulty: Moderate (UNCOMMON)
 Abilities: Thorn Trap, Sucker Vine
-ArtConcept: A uncommon-tier trickster creature called Thorny Sneak, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Grass identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An uncommon-tier trickster creature called Thorny Sneak, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Grass identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a sunlit training meadow with oversized clover, playful stones, and soft depth haze, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - barbed thorn roots coiling outward on ground
@@ -74,7 +74,7 @@ CardName: Puddle Hexer
 Type: Water + Shadow
 Difficulty: Moderate (UNCOMMON)
 Abilities: Ink Splash, Gloom Drip
-ArtConcept: A uncommon-tier caster creature called Puddle Hexer, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Water + Shadow identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An uncommon-tier caster creature called Puddle Hexer, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Water + Shadow identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a sunlit training meadow with oversized clover, playful stones, and soft depth haze, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - dark ink splash arc with rune droplets
@@ -102,7 +102,7 @@ CardName: Scorchling
 Type: Fire
 Difficulty: Moderate (UNCOMMON)
 Abilities: Ember Bite, Heat Up
-ArtConcept: A uncommon-tier bruiser creature called Scorchling, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Fire identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An uncommon-tier bruiser creature called Scorchling, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Fire identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a sunlit training meadow with oversized clover, playful stones, and soft depth haze, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - glowing ember fangs with heat sparks
@@ -116,7 +116,7 @@ CardName: Barkhide Bully
 Type: Grass + Rock
 Difficulty: Moderate (UNCOMMON)
 Abilities: Body Block, Bark Bash
-ArtConcept: A uncommon-tier tank creature called Barkhide Bully, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Grass + Rock identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An uncommon-tier tank creature called Barkhide Bully, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Grass + Rock identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a sunlit training meadow with oversized clover, playful stones, and soft depth haze, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - broad defensive stance with bark shielded chest
@@ -158,7 +158,7 @@ CardName: Slimecap Trickster
 Type: Grass
 Difficulty: Boss (ELITE)
 Abilities: Spore Mist, Slime Patch, Cap Bounce
-ArtConcept: A elite-tier support creature called Slimecap Trickster, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Grass identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An elite-tier support creature called Slimecap Trickster, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Grass identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a sunlit training meadow with oversized clover, playful stones, and soft depth haze, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - thick spore cloud drifting from cap
@@ -187,7 +187,7 @@ CardName: Paper Cut Pirate
 Type: Wind + Metal
 Difficulty: Moderate (UNCOMMON)
 Abilities: Cutlass Cut, Ruffle Gust
-ArtConcept: A uncommon-tier skirmisher creature called Paper Cut Pirate, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Wind + Metal identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An uncommon-tier skirmisher creature called Paper Cut Pirate, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Wind + Metal identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a messy study-hill battlefield with giant papers, pencils, and drifting chalk dust, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - paper-thin cutlass slash arc
@@ -215,7 +215,7 @@ CardName: Quiz Golemlet
 Type: Rock
 Difficulty: Moderate (UNCOMMON)
 Abilities: Pop Quiz, Stone Thump
-ArtConcept: A uncommon-tier tank creature called Quiz Golemlet, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Rock identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An uncommon-tier tank creature called Quiz Golemlet, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Rock identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a messy study-hill battlefield with giant papers, pencils, and drifting chalk dust, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - glowing question-mark sigils orbiting target area
@@ -243,7 +243,7 @@ CardName: Scribble Sorcerer
 Type: Electric
 Difficulty: Moderate (UNCOMMON)
 Abilities: Zap Diagram, Equation Shield
-ArtConcept: A uncommon-tier caster creature called Scribble Sorcerer, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Electric identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An uncommon-tier caster creature called Scribble Sorcerer, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Electric identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a messy study-hill battlefield with giant papers, pencils, and drifting chalk dust, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - lightning lines forming geometric diagram in air
@@ -299,7 +299,7 @@ CardName: Graph Goblin
 Type: Electric
 Difficulty: Moderate (UNCOMMON)
 Abilities: Slope Slip, Ruler Rap
-ArtConcept: A uncommon-tier trickster creature called Graph Goblin, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Electric identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An uncommon-tier trickster creature called Graph Goblin, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Electric identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a messy study-hill battlefield with giant papers, pencils, and drifting chalk dust, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - angled electric graph line under enemy feet
@@ -313,7 +313,7 @@ CardName: Red Pen Reaper
 Type: Metal + Shadow
 Difficulty: Boss (ELITE)
 Abilities: Correction Strike, Mark Wrong, Final Grade
-ArtConcept: A elite-tier bruiser creature called Red Pen Reaper, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Metal + Shadow identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An elite-tier bruiser creature called Red Pen Reaper, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Metal + Shadow identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a messy study-hill battlefield with giant papers, pencils, and drifting chalk dust, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - red correction slash mark carved in air
@@ -328,7 +328,7 @@ CardName: Homework Hydra
 Type: Water
 Difficulty: Boss (ELITE)
 Abilities: Assignment Flood, Extra Credit, Overwhelm
-ArtConcept: A elite-tier tank creature called Homework Hydra, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Water identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An elite-tier tank creature called Homework Hydra, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Water identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a messy study-hill battlefield with giant papers, pencils, and drifting chalk dust, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - torrent of paper-water surge
@@ -357,7 +357,7 @@ CardName: Zipperfang
 Type: Metal
 Difficulty: Moderate (UNCOMMON)
 Abilities: Zip Slash, Unzip Escape
-ArtConcept: A uncommon-tier skirmisher creature called Zipperfang, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Metal identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An uncommon-tier skirmisher creature called Zipperfang, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Metal identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a fortress of school gear with straps, zippers, lockers, and hard-edged props, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - zipper-tooth slash trail
@@ -371,7 +371,7 @@ CardName: Cargo Crab
 Type: Rock + Water
 Difficulty: Moderate (UNCOMMON)
 Abilities: Crate Guard, Clamp Crush
-ArtConcept: A uncommon-tier tank creature called Cargo Crab, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Rock + Water identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An uncommon-tier tank creature called Cargo Crab, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Rock + Water identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a fortress of school gear with straps, zippers, lockers, and hard-edged props, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - wooden crate-lid shield in front
@@ -413,7 +413,7 @@ CardName: Lunchbox Lurker
 Type: Shadow
 Difficulty: Moderate (UNCOMMON)
 Abilities: Stale Cloud, Mold Bolt
-ArtConcept: A uncommon-tier caster creature called Lunchbox Lurker, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Shadow identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An uncommon-tier caster creature called Lunchbox Lurker, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Shadow identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a fortress of school gear with straps, zippers, lockers, and hard-edged props, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - musty lunch-smog cloud puff
@@ -441,7 +441,7 @@ CardName: Pencil Pike
 Type: Wind + Metal
 Difficulty: Moderate (UNCOMMON)
 Abilities: Point Jab, Shavings Storm
-ArtConcept: A uncommon-tier skirmisher creature called Pencil Pike, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Wind + Metal identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An uncommon-tier skirmisher creature called Pencil Pike, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Wind + Metal identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a fortress of school gear with straps, zippers, lockers, and hard-edged props, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - pencil-tip thrust with speed streak
@@ -469,7 +469,7 @@ CardName: Tag Tornado
 Type: Wind
 Difficulty: Moderate (UNCOMMON)
 Abilities: Whirlwind, Receipt Wrap
-ArtConcept: A uncommon-tier caster creature called Tag Tornado, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Wind identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An uncommon-tier caster creature called Tag Tornado, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Wind identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a fortress of school gear with straps, zippers, lockers, and hard-edged props, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - tight rotating wind funnel around body
@@ -497,7 +497,7 @@ CardName: Patchwork Punisher
 Type: Metal
 Difficulty: Boss (ELITE)
 Abilities: Patch Smash, Reinforce, Break Strap
-ArtConcept: A elite-tier bruiser creature called Patchwork Punisher, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Metal identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+ArtConcept: An elite-tier bruiser creature called Patchwork Punisher, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Metal identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
 Background: Place it in a fortress of school gear with straps, zippers, lockers, and hard-edged props, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - stitched gauntlet smash with metal sparks
@@ -512,8 +512,8 @@ CardName: Rune Stag
 Type: Light
 Difficulty: Moderate (UNCOMMON)
 Abilities: Rune Charge, Inspire
-ArtConcept: A uncommon-tier bruiser creature called Rune Stag, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Light identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
-Background: Place it in a enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
+ArtConcept: An uncommon-tier bruiser creature called Rune Stag, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Light identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+Background: Place it in an enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - rune lines igniting along antlers/body
 - uplifting light pulse expanding outward
@@ -527,7 +527,7 @@ Type: Shadow
 Difficulty: Low (COMMON)
 Abilities: Venom Whisper, Quick Bite
 ArtConcept: A common-tier skirmisher creature called Whisper Viper, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Shadow identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
-Background: Place it in a enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
+Background: Place it in an enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - whispering shadow fumes from fangs
 - fast bite blur at mouth
@@ -540,8 +540,8 @@ CardName: Mist Monk
 Type: Water + Light
 Difficulty: Moderate (UNCOMMON)
 Abilities: Calm Wave, Mist Veil
-ArtConcept: A uncommon-tier support creature called Mist Monk, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Water + Light identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
-Background: Place it in a enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
+ArtConcept: An uncommon-tier support creature called Mist Monk, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Water + Light identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+Background: Place it in an enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - smooth crescent wave radiating peace
 - soft protective mist curtain
@@ -555,7 +555,7 @@ Type: Grass + Rock
 Difficulty: High (RARE)
 Abilities: Bramble Wall, Thorn Counter
 ArtConcept: A rare-tier tank creature called Thorn Sentinel, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Grass + Rock identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
-Background: Place it in a enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
+Background: Place it in an enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - dense thorn barricade rising from ground
 - rebounding thorn shards flying backward
@@ -569,7 +569,7 @@ Type: Light + Wind
 Difficulty: Low (COMMON)
 Abilities: Lumen Ray, Blinding Flutter
 ArtConcept: A common-tier caster creature called Lumen Owl, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Light + Wind identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
-Background: Place it in a enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
+Background: Place it in an enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - clean golden ray from eyes/wings
 - rapid wing shimmer producing flash motes
@@ -583,7 +583,7 @@ Type: Shadow + Grass
 Difficulty: High (RARE)
 Abilities: Spores of Doubt, Night Bloom
 ArtConcept: A rare-tier caster creature called Shadowcap Shaman, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Shadow + Grass identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
-Background: Place it in a enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
+Background: Place it in an enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - dark spores carrying question-mark wisps
 - moonlit toxic flower opening behind caster
@@ -596,8 +596,8 @@ CardName: Breeze Banshee
 Type: Wind
 Difficulty: Moderate (UNCOMMON)
 Abilities: Haunting Gust, Slice Wind
-ArtConcept: A uncommon-tier trickster creature called Breeze Banshee, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Wind identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
-Background: Place it in a enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
+ArtConcept: An uncommon-tier trickster creature called Breeze Banshee, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Wind identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+Background: Place it in an enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - ghostly wind faces within gust stream
 - razor wind crescents crossing frame
@@ -610,8 +610,8 @@ CardName: Stone Trancebear
 Type: Rock
 Difficulty: Moderate (UNCOMMON)
 Abilities: Trance Roar, Boulder Hug
-ArtConcept: A uncommon-tier tank creature called Stone Trancebear, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Rock identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
-Background: Place it in a enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
+ArtConcept: An uncommon-tier tank creature called Stone Trancebear, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Rock identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+Background: Place it in an enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - hypnotic concentric rings from mouth
 - crushing stone-arm grapple pose
@@ -625,7 +625,7 @@ Type: Electric + Grass
 Difficulty: High (RARE)
 Abilities: Root Shock, Charge Sap
 ArtConcept: A rare-tier bruiser creature called Sparkroot Warden, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Electric + Grass identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
-Background: Place it in a enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
+Background: Place it in an enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - electrified roots snaring and zapping ground
 - energy siphon sap flowing into bark
@@ -639,7 +639,7 @@ Type: Shadow
 Difficulty: High (RARE)
 Abilities: Moon Pounce, Veil Step
 ArtConcept: A rare-tier skirmisher creature called Moonveil Panther, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Shadow identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
-Background: Place it in a enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
+Background: Place it in an enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - crescent-moon leap arc overhead
 - half-faded silhouette stepping through shadow veil
@@ -652,8 +652,8 @@ CardName: Crystal Mantis
 Type: Ice + Metal
 Difficulty: Boss (ELITE)
 Abilities: Crystal Slice, Freeze Frame, Mirror Shell
-ArtConcept: A elite-tier caster creature called Crystal Mantis, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Ice + Metal identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
-Background: Place it in a enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
+ArtConcept: An elite-tier caster creature called Crystal Mantis, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Ice + Metal identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+Background: Place it in an enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - prismatic blade forelimbs cutting diagonally
 - ice shard burst freezing motion around target
@@ -667,8 +667,8 @@ CardName: Ancient Grove Guardian
 Type: Grass + Light
 Difficulty: Boss (ELITE)
 Abilities: Sanctuary Bark, Root Judgment, Radiant Slam
-ArtConcept: A elite-tier tank creature called Ancient Grove Guardian, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Grass + Light identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
-Background: Place it in a enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
+ArtConcept: An elite-tier tank creature called Ancient Grove Guardian, designed with bold silhouette and playful-epic attitude, posed in a dynamic action beat that immediately sells its name and Grass + Light identity. Keep chunky readable shapes, expressive face, and one hero-angle pose that stays clear at thumbnail size.
+Background: Place it in an enchanted forest classroom blend with rune trees, moon mist, and calm god-rays, using soft depth blur and controlled contrast so the subject remains the brightest focal point.
 AbilityVisualCues:
 - radiant bark aura shielding allies
 - massive roots striking like a gavel
@@ -676,4 +676,3 @@ AbilityVisualCues:
 FinalArtPrompt: William's World troublemaker card art, kid-friendly fantasy, unified line weight, painterly cel-shading, cinematic rim light, high readability at small size; Ancient Grove Guardian (Grass + Light, Boss threat ELITE) in a dynamic three-quarter pose; show radiant bark aura shielding allies, massive roots striking like a gavel, light-charged body slam with holy flare; background: enchanted forest classroom blend with rune trees, moon mist, and calm god-rays; keep UI-safe composition, no text, no logo, no photorealism.
 Notes: Keep rarity readability with subtle FX density (COMMON minimal particles, UNCOMMON richer effects, RARE dramatic lighting, ELITE boss-level aura) without changing card layout.
 
----
