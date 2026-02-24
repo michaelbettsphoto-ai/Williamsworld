@@ -2921,6 +2921,40 @@
   }
 
   /* ── WW Icon sizing ─────────────────────────────────────────────────────── */
+
+  /* Homework Quest Board */
+  .homeworkBoard,.enemyDeck{margin-top:24px;background:var(--panel);border:2px solid rgba(255,211,110,.35);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
+  .homeworkHeader{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+  .homeworkHeader h2,.enemyDeck h2{margin:0;color:var(--gold);font-family:var(--fantasy-font)}
+  .homeworkHeader p,.enemyDeckSub{margin:4px 0 0;color:var(--muted)}
+  .parentModeBtn,.homeworkParentActions button,.homeworkQuestActions button{min-height:44px;padding:10px 14px;border-radius:12px;border:1px solid rgba(255,211,110,.5);background:rgba(255,211,110,.18);color:var(--ink);font-weight:700}
+  .homeworkQuestList{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:14px}
+  .homeworkQuestCard{background:rgba(0,0,0,.25);border:2px solid rgba(255,211,110,.2);border-radius:14px;padding:12px}
+  .homeworkQuestCard.dueSoon{box-shadow:0 0 0 2px rgba(255,157,92,.85),0 0 18px rgba(255,157,92,.35)}
+  .homeworkQuestCard.overdue{box-shadow:0 0 0 2px rgba(239,68,68,.9),0 0 22px rgba(239,68,68,.35)}
+  .homeworkTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+  .subjectBadge{display:inline-block;padding:6px 10px;border-radius:999px;background:rgba(125,255,180,.16);border:1px solid rgba(125,255,180,.5);font-size:.8rem;font-weight:700}
+  .questDue{font-size:1rem;font-weight:800;color:var(--gold)}
+  .questStatus{margin-top:8px;font-weight:700}
+  .questMeta{font-size:.9rem;color:var(--muted);margin-top:8px}
+  .homeworkQuestActions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .homeworkQuestActions .secondary{background:rgba(124,58,237,.2)}
+  .homeworkLabel{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.75rem;margin-top:8px}
+  .dueSoonLabel{background:rgba(255,157,92,.2);border:1px solid #ff9d5c}
+  .overdueLabel{background:rgba(239,68,68,.2);border:1px solid #ef4444}
+  .homeworkDueSoonBanner{margin-top:12px;padding:10px;border-radius:12px;background:rgba(255,157,92,.16);border:1px solid rgba(255,157,92,.55);font-weight:700}
+  .homeworkParentPanel{margin-top:14px;padding:12px;border-radius:12px;background:rgba(0,0,0,.25)}
+  .homeworkFormGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+  .homeworkFormGrid label{display:flex;flex-direction:column;gap:6px;font-size:.88rem}
+  .homeworkFormGrid input,.homeworkFormGrid textarea,.homeworkFormGrid select{padding:10px;border-radius:10px;border:1px solid rgba(255,211,110,.3);background:rgba(20,10,35,.7);color:var(--ink)}
+  .homeworkParentActions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .homeworkVictory{position:fixed;top:18px;left:50%;transform:translateX(-50%);background:rgba(125,255,180,.95);color:#072018;padding:12px 20px;border-radius:999px;font-weight:900;z-index:9999}
+  .enemyDeckGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px}
+  .enemyCardEntry{background:rgba(0,0,0,.25);border:1px solid rgba(255,211,110,.25);border-radius:14px;padding:10px}
+  .enemyCardEntry img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:10px;border:1px solid rgba(255,211,110,.45)}
+  .enemyCardEntry h4{margin:8px 0 4px;font-family:var(--fantasy-font)}
+  .enemyCardEntry ul{margin:6px 0 0 18px;padding:0;color:var(--muted);font-size:.9rem}
+
   .ww-icon {
     width: 20px;
     height: 20px;
@@ -3002,6 +3036,7 @@
           <button data-section="tracker">Tracker</button>
           <button data-section="party">Party</button>
           <button data-section="map">Map</button>
+          <button data-section="deck">Deck</button>
           <button data-nav-href="games/index.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="13" rx="3"/><path d="M8 12h2m-1-1v2"/><circle cx="16" cy="11.5" r="0.8" fill="currentColor"/><circle cx="14.5" cy="13" r="0.8" fill="currentColor"/></svg> Games</button>
           <button data-nav-href="battle.html"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="14.5,2 21,8.5 12,17.5 9.5,15"/><path d="M3 21l5-5"/><path d="M9.5 14.5L3 21"/><path d="M17 3l4 4-1.5 1.5"/></svg> Battle</button>
         </div>
@@ -3372,6 +3407,53 @@
         </div>
       </div>
     </div>
+
+
+    <!-- Homework Quest Board -->
+    <section class="homeworkBoard" id="homework">
+      <div class="homeworkHeader">
+        <div>
+          <h2>Homework Quest Board</h2>
+          <p>Turn assignments into missions. Tap to start, finish, and celebrate!</p>
+        </div>
+        <button id="parentModeBtn" class="parentModeBtn" type="button">⚙️ Parent</button>
+      </div>
+      <div id="homeworkDueSoonBanner" class="homeworkDueSoonBanner" hidden></div>
+      <div id="homeworkQuestList" class="homeworkQuestList"></div>
+      <div id="homeworkParentPanel" class="homeworkParentPanel" hidden>
+        <h3>Parent Mode: Edit Homework Quests</h3>
+        <form id="homeworkForm" class="homeworkForm">
+          <input type="hidden" id="homeworkEditId">
+          <div class="homeworkFormGrid">
+            <label>Subject <input id="homeworkSubject" required placeholder="Math / ELA / Science"></label>
+            <label>Quest Title <input id="homeworkTitle" required placeholder="Quest title"></label>
+            <label>Due Date <input id="homeworkDue" type="date"></label>
+            <label>Status
+              <select id="homeworkStatus">
+                <option>Not Started</option>
+                <option>In Progress</option>
+                <option>Done</option>
+              </select>
+            </label>
+            <label>Notes <textarea id="homeworkNotes" rows="2" placeholder="Optional notes"></textarea></label>
+            <label>Party Reminder <input id="homeworkReminder" placeholder="Optional reminder"></label>
+            <label>Extra Callout <input id="homeworkCallout" placeholder="Optional callout"></label>
+          </div>
+          <div class="homeworkParentActions">
+            <button type="submit">Save Quest</button>
+            <button type="button" id="homeworkFormReset">Clear</button>
+          </div>
+        </form>
+      </div>
+      <div id="homeworkVictory" class="homeworkVictory" hidden>🏆 Victory! Quest complete!</div>
+    </section>
+
+    <!-- Enemy Deck -->
+    <section class="enemyDeck" id="deck">
+      <h2>Enemy Deck</h2>
+      <p class="enemyDeckSub">Collectible enemy cards from every zone.</p>
+      <div id="enemyDeckGrid" class="enemyDeckGrid"></div>
+    </section>
 
     <!-- World Map Section -->
     <div id="map" style="margin-top:24px;"></div>
