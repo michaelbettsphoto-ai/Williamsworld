@@ -1,0 +1,3 @@
+- Signature visual: Buckle Bash is depicted as outward energy arcs from the core stance.
+- Element read: ROCK_METAL palette and ambient effects drive immediate type recognition.
+- Threat read: COMMON rarity + T3 tier increase glow intensity and aura scale.

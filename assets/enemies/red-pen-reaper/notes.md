@@ -1,0 +1,3 @@
+- Signature visual: Correction Strike is depicted as outward energy arcs from the core stance.
+- Element read: METAL_SHADOW palette and ambient effects drive immediate type recognition.
+- Threat read: ELITE rarity + T2 tier increase glow intensity and aura scale.

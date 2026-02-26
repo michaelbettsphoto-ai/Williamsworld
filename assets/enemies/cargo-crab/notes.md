@@ -1,0 +1,3 @@
+- Signature visual: Crate Guard is depicted as outward energy arcs from the core stance.
+- Element read: ROCK_WATER palette and ambient effects drive immediate type recognition.
+- Threat read: UNCOMMON rarity + T3 tier increase glow intensity and aura scale.

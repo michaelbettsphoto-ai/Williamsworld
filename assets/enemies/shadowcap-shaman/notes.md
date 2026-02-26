@@ -1,0 +1,3 @@
+- Signature visual: Spores of Doubt is depicted as outward energy arcs from the core stance.
+- Element read: SHADOW_GRASS palette and ambient effects drive immediate type recognition.
+- Threat read: RARE rarity + T4 tier increase glow intensity and aura scale.

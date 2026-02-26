@@ -1,0 +1,3 @@
+- Signature visual: Late Fee Flame is depicted as outward energy arcs from the core stance.
+- Element read: FIRE palette and ambient effects drive immediate type recognition.
+- Threat read: RARE rarity + T2 tier increase glow intensity and aura scale.

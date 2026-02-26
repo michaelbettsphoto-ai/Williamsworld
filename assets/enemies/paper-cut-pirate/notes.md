@@ -1,0 +1,3 @@
+- Signature visual: Cutlass Cut is depicted as outward energy arcs from the core stance.
+- Element read: WIND_METAL palette and ambient effects drive immediate type recognition.
+- Threat read: UNCOMMON rarity + T2 tier increase glow intensity and aura scale.

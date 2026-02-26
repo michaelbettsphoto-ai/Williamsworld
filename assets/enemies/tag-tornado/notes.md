@@ -1,0 +1,3 @@
+- Signature visual: Whirlwind is depicted as outward energy arcs from the core stance.
+- Element read: WIND palette and ambient effects drive immediate type recognition.
+- Threat read: UNCOMMON rarity + T3 tier increase glow intensity and aura scale.

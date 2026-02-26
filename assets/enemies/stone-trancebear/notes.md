@@ -1,0 +1,3 @@
+- Signature visual: Trance Roar is depicted as outward energy arcs from the core stance.
+- Element read: ROCK palette and ambient effects drive immediate type recognition.
+- Threat read: UNCOMMON rarity + T4 tier increase glow intensity and aura scale.

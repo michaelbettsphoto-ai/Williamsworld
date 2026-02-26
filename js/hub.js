@@ -3303,6 +3303,99 @@ document.addEventListener('DOMContentLoaded', async () => {
     return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
   }
 
+  let hubEnemyCards = [];
+
+  function buildHubMyCards() {
+    return [
+      { name: 'William Ready', type: 'HERO', portrait: 'assets/images/william-card-ready.png', stats: { hp: 100, atk: 18, def: 14, spd: 16 } },
+      { name: 'William Battle', type: 'WARRIOR', portrait: 'assets/images/william-card-battle.png', stats: { hp: 110, atk: 22, def: 16, spd: 15 } },
+      { name: 'William Scholar', type: 'ARCANE', portrait: 'assets/images/william-card-scholar.png', stats: { hp: 90, atk: 20, def: 13, spd: 17 } },
+      { name: 'William Rest', type: 'SUPPORT', portrait: 'assets/images/william-card-rest.png', stats: { hp: 120, atk: 14, def: 20, spd: 12 } }
+    ];
+  }
+
+  function prefersReducedMotionHub() {
+    return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function renderHubDockCard(card, kind) {
+    const c = card || {};
+    const name = c.name || (kind === 'enemy' ? 'Enemy' : 'My Card');
+    const type = c.element || c.type || 'NEUTRAL';
+    const portrait = c.artPath || c.portrait || '';
+    const stats = c.stats || {};
+    return `<div class="hubDeckFlip">
+      <div class="hubDeckCardFace back"></div>
+      <div class="hubDeckCardFace front">
+        <div class="hubDeckFrontInner">
+          <div class="hubDeckName">${name}</div>
+          <div class="hubDeckType">${type}</div>
+          <div class="hubDeckArt">${portrait ? `<img src="${portrait}" alt="${name}">` : '👾'}</div>
+          <div class="hubDeckStats">
+            <span>HP ${stats.hp || 0}</span><span>ATK ${stats.atk || 0}</span>
+            <span>DEF ${stats.def || 0}</span><span>SPD ${stats.spd || 0}</span>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  function initHubDeckLane({ laneId, title, kind, cards }) {
+    const lane = document.getElementById(laneId);
+    if (!lane) return null;
+    const state = { isOpen: false, currentIndex: 0, isAnimating: false, lastAction: 'init', hasOpenedOnce: false };
+    lane.innerHTML = `<div class="hubDeckLabel">${title}</div>
+      <div class="hubDeckStack" role="button" tabindex="0" aria-label="${title}" aria-disabled="${cards.length ? 'false' : 'true'}">
+        <div class="hubDeckLayer l1"></div><div class="hubDeckLayer l2"></div><div class="hubDeckLayer l3"></div><div class="hubDeckLayer l4"></div>
+        <div class="hubDeckReveal">${cards.length ? renderHubDockCard(cards[0], kind) : ''}</div>
+      </div>
+      <div class="hubDeckHint">Tap: reveal / close / cycle</div>`;
+
+    const stack = lane.querySelector('.hubDeckStack');
+    const reveal = lane.querySelector('.hubDeckReveal');
+    const apply = () => {
+      lane.classList.toggle('open', state.isOpen);
+      if (reveal && cards.length) reveal.innerHTML = renderHubDockCard(cards[state.currentIndex], kind);
+    };
+
+    const onTap = () => {
+      if (!cards.length || state.isAnimating) return;
+      const reduced = prefersReducedMotionHub();
+      if (!state.isOpen) {
+        if (state.hasOpenedOnce && state.lastAction === 'close') {
+          state.currentIndex = (state.currentIndex + 1) % cards.length;
+        }
+        state.isOpen = true;
+        state.lastAction = 'open';
+        state.hasOpenedOnce = true;
+      } else {
+        state.isOpen = false;
+        state.lastAction = 'close';
+      }
+      apply();
+      if (!reduced) {
+        state.isAnimating = true;
+        setTimeout(() => { state.isAnimating = false; }, 380);
+      }
+    };
+
+    stack?.addEventListener('click', onTap);
+    stack?.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onTap();
+      }
+    });
+
+    apply();
+    return { state, cards };
+  }
+
+  function initHubDeckDock() {
+    initHubDeckLane({ laneId: 'hubEnemyDeckLane', title: 'Enemy Deck', kind: 'enemy', cards: hubEnemyCards.slice(0, 12) });
+    initHubDeckLane({ laneId: 'hubMyDeckLane', title: 'My Deck', kind: 'my', cards: buildHubMyCards() });
+  }
+
   async function renderEnemyDeck() {
     const deck = $('enemyDeckGrid');
     if (!deck) return;
@@ -3310,16 +3403,19 @@ document.addEventListener('DOMContentLoaded', async () => {
       const response = await fetch('./assets/data/enemies.json', { cache: 'no-store' });
       const data = await response.json();
       const enemies = Array.isArray(data.enemies) ? data.enemies : [];
+      hubEnemyCards = enemies.map(enemy => ({ ...enemy, stats: enemy.stats || {} }));
       deck.innerHTML = enemies.map(enemy => {
-        const cardImage = enemyCardSvgDataUrl(enemy);
+        const cardImage = enemy.artPath || enemy.portrait || enemyCardSvgDataUrl(enemy);
         const abilities = (enemy.moves || []).slice(0, 4).map(move => `<li>${move.name}</li>`).join('');
         const flavor = enemy.flavorText || 'A troublemaker from William World.';
         const difficulty = enemy.rarity === 'BOSS' ? 9 : enemy.rarity === 'ELITE' ? 7 : enemy.rarity === 'RARE' ? 5 : 3;
         return `<article class="enemyCardEntry"><img loading="lazy" src="${cardImage}" alt="${enemy.name} card art"><h4>${enemy.name}</h4><div>Type: ${inferEnemyType(enemy)}</div><div>Difficulty: ${difficulty}/10</div><div>${flavor}</div><ul>${abilities}</ul></article>`;
       }).join('');
+      initHubDeckDock();
     } catch (error) {
       console.warn('[FAIL-SOFT] Unable to load enemy deck:', error);
       deck.innerHTML = '<p>Enemy deck is temporarily unavailable.</p>';
+      initHubDeckDock();
     }
   }
 

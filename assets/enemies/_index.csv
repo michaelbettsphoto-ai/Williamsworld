@@ -1,0 +1,49 @@
+EnemyName,Slug,ArtPath,ThumbPath,Type,Tier,PrimaryAbilityVisual
+Dandelion Dagger,dandelion-dagger,assets/enemies/dandelion-dagger/card_art_v1.svg,assets/enemies/dandelion-dagger/thumb_v1.svg,GRASS,T1,Puff Slash energy action
+Mudkip Bandit,mudkip-bandit,assets/enemies/mudkip-bandit/card_art_v1.svg,assets/enemies/mudkip-bandit/thumb_v1.svg,WATER,T1,Mud Toss energy action
+Pebble Pouncer,pebble-pouncer,assets/enemies/pebble-pouncer/card_art_v1.svg,assets/enemies/pebble-pouncer/thumb_v1.svg,ROCK,T1,Pounce energy action
+Sunblink Moth,sunblink-moth,assets/enemies/sunblink-moth/card_art_v1.svg,assets/enemies/sunblink-moth/thumb_v1.svg,LIGHT,T1,Glimmer Beam energy action
+Thorny Sneak,thorny-sneak,assets/enemies/thorny-sneak/card_art_v1.svg,assets/enemies/thorny-sneak/thumb_v1.svg,GRASS,T1,Thorn Trap energy action
+Puddle Hexer,puddle-hexer,assets/enemies/puddle-hexer/card_art_v1.svg,assets/enemies/puddle-hexer/thumb_v1.svg,WATER_SHADOW,T1,Ink Splash energy action
+Windwink Imp,windwink-imp,assets/enemies/windwink-imp/card_art_v1.svg,assets/enemies/windwink-imp/thumb_v1.svg,WIND,T1,Gust Jab energy action
+Scorchling,scorchling,assets/enemies/scorchling/card_art_v1.svg,assets/enemies/scorchling/thumb_v1.svg,FIRE,T1,Ember Bite energy action
+Barkhide Bully,barkhide-bully,assets/enemies/barkhide-bully/card_art_v1.svg,assets/enemies/barkhide-bully/thumb_v1.svg,GRASS_ROCK,T1,Body Block energy action
+Spark Dustling,spark-dustling,assets/enemies/spark-dustling/card_art_v1.svg,assets/enemies/spark-dustling/thumb_v1.svg,ELECTRIC,T1,Static Pop energy action
+Nightleaf Snatcher,nightleaf-snatcher,assets/enemies/nightleaf-snatcher/card_art_v1.svg,assets/enemies/nightleaf-snatcher/thumb_v1.svg,SHADOW,T1,Swipe & Vanish energy action
+Slimecap Trickster,slimecap-trickster,assets/enemies/slimecap-trickster/card_art_v1.svg,assets/enemies/slimecap-trickster/thumb_v1.svg,GRASS,T1,Spore Mist energy action
+Eraser Wraith,eraser-wraith,assets/enemies/eraser-wraith/card_art_v1.svg,assets/enemies/eraser-wraith/thumb_v1.svg,SHADOW,T2,Erase Confidence energy action
+Paper Cut Pirate,paper-cut-pirate,assets/enemies/paper-cut-pirate/card_art_v1.svg,assets/enemies/paper-cut-pirate/thumb_v1.svg,WIND_METAL,T2,Cutlass Cut energy action
+Inkblob Gremlin,inkblob-gremlin,assets/enemies/inkblob-gremlin/card_art_v1.svg,assets/enemies/inkblob-gremlin/thumb_v1.svg,SHADOW_WATER,T2,Ink Spray energy action
+Quiz Golemlet,quiz-golemlet,assets/enemies/quiz-golemlet/card_art_v1.svg,assets/enemies/quiz-golemlet/thumb_v1.svg,ROCK,T2,Pop Quiz energy action
+Deadline Drake,deadline-drake,assets/enemies/deadline-drake/card_art_v1.svg,assets/enemies/deadline-drake/thumb_v1.svg,FIRE,T2,Late Fee Flame energy action
+Scribble Sorcerer,scribble-sorcerer,assets/enemies/scribble-sorcerer/card_art_v1.svg,assets/enemies/scribble-sorcerer/thumb_v1.svg,ELECTRIC,T2,Zap Diagram energy action
+Binder Beast,binder-beast,assets/enemies/binder-beast/card_art_v1.svg,assets/enemies/binder-beast/thumb_v1.svg,METAL,T2,Clamp energy action
+Procrastination Poltergeist,procrastination-poltergeist,assets/enemies/procrastination-poltergeist/card_art_v1.svg,assets/enemies/procrastination-poltergeist/thumb_v1.svg,SHADOW,T2,Snooze Field energy action
+Sticky Note Swarm,sticky-note-swarm,assets/enemies/sticky-note-swarm/card_art_v1.svg,assets/enemies/sticky-note-swarm/thumb_v1.svg,WIND,T2,Cling energy action
+Graph Goblin,graph-goblin,assets/enemies/graph-goblin/card_art_v1.svg,assets/enemies/graph-goblin/thumb_v1.svg,ELECTRIC,T2,Slope Slip energy action
+Red Pen Reaper,red-pen-reaper,assets/enemies/red-pen-reaper/card_art_v1.svg,assets/enemies/red-pen-reaper/thumb_v1.svg,METAL_SHADOW,T2,Correction Strike energy action
+Homework Hydra,homework-hydra,assets/enemies/homework-hydra/card_art_v1.svg,assets/enemies/homework-hydra/thumb_v1.svg,WATER,T2,Assignment Flood energy action
+Strap Snapper,strap-snapper,assets/enemies/strap-snapper/card_art_v1.svg,assets/enemies/strap-snapper/thumb_v1.svg,METAL,T3,Buckle Bite energy action
+Zipperfang,zipperfang,assets/enemies/zipperfang/card_art_v1.svg,assets/enemies/zipperfang/thumb_v1.svg,METAL,T3,Zip Slash energy action
+Cargo Crab,cargo-crab,assets/enemies/cargo-crab/card_art_v1.svg,assets/enemies/cargo-crab/thumb_v1.svg,ROCK_WATER,T3,Crate Guard energy action
+Pocket Mimic,pocket-mimic,assets/enemies/pocket-mimic/card_art_v1.svg,assets/enemies/pocket-mimic/thumb_v1.svg,SHADOW,T3,Snack Snatch energy action
+Buckle Brute,buckle-brute,assets/enemies/buckle-brute/card_art_v1.svg,assets/enemies/buckle-brute/thumb_v1.svg,ROCK_METAL,T3,Buckle Bash energy action
+Lunchbox Lurker,lunchbox-lurker,assets/enemies/lunchbox-lurker/card_art_v1.svg,assets/enemies/lunchbox-lurker/thumb_v1.svg,SHADOW,T3,Stale Cloud energy action
+Waterbottle Wobbler,waterbottle-wobbler,assets/enemies/waterbottle-wobbler/card_art_v1.svg,assets/enemies/waterbottle-wobbler/thumb_v1.svg,WATER,T3,Splash Heal energy action
+Pencil Pike,pencil-pike,assets/enemies/pencil-pike/card_art_v1.svg,assets/enemies/pencil-pike/thumb_v1.svg,WIND_METAL,T3,Point Jab energy action
+Supply Sapper,supply-sapper,assets/enemies/supply-sapper/card_art_v1.svg,assets/enemies/supply-sapper/thumb_v1.svg,SHADOW,T3,Steal Charge energy action
+Tag Tornado,tag-tornado,assets/enemies/tag-tornado/card_art_v1.svg,assets/enemies/tag-tornado/thumb_v1.svg,WIND,T3,Whirlwind energy action
+Locker Lizard,locker-lizard,assets/enemies/locker-lizard/card_art_v1.svg,assets/enemies/locker-lizard/thumb_v1.svg,ROCK,T3,Door Shield energy action
+Patchwork Punisher,patchwork-punisher,assets/enemies/patchwork-punisher/card_art_v1.svg,assets/enemies/patchwork-punisher/thumb_v1.svg,METAL,T3,Patch Smash energy action
+Rune Stag,rune-stag,assets/enemies/rune-stag/card_art_v1.svg,assets/enemies/rune-stag/thumb_v1.svg,LIGHT,T4,Rune Charge energy action
+Whisper Viper,whisper-viper,assets/enemies/whisper-viper/card_art_v1.svg,assets/enemies/whisper-viper/thumb_v1.svg,SHADOW,T4,Venom Whisper energy action
+Mist Monk,mist-monk,assets/enemies/mist-monk/card_art_v1.svg,assets/enemies/mist-monk/thumb_v1.svg,WATER_LIGHT,T4,Calm Wave energy action
+Thorn Sentinel,thorn-sentinel,assets/enemies/thorn-sentinel/card_art_v1.svg,assets/enemies/thorn-sentinel/thumb_v1.svg,GRASS_ROCK,T4,Bramble Wall energy action
+Lumen Owl,lumen-owl,assets/enemies/lumen-owl/card_art_v1.svg,assets/enemies/lumen-owl/thumb_v1.svg,LIGHT_WIND,T4,Lumen Ray energy action
+Shadowcap Shaman,shadowcap-shaman,assets/enemies/shadowcap-shaman/card_art_v1.svg,assets/enemies/shadowcap-shaman/thumb_v1.svg,SHADOW_GRASS,T4,Spores of Doubt energy action
+Breeze Banshee,breeze-banshee,assets/enemies/breeze-banshee/card_art_v1.svg,assets/enemies/breeze-banshee/thumb_v1.svg,WIND,T4,Haunting Gust energy action
+Stone Trancebear,stone-trancebear,assets/enemies/stone-trancebear/card_art_v1.svg,assets/enemies/stone-trancebear/thumb_v1.svg,ROCK,T4,Trance Roar energy action
+Sparkroot Warden,sparkroot-warden,assets/enemies/sparkroot-warden/card_art_v1.svg,assets/enemies/sparkroot-warden/thumb_v1.svg,ELECTRIC_GRASS,T4,Root Shock energy action
+Moonveil Panther,moonveil-panther,assets/enemies/moonveil-panther/card_art_v1.svg,assets/enemies/moonveil-panther/thumb_v1.svg,SHADOW,T4,Moon Pounce energy action
+Crystal Mantis,crystal-mantis,assets/enemies/crystal-mantis/card_art_v1.svg,assets/enemies/crystal-mantis/thumb_v1.svg,ICE_METAL,T4,Crystal Slice energy action
+Ancient Grove Guardian,ancient-grove-guardian,assets/enemies/ancient-grove-guardian/card_art_v1.svg,assets/enemies/ancient-grove-guardian/thumb_v1.svg,GRASS_LIGHT,T4,Sanctuary Bark energy action

@@ -1,0 +1,3 @@
+- Signature visual: Sanctuary Bark is depicted as outward energy arcs from the core stance.
+- Element read: GRASS_LIGHT palette and ambient effects drive immediate type recognition.
+- Threat read: ELITE rarity + T4 tier increase glow intensity and aura scale.

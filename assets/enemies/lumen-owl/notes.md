@@ -1,0 +1,3 @@
+- Signature visual: Lumen Ray is depicted as outward energy arcs from the core stance.
+- Element read: LIGHT_WIND palette and ambient effects drive immediate type recognition.
+- Threat read: COMMON rarity + T4 tier increase glow intensity and aura scale.
