@@ -277,34 +277,85 @@ body {
   padding: 2px 8px; border-radius: 10px; font-size: 0.6rem;
   font-weight: 700; text-transform: uppercase;
 }
-.enemy-deck {
-  position: relative; width: clamp(100px, 18vw, 150px); height: clamp(140px, 25vw, 210px);
-  cursor: pointer;
-  transition: transform 0.2s ease, filter 0.2s ease;
+.deck-lane-wrap {
+  display: grid;
+  gap: 12px;
+  width: min(380px, 90vw);
 }
-.enemy-deck:hover { transform: translateY(-4px) scale(1.03); filter: brightness(1.1); }
-.enemy-deck:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; border-radius: var(--radius-md); }
-.deck-tap-hint {
-  margin-top: 6px;
-  text-align: center;
-  font-size: 0.72rem;
-  color: var(--gold);
-  text-shadow: 0 0 10px rgba(255, 211, 110, 0.45);
+.deck-lane {
+  --deck-accent: #f97316;
+  --deck-accent-2: #ef4444;
+  --deck-outline: rgba(255,255,255,0.22);
+  --deck-label-bg: rgba(10, 10, 20, 0.74);
+  --deck-shadow: 0 12px 22px rgba(0,0,0,0.45);
+  --card-back-image: url('./assets/images/william-card-back.png');
+  --flip-ms: 360ms;
+  --lift-y: -14px;
+  position: relative;
+  perspective: 1000px;
 }
-.deck-stack {
-  position: absolute; width: 100%; height: 100%;
-  background: url('https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/aBsHEkiCJJbvcNLB.png') center/cover;
-  border-radius: var(--radius-md); border: 2px solid var(--gold-dark);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+.deck-lane--enemy { --deck-accent:#ef4444; --deck-accent-2:#f59e0b; }
+.deck-lane--my { --deck-accent:#22c55e; --deck-accent-2:#3b82f6; }
+.deck-label {
+  display:inline-flex; align-items:center; gap:8px;
+  padding:6px 12px; margin-bottom:8px;
+  border-radius:999px; border:2px solid var(--deck-outline);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--deck-accent) 18%, var(--deck-label-bg)), var(--deck-label-bg));
+  box-shadow: 0 5px 16px rgba(0,0,0,0.35);
+  font-family: var(--font-display); font-weight: 800; letter-spacing: .03em; text-transform: uppercase;
+  color: #fff; text-shadow: -1px 0 #1a1a1a, 0 1px #1a1a1a, 1px 0 #1a1a1a, 0 -1px #1a1a1a;
 }
-.deck-stack:nth-child(1) { top: 0; left: 0; }
-.deck-stack:nth-child(2) { top: 3px; left: 3px; }
-.deck-stack:nth-child(3) { top: 6px; left: 6px; }
-.deck-glow {
-  position: absolute; inset: -8px;
-  border-radius: calc(var(--radius-md) + 8px);
-  background: radial-gradient(ellipse, rgba(255,211,110,0.3), transparent 70%);
-  animation: deckPulse 2s ease-in-out infinite;
+.deck-label-emblem{width:18px;height:18px;border-radius:50%;background:radial-gradient(circle,var(--deck-accent-2),var(--deck-accent));box-shadow:0 0 10px color-mix(in srgb,var(--deck-accent) 55%, transparent);} 
+.deck-clickable {
+  position: relative; width: clamp(118px, 16vw, 140px); height: clamp(168px, 23vw, 196px);
+  cursor: pointer; transform-style: preserve-3d;
+}
+.deck-clickable[aria-disabled='true']{opacity:0.5;cursor:not-allowed;}
+.deck-stack-layer {
+  position:absolute; inset:0; border-radius:14px;
+  border:2px solid rgba(255,255,255,0.2);
+  background: var(--card-back-image) center/cover no-repeat;
+  box-shadow: var(--deck-shadow);
+}
+.deck-stack-layer:nth-child(1){transform:translate(0,0)}
+.deck-stack-layer:nth-child(2){transform:translate(4px,4px)}
+.deck-stack-layer:nth-child(3){transform:translate(8px,8px)}
+.deck-stack-layer:nth-child(4){transform:translate(12px,12px)}
+.deck-stack-layer:nth-child(5){transform:translate(16px,16px)}
+.deck-reveal {
+  position:absolute; left:50%; top:-12px; width: clamp(132px, 18vw, 156px); height: clamp(186px, 26vw, 220px);
+  transform: translateX(-50%);
+  pointer-events:none; transform-style:preserve-3d;
+}
+.deck-reveal-inner {
+  position:relative; width:100%; height:100%; transform-style:preserve-3d;
+  transition: transform var(--flip-ms) cubic-bezier(.215,.61,.355,1), translate var(--flip-ms) cubic-bezier(.215,.61,.355,1), scale var(--flip-ms) cubic-bezier(.215,.61,.355,1), opacity 200ms ease;
+  transform: rotateY(0deg); translate: 0 0; scale:1;
+  opacity:.97;
+}
+.deck-lane.is-open .deck-reveal-inner { transform: rotateY(180deg); translate: 0 var(--lift-y); scale: 1.02; opacity: 1; }
+.flippable-face {
+  position:absolute; inset:0; border-radius:16px; backface-visibility:hidden; overflow:hidden;
+  border:2px solid rgba(255,255,255,0.26); box-shadow: 0 18px 30px rgba(0,0,0,0.55);
+}
+.flippable-back { background: var(--card-back-image) center/cover no-repeat; }
+.flippable-front {
+  transform: rotateY(180deg);
+  background: linear-gradient(160deg, rgba(12,17,30,0.96), rgba(16,24,45,0.96));
+}
+.card-foil { position:absolute; inset:0; background: linear-gradient(115deg, rgba(255,255,255,0.05) 0%, color-mix(in srgb, var(--deck-accent) 30%, transparent) 35%, transparent 70%); mix-blend-mode:screen; }
+.card-front-content{position:relative;z-index:1;display:flex;flex-direction:column;height:100%;padding:10px;gap:7px}
+.card-name{font-family:var(--font-display);font-weight:800;color:#fff;text-shadow:-1px 0 #10131e,0 1px #10131e,1px 0 #10131e,0 -1px #10131e;font-size:.92rem;line-height:1.1;}
+.card-type-pill{align-self:flex-start;padding:2px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.25);font-size:.62rem;font-weight:700;background:color-mix(in srgb,var(--deck-accent) 35%, #0f1320);display:inline-flex;gap:6px;align-items:center}
+.card-art{flex:1;border-radius:10px;border:1px solid rgba(255,255,255,.2);overflow:hidden;background:linear-gradient(145deg,color-mix(in srgb,var(--deck-accent) 40%, #141b2d),#0f1320);display:grid;place-items:center}
+.card-art img{width:100%;height:100%;object-fit:cover;display:block}
+.card-art-fallback{font-size:2rem;filter:drop-shadow(0 4px 8px rgba(0,0,0,.45));}
+.card-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px;font-size:.64rem;color:#dbe7ff}
+.card-stat{display:flex;align-items:center;justify-content:space-between;padding:3px 6px;border-radius:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.09)}
+.deck-empty{padding:10px;border:1px dashed rgba(255,255,255,.3);border-radius:10px;color:var(--text-secondary);font-size:.74rem;background:rgba(8,10,18,.5)}
+@media (prefers-reduced-motion: reduce){
+  .deck-reveal-inner{transition:none !important}
+  .deck-lane.is-open .deck-reveal-inner{translate:0 -4px;scale:1}
 }
 @keyframes deckPulse { 0%, 100% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.05); } }
 
@@ -927,16 +978,14 @@ body {
 <!-- SCREEN 2: Card Draw / Reveal -->
 <div id="draw-screen" class="screen">
   <div class="draw-title" id="draw-title">Drawing Enemies...</div>
-  <div style="display:flex; align-items:center; gap: clamp(16px, 4vw, 32px); justify-content:center;">
+  <div style="display:flex; align-items:flex-start; gap: clamp(16px, 4vw, 32px); justify-content:center; flex-wrap:wrap;">
     <div class="draw-area" id="draw-area"></div>
-    <div class="enemy-deck" id="enemy-deck" role="button" tabindex="0" aria-label="Open William's deck" onclick="openDeckPage()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openDeckPage();}">
-      <div class="deck-glow"></div>
-      <div class="deck-stack"></div>
-      <div class="deck-stack"></div>
-      <div class="deck-stack"></div>
+    <div class="deck-lane-wrap">
+      <div class="deck-lane" id="enemy-lane"></div>
+      <div class="deck-lane" id="my-lane"></div>
     </div>
   </div>
-  <div class="deck-tap-hint">Tap the deck to view William's cards</div>
+  <div class="deck-tap-hint">Tap any deck: odd taps reveal, even taps close.</div>
   <button class="scout-btn" id="start-battle-btn" style="display:none;" onclick="openTeamSelection()">
     <span class="shimmer"></span>
     Build Team
@@ -1297,7 +1346,10 @@ const ENEMY_IMAGES = {
 
 function getEnemyArt(enemy) {
   const id = typeof enemy === 'string' ? enemy : enemy?.id;
-  return (id && ENEMY_IMAGES[id]) ? ENEMY_IMAGES[id] : '';
+  const direct = (id && ENEMY_IMAGES[id]) ? ENEMY_IMAGES[id] : '';
+  if (direct) return direct;
+  if (typeof enemy === 'object' && enemy?.portrait) return enemy.portrait;
+  return id ? `assets/enemies/${id}/card_art_v1.png` : '';
 }
 
 function renderEnemyArt(enemy, fallbackEmoji, className = 'emoji-portrait') {
@@ -1584,6 +1636,7 @@ function startEncounter() {
   document.body.classList.add('shake');
   setTimeout(() => document.body.classList.remove('shake'), 400);
   drawEnemies();
+  initInPlaceDecks();
   setTimeout(() => {
     showScreen('draw-screen');
     setTimeout(() => revealCards(), 600);
@@ -2618,6 +2671,117 @@ function showDeckCardDetail(i) {
   </div><p><strong>Passive:</strong> ${c.passive || 'None'}</p><p><strong>Ultimate:</strong> ${c.ultimate || 'None'}</p><p><strong>Abilities:</strong></p><ul>${(c.abilities || []).map(a => `<li><strong>${a.name}</strong>: ${a.desc || ''}</li>`).join('')}</ul><p>Stats: HP ${c.stats?.hp || 0}, ATK ${c.stats?.atk || 0}, DEF ${c.stats?.def || 0}, SPD ${c.stats?.spd || 0}</p><p>${c.capturedAt ? `Captured: ${new Date(c.capturedAt).toLocaleString()}` : 'Starter Card'}</p>`;
 }
 
+
+// ===== IN-PLACE DECK INTERACTION =====
+const deckControllers = {};
+
+function prefersReducedMotion() {
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function getDeckCardsForLane(kind) {
+  if (kind === 'enemy') return drawnEnemies || [];
+  ensureDeckData();
+  return gameState.playerDeck || [];
+}
+
+function normalizeDeckCard(raw, kind) {
+  const stats = raw?.stats || {};
+  const type = raw?.element || raw?.type || 'NEUTRAL';
+  const portrait = raw?.artPath || raw?.portrait || getEnemyArt(raw) || getCardPortrait(raw) || '';
+  return {
+    name: raw?.name || (kind === 'enemy' ? 'Enemy' : 'My Card'),
+    type,
+    rarity: raw?.rarity || 'COMMON',
+    emoji: raw?.emoji || (kind === 'enemy' ? '👾' : '🛡️'),
+    portrait,
+    stats: {
+      hp: stats.hp || 0,
+      atk: stats.atk || 0,
+      def: stats.def || 0,
+      spd: stats.spd || 0
+    }
+  };
+}
+
+function renderFlippableCard(card, kind) {
+  const safe = normalizeDeckCard(card || {}, kind);
+  const icon = kind === 'enemy' ? '☠️' : '🛡️';
+  const img = safe.portrait ? `<img src="${safe.portrait}" alt="${safe.name}">` : `<span class="card-art-fallback">${safe.emoji}</span>`;
+  return `<div class="deck-reveal-inner">
+      <div class="flippable-face flippable-back" aria-hidden="true"></div>
+      <div class="flippable-face flippable-front">
+        <div class="card-foil"></div>
+        <div class="card-front-content">
+          <div class="card-name">${safe.name}</div>
+          <div class="card-type-pill"><span>${icon}</span><span>${safe.type}</span></div>
+          <div class="card-art">${img}</div>
+          <div class="card-stats">
+            <div class="card-stat"><span>❤️ HP</span><strong>${safe.stats.hp}</strong></div>
+            <div class="card-stat"><span>⚔️ ATK</span><strong>${safe.stats.atk}</strong></div>
+            <div class="card-stat"><span>🛡️ DEF</span><strong>${safe.stats.def}</strong></div>
+            <div class="card-stat"><span>💨 SPD</span><strong>${safe.stats.spd}</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
+function createDeckController({ laneId, kind, title, emblem }) {
+  const lane = document.getElementById(laneId);
+  if (!lane) return null;
+  const cards = getDeckCardsForLane(kind);
+  const state = { isOpen:false, currentIndex:0, isAnimating:false, lastAction:'init', hasOpenedOnce:false };
+  const layers = '<div class="deck-stack-layer"></div>'.repeat(5);
+  lane.className = `deck-lane deck-lane--${kind}`;
+  lane.innerHTML = `<div class="deck-label"><span class="deck-label-emblem"></span><span>${title}</span></div>
+    <div class="deck-clickable" role="button" tabindex="0" aria-label="${title}" aria-disabled="${cards.length===0 ? 'true':'false'}">
+      ${layers}
+      <div class="deck-reveal">${cards.length ? renderFlippableCard(cards[state.currentIndex], kind) : ''}</div>
+    </div>
+    ${cards.length ? '' : '<div class="deck-empty">No cards available.</div>'}`;
+
+  const clickable = lane.querySelector('.deck-clickable');
+  const reveal = lane.querySelector('.deck-reveal');
+
+  const apply = () => {
+    lane.classList.toggle('is-open', state.isOpen);
+    if (reveal && cards.length) reveal.innerHTML = renderFlippableCard(cards[state.currentIndex], kind);
+  };
+
+  const onInteract = () => {
+    if (!cards.length || state.isAnimating) return;
+    const reduced = prefersReducedMotion();
+    if (!state.isOpen) {
+      if (state.hasOpenedOnce && state.lastAction === 'close') state.currentIndex = (state.currentIndex + 1) % cards.length;
+      state.isOpen = true;
+      state.lastAction = 'open';
+      state.hasOpenedOnce = true;
+    } else {
+      state.isOpen = false;
+      state.lastAction = 'close';
+    }
+    apply();
+    if (!reduced) {
+      state.isAnimating = true;
+      setTimeout(() => { state.isAnimating = false; }, 380);
+    }
+  };
+
+  clickable?.addEventListener('click', onInteract);
+  clickable?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onInteract(); }
+  });
+
+  apply();
+  return { state, cards, rerender: apply };
+}
+
+function initInPlaceDecks() {
+  deckControllers.enemy = createDeckController({ laneId: 'enemy-lane', kind: 'enemy', title: 'Enemy Deck', emblem: '☠️' });
+  deckControllers.my = createDeckController({ laneId: 'my-lane', kind: 'my', title: 'My Deck', emblem: '🛡️' });
+}
+
 // ===== NAVIGATION =====
 function goToHub() {
 
@@ -2633,6 +2797,7 @@ function updateStreakDisplay() {
 
 // ===== START =====
 updateStreakDisplay();
+initInPlaceDecks();
 init();
 
 // ============================================

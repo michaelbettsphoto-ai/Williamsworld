@@ -1,0 +1,3 @@
+- Signature visual: Ink Splash is depicted as outward energy arcs from the core stance.
+- Element read: WATER_SHADOW palette and ambient effects drive immediate type recognition.
+- Threat read: UNCOMMON rarity + T1 tier increase glow intensity and aura scale.

@@ -1,0 +1,3 @@
+- Signature visual: Stale Cloud is depicted as outward energy arcs from the core stance.
+- Element read: SHADOW palette and ambient effects drive immediate type recognition.
+- Threat read: UNCOMMON rarity + T3 tier increase glow intensity and aura scale.

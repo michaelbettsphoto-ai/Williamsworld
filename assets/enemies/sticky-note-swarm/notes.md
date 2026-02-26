@@ -1,0 +1,3 @@
+- Signature visual: Cling is depicted as outward energy arcs from the core stance.
+- Element read: WIND palette and ambient effects drive immediate type recognition.
+- Threat read: COMMON rarity + T2 tier increase glow intensity and aura scale.

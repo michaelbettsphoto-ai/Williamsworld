@@ -1,0 +1,3 @@
+- Signature visual: Door Shield is depicted as outward energy arcs from the core stance.
+- Element read: ROCK palette and ambient effects drive immediate type recognition.
+- Threat read: RARE rarity + T3 tier increase glow intensity and aura scale.

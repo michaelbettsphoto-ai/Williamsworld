@@ -1,0 +1,3 @@
+- Signature visual: Static Pop is depicted as outward energy arcs from the core stance.
+- Element read: ELECTRIC palette and ambient effects drive immediate type recognition.
+- Threat read: COMMON rarity + T1 tier increase glow intensity and aura scale.

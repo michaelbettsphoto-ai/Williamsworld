@@ -2955,6 +2955,35 @@
   .enemyCardEntry h4{margin:8px 0 4px;font-family:var(--fantasy-font)}
   .enemyCardEntry ul{margin:6px 0 0 18px;padding:0;color:var(--muted);font-size:.9rem}
 
+
+  /* Hub deck panel beside Trapper mission */
+  .questDeckPanel{border:4px solid var(--gold);background:var(--glass-bg);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);border-radius:24px;box-shadow:var(--shadow),0 0 24px rgba(255,211,110,.25),inset 0 2px 0 rgba(255,255,255,.08);padding:16px;display:flex;align-items:stretch}
+  .hubDeckDock{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
+  .hubDeckLane{--dock-accent:#ef4444;--dock-accent2:#f59e0b;--dock-lift:-14px;perspective:1000px;display:flex;flex-direction:column;align-items:center}
+  .hubDeckLane.my{--dock-accent:#22c55e;--dock-accent2:#3b82f6}
+  .hubDeckLabel{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.28);background:linear-gradient(135deg,color-mix(in srgb,var(--dock-accent) 26%, rgba(16,14,28,.92)),rgba(16,14,28,.92));font-size:.72rem;font-weight:900;letter-spacing:.03em;text-transform:uppercase;text-shadow:-1px 0 #10131e,0 1px #10131e,1px 0 #10131e,0 -1px #10131e}
+  .hubDeckLabel::before{content:'';width:12px;height:12px;border-radius:50%;background:radial-gradient(circle,var(--dock-accent2),var(--dock-accent));box-shadow:0 0 10px color-mix(in srgb,var(--dock-accent) 60%, transparent)}
+  .hubDeckStack{position:relative;width:122px;height:172px;cursor:pointer;transform-style:preserve-3d;margin-top:8px}
+  .hubDeckStack[aria-disabled='true']{opacity:.55;cursor:not-allowed}
+  .hubDeckLayer,.hubDeckCardFace{position:absolute;inset:0;border-radius:12px;background:url('./assets/images/william-card-back.png') center/cover no-repeat;border:2px solid rgba(255,255,255,.22);box-shadow:0 10px 24px rgba(0,0,0,.52)}
+  .hubDeckLayer.l1{transform:translate(0,0)} .hubDeckLayer.l2{transform:translate(3px,3px)} .hubDeckLayer.l3{transform:translate(6px,6px)} .hubDeckLayer.l4{transform:translate(9px,9px)}
+  .hubDeckReveal{position:absolute;left:50%;top:-10px;width:132px;height:188px;transform:translateX(-50%);pointer-events:none}
+  .hubDeckFlip{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 360ms cubic-bezier(.215,.61,.355,1),translate 360ms cubic-bezier(.215,.61,.355,1),scale 360ms cubic-bezier(.215,.61,.355,1)}
+  .hubDeckLane.open .hubDeckFlip{transform:rotateY(180deg);translate:0 var(--dock-lift);scale:1.02}
+  .hubDeckCardFace.front{transform:rotateY(180deg);overflow:hidden;background:linear-gradient(165deg, rgba(14,19,35,.96), rgba(20,26,48,.96));}
+  .hubDeckCardFace.back{backface-visibility:hidden}
+  .hubDeckFrontInner{position:absolute;inset:0;padding:8px;display:flex;flex-direction:column;gap:5px}
+  .hubDeckName{font-family:var(--fantasy-font);font-size:.68rem;line-height:1.05;font-weight:900}
+  .hubDeckType{align-self:flex-start;padding:2px 7px;border-radius:999px;border:1px solid rgba(255,255,255,.25);font-size:.52rem;font-weight:800;background:color-mix(in srgb,var(--dock-accent) 42%, #0f1320)}
+  .hubDeckArt{flex:1;border-radius:9px;overflow:hidden;border:1px solid rgba(255,255,255,.2);background:linear-gradient(145deg,color-mix(in srgb,var(--dock-accent) 42%, #141b2d),#0f1320);display:grid;place-items:center}
+  .hubDeckArt img{width:100%;height:100%;object-fit:cover;display:block}
+  .hubDeckStats{display:grid;grid-template-columns:1fr 1fr;gap:3px;font-size:.5rem;color:#dbe7ff}
+  .hubDeckStats span{padding:2px 4px;border-radius:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1)}
+  .hubDeckHint{font-size:.56rem;color:rgba(255,211,110,.8);margin-top:6px;text-align:center}
+  @media (max-width: 1400px){.questDeckPanel{grid-column:1 / -1;justify-content:center}.hubDeckDock{max-width:520px}.hubDeckStack{width:112px;height:160px}.hubDeckReveal{width:122px;height:174px}}
+  @media (max-width: 680px){.hubDeckDock{grid-template-columns:1fr}.hubDeckLane{align-items:center}}
+  @media (prefers-reduced-motion: reduce){.hubDeckFlip{transition:none !important}.hubDeckLane.open .hubDeckFlip{translate:0 -4px;scale:1}}
+
   .ww-icon {
     width: 20px;
     height: 20px;
@@ -3017,6 +3046,7 @@
     <label for="reduceSoundMode" style="cursor: pointer; margin: 0;">Reduce Sound Mode</label>
   </div>
 </div>
+
 
 
 <div id="ww">
@@ -3252,6 +3282,13 @@
           </div>
           <div id="backpackHsRecordDisplay" class="hsRecordDisplay"></div>
           <div id="backpackHsHistoryList" class="hsHistoryList"></div>
+        </div>
+      </div>
+
+      <div class="questDeckPanel" id="questDeckPanel">
+        <div id="hubDeckDock" class="hubDeckDock" aria-label="Deck dock beside Trapper mission">
+          <div class="hubDeckLane enemy" id="hubEnemyDeckLane"></div>
+          <div class="hubDeckLane my" id="hubMyDeckLane"></div>
         </div>
       </div>
       </div>

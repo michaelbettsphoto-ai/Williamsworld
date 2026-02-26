@@ -1,0 +1,3 @@
+- Signature visual: Assignment Flood is depicted as outward energy arcs from the core stance.
+- Element read: WATER palette and ambient effects drive immediate type recognition.
+- Threat read: ELITE rarity + T2 tier increase glow intensity and aura scale.

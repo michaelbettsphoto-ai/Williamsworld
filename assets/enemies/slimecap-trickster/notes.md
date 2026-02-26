@@ -1,0 +1,3 @@
+- Signature visual: Spore Mist is depicted as outward energy arcs from the core stance.
+- Element read: GRASS palette and ambient effects drive immediate type recognition.
+- Threat read: ELITE rarity + T1 tier increase glow intensity and aura scale.

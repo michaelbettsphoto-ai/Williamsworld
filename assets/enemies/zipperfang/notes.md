@@ -1,0 +1,3 @@
+- Signature visual: Zip Slash is depicted as outward energy arcs from the core stance.
+- Element read: METAL palette and ambient effects drive immediate type recognition.
+- Threat read: UNCOMMON rarity + T3 tier increase glow intensity and aura scale.
