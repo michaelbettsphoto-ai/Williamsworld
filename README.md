@@ -182,6 +182,17 @@ All game data is stored in your browser's localStorage under the key `williamsWo
 - Total completed quests
 - Last completion date
 
+## 🔑 Parent Controls
+
+William's World uses PINs to protect parent-only settings and controls.
+
+| Feature | PIN | Where it's used |
+|---|---|---|
+| Screen Time management | `062923` | Add bonus minutes, behavior awards, unlock extra time |
+| Homework Quest Board | `4242` | Unlock parent edit mode for homework quests |
+
+> **Note:** Both PINs can be changed by editing the `PARENT_PIN` constants in `js/screen-time.js` and `js/hub.js`. For better security, choose a PIN that is not based on a date or other easily guessable pattern.
+
 ## 🔒 Privacy
 
 All data is stored locally in your browser. No data is sent to any server or third party.
