@@ -3271,17 +3271,13 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function enemyCardSvgDataUrl(enemy) {
-    const enemyType = inferEnemyType(enemy);
-    const difficulty = enemy.rarity === 'BOSS' ? 9 : enemy.rarity === 'ELITE' ? 7 : enemy.rarity === 'RARE' ? 5 : 3;
-    const flavor = enemy.flavorText || 'A troublemaker from William World.';
-    const abilities = (enemy.moves || []).slice(0, 3).map((move, idx) => `<tspan x="26" y="${262 + idx * 28}">• ${escapeXml(move.name || 'Ability')}</tspan>`).join('');
     const slug = slugifyEnemyId(enemy.id || enemy.name);
     let hash = 0;
     for (let i = 0; i < slug.length; i += 1) hash = (hash * 31 + slug.charCodeAt(i)) % 360;
     const hueA = hash;
     const hueB = (hash + 36) % 360;
 
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420" role="img" aria-label="${escapeXml(enemy.name)} card">
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420" role="img" aria-label="${escapeXml(enemy.name || 'Enemy')} card">
       <defs>
         <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
           <stop offset="0" stop-color="hsl(${hueA},65%,24%)"/>
@@ -3289,18 +3285,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         </linearGradient>
       </defs>
       <rect x="2" y="2" width="296" height="416" rx="20" fill="url(#bg)" stroke="#d4a530" stroke-width="4"/>
-      <rect x="16" y="16" width="268" height="48" rx="10" fill="rgba(13,10,18,.6)"/>
-      <text x="24" y="46" fill="#ffd36e" font-size="20" font-family="Verdana" font-weight="700">${escapeXml(enemy.name || 'Enemy')}</text>
-      <rect x="22" y="74" width="256" height="148" rx="12" fill="rgba(255,255,255,.08)"/>
-      <text x="26" y="98" fill="#fff" font-size="14" font-family="Verdana">Type: ${escapeXml(enemyType)}</text>
-      <text x="26" y="120" fill="#fff" font-size="14" font-family="Verdana">Difficulty: ${difficulty}/10</text>
-      <text x="24" y="250" fill="#fce8c0" font-size="14" font-family="Verdana" font-weight="700">Abilities</text>
-      <text fill="#fff" font-size="13" font-family="Verdana">${abilities || '<tspan x="26" y="262">• Sneaky strike</tspan>'}</text>
-      <text x="24" y="366" fill="#e3cfab" font-size="12" font-family="Verdana" font-style="italic">${escapeXml(flavor.slice(0, 70))}</text>
-      <text x="24" y="386" fill="#e3cfab" font-size="12" font-family="Verdana" font-style="italic">${escapeXml(flavor.slice(70, 140))}</text>
+      <rect x="18" y="18" width="264" height="384" rx="14" fill="rgba(0,0,0,.2)" stroke="rgba(255,255,255,.22)"/>
+      <circle cx="150" cy="176" r="68" fill="rgba(255,255,255,.12)"/>
+      <path d="M90 300c16-40 40-60 60-60s44 20 60 60" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="14" stroke-linecap="round"/>
+      <circle cx="122" cy="170" r="7" fill="rgba(255,255,255,.5)"/>
+      <circle cx="178" cy="170" r="7" fill="rgba(255,255,255,.5)"/>
     </svg>`;
 
     return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+  }
+
+  function enemySlugToDirectory(slug) {
+    return String(slug || '').trim().toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
+  }
+
+  function getEnemyHomeCardArt(enemy) {
+    const svgFallback = enemyCardSvgDataUrl(enemy);
+    const slug = enemySlugToDirectory(enemy?.slug || enemy?.id || enemy?.name);
+    const computedCardArt = slug ? `assets/enemies/${slug}/card_art_v1.svg` : '';
+    return {
+      primary: enemy?.homeCardArtPath || computedCardArt || enemy?.artPath || enemy?.portrait || svgFallback,
+      fallback: enemy?.artPath || enemy?.portrait || svgFallback
+    };
   }
 
   let hubEnemyCards = [];
@@ -3321,20 +3327,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   function renderHubDockCard(card, kind) {
     const c = card || {};
     const name = c.name || (kind === 'enemy' ? 'Enemy' : 'My Card');
-    const type = c.element || c.type || 'NEUTRAL';
-    const portrait = c.artPath || c.portrait || '';
-    const stats = c.stats || {};
+    const enemyArt = kind === 'enemy' ? getEnemyHomeCardArt(c) : null;
+    const portrait = enemyArt?.primary || c.artPath || c.portrait || '';
+    const portraitFallback = enemyArt?.fallback || c.portrait || '';
     return `<div class="hubDeckFlip">
       <div class="hubDeckCardFace back"></div>
       <div class="hubDeckCardFace front">
-        <div class="hubDeckFrontInner">
-          <div class="hubDeckName">${name}</div>
-          <div class="hubDeckType">${type}</div>
-          <div class="hubDeckArt">${portrait ? `<img src="${portrait}" alt="${name}">` : '👾'}</div>
-          <div class="hubDeckStats">
-            <span>HP ${stats.hp || 0}</span><span>ATK ${stats.atk || 0}</span>
-            <span>DEF ${stats.def || 0}</span><span>SPD ${stats.spd || 0}</span>
-          </div>
+        <div class="hubDeckFrontInner imageOnly">
+          <div class="hubDeckArt">${portrait ? `<img src="${portrait}" alt="${name}" loading="lazy" decoding="async"${portraitFallback ? ` onerror="if(this.dataset.fallbackApplied)return;this.dataset.fallbackApplied='1';this.src='${portraitFallback}'"` : ''}>` : '👾'}</div>
         </div>
       </div>
     </div>`;
@@ -3348,8 +3348,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       <div class="hubDeckStack" role="button" tabindex="0" aria-label="${title}" aria-disabled="${cards.length ? 'false' : 'true'}">
         <div class="hubDeckLayer l1"></div><div class="hubDeckLayer l2"></div><div class="hubDeckLayer l3"></div><div class="hubDeckLayer l4"></div>
         <div class="hubDeckReveal">${cards.length ? renderHubDockCard(cards[0], kind) : ''}</div>
-      </div>
-      <div class="hubDeckHint">Tap: reveal / close / cycle</div>`;
+      </div>`;
 
     const stack = lane.querySelector('.hubDeckStack');
     const reveal = lane.querySelector('.hubDeckReveal');
@@ -3405,11 +3404,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       const enemies = Array.isArray(data.enemies) ? data.enemies : [];
       hubEnemyCards = enemies.map(enemy => ({ ...enemy, stats: enemy.stats || {} }));
       deck.innerHTML = enemies.map(enemy => {
-        const cardImage = enemy.artPath || enemy.portrait || enemyCardSvgDataUrl(enemy);
-        const abilities = (enemy.moves || []).slice(0, 4).map(move => `<li>${move.name}</li>`).join('');
-        const flavor = enemy.flavorText || 'A troublemaker from William World.';
-        const difficulty = enemy.rarity === 'BOSS' ? 9 : enemy.rarity === 'ELITE' ? 7 : enemy.rarity === 'RARE' ? 5 : 3;
-        return `<article class="enemyCardEntry"><img loading="lazy" src="${cardImage}" alt="${enemy.name} card art"><h4>${enemy.name}</h4><div>Type: ${inferEnemyType(enemy)}</div><div>Difficulty: ${difficulty}/10</div><div>${flavor}</div><ul>${abilities}</ul></article>`;
+        const enemyArt = getEnemyHomeCardArt(enemy);
+        const cardImage = enemyArt.primary;
+        const cardFallback = enemyArt.fallback;
+        return `<article class="enemyCardEntry"><img loading="lazy" decoding="async" src="${cardImage}" alt="${enemy.name} card art"${cardFallback ? ` onerror="if(this.dataset.fallbackApplied)return;this.dataset.fallbackApplied='1';this.src='${cardFallback}'"` : ''}></article>`;
       }).join('');
       initHubDeckDock();
     } catch (error) {
