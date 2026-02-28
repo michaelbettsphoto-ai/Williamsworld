@@ -3464,7 +3464,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // ============================================================
   // HIGH SCORE SYSTEM — All Three Missions
-  // Records earliest completion time per mission.
+  // Records earliest completion TIME-OF-DAY per mission.
   // Breaking the record triggers fireworks + +15 screen time.
   // ============================================================
   (function initHighScores() {
@@ -3516,6 +3516,25 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     function saveHS(data) {
       localStorage.setItem(HS_KEY, JSON.stringify(data));
+    }
+
+    // Convert a timestamp to seconds after midnight in Chicago time.
+    // Smaller value = faster completion.
+    function getChicagoSecondsOfDay(ts) {
+      const d = new Date(ts);
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/Chicago',
+        hour12: false,
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      }).formatToParts(d);
+
+      const getPart = (type) => Number(parts.find(p => p.type === type)?.value || 0);
+      const hour = getPart('hour');
+      const minute = getPart('minute');
+      const second = getPart('second');
+      return (hour * 3600) + (minute * 60) + second;
     }
 
     // Format a timestamp as HH:MM AM/PM (Chicago time)
@@ -3593,13 +3612,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (entry.history.some(h => h.date === TODAY)) return;
 
       const now = Date.now();
-      const todayEntry = { date: TODAY, time: now, isRecord: false };
+      const currentScore = getChicagoSecondsOfDay(now);
 
-      // Compare with existing record (earlier time = better score)
-      const isNewRecord = !entry.record || now < entry.record;
+      // Backward compatibility with existing data that only stores the raw timestamp.
+      const existingScore = Number.isFinite(entry.recordScore)
+        ? entry.recordScore
+        : (entry.record ? getChicagoSecondsOfDay(entry.record) : null);
+
+      const todayEntry = { date: TODAY, time: now, score: currentScore, isRecord: false };
+
+      // Compare by time-of-day (earlier in the day is a better completion record).
+      const isNewRecord = existingScore === null || currentScore < existingScore;
 
       if (isNewRecord) {
         entry.record = now;
+        entry.recordScore = currentScore;
         entry.recordDate = TODAY;
         todayEntry.isRecord = true;
         // Mark all previous history entries as non-record
