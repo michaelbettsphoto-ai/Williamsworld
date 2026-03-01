@@ -3301,8 +3301,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function getEnemyHomeCardArt(enemy) {
     const svgFallback = enemyCardSvgDataUrl(enemy);
-    const slug = enemy?.slug || enemy?.id || enemy?.name;
-    const computedCardArt = slug ? `assets/enemies/${enemySlugToDirectory(slug)}/card_art_v1.svg` : '';
+    const slug = enemySlugToDirectory(enemy?.slug || enemy?.id || enemy?.name);
+    const computedCardArt = slug ? `assets/enemies/${slug}/card_art_v1.svg` : '';
     return {
       primary: enemy?.homeCardArtPath || computedCardArt || enemy?.artPath || enemy?.portrait || svgFallback,
       fallback: enemy?.artPath || enemy?.portrait || svgFallback
