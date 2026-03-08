@@ -1,0 +1,19 @@
+{
+  "name": "williamsworld-qa",
+  "version": "1.0.0",
+  "description": "Playwright QA test suite for Williams World",
+  "scripts": {
+    "test": "playwright test",
+    "test:visual": "playwright test tests/visual-ui.spec.ts",
+    "test:functional": "playwright test tests/functional-logic.spec.ts",
+    "test:chaos": "playwright test tests/chaos-monkey.spec.ts",
+    "test:all": "playwright test --reporter=json,html",
+    "report": "ts-node tests/generate-report.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.42.0",
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
+  }
+}
