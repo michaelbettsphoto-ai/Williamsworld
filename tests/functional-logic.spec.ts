@@ -291,10 +291,8 @@ test.describe('Agent B — Games Hub', () => {
   test('B-26: snake game card navigates to snake game', async ({ page }) => {
     const games = new GamesPage(page);
     await games.goto();
-    // Click the first game card link (snake)
-    const snakeCard = page.locator('.game-card[href*="snake"]');
-    const exists = await snakeCard.count();
-    if (exists > 0) {
+    const snakeCard = games.snakeCard; // a[href="snake/index.html"] from GamesPage POM
+    if (await snakeCard.count() > 0) {
       await snakeCard.click();
       await page.waitForLoadState('domcontentloaded');
       expect(page.url()).toContain('snake');

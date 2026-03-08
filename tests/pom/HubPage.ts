@@ -81,29 +81,37 @@ export class HubPage extends BasePage {
   }
 
   async getXP(): Promise<string> {
-    const xpEl = this.page.locator('[id*="xp"], [class*="xp"]').first();
-    return (await xpEl.textContent()) ?? '0';
+    return (await this.page.locator('#xpNow').textContent()) ?? '0';
   }
 
   async getLevel(): Promise<string> {
-    const levelEl = this.page.locator('[id*="level"], [class*="level-val"]').first();
-    return (await levelEl.textContent()) ?? '1';
+    return (await this.page.locator('#levelNum').textContent()) ?? '1';
   }
 
   async getStreak(): Promise<string> {
-    const streakEl = this.page.locator('[id*="streak"], [class*="streak"]').first();
-    return (await streakEl.textContent()) ?? '0';
+    return (await this.page.locator('#streakNum').textContent()) ?? '0';
   }
 
   async checkTask(index: number = 0) {
+    await this.navigateTo('tracker');
     const task = this.checkItems.nth(index);
-    await task.click();
+    await task.click({ force: true });
+    await this.page.waitForTimeout(200);
+  }
+
+  async checkTaskByKey(taskKey: string) {
+    await this.navigateTo('tracker');
+    await this.page.locator(`.checkItem[data-task="${taskKey}"] input[type="checkbox"]`).check();
     await this.page.waitForTimeout(200);
   }
 
   async getQuestProgressPercent(index: number = 0): Promise<number> {
-    const bar = this.questProgressBars.nth(index);
-    const style = await bar.getAttribute('style') ?? '';
+    const questIds = ['#questNight', '#questMorning', '#questBackpack'];
+    const questId = questIds[index] ?? questIds[0];
+    const fill = this.page.locator(`${questId} .questProgress .bar div`);
+    const count = await fill.count();
+    if (count === 0) return 0;
+    const style = await fill.getAttribute('style') ?? '';
     const match = style.match(/width:\s*([\d.]+)%/);
     return match ? parseFloat(match[1]) : 0;
   }

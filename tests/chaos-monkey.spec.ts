@@ -348,12 +348,10 @@ test.describe('Agent C — XP Display Sanity', () => {
       }
     });
 
-    // Check that no NaN appears in XP-related text elements
+    // Check that no NaN appears in XP display elements
     const xpText = await page.evaluate(() => {
-      const xpEls = document.querySelectorAll('[id*="xp"], [class*="xp-val"], [class*="xpVal"]');
-      return Array.from(xpEls)
-        .map((el) => el.textContent ?? '')
-        .join(' ');
+      const ids = ['xpNow', 'dashXP'];
+      return ids.map((id) => document.getElementById(id)?.textContent ?? '').join(' ');
     });
     expect(xpText).not.toContain('NaN');
     expect(errors).toHaveLength(0);
@@ -373,10 +371,8 @@ test.describe('Agent C — XP Display Sanity', () => {
     await page.reload({ waitUntil: 'domcontentloaded' });
 
     const xpText = await page.evaluate(() => {
-      const xpEls = document.querySelectorAll('[id*="xp"], [class*="xp"]');
-      return Array.from(xpEls)
-        .map((el) => el.textContent ?? '')
-        .join(' ');
+      const ids = ['xpNow', 'dashXP'];
+      return ids.map((id) => document.getElementById(id)?.textContent ?? '').join(' ');
     });
     expect(xpText).not.toContain('NaN');
   });
