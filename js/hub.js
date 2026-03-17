@@ -3045,6 +3045,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   let parentModeUnlocked = false;
 
   const DEFAULT_HOMEWORK_QUESTS = [
+    { id:'hw_supplies_march', subject:'Supplies', title:'Highlighters & Red Pen Needed', dueDate:'', status:'Not Started', notes:'Please make sure that your child has 2 different colored highlighters and a red pen for ELA class. We use these EACH day in class.', reminder:'', callout:"I've given students all of my supplies throughout the year, and now the well is dry." },
+    { id:'hw_wordly_wise_mar24', subject:'ELA', title:'Wordly Wise Packets', dueDate:'2026-03-24', status:'Not Started', notes:'Wordly Wise packets are coming home today. Complete and return by Tuesday, March 24th.', reminder:'', callout:'' },
     { id:'hw_choice_board', subject:'Math', title:'Choice Board', dueDate:'2026-02-26', status:'Not Started', notes:'', reminder:'', callout:'' },
     { id:'hw_african_leader_packet', subject:'ELA', title:'African American Leader’s Packet', dueDate:'2026-02-27', status:'Not Started', notes:'Students know how many leaders they were assigned; teacher discussed daily.', reminder:'', callout:'' },
     { id:'hw_hatchet_stem', subject:'ELA (STEM group project)', title:'Hatchet STEM Scene Build (Recycled Items Only)', dueDate:'2026-02-25', status:'Not Started', notes:'Bring listed items from take-home folder. ONLY recycled items from home — nothing store-bought.', reminder:'Bring recycled items only.', callout:'ALL items must be here by Wednesday.' },
