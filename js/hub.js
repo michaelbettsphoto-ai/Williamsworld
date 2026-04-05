@@ -3114,15 +3114,157 @@ document.addEventListener('DOMContentLoaded', async () => {
     setTimeout(() => { el.hidden = true; }, 1100);
   }
 
-  function updateHomeworkStatus(id, status) {
+  function ensureHomeworkFxStyles() {
+    if (document.getElementById('homeworkCinematicStyles')) return;
+    const style = document.createElement('style');
+    style.id = 'homeworkCinematicStyles';
+    style.textContent = `
+      .homeworkQuestCard.cinematicExit{
+        position:relative;
+        overflow:visible;
+        transform-origin:50% 50%;
+        isolation:isolate;
+      }
+      .homeworkQuestCard.cinematicExit .homeworkQuestActions button{pointer-events:none; opacity:.5}
+      .homeworkQuestCard.cinematicExit::after{
+        content:"";
+        position:absolute; inset:-6px;
+        border-radius:16px;
+        pointer-events:none;
+        mix-blend-mode:screen;
+      }
+      .homeworkQuestCard.exitFirestorm{
+        animation:homeworkCardFirestorm 920ms cubic-bezier(.12,.72,.22,1) forwards;
+      }
+      .homeworkQuestCard.exitFirestorm::after{
+        background:radial-gradient(circle at 30% 85%, rgba(255,120,30,.92), transparent 44%),
+                   radial-gradient(circle at 70% 82%, rgba(255,240,120,.66), transparent 38%),
+                   radial-gradient(circle at 50% 35%, rgba(255,255,255,.48), transparent 28%);
+        animation:homeworkFlamePulse 920ms ease-in-out forwards;
+      }
+      .homeworkQuestCard.exitDust{
+        animation:homeworkCardDust 900ms cubic-bezier(.18,.64,.26,1) forwards;
+      }
+      .homeworkQuestCard.exitDust::after{
+        background:radial-gradient(circle, rgba(210,180,140,.66), transparent 62%);
+        animation:homeworkDustBloom 900ms ease-out forwards;
+      }
+      .homeworkQuestCard.exitTornado{
+        animation:homeworkCardTornado 980ms cubic-bezier(.19,.68,.22,1) forwards;
+      }
+      .homeworkQuestCard.exitTornado::after{
+        background:conic-gradient(from 150deg, rgba(121,201,255,.05), rgba(182,229,255,.85), rgba(121,201,255,.05));
+        animation:homeworkWindSpiral 980ms linear forwards;
+      }
+      .homeworkQuestCard .homeworkVfxLayer{
+        position:absolute; inset:-12px; pointer-events:none; z-index:3; overflow:visible;
+      }
+      .homeworkQuestCard .homeworkVfxParticle{
+        position:absolute;
+        left:calc(18% + (var(--x) * 64%));
+        top:calc(15% + (var(--y) * 70%));
+        width:calc(4px + (var(--s) * 4px));
+        height:calc(4px + (var(--s) * 4px));
+        border-radius:50%;
+        opacity:.95;
+        transform:translate(-50%,-50%);
+      }
+      .homeworkQuestCard.exitFirestorm .homeworkVfxParticle{
+        background:radial-gradient(circle, #fff7d1 0%, #ff9b41 58%, #ff4d1f 100%);
+        animation:homeworkParticleFire 900ms ease-out forwards;
+      }
+      .homeworkQuestCard.exitDust .homeworkVfxParticle{
+        background:radial-gradient(circle, #fff7ea 0%, #ceb89a 60%, #8f7a62 100%);
+        animation:homeworkParticleDust 900ms ease-out forwards;
+      }
+      .homeworkQuestCard.exitTornado .homeworkVfxParticle{
+        background:radial-gradient(circle, #f8fdff 0%, #b9ecff 60%, #5dc9ff 100%);
+        animation:homeworkParticleTornado 980ms cubic-bezier(.12,.7,.18,1) forwards;
+      }
+      @keyframes homeworkCardFirestorm{
+        0%{transform:scale(1) rotate(0deg); filter:brightness(1)}
+        35%{transform:scale(1.03) rotate(-1deg); filter:brightness(1.25)}
+        70%{transform:scale(.92) rotate(1.7deg)}
+        100%{transform:scale(.6) translateY(-18px) rotate(3deg); opacity:0; filter:blur(2px) saturate(.2)}
+      }
+      @keyframes homeworkCardDust{
+        0%{transform:translate3d(0,0,0) scale(1); filter:contrast(1)}
+        30%{transform:translate3d(4px,-3px,0) scale(1.01)}
+        70%{transform:translate3d(26px,-12px,0) scale(.88)}
+        100%{transform:translate3d(52px,-18px,0) scale(.7); opacity:0; filter:blur(3px) saturate(.5)}
+      }
+      @keyframes homeworkCardTornado{
+        0%{transform:rotate(0deg) scale(1)}
+        42%{transform:rotate(8deg) scale(1.03)}
+        100%{transform:rotate(24deg) translateY(-40px) scale(.55); opacity:0; filter:blur(2px)}
+      }
+      @keyframes homeworkFlamePulse{0%{opacity:0} 28%{opacity:1} 100%{opacity:0}}
+      @keyframes homeworkDustBloom{0%{opacity:0; transform:scale(.6)} 35%{opacity:.86} 100%{opacity:0; transform:scale(1.9)}}
+      @keyframes homeworkWindSpiral{0%{opacity:0; transform:rotate(0)} 20%{opacity:.9} 100%{opacity:0; transform:rotate(1.6turn)}}
+      @keyframes homeworkParticleFire{
+        0%{transform:translate(-50%,-50%) scale(1); opacity:.95}
+        100%{transform:translate(calc(-50% + ((var(--x) - .5) * 84px)), calc(-50% + ((var(--y) - 1) * 100px))) scale(.12); opacity:0}
+      }
+      @keyframes homeworkParticleDust{
+        0%{transform:translate(-50%,-50%) scale(1); opacity:.88}
+        100%{transform:translate(calc(-50% + ((var(--x) - .2) * 120px)), calc(-50% + ((var(--y) - .45) * 90px))) scale(.2); opacity:0}
+      }
+      @keyframes homeworkParticleTornado{
+        0%{transform:translate(-50%,-50%) rotate(0deg) scale(1)}
+        100%{transform:translate(calc(-50% + ((var(--x) - .5) * 34px)), calc(-50% - 150px)) rotate(calc(2turn + (var(--x) * 1turn))) scale(.15); opacity:0}
+      }
+      @media (prefers-reduced-motion: reduce){
+        .homeworkQuestCard.cinematicExit,
+        .homeworkQuestCard.cinematicExit::after,
+        .homeworkQuestCard .homeworkVfxParticle{animation:none !important}
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  function playHomeworkCompletionCinematic(cardEl, onDone) {
+    if (!cardEl) {
+      onDone();
+      return;
+    }
+    ensureHomeworkFxStyles();
+    const effects = ['exitFirestorm', 'exitDust', 'exitTornado'];
+    const effectClass = effects[Math.floor(Math.random() * effects.length)];
+    cardEl.classList.add('cinematicExit', effectClass);
+
+    const layer = document.createElement('div');
+    layer.className = 'homeworkVfxLayer';
+    const particleCount = effectClass === 'exitTornado' ? 26 : 20;
+    for (let i = 0; i < particleCount; i++) {
+      const particle = document.createElement('span');
+      particle.className = 'homeworkVfxParticle';
+      particle.style.setProperty('--x', Math.random().toFixed(3));
+      particle.style.setProperty('--y', Math.random().toFixed(3));
+      particle.style.setProperty('--s', (Math.random() * 1.2 + 0.25).toFixed(3));
+      layer.appendChild(particle);
+    }
+    cardEl.appendChild(layer);
+
+    setTimeout(onDone, 980);
+  }
+
+  function updateHomeworkStatus(id, status, sourceCardEl) {
     const quest = homeworkState.quests.find(item => item.id === id);
     if (!quest) return;
     const wasDone = quest.status === 'Done';
-    quest.status = status;
     if (status === 'Done' && !wasDone) {
+      playHomeworkCompletionCinematic(sourceCardEl, () => {
+        const idx = homeworkState.quests.findIndex(item => item.id === id);
+        if (idx !== -1) homeworkState.quests.splice(idx, 1);
+        saveHomeworkQuests();
+        renderHomeworkBoard();
+      });
       showHomeworkVictory();
-      if (window.hubBattleEffects) window.hubBattleEffects.spawnConfetti(26);
+      toast('Assignment defeated! 🔥💨🌪️');
+      if (window.hubBattleEffects) window.hubBattleEffects.spawnConfetti(30);
+      return;
     }
+    quest.status = status;
     saveHomeworkQuests();
     renderHomeworkBoard();
   }
@@ -3202,8 +3344,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       const btn = event.target.closest('button[data-action]');
       if (!btn) return;
       const { action, id } = btn.dataset;
-      if (action === 'start') return updateHomeworkStatus(id, 'In Progress');
-      if (action === 'done') return updateHomeworkStatus(id, 'Done');
+      const sourceCardEl = btn.closest('.homeworkQuestCard');
+      if (action === 'start') return updateHomeworkStatus(id, 'In Progress', sourceCardEl);
+      if (action === 'done') return updateHomeworkStatus(id, 'Done', sourceCardEl);
       if (!parentModeUnlocked) return;
       const idx = homeworkState.quests.findIndex(item => item.id === id);
       if (idx === -1) return;
