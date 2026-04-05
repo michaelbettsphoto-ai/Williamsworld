@@ -140,6 +140,8 @@ test.describe('Agent B — William Card Interaction', () => {
       transformBefore !== transformAfter ||
       classList.includes('flipped') ||
       classList.includes('back');
+    // Assert the card visibly reacted to the click
+    expect(changed).toBe(true);
     // The card element itself must still be present
     await expect(hub.williamCard).toBeVisible();
   });
@@ -304,8 +306,9 @@ test.describe('Agent B — Games Hub', () => {
   test('B-27: games page high score from localStorage displays', async ({ page }) => {
     const games = new GamesPage(page);
     await games.goto();
-    // Pre-set a score in localStorage
+    // Pre-set a score in localStorage and wait briefly before reload
     await games.setLocalStorageItem('ww-snake-highscore', '9001');
+    await page.waitForTimeout(100);
     await page.reload({ waitUntil: 'domcontentloaded' });
     const scoreText = await games.getGameScore('snake');
     expect(scoreText).toContain('9001');

@@ -23,6 +23,11 @@ export class HubPage extends BasePage {
   readonly contentWithSidebar: Locator;
   readonly questSidebar: Locator;
   readonly mainContent: Locator;
+  readonly xpBar: Locator;
+  readonly xpNow: Locator;
+  readonly levelNum: Locator;
+  readonly levelTitle: Locator;
+  readonly streakNum: Locator;
 
   constructor(page: Page) {
     super(page);
@@ -47,6 +52,11 @@ export class HubPage extends BasePage {
     this.contentWithSidebar = page.locator('.contentWithSidebar');
     this.questSidebar = page.locator('.questSidebar');
     this.mainContent = page.locator('.mainContent');
+    this.xpBar = page.locator('#xpBar');
+    this.xpNow = page.locator('#xpNow');
+    this.levelNum = page.locator('#levelNum');
+    this.levelTitle = page.locator('#levelTitle');
+    this.streakNum = page.locator('#streakNum');
   }
 
   async goto() {

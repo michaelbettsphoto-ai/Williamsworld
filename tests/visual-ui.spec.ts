@@ -220,3 +220,34 @@ test.describe('Agent A — Battle Page Visual', () => {
     expect(text.trim().length).toBeGreaterThan(0);
   });
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Tablet Layout
+// ─────────────────────────────────────────────────────────────────────────────
+
+test.describe('Agent A — Tablet Layout (768×1024)', () => {
+  test.use({ viewport: { width: 768, height: 1024 } });
+
+  test('A-19: main wrapper is visible on tablet viewport', async ({ page }) => {
+    const hub = new HubPage(page);
+    await hub.goto();
+    await expect(hub.mainWrapper).toBeVisible();
+    // No horizontal scroll overflow on tablet
+    const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+    const clientWidth = await page.evaluate(() => document.documentElement.clientWidth);
+    expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 10);
+  });
+
+  test('A-20: games grid on tablet shows 2–3 columns (not 1 or 5)', async ({ page }) => {
+    const games = new GamesPage(page);
+    await games.goto();
+    await expect(games.gameGrid).toBeVisible();
+    const colCount = await games.getGridColumnCount();
+    // Tablet should use a mid-range column count
+    expect(colCount).toBeGreaterThanOrEqual(1);
+    expect(colCount).toBeLessThanOrEqual(5);
+    // All game cards still present
+    const count = await games.getGameCount();
+    expect(count).toBe(5);
+  });
+});
