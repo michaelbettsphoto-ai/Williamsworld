@@ -1,5 +1,11 @@
 *.backup.png
 
+# Node / Playwright
+node_modules/
+package-lock.json
+playwright-report/
+test-results/
+
 # Audio placeholder files (WAV)
 # These are temporary placeholders - replace with MP3 files
 assets/audio/*/*.wav
