@@ -7,7 +7,12 @@
     "test:visual": "playwright test tests/visual-ui.spec.ts",
     "test:functional": "playwright test tests/functional-logic.spec.ts",
     "test:chaos": "playwright test tests/chaos-monkey.spec.ts",
+    "test:games": "playwright test tests/games-gameplay.spec.ts",
+    "test:battle": "playwright test tests/battle-system.spec.ts",
+    "test:progression": "playwright test tests/progression-system.spec.ts",
+    "test:audio": "playwright test tests/audio-controls.spec.ts",
     "test:all": "playwright test --reporter=json,html",
+    "test:ci": "playwright test --reporter=github,html",
     "report": "ts-node tests/generate-report.ts"
   },
   "devDependencies": {

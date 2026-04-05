@@ -2,7 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 export default defineConfig({
   testDir: './tests',
-  timeout: 30_000,
+  timeout: 45_000,
   retries: process.env.CI ? 1 : 0,
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
@@ -31,10 +31,24 @@ export default defineConfig({
       },
     },
     {
+      name: 'firefox-desktop',
+      use: {
+        ...devices['Desktop Firefox'],
+        viewport: { width: 1280, height: 720 },
+      },
+    },
+    {
       name: 'webkit-mobile',
       use: {
         ...devices['iPhone 14'],
         viewport: { width: 390, height: 844 },
+      },
+    },
+    {
+      name: 'tablet',
+      use: {
+        ...devices['iPad Mini'],
+        viewport: { width: 768, height: 1024 },
       },
     },
   ],
