@@ -3061,11 +3061,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function loadHomeworkQuests() {
     try {
-      const parsed = JSON.parse(localStorage.getItem(HOMEWORK_KEY));
-      if (Array.isArray(parsed) && parsed.length) return parsed;
+      const raw = localStorage.getItem(HOMEWORK_KEY);
+      // If a saved value exists (even an empty array = all assignments completed),
+      // use it. Only fall back to defaults when nothing has ever been saved.
+      if (raw !== null) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) return parsed;
+      }
     } catch (error) {
       console.warn('[FAIL-SOFT] Could not parse homework quests:', error);
     }
+    // First-ever load: seed with defaults and persist them
     localStorage.setItem(HOMEWORK_KEY, JSON.stringify(DEFAULT_HOMEWORK_QUESTS));
     return structuredClone ? structuredClone(DEFAULT_HOMEWORK_QUESTS) : JSON.parse(JSON.stringify(DEFAULT_HOMEWORK_QUESTS));
   }
