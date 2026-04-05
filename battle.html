@@ -1341,7 +1341,13 @@ const ENEMY_IMAGES = {
   'mindmoth': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/XargXwENKJLZyNHK.png',
   'root-warden': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/FQnlWcWaaVSauKOr.png',
   'prism-specter': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/eUesqWzUaKxQplhD.png',
-  'void-weaver': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/pQLSQIHfWtEsxVJK.png'
+  'void-weaver': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/pQLSQIHfWtEsxVJK.png',
+  'locker-lizard': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/OBOBgYnkxUQTRgdP.png',
+  'shadowcap-shaman': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/rJAcGfsgAzyOrXKR.png',
+  'moonveil-panther': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/MzmezqMEmXKhWUZQ.png',
+  'ancient-grove-guardian': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/TaFAaMcAHcGnizha.png',
+  'red-pen-reaper': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/cxrIcUipKaJnZrCu.png',
+  'supply-sapper': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/AhkZlAuCwSaKWLER.png'
 };
 
 function getEnemyArt(enemy) {
@@ -1379,6 +1385,7 @@ const ENEMIES_BY_ZONE = {
     { id: 'ruler-knight', name: 'Ruler Knight', role: 'TANK', element: 'METAL', rarity: 'RARE', emoji: '📏', moves: [{ name: 'Measure Strike', type: 'damage', power: 20, desc: 'Precise strike.', keywords: ['Damage'] },{ name: 'Straighten Up', type: 'buff', power: 0, desc: 'Guard + cleanse.', keywords: ['Guard', 'Cleanse'], effect: 'guard' }]},
     { id: 'glue-gooper', name: 'Glue Gooper', role: 'SUPPORT', element: 'WATER', rarity: 'COMMON', emoji: '🫠', moves: [{ name: 'Sticky Splash', type: 'control', power: 10, desc: 'Roots a hero.', keywords: ['Root'], statusChance: 1.0, statusType: 'root' },{ name: 'Goop Heal', type: 'heal', power: 15, desc: 'Heals an ally.', keywords: ['Heal'] }]},
     { id: 'chalk-phantom', name: 'Chalk Phantom', role: 'CASTER', element: 'LIGHT', rarity: 'ELITE', emoji: '✨', moves: [{ name: 'Chalk Beam', type: 'damage', power: 24, desc: 'Powerful beam.', keywords: ['Damage'] },{ name: 'Dust Cloud', type: 'control', power: 8, desc: 'Blinds all heroes.', keywords: ['Blind'], statusChance: 0.3, statusType: 'blind' }]},
+    { id: 'red-pen-reaper', name: 'Red Pen Reaper', role: 'BRUISER', element: 'SHADOW', rarity: 'ELITE', emoji: '🖊️', moves: [{ name: 'Correction Strike', type: 'damage', power: 28, desc: 'Hits the weakest hero harder.', keywords: ['Damage'], statusChance: 0, statusType: '' },{ name: 'Mark Wrong', type: 'debuff', power: 0, desc: 'Weakens defense.', keywords: ['Weaken'], statusChance: 1.0, statusType: 'weaken' },{ name: 'Final Grade', type: 'control', power: 0, desc: 'Forces a hero to lose their next action.', keywords: ['Control'], statusChance: 1.0, statusType: 'shock' }]},
   ],
   'backpack-bastion': [
     { id: 'zipper-viper', name: 'Zipper Viper', role: 'SKIRMISHER', element: 'METAL', rarity: 'COMMON', emoji: '🐍', moves: [{ name: 'Zip Strike', type: 'damage', power: 20, desc: 'Fast metal strike.', keywords: ['Damage'] },{ name: 'Coil Guard', type: 'buff', power: 0, desc: 'Gains Guard.', keywords: ['Guard'], effect: 'guard' }]},
@@ -1386,6 +1393,8 @@ const ENEMIES_BY_ZONE = {
     { id: 'lint-lurker', name: 'Lint Lurker', role: 'TRICKSTER', element: 'SHADOW', rarity: 'COMMON', emoji: '🕸️', moves: [{ name: 'Lint Tangle', type: 'control', power: 10, desc: 'Roots a hero.', keywords: ['Root'], statusChance: 1.0, statusType: 'root' },{ name: 'Shadow Poke', type: 'damage', power: 18, desc: 'Sneaky poke.', keywords: ['Damage'] }]},
     { id: 'compass-spinner', name: 'Compass Spinner', role: 'CASTER', element: 'WIND', rarity: 'RARE', emoji: '🧭', moves: [{ name: 'Spin Blast', type: 'damage', power: 24, desc: 'Whirling blast.', keywords: ['Damage'] },{ name: 'True North', type: 'buff', power: 0, desc: 'Focus for team.', keywords: ['Buff'], effect: 'focus' }]},
     { id: 'thermos-titan', name: 'Thermos Titan', role: 'TANK', element: 'FIRE', rarity: 'ELITE', emoji: '🫗', moves: [{ name: 'Steam Blast', type: 'damage', power: 26, desc: 'Burns and damages.', keywords: ['Damage', 'Burn'], statusChance: 0.35, statusType: 'burn' },{ name: 'Heat Shield', type: 'buff', power: 0, desc: 'Guard + Focus.', keywords: ['Guard', 'Buff'], effect: 'guard' }]},
+    { id: 'locker-lizard', name: 'Locker Lizard', role: 'TANK', element: 'ROCK', rarity: 'RARE', emoji: '🦎', moves: [{ name: 'Door Shield', type: 'buff', power: 0, desc: 'Grants Guard to enemy team for 1 turn.', keywords: ['Guard'], effect: 'guard' },{ name: 'Tail Slam', type: 'damage', power: 24, desc: 'Heavy tail hit.', keywords: ['Damage'] }]},
+    { id: 'supply-sapper', name: 'Supply Sapper', role: 'TRICKSTER', element: 'ROCK', rarity: 'RARE', emoji: '⛏️', moves: [{ name: 'Steal Charge', type: 'debuff', power: 0, desc: 'Removes one hero buff.', keywords: ['Debuff'] },{ name: 'Sneak Strike', type: 'damage', power: 24, desc: 'Hits harder if the hero is buffed.', keywords: ['Damage'] }]},
   ],
   'focus-forest': [
     { id: 'crystal-crawler', name: 'Crystal Crawler', role: 'TANK', element: 'ICE', rarity: 'COMMON', emoji: '💎', moves: [{ name: 'Frost Bite', type: 'damage', power: 24, desc: 'Icy bite, may Chill.', keywords: ['Damage', 'Chill'], statusChance: 0.3, statusType: 'chill' },{ name: 'Crystal Shell', type: 'buff', power: 0, desc: 'Strong Guard.', keywords: ['Guard'], effect: 'guard' }]},
@@ -1393,6 +1402,9 @@ const ENEMIES_BY_ZONE = {
     { id: 'root-warden', name: 'Root Warden', role: 'TANK', element: 'GRASS', rarity: 'COMMON', emoji: '🌳', moves: [{ name: 'Root Slam', type: 'damage', power: 22, desc: 'Roots and slams.', keywords: ['Damage', 'Root'], statusChance: 0.3, statusType: 'root' },{ name: 'Nature Guard', type: 'buff', power: 0, desc: 'Guard for team.', keywords: ['Guard'], effect: 'guard' }]},
     { id: 'prism-specter', name: 'Prism Specter', role: 'CASTER', element: 'LIGHT', rarity: 'RARE', emoji: '🌈', moves: [{ name: 'Prism Beam', type: 'damage', power: 28, desc: 'Powerful light beam.', keywords: ['Damage'] },{ name: 'Refract', type: 'buff', power: 0, desc: 'Focus + Shield.', keywords: ['Buff', 'Shield'], effect: 'focus' }]},
     { id: 'void-weaver', name: 'Void Weaver', role: 'TRICKSTER', element: 'SHADOW', rarity: 'ELITE', emoji: '🕷️', moves: [{ name: 'Void Rend', type: 'damage', power: 30, desc: 'Devastating shadow strike.', keywords: ['Damage', 'Weaken'], statusChance: 0.4, statusType: 'weaken' },{ name: 'Dark Veil', type: 'buff', power: 0, desc: 'Dodge + Focus.', keywords: ['Shield', 'Buff'], effect: 'guard' }]},
+    { id: 'shadowcap-shaman', name: 'Shadowcap Shaman', role: 'CASTER', element: 'SHADOW', rarity: 'RARE', emoji: '🍄', moves: [{ name: 'Spores of Doubt', type: 'debuff', power: 0, desc: 'Weakens defense.', keywords: ['Weaken'], statusChance: 1.0, statusType: 'weaken' },{ name: 'Night Bloom', type: 'damage', power: 28, desc: 'Hits harder if the hero is debuffed.', keywords: ['Damage'] }]},
+    { id: 'moonveil-panther', name: 'Moonveil Panther', role: 'SKIRMISHER', element: 'SHADOW', rarity: 'RARE', emoji: '🐱', moves: [{ name: 'Moon Pounce', type: 'damage', power: 28, desc: 'Hits weakest hero harder.', keywords: ['Damage'] },{ name: 'Veil Step', type: 'buff', power: 0, desc: 'Dodges the next hit.', keywords: ['Shield'], effect: 'guard' }]},
+    { id: 'ancient-grove-guardian', name: 'Ancient Grove Guardian', role: 'TANK', element: 'GRASS', rarity: 'ELITE', emoji: '🌲', moves: [{ name: 'Sanctuary Bark', type: 'buff', power: 0, desc: 'Grants Guard to enemy team for 1 turn.', keywords: ['Guard'], effect: 'guard' },{ name: 'Root Judgment', type: 'control', power: 0, desc: 'Roots a hero.', keywords: ['Root'], statusChance: 1.0, statusType: 'root' },{ name: 'Radiant Slam', type: 'damage', power: 30, desc: 'Big radiant hit.', keywords: ['Damage'] }]},
   ],
 };
 

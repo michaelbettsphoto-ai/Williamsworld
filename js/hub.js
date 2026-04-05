@@ -3301,9 +3301,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     return String(slug || '').trim().toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/-+/g, '-').replace(/^-+|-+$/g, '');
   }
 
+  const NEW_CARD_IMAGES = {
+    'locker-lizard': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/OBOBgYnkxUQTRgdP.png',
+    'shadowcap-shaman': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/rJAcGfsgAzyOrXKR.png',
+    'moonveil-panther': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/MzmezqMEmXKhWUZQ.png',
+    'ancient-grove-guardian': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/TaFAaMcAHcGnizha.png',
+    'red-pen-reaper': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/cxrIcUipKaJnZrCu.png',
+    'supply-sapper': 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663346319809/AhkZlAuCwSaKWLER.png'
+  };
+
   function getEnemyHomeCardArt(enemy) {
     const svgFallback = enemyCardSvgDataUrl(enemy);
     const slug = enemySlugToDirectory(enemy?.slug || enemy?.id || enemy?.name);
+    if (slug && NEW_CARD_IMAGES[slug]) {
+      return {
+        primary: NEW_CARD_IMAGES[slug],
+        fallback: slug ? `assets/enemies/${slug}/card_art_v1.svg` : svgFallback
+      };
+    }
     const computedCardArt = slug ? `assets/enemies/${slug}/card_art_v1.svg` : '';
     return {
       primary: enemy?.homeCardArtPath || computedCardArt || enemy?.artPath || enemy?.portrait || svgFallback,
