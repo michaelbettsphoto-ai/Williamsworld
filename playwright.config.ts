@@ -14,12 +14,24 @@ export default defineConfig({
   ],
 
   use: {
-    baseURL: 'https://michaelbettsphoto-ai.github.io/Williamsworld/',
+    baseURL: process.env.BASE_URL ?? 'file:///home/user/Williamsworld/',
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
     video: 'retain-on-failure',
     actionTimeout: 10_000,
     navigationTimeout: 20_000,
+    // Block external font requests that block DOMContentLoaded in sandboxed environments
+    serviceWorkers: 'block',
+    launchOptions: {
+      executablePath: '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+      args: [
+        '--no-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-setuid-sandbox',
+        '--allow-file-access-from-files',
+        '--disable-web-security',
+      ],
+    },
   },
 
   projects: [

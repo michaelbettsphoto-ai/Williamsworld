@@ -298,7 +298,7 @@ test.describe('Agent B — Games Hub', () => {
     const exists = await snakeCard.count();
     if (exists > 0) {
       await snakeCard.click();
-      await page.waitForLoadState('domcontentloaded');
+      await page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
       expect(page.url()).toContain('snake');
     }
   });
@@ -309,7 +309,7 @@ test.describe('Agent B — Games Hub', () => {
     // Pre-set a score in localStorage and wait briefly before reload
     await games.setLocalStorageItem('ww-snake-highscore', '9001');
     await page.waitForTimeout(100);
-    await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.reload({ waitUntil: 'commit' });
     const scoreText = await games.getGameScore('snake');
     expect(scoreText).toContain('9001');
   });
@@ -318,7 +318,7 @@ test.describe('Agent B — Games Hub', () => {
     const games = new GamesPage(page);
     await games.goto();
     await games.backBtn.click();
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
     expect(page.url()).not.toContain('games/index.html');
   });
 });

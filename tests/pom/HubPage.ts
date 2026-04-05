@@ -60,8 +60,12 @@ export class HubPage extends BasePage {
   }
 
   async goto() {
-    await super.goto('');
-    await this.page.waitForLoadState('domcontentloaded');
+    await super.goto('index.html');
+    // Wait for hub JS to finish rendering the level number
+    await this.page.waitForFunction(
+      () => (document.querySelector('#levelNum') as HTMLElement)?.innerText?.length > 0,
+      { timeout: 10_000 }
+    ).catch(() => {});
   }
 
   async clickWilliamCard() {
@@ -120,6 +124,6 @@ export class HubPage extends BasePage {
 
   async navigateToExternal(href: 'games/index.html' | 'battle.html') {
     await this.page.locator(`[data-nav-href="${href}"]`).click();
-    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
   }
 }

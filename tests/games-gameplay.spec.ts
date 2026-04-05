@@ -16,7 +16,7 @@ test.describe('Agent D — Snake Game', () => {
     page.on('pageerror', (err) => errors.push(err.message));
     const snake = new SnakePage(page);
     await snake.goto();
-    await page.waitForLoadState('domcontentloaded');
+    await page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
     const critical = errors.filter((e) => !e.includes('fonts.googleapis'));
     expect(critical).toHaveLength(0);
   });
@@ -69,7 +69,7 @@ test.describe('Agent D — Snake Game', () => {
     const snake = new SnakePage(page);
     await snake.goto();
     await snake.setLocalStorageItem('ww-snake-highscore', '500');
-    await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.reload({ waitUntil: 'commit' });
     const storedScore = await snake.getLocalStorageItem('ww-snake-highscore');
     expect(storedScore).toBe('500');
     const displayText = await snake.highscore.textContent();
@@ -128,7 +128,7 @@ test.describe('Agent D — 2048 Game', () => {
     const game = new GamePage(page);
     await game.gotoGame('2048');
     await game.setLocalStorageItem('ww-2048-highscore', '1024');
-    await page.reload({ waitUntil: 'domcontentloaded' });
+    await page.reload({ waitUntil: 'commit' });
     const stored = await game.getLocalStorageItem('ww-2048-highscore');
     expect(stored).toBe('1024');
     const displayText = await game.highscore.textContent();

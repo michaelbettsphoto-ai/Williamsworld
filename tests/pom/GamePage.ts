@@ -33,7 +33,7 @@ export class GamePage extends BasePage {
 
   async gotoGame(game: GameName) {
     await super.goto(GAME_PATHS[game]);
-    await this.page.waitForLoadState('domcontentloaded');
+    await this.startBtn.waitFor({ state: 'visible', timeout: 10_000 }).catch(() => {});
   }
 
   async clickStart() {
@@ -58,7 +58,7 @@ export class GamePage extends BasePage {
 
   async clickBackToGames() {
     await this.backBtn.click();
-    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
   }
 
   async sendKey(key: string) {

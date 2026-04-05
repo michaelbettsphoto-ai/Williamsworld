@@ -4,11 +4,27 @@ export class BasePage {
   constructor(protected readonly page: Page) {}
 
   async goto(path: string = '') {
+    // Intercept external resources that block DOMContentLoaded in this sandboxed env.
+    // Fonts stylesheet: return empty CSS so Chrome marks it loaded immediately.
+    await this.page.route(/fonts\.googleapis\.com/, (route) =>
+      route.fulfill({ status: 200, contentType: 'text/css', body: '/* fonts blocked for testing */' })
+    );
+    await this.page.route(/fonts\.gstatic\.com/, (route) =>
+      route.fulfill({ status: 200, contentType: 'font/woff2', body: '' })
+    );
+    // Howler.js CDN: stub with minimal API so hub.js audio code doesn't throw
+    await this.page.route(/cdnjs\.cloudflare\.com.*howler/, (route) =>
+      route.fulfill({
+        status: 200,
+        contentType: 'application/javascript',
+        body: 'window.Howl=function(o){this.play=function(){};this.stop=function(){};this.volume=function(){return this;};this.seek=function(){return 0;};this.playing=function(){return false;};};window.Howler={volume:function(){},ctx:null};',
+      })
+    );
     await this.page.goto(path, { waitUntil: 'domcontentloaded' });
   }
 
   async waitForNetworkIdle() {
-    await this.page.waitForLoadState('networkidle');
+    await this.page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
   }
 
   async clearLocalStorage() {

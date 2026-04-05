@@ -17,7 +17,7 @@ export class GamesPage extends BasePage {
 
   async goto() {
     await super.goto('games/index.html');
-    await this.page.waitForLoadState('domcontentloaded');
+    await this.gameGrid.waitFor({ state: 'visible', timeout: 10_000 }).catch(() => {});
   }
 
   async getGameScore(game: GameName): Promise<string> {
@@ -28,7 +28,7 @@ export class GamesPage extends BasePage {
   async clickGame(game: GameName) {
     const card = this.page.locator(`.game-card[href*="${game}"]`);
     await card.click();
-    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.waitForTimeout(1000);
   }
 
   async getGameCount(): Promise<number> {

@@ -9,7 +9,7 @@ export class BattlePage extends BasePage {
 
   constructor(page: Page) {
     super(page);
-    this.backBtn = page.locator('.back-btn');
+    this.backBtn = page.locator('.back-btn').first();
     this.navTitle = page.locator('.nav-title');
     this.zoneChips = page.locator('.zone-chip');
     this.lockedZoneChips = page.locator('.zone-chip.locked');
@@ -17,12 +17,12 @@ export class BattlePage extends BasePage {
 
   async goto() {
     await super.goto('battle.html');
-    await this.page.waitForLoadState('domcontentloaded');
+    await this.backBtn.waitFor({ state: 'visible', timeout: 10_000 }).catch(() => {});
   }
 
   async goBackToHub() {
     await this.backBtn.click();
-    await this.page.waitForLoadState('domcontentloaded');
+    await this.page.waitForTimeout(1000);
   }
 
   async getNavTitleText(): Promise<string> {
